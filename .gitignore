@@ -38,4 +38,4 @@ ipython_config.py
 *.svclog
 *.scc
 *.lnk
-GRoot\*.csv
+.\GRoot\*.csv
