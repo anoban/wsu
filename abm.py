@@ -10,14 +10,10 @@ class person(object):
     """ """
 
     @override
-    def __init__(self, rumour: str) -> None:
+    def __init__(self, rumour: str, has_rumour: int = False) -> None:
         """ """
         self._rumour: str = rumour
         self._has_heard_rumour: bool = False
-
-    def __add__(self, other: Self) -> int:
-        """ """
-        return self._has_heard_rumour + other._has_heard_rumour
 
     @override
     def __repr__(self) -> str:
@@ -50,6 +46,8 @@ MAX_DAYS: int = 2_000
 
 
 njit(fastmath=True, parallel=True, nogil=True)
+
+
 def main() -> None:
     """ """
     population = np.empty(shape=(MAX_POPULATION_SIZE), dtype=person)
@@ -63,7 +61,7 @@ def main() -> None:
             for contact in population[np.random.randint(low=0, high=MAX_POPULATION_SIZE, size=MAX_CONTACTS)]:
                 chosen.converse(contact)
         # update the count of individuals who have heard the rumour by now
-        daily_counts[d]=
+        daily_counts[d] = population.sum()
 
 
 if __name__ == "__main__":
