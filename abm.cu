@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <numeric>
 #include <random>
@@ -6,39 +7,46 @@
 
 class person final {
     private:
-        std::wstring _rumour;
-        bool         _has_rumour;
+        static constexpr unsigned _RUMOUR_LENGTH { 200 };
+        wchar_t                   _rumour[_RUMOUR_LENGTH]; // NOLINT(modernize-avoid-c-arrays)
+        bool                      _has_rumour;
 
     public:
-        person() noexcept : _rumour {}, _has_rumour {} { }
+        __host__ __device__ __stdcall person() noexcept : _rumour {}, _has_rumour {} { }
 
-        explicit person(const wchar_t* const _string) noexcept : _rumour { _string }, _has_rumour { true } { }
+        __host__ __device__ explicit __stdcall person(const wchar_t* const _string) noexcept : _rumour {}, _has_rumour { true } {
+            ::wcsncpy_s(_rumour, _string, _RUMOUR_LENGTH);
+        }
 
-        explicit person(const std::wstring& _string) noexcept : _rumour { _string }, _has_rumour { true } { }
-
-        void converse(const person& _other) noexcept {
+        __host__ __device__ void __stdcall converse(const person& _other) noexcept {
             if (_other._has_rumour) { // if the other person has a rumour, listen to it
-                _rumour     = _other._rumour;
+                ::wcsncpy_s(_rumour, _other._rumour, _RUMOUR_LENGTH);
                 _has_rumour = true;
             }
         }
 
-        bool has_rumour() const noexcept { return _has_rumour; }
+        __host__ __device__ bool has_rumour() const noexcept { return _has_rumour; }
 
-        person(const person&)            = default;
-        person(person&&)                 = default;
-        person& operator=(const person&) = default;
-        person& operator=(person&&)      = default;
-        ~person() noexcept               = default;
+        __host__                              __device__ __stdcall person(const person&) = default;
+        __host__                              __device__ __stdcall person(person&&)      = default;
+        __host__ __device__ person& __stdcall operator=(const person&)                   = default;
+        __host__ __device__ person& __stdcall operator=(person&&)                        = default;
+        __host__                              __device__ __stdcall ~person() noexcept    = default;
 
         // person + person
-        unsigned long long operator+(const person& _other) const noexcept { return _has_rumour + _other._has_rumour; }
+        __host__ __device__ unsigned long long __stdcall operator+(const person& _other) const noexcept {
+            return _has_rumour + _other._has_rumour;
+        }
 
         // person + value
-        unsigned long long operator+(const unsigned long long& _sum) const noexcept { return _has_rumour + _sum; }
+        __host__ __device__ unsigned long long __stdcall operator+(const unsigned long long& _sum) const noexcept {
+            return _has_rumour + _sum;
+        }
 
         // value + person
-        friend constexpr unsigned long long operator+(const unsigned long long _sum, const person& _other) noexcept {
+        __host__ __device__ friend constexpr unsigned long long __stdcall operator+(
+            const unsigned long long _sum, const person& _other
+        ) noexcept {
             return _sum + _other._has_rumour;
         }
 };
