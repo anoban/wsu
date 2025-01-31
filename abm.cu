@@ -1,3 +1,9 @@
+// clang-format off
+#include <cuda.h>
+#include <curand.h>
+#include <cuda_runtime.h>
+// clang-format on
+
 #include <cstring>
 #include <iostream>
 #include <numeric>
@@ -6,13 +12,15 @@
 #include <vector>
 
 class person final {
-    private:
+    public:
         static constexpr unsigned _RUMOUR_LENGTH { 200 };
-        wchar_t                   _rumour[_RUMOUR_LENGTH]; // NOLINT(modernize-avoid-c-arrays)
-        bool                      _has_rumour;
+
+    private:
+        wchar_t _rumour[_RUMOUR_LENGTH]; // NOLINT(modernize-avoid-c-arrays)
+        bool    _has_rumour;
 
     public:
-        __host__ __device__ __stdcall person() noexcept : _rumour {}, _has_rumour {} { }
+        __host__ __device__ constexpr __stdcall person() noexcept : _rumour {}, _has_rumour {} { }
 
         __host__ __device__ explicit __stdcall person(const wchar_t* const _string) noexcept : _rumour {}, _has_rumour { true } {
             ::wcsncpy_s(_rumour, _string, _RUMOUR_LENGTH);
@@ -25,26 +33,26 @@ class person final {
             }
         }
 
-        __host__ __device__ bool has_rumour() const noexcept { return _has_rumour; }
+        __host__ __device__ constexpr bool has_rumour() const noexcept { return _has_rumour; }
 
-        __host__                              __device__ __stdcall person(const person&) = default;
-        __host__                              __device__ __stdcall person(person&&)      = default;
-        __host__ __device__ person& __stdcall operator=(const person&)                   = default;
-        __host__ __device__ person& __stdcall operator=(person&&)                        = default;
-        __host__                              __device__ __stdcall ~person() noexcept    = default;
+        __host__                                        __device__ constexpr __stdcall person(const person&) noexcept = default;
+        __host__                                        __device__ constexpr __stdcall person(person&&) noexcept      = default;
+        __host__ __device__ constexpr person& __stdcall operator=(const person&) noexcept                             = default;
+        __host__ __device__ constexpr person& __stdcall operator=(person&&) noexcept                                  = default;
+        __host__                                        __device__ constexpr __stdcall ~person() noexcept             = default;
 
         // person + person
-        __host__ __device__ unsigned long long __stdcall operator+(const person& _other) const noexcept {
+        [[nodiscard]] __host__ __device__ constexpr unsigned long long __stdcall operator+(const person& _other) const noexcept {
             return _has_rumour + _other._has_rumour;
         }
 
         // person + value
-        __host__ __device__ unsigned long long __stdcall operator+(const unsigned long long& _sum) const noexcept {
+        [[nodiscard]] __host__ __device__ constexpr unsigned long long __stdcall operator+(const unsigned long long& _sum) const noexcept {
             return _has_rumour + _sum;
         }
 
         // value + person
-        __host__ __device__ friend constexpr unsigned long long __stdcall operator+(
+        [[nodiscard]] __host__ __device__ friend constexpr unsigned long long __stdcall operator+(
             const unsigned long long _sum, const person& _other
         ) noexcept {
             return _sum + _other._has_rumour;
@@ -52,6 +60,13 @@ class person final {
 };
 
 static constexpr unsigned long population_size { 800'000 }, max_spreaders { 30 }, max_days { 100'000 }, max_contacts { 21 };
+
+// inoculate the rumour in the population
+template<unsigned long long _size>
+static __global__ void inoculate(_In_ const wchar_t (&string)[_size], _In_ const unsigned long long _population_size) {
+    static_assert(_size <= person::_RUMOUR_LENGTH);
+    person bearer { string };
+}
 
 auto wmain() -> int {
     std::mt19937_64                         rengine { std::random_device {}() };
@@ -62,6 +77,9 @@ auto wmain() -> int {
     std::vector<unsigned long long> daily_records(max_days);
 
     population.at(0).converse(dumbass); // the first point of contact
+
+    person* device_vector {};
+    ::cudaMalloc(&device_vector, sizeof(person) * population_size);
 
     // simulate subsequent contacts
     unsigned random_selection {}, contacts {}; // NOLINT(readability-isolate-declaration)
