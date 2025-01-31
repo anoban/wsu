@@ -62,10 +62,11 @@ class person final {
 static constexpr unsigned long population_size { 800'000 }, max_spreaders { 30 }, max_days { 100'000 }, max_contacts { 21 };
 
 // inoculate the rumour in the population
-template<unsigned long long _size>
-static __global__ void inoculate(_In_ const wchar_t (&string)[_size], _In_ const unsigned long long _population_size) {
-    static_assert(_size <= person::_RUMOUR_LENGTH);
-    person bearer { string };
+template<typename... _TyChar, unsigned long long... _sizes>
+static __global__ void inoculate(_In_ const _TyChar (&... strings)[_sizes], _In_ const unsigned long long _population_size) {
+    curandGenerator_t dev_rndgen {};
+    ::curandCreateGenerator(&dev_rndgen, curandRngType::CURAND_RNG_PSEUDO_MT19937); // create the
+    ::curandSetPseudoRandomGeneratorSeed(dev_rndgen, ::time(nullptr));              // seed the random number generator
 }
 
 auto wmain() -> int {
