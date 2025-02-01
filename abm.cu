@@ -62,8 +62,8 @@ class person final {
 static constexpr unsigned long population_size { 800'000 }, max_spreaders { 30 }, max_days { 100'000 }, max_contacts { 21 };
 
 // inoculate the rumour in the population
-template<typename... _TyChar, unsigned long long... _sizes>
-static __global__ void inoculate(_In_ const _TyChar (&... strings)[_sizes], _In_ const unsigned long long _population_size) {
+template<typename... _TyChar, unsigned long long... _sizes> requires(std::is_same_v<_TyChar, wchar_t> && ...)
+static __global__ void inoculation(_In_ const unsigned long long& _population_size, _In_ const _TyChar (&... _strings)[_sizes]) {
     curandGenerator_t dev_rndgen {};
     ::curandCreateGenerator(&dev_rndgen, curandRngType::CURAND_RNG_PSEUDO_MT19937); // create the
     ::curandSetPseudoRandomGeneratorSeed(dev_rndgen, ::time(nullptr));              // seed the random number generator
@@ -81,6 +81,8 @@ auto wmain() -> int {
 
     person* device_vector {};
     ::cudaMalloc(&device_vector, sizeof(person) * population_size);
+
+    ::inoculation<<<1, 1>>>(1000LLU, L"Hi", L"Hello", "Howdy");
 
     // simulate subsequent contacts
     unsigned random_selection {}, contacts {}; // NOLINT(readability-isolate-declaration)
