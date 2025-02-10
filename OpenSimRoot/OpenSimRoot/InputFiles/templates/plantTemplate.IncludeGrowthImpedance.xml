@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SimulationModelIncludeFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../scripts/XML/SimulaXMLSchema.xsd">
+
+	<SimulaDirective path="/environment/soil">
+		<SimulaDerivative
+			name="soilPenetrationResistance"
+			unit="kPa"
+			function="impedanceGao">
+			<!-- An override setting, probably best omitted from most runs.
+				If unset, impedanceGao will look up SWMS water contents from
+				the growthpoint like you probably wanted. -->
+			<!-- <SimulaConstant name="soilWaterContentForImpedance" unit="cm3/cm3">0.20</SimulaConstant> -->
+		</SimulaDerivative>
+	</SimulaDirective>
+
+	<SimulaDirective path="siblingRootTemplate/growthpoint">
+		<SimulaDerivative name="rootGrowthImpedance" function="rootGrowthImpedanceRateMultiplier" unit="kPa" />
+		<SimulaDerivative name="rootDiameterImpedance" function="rootDiameterImpedanceMultiplier" unit="kPa" />
+		<SimulaTable
+			name_column1="time"
+			name_column2="volumetricWaterContentAtTheRootSurface"
+			unit_column1="day"
+			unit_column2="cm3/cm3"
+			function="getValuesFromSWMS" />
+		<SimulaLink name="bulkDensity" linksName="/environment/soil/bulkDensity" />
+		<SimulaLink name = "impedanceGrowthFactor" linksName="../rootGrowthImpedance" />
+	</SimulaDirective>
+
+	<!-- TODO Is this needed? as far as I can tell the hypocotyl ignores it and uses the one in siblingRootTemplate  -->
+	<SimulaDirective path="hypocotylTemplate/growthpoint">
+		<SimulaDerivative name="rootGrowthImpedance" function="rootGrowthImpedanceRateMultiplier" unit="kPa" />
+		<SimulaDerivative name="rootDiameterImpedance" function="rootDiameterImpedanceMultiplier" unit="kPa" />
+		<SimulaTable
+			name_column1="time"
+			name_column2="volumetricWaterContentAtTheRootSurface"
+			unit_column1="day"
+			unit_column2="cm3/cm3"
+			function="getValuesFromSWMS" />
+		<SimulaLink name="bulkDensity" linksName="/environment/soil/bulkDensity" />
+		<SimulaLink name = "impedanceGrowthFactor" linksName="../rootGrowthImpedance" />
+	</SimulaDirective>
+
+	<SimulaDirective path="/dataPointTemplate">
+		<SimulaDerivative name="rootGrowthImpedance" function="rootGrowthImpedanceRateMultiplier" unit="kPa"/>
+		<SimulaDerivative name="rootDiameterImpedance" function="rootDiameterImpedanceMultiplier" unit="kPa" />
+		<SimulaLink name="bulkDensity" linksName="/environment/soil/bulkDensity" />
+		<SimulaLink name = "impedanceGrowthFactor" linksName="../rootGrowthImpedance" />
+	</SimulaDirective>
+
+</SimulationModelIncludeFile>

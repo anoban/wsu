@@ -1,0 +1,130 @@
+/*
+Copyright © 2016, The Pennsylvania State University
+All rights reserved.
+
+Copyright © 2016 Forschungszentrum Jülich GmbH
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted under the GNU General Public License v3 and provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+Disclaimer
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+You should have received the GNU GENERAL PUBLIC LICENSE v3 with this file in license.txt but can also be found at http://www.gnu.org/licenses/gpl-3.0.en.html
+
+NOTE: The GPL.v3 license requires that all derivative work is distributed under the same license. That means that if you use this source code in any other program, you can only distribute that program with the full source code included and licensed under a GPL license.
+
+ */
+#ifndef GROWTHIMPEDANCE_HPP_
+#define GROWTHIMPEDANCE_HPP_
+
+#include "../../engine/BaseClasses.hpp"
+#include "../../cli/Messages.hpp"
+#include "../../engine/Origin.hpp"
+#include "../../math/VectorMath.hpp"
+#include "../Soil/Impedance.hpp"
+
+/// Compute soil impedance from soil bulk density
+///
+/// Given a time and absolute position in the soil,
+/// gets local bulk density and converts it to an impedance.
+/// Work in progress! Units and conversion algorithm still undecided.
+class RootImpedanceFromBulkDensity : public DerivativeBase {
+public:
+	RootImpedanceFromBulkDensity(SimulaDynamic* const pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t, double &imped);
+	static SimulaBase *pBulkDensity;
+	SimulaBase *pSoilWaterContent;
+	double bulkDensity;
+	bool inGrowthpoint;
+};
+
+
+/// Compute soil impedance as per Gao et al 2016, accounting for weight of overburden soil
+///
+/// http://dx.doi.org/10.1016/j.still.2015.08.004
+class RootImpedanceGao : public DerivativeBase {
+public:
+	RootImpedanceGao(SimulaDynamic* const pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t, double &imped);
+	SimulaBase *pSoilWaterContent, *pSoilHydraulicHead;
+	static SimulaBase *pBulkDensity, *pResidualWaterContent, *pSaturatedWaterContent, *pVoidRatio;
+	static void precalculate_net_stress(std::map<double, double> &bulkd_cache, std::map<double, double> &stress_cache, const double bottom_depth, const double top_depth = 0.0);
+	static std::map<double, double> cumulativeStress, cachedBulkDensity;
+	double bulkDensity, cum_stressPower, wc_sat, wc_res, voidRatio, vg_alpha, vg_n, void_ratio;
+	static bool precalculationsDone;
+	bool inGrowthpoint;
+};
+
+/// Compute soil impedance as per Whalley et al 2007
+///
+/// doi:10.1016/j.geoderma.2006.08.029
+class RootImpedanceWhalley : public DerivativeBase {
+public:
+	RootImpedanceWhalley(SimulaDynamic* const pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t, double &imped);
+	static SimulaBase *pBulkDensity, *pResidualWaterContent, *pSaturatedWaterContent;
+	SimulaBase *pSoilWaterContent, *pSoilHydraulicHead;
+	double bulkDensityFactor, wc_sat, wc_res;
+	bool inGrowthpoint;
+};
+
+class RootGrowthImpedanceRateMultiplier:public DerivativeBase{
+public:
+	RootGrowthImpedanceRateMultiplier(SimulaDynamic* pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t,double &var);
+	SimulaBase *fastImpedanceCalculator;
+	static SimulaBase *impedanceCalculator;
+	SimulaBase *halfGrowthImpedance;
+	friend class RootGrowthDirectionImpedance;
+	SimulaBase *bioPore;
+};
+
+class RootDiameterImpedance:public DerivativeBase{
+public:
+	RootDiameterImpedance(SimulaDynamic* pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t, double &var);
+	SimulaBase *diameterScalingExponent, *lengthImpedance;
+};
+
+class RootGrowthDirectionImpedance:public DerivativeBase{
+public:
+	RootGrowthDirectionImpedance(SimulaDynamic* pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t,Coordinate &vec);
+	double ImpedanceFactor(const Time &t, const double &imp);
+	SimulaPoint *growthPoint;
+	Coordinate position;
+	SimulaBase *fastImpedanceCalculator;
+	static SimulaBase *impedanceCalculator;
+	double minBulkDensity, maxBulkDensity;
+	SimulaBase *bioPore;
+};
+
+class BioporeController:public DerivativeBase{
+public:
+	BioporeController(SimulaDynamic* pSD);
+	std::string getName()const;
+protected:
+	void calculate(const Time &t, double &inPore);
+	void getDefaultValue(const Time &t, double &var);
+    double previousChecked, poreStart, currentPoreLength;
+    bool pore, poreSet;
+    SimulaBase *copyFrom, *poreProbability, *poreLengthMin, *poreLengthMax, *rootLength;
+};
+
+#endif /*GROWTHIMPEDANCE_HPP_*/

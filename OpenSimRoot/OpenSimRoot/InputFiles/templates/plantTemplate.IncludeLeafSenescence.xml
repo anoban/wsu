@@ -1,0 +1,17 @@
+<SimulationModelIncludeFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../scripts/XML/SimulaXMLSchema.xsd">
+	<SimulaDirective path="/shootTemplate">
+		<SimulaVariable 
+			name="senescedLeafArea" 
+			unit="cm2" 
+			function="leafSenescence" />
+			<!--maxTimeStep="0.1">
+			0. </SimulaVariable-->
+		<SimulaVariable 
+			name="senescedLeafDryWeight" 
+			unit="g" 
+			function="leafSenescence" />
+			<!--maxTimeStep="0.1">
+			0. </SimulaVariable-->
+	</SimulaDirective>
+</SimulationModelIncludeFile>
+			
