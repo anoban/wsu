@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--?xml-stylesheet type="text/xsl" href="tree-view2.xsl"? -->
+<!--
+Copyright © 2022, Ernst Schäfer, Ishan Ajmera
+All rights reserved.
+
+Copyright © 2016, The Pennsylvania State University
+All rights reserved.
+
+Copyright © 2016 Forschungszentrum Jülich GmbH
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted under the GNU General Public License v3 and provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+Disclaimer
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+You should have received the GNU GENERAL PUBLIC LICENSE v3 with this file in license.txt but can also be found at http://www.gnu.org/licenses/gpl-3.0.en.html
+
+ -->
+<SimulationModelIncludeFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../scripts/XML/SimulaXMLSchema.xsd">
+
+<!--ShootTemplate-->
+	<SimulaDirective path="/shootTemplate">
+		<SimulaVariable name="photosynthesisLintul" function="photosynthesisLintulV2" unit="g" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="lightInterception" function="farquharLightInterception" unit="W/m2" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitLightInterception" function="sunlitLightInterception" unit="W/m2"/>
+		<SimulaDerivative name="shadedLightInterception" function="shadedLightInterception" unit="W/m2"/>
+		<SimulaVariable name="photosynthesis" function="sumOfSunlitAndShaded" unit="g" replacesPreviousDeclaration="true"/>
+		<SimulaVariable name="sunlitPhotosynthesis" function="integratePhotosynthesisRate" unit="g"/>
+		<SimulaVariable name="shadedPhotosynthesis" function="integratePhotosynthesisRate" unit="g"/>
+		<SimulaDerivative name="photosynthesisRate" function="weighedAverageOfSunlitAndShaded" unit="umol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitPhotosynthesisRate" function="photosynthesisRateFarquhar" unit="umol/m2/s"/>
+		<SimulaDerivative name="shadedPhotosynthesisRate" function="photosynthesisRateFarquhar" unit="umol/m2/s"/>
+		<SimulaDerivative name="carbonLimitedPhotosynthesisRate" function="weighedAverageOfSunlitAndShaded" unit="umol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitCarbonLimitedPhotosynthesisRate" function="carbonLimitedPhotosynthesisRate" unit="umol/m2/s"/>
+		<SimulaDerivative name="shadedCarbonLimitedPhotosynthesisRate" function="carbonLimitedPhotosynthesisRate" unit="umol/m2/s"/>
+		<SimulaDerivative name="lightLimitedPhotosynthesisRate" function="weighedAverageOfSunlitAndShaded" unit="umol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitLightLimitedPhotosynthesisRate" function="lightLimitedPhotosynthesisRate" unit="umol/m2/s"/>
+		<SimulaDerivative name="shadedLightLimitedPhotosynthesisRate" function="lightLimitedPhotosynthesisRate" unit="umol/m2/s"/>
+		<SimulaDerivative name="mesophyllCO2Concentration" function="weighedAverageOfSunlitAndShaded" unit="umol/mol" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitMesophyllCO2Concentration" function="mesophyllCO2Concentration" unit="umol/mol"/>
+		<SimulaDerivative name="shadedMesophyllCO2Concentration" function="mesophyllCO2Concentration" unit="umol/mol"/>
+		<SimulaDerivative name="PEPCarboxylationRate" function="weighedAverageOfSunlitAndShaded" unit="umol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitPEPCarboxylationRate" function="PEPCarboxylationRate" unit="umol/m2/s"/>
+		<SimulaDerivative name="shadedPEPCarboxylationRate" function="PEPCarboxylationRate" unit="umol/m2/s"/>
+		<SimulaDerivative name="bundleSheathCO2Concentration" function="weighedAverageOfSunlitAndShaded" unit="umol/mol" replacesPreviousDeclaration="true"/><!-- Only for C4 -->
+		<SimulaDerivative name="sunlitBundleSheathCO2Concentration" function="bundleSheathCO2Concentration" unit="umol/mol"/><!-- Only for C4 -->
+		<SimulaDerivative name="shadedBundleSheathCO2Concentration" function="bundleSheathCO2Concentration" unit="umol/mol"/><!-- Only for C4 -->
+		<SimulaDerivative name="CO2Leakage" function="weighedAverageOfSunlitAndShaded" unit="umol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitCO2Leakage" function="CO2Leakage" unit="umol/m2/s"/>
+		<SimulaDerivative name="shadedCO2Leakage" function="CO2Leakage" unit="umol/m2/s"/>
+		<SimulaDerivative name="mesophyllO2Concentration" function="weighedAverageOfSunlitAndShaded" unit="mmol/mol" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitMesophyllO2Concentration" function="mesophyllO2Concentration" unit="mmol/mol"/>
+		<SimulaDerivative name="shadedMesophyllO2Concentration" function="mesophyllO2Concentration" unit="mmol/mol"/>
+		<SimulaDerivative name="bundleSheathO2Concentration" function="weighedAverageOfSunlitAndShaded" unit="mmol/mol" replacesPreviousDeclaration="true"/><!-- Only for C4 -->
+		<SimulaDerivative name="sunlitBundleSheathO2Concentration" function="bundleSheathO2Concentration" unit="mmol/mol"/><!-- Only for C4 -->
+		<SimulaDerivative name="shadedBundleSheathO2Concentration" function="bundleSheathO2Concentration" unit="mmol/mol"/><!-- Only for C4 -->
+		<SimulaDerivative name="O2Leakage" function="weighedAverageOfSunlitAndShaded" unit="mmol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitO2Leakage" function="O2Leakage" unit="mmol/m2/s"/>
+		<SimulaDerivative name="shadedO2Leakage" function="O2Leakage" unit="mmol/m2/s"/>
+		<SimulaDerivative name="stomatalConductance" function="weighedAverageOfSunlitAndShaded" unit="mol/m2/s" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitStomatalConductance" function="stomatalConductance" unit="mol/m2/s"/>
+		<SimulaDerivative name="shadedStomatalConductance" function="stomatalConductance" unit="mol/m2/s"/>
+		<SimulaDerivative name="leafTemperature" function="weighedAverageOfSunlitAndShaded" unit="degreesC" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitLeafTemperature" function="leafTemperature" unit="degreesC"/>
+		<SimulaDerivative name="shadedLeafTemperature" function="leafTemperature" unit="degreesC"/>
+		<SimulaVariable name="cropHeight" function="cropHeight" unit="cm"/>
+		<SimulaVariable name="potentialCropHeight" function="cropHeight" unit="cm"/>
+		<SimulaVariable name="sunlitLeafArea" unit="cm2" function="sunlitLeafArea"/>
+		<SimulaVariable name="shadedLeafArea" unit="cm2" function="sunlitLeafArea"/>
+		<SimulaVariable name="sunlitLeafAreaIndex" unit="cm2" function="sunlitLeafAreaIndex"/>
+		<SimulaVariable name="shadedLeafAreaIndex" unit="cm2" function="shadedLeafAreaIndex"/>
+		<SimulaVariable name="leafRespiration" unit="g" function="useDerivative" replacesPreviousDeclaration="true"/>
+		<SimulaVariable name="shadedLeafRespiration" unit="g" function="useDerivative"/>
+		<SimulaVariable name="sunlitLeafRespiration" unit="g" function="useDerivative"/>
+		<SimulaDerivative name="leafRespirationRate" unit="g/day" function="weighedAverageOfSunlitAndShaded" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitLeafRespirationRate" unit="g/day" function="leafRespirationRateFarquhar"/>
+		<SimulaDerivative name="shadedLeafRespirationRate" unit="g/day" function="leafRespirationRateFarquhar"/>
+		<SimulaVariable name="potentialTranspiration" unit="cm3" function="useDerivative"/>
+		<SimulaVariable name="shadedPotentialTranspiration" unit="cm3" function="useDerivative"/>
+		<SimulaVariable name="sunlitPotentialTranspiration" unit="cm3" function="useDerivative"/>
+		<SimulaDerivative name="potentialTranspirationRate" unit="cm3/day" function="sumOfSunlitAndShaded"/>
+		<SimulaDerivative name="sunlitPotentialTranspirationRate" unit="cm3/day" function="simplePotentialTranspirationRate"/>
+		<SimulaDerivative name="shadedPotentialTranspirationRate" unit="cm3/day" function="simplePotentialTranspirationRate"/>
+	</SimulaDirective>
+
+	<SimulaDirective path="plants">
+		<SimulaDerivative name="sunlitMeanLeafAreaIndex" function="meanLeafAreaIndex" unit="cm2/cm2"/>
+		<SimulaDerivative name="shadedMeanLeafAreaIndex" function="meanLeafAreaIndex" unit="cm2/cm2"/>
+		<SimulaDerivative name="sunlitLeafArea" function="sumOverAllPlantShoots" unit="cm2"/>
+		<SimulaDerivative name="shadedLeafArea" function="sumOverAllPlantShoots" unit="cm2"/>
+		<SimulaDerivative name="stomatalResistance" function="weighedAverageOfSunlitAndShaded" unit="s/m" replacesPreviousDeclaration="true"/>
+		<SimulaDerivative name="sunlitStomatalResistance" function="stomatalResistance" unit="s/m"/>
+		<SimulaDerivative name="shadedStomatalResistance" function="stomatalResistance" unit="s/m"/>
+		<SimulaDerivative name="meanStomatalConductance" function="weighedAverageOfSunlitAndShaded" unit="mol/m2/s"/>
+		<SimulaDerivative name="meanSunlitStomatalConductance" function="meanStomatalConductance" unit="mol/m2/s"/>
+		<SimulaDerivative name="meanShadedStomatalConductance" function="meanStomatalConductance" unit="mol/m2/s"/>
+		<SimulaDerivative name="canopyHeight" function="maximumCanopyHeight" unit="cm"/>
+	</SimulaDirective>
+</SimulationModelIncludeFile>

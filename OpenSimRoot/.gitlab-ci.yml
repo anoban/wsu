@@ -1,0 +1,72 @@
+image: "ubuntu:latest"
+
+before_script:
+  - apt-get update -qq 
+
+stages:
+  - build
+  - test
+  - deploy
+
+build_linux:
+  stage: build
+  needs: []
+  script:
+    - apt-get install -y -qq gcc g++ make python3.12-dev
+    - ./build.sh
+  artifacts:
+    paths:
+    - release_build/OpenSimRoot
+    expire_in: 1 year
+
+build_windows:
+  stage: build
+  needs: []
+  script:
+    - apt-get install -y -qq gcc make mingw-w64 #python3-dev
+    - ./build_win64.sh
+  artifacts:
+    paths:
+    - windows_build/OpenSimRoot.exe
+    expire_in: 1 year
+
+testEngine:
+  stage: test
+  needs: ["build_linux"]
+  script:
+    - apt install -y -qq  libpython3.12-dev
+    - ./runTestsEngine.sh
+
+testModules:
+  stage: test
+  needs: ["build_linux"]
+  variables:
+    DEBIAN_FRONTEND: "noninteractive"
+  script:
+    - mkdir -p /root/.aws/
+    - echo region = us-west-2 >> /root/.aws/credentials
+    - apt install -y -qq  bc r-cran-xml libpython3.12-dev
+    - ./runTestsModules.sh
+
+pages:
+  stage: deploy
+  needs: ["build_linux", "build_windows"]
+  environment:
+    name: pages
+    url: https://not.used.de
+  script:
+    - apt install -y -qq zip
+    - cp OpenSimRoot/scripts/XML/SimulaXMLSchema.xsd public/
+    - cp OpenSimRoot/scripts/XML/*.css public/
+    - cp OpenSimRoot/scripts/XML/*.xsl public/
+    - cp release_build/OpenSimRoot public/executables/OpenSimRoot_Linux_x64
+    - cp windows_build/OpenSimRoot.exe public/executables/OpenSimRoot_Win_x64.exe
+    - zip -r inputfiles_osr.zip OpenSimRoot/tests OpenSimRoot/InputFiles
+    - mv inputfiles_osr.zip public/inputfiles/
+  artifacts:
+    paths:
+    - public
+    expire_in: 3 years
+  only:
+  - master
+

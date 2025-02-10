@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--?xml-stylesheet type="text/xsl" href="tree-view2.xsl"? -->
+<!--
+Copyright © 2016, The Pennsylvania State University
+All rights reserved.
+
+Copyright © 2016 Forschungszentrum Jülich GmbH
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted under the GNU General Public License v3 and provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+Disclaimer
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+You should have received the GNU GENERAL PUBLIC LICENSE v3 with this file in license.txt but can also be found at http://www.gnu.org/licenses/gpl-3.0.en.html
+
+ -->
+
+<SimulationModelIncludeFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../scripts/XML/SimulaXMLSchema.xsd">
+	<SimulaDirective path="shoot">
+		<SimulaConstant name="C4Photosynthesis" type="bool">1</SimulaConstant>
+		<!-- Find literature references to properly parametrise this and the stress effects on leaf elongation rate and stomatal conductance. See: https://doi.org/10.1007/BF02370385 https://doi.org/10.1093/jxb/25.6.1085 https://doi.org/10.1093/jxb/25.6.1085-->
+		<SimulaTable name_column1="collarPotential" unit_column1="hPa" name_column2="waterStressResponseCurve" unit_column2="noUnit" garbageCollectionOff="true">10000 1 -3000 1 -8000 0.4 -12000 0 -999999999999 0</SimulaTable>
+		<SimulaConstant name="residualConductance" prettyName="residual Conductance" type="double" unit="mol/m2/s">0.017</SimulaConstant><!-- https://mountainscholar.org/bitstream/handle/10217/176672/Miner_colostate_0053A_13706.pdf?sequence=1 https://sci-hub.do/10.1078/0176-1617-00177-->
+		<SimulaConstant name="BBSlope" prettyName="Ball Berry Slope" type="double" unit="#">4.53</SimulaConstant>	<!-- https://mountainscholar.org/bitstream/handle/10217/176672/Miner_colostate_0053A_13706.pdf?sequence=1 https://sci-hub.do/10.1078/0176-1617-00177-->
+		<!-- https://naldc.nal.usda.gov/download/37614/PDF-->
+		<SimulaConstant name="RubiscoCO2MichaelisConstantAt25C" unit="umol/mol">485</SimulaConstant><!-- https://onlinelibrary.wiley.com/doi/epdf/10.1111/j.1365-3040.2009.02095.x-->
+		<SimulaConstant name="RubiscoCO2MichaelisActivationEnergy" unit="J/mol">35600</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="RubiscoO2MichaelisConstantAt25C" unit="mmol/mol">146</SimulaConstant><!-- https://onlinelibrary.wiley.com/doi/epdf/10.1111/j.1365-3040.2009.02095.x-->
+		<SimulaConstant name="RubiscoO2MichaelisActivationEnergy" unit="J/mol">15100</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="MichaelisPEPAt25C" unit="umol/mol">40</SimulaConstant><!-- book --- https://onlinelibrary.wiley.com/doi/epdf/10.1111/j.1365-3040.2011.02414.x--><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="MichaelisPEPActivationEnergy" unit="J/mol">68100</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="dayRespirationAt25C" unit="umol/m2/s">1.95</SimulaConstant>
+		<!--- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3130174/?tool=pmcentrez&renderty=    https://lib.dr.iastate.edu/cgi/viewcontent.cgi?article=3680&context=etd   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/-->
+		<!-- https://www.publish.csiro.au/fp/PP01091 --- Rd, Rdr and Rn --- mitochondrial respiration emitted (Rd) and refixed (Rdr) in the light and emitted in the dark (Rn) -->
+		<SimulaConstant name="dayRespirationActivationEnergy" unit="J/mol">41850</SimulaConstant><!--- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/-->
+		<!-- The values of Vcmax, Vpmax and Jmax at 25 °C to which the curves are normalized are 32, 125 and 191 mmol m-2 s-1 respectively., https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1365-3040.2007.01691.x -->
+		<SimulaConstant name="maxCarboxylationEfficiencyAt25C" unit="umol/m2/s">49</SimulaConstant><!-- https://onlinelibrary.wiley.com/doi/full/10.1111/pce.13511 , https://mountainscholar.org/bitstream/handle/10217/176672/Miner_colostate_0053A_13706.pdf?sequence=1 -->
+		<SimulaConstant name="carboxylationActivationEnergy" unit="J/mol">67294</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="carboxylationDeactivationEnergy" unit="J/mol">144568</SimulaConstant>
+		<SimulaConstant name="carboxylationEntropyTerm" unit="J/K/mol">472</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="maximumElectronTransportRateAt25C" unit="umol/m2/s">299</SimulaConstant><!-- https://onlinelibrary.wiley.com/doi/full/10.1111/pce.13511 , https://mountainscholar.org/bitstream/handle/10217/176672/Miner_colostate_0053A_13706.pdf?sequence=1 -->
+		<SimulaConstant name="maximumElectronTransportRateActivationEnergy" unit="J/mol">77900</SimulaConstant>
+		<SimulaConstant name="maximumElectronTransportRateDeactivationEnergy" unit="J/mol">191929</SimulaConstant>
+		<SimulaConstant name="maximumElectronTransportRateEntropyTerm" unit="J/K/mol">627</SimulaConstant>
+		<SimulaConstant name="maxPEPCarboxylationAt25C" unit="umol/m2/s">125</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ --><!-- https://onlinelibrary.wiley.com/doi/full/10.1111/pce.13511 http://www.plantphysiol.org/content/plantphysiol/suppl/2017/07/27/pp.17.00666.DC1/PP2017-RA-00666DR1_Supplemental_Material_File_1final.pdf -->
+		<SimulaConstant name="PEPCarboxylationActivationEnergy" unit="J/mol">70372</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="PEPCarboxylationDeactivationEnergy" unit="J/mol">117910</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="PEPCarboxylationEntropyTerm" unit="J/K/mol">376</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaConstant name="PEPRegeneration" unit="umol/m2/s">80</SimulaConstant><!--- book--->
+		<SimulaConstant name="bundleSheathConductanceAt25C" unit="mol/m2/s">0.00287</SimulaConstant><!--- average over 3 stages - https://onlinelibrary.wiley.com/doi/epdf/10.1111/j.1365-3040.2011.02414.x --- http://www.plantphysiol.org/content/plantphysiol/suppl/2017/07/27/pp.17.00666.DC1/PP2017-RA-00666DR1_Supplemental_Material_File_1final.pdf https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/-->
+		<SimulaConstant name="bundleSheathConductanceActivationEnergy" unit="J/mol">116700</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ --><!--https://pdfs.semanticscholar.org/fa87/6b2bbd7db8b0ca7682396c37c2a1881f48c0.pdf,%20-->
+		<SimulaConstant name="bundleSheathConductanceDeactivationEnergy" unit="J/mol">264600</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ --><!--https://pdfs.semanticscholar.org/fa87/6b2bbd7db8b0ca7682396c37c2a1881f48c0.pdf,%20-->
+		<SimulaConstant name="bundleSheathConductanceEntropyTerm" unit="J/K/mol">860</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ --><!--https://pdfs.semanticscholar.org/fa87/6b2bbd7db8b0ca7682396c37c2a1881f48c0.pdf,%20-->
+		<SimulaConstant name="CO2CompensationPointWithoutDayRespirationAt25C" unit="umol/mol">38.6</SimulaConstant><!-- for C4 plants (Woodward and Smith, 1994), the CPoint∗ is CPoint∗C4= 0.1CPoint∗C3, Cpotint c3 is 40.15 so for c4, itb 4.015 , file:///C:/Users/iba5104/Downloads/Yu2003_Article_ACoupledModelOfPhotosynthesis-.pdf -->
+		<SimulaConstant name="CO2CompensationPointActivationEnergy" unit="J/mol">23400</SimulaConstant>
+		<SimulaConstant name="leafAbsorptance">0.85</SimulaConstant>
+		<SimulaConstant name="leafInfraredAbsorptance">0.96</SimulaConstant>
+		<SimulaConstant name="spectralQuality">0.15</SimulaConstant>
+		<SimulaConstant name="irradianceCurvatureFactor">0.7</SimulaConstant>
+		<SimulaConstant name="electronTransportPartitioningFactor">0.4</SimulaConstant><!---- x --- JATP partitioning factor between C4 activity (V P) and C3 activity V C+ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4085954/#CIT0005 --->
+		<!--- https://reader.elsevier.com/reader/sd/pii/S1573521409000025?token=3C3F23284D4553635D664EA2AB3A9288A8CECC383AB2400F45DA6BB814EFB8C75CB1A2C138694DF865006548F9A755E5 https://onlinelibrary.wiley.com/doi/full/10.1111/pce.12834 -->
+		<SimulaConstant name="fractionOfPSIIActivityInBundleSheath">0.1</SimulaConstant><!-- alpha--- book maize and sorghum alha= 0-->
+		<SimulaConstant name="dayRespirationMesophyllFraction">0.5</SimulaConstant><!-- https://onlinelibrary.wiley.com/doi/epdf/10.1111/j.1365-3040.2011.02414.x-->
+		<SimulaConstant name="rubiscoSpecificityAt25C">2862</SimulaConstant><!-- book https://onlinelibrary.wiley.com/doi/epdf/10.1111/j.1365-3040.2011.02414.x-->
+		<SimulaConstant name="rubiscoSpecificityActivationEnergy" unit="J/mol">27400</SimulaConstant><!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861018/ -->
+		<SimulaTable name_column1="time since creation" unit_column1="day" name_column2="potentialCropHeightGrowthSpeed" unit_column2="cm/day" garbageCollectionOff="true">0 0 3 0 5 2 10 2 12 4 600 4</SimulaTable>
+		<SimulaConstant name="leafWidth" unit="m">0.09</SimulaConstant>
+		<SimulaConstant name="extinctionCoefficient" unit="noUnit">0.45</SimulaConstant><!-- 0.45 APSIM and https://acsess.onlinelibrary.wiley.com/doi/abs/10.2134/agronj1996.00021962008800020011x -->
+		<SimulaConstant	name="lightUseEfficiency" unit="g/J">1.74E-6</SimulaConstant>
+	</SimulaDirective>
+</SimulationModelIncludeFile>

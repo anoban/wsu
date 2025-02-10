@@ -1,0 +1,16 @@
+/.project
+release_build
+debug_build
+windows_build
+OpenSimRoot/StaticBuild/OpenSimRoot
+OpenSimRoot/tests/modules/testResults/
+OpenSimRoot/tests/modules/gravitropismTest/
+OpenSimRoot/tests/engine/testResults/
+*.o
+*.d
+*.aux
+*.log
+*.out
+*.gz
+*.toc
+Guides/SimRoot\ Guide.pdf
