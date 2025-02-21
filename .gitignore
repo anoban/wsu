@@ -202,3 +202,5 @@ dkms.conf
 
 # NuGet packages
 *packages/
+
+GRooTFullVersion.csv
