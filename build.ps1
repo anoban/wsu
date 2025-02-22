@@ -18,7 +18,7 @@ if ($unrecognized.Count -ne 0) {
 }
 
 $cflags = @(
-    "/arch:AVX512",
+    # "/arch:AVX512",
     "/debug:none"
     "/diagnostics:caret",
     "/DNDEBUG",
@@ -41,7 +41,7 @@ $cflags = @(
     "/O3",
     "/Oi",
     "/Ot",
-    "/QaxCORE-AVX512",
+    # "/QaxCORE-AVX512",
     "/Qbranches-within-32B-boundaries",
     "/Qftz",
     "/Qgather-",
@@ -67,7 +67,7 @@ $cflags = @(
     "/Qopt-prefetch-distance:10000",
 	"/Qpc80",
     "/Qscatter-",
-    "/Qstd:c++17",
+    "/Qstd:c++23",
     "/Qvec",
     "/Qvec-peel-loops",
     "/Qvec-threshold:0",
