@@ -1,10 +1,10 @@
 # Makefile for phylocom
 
-CC = gcc -Wall -g -O1 -fcommon
+CC = gcc -Wall -g -O3 -fcommon -std=c17 -march=native -static
 HDRS	= phylocom.h nrutil.h ecovolve.h stats.h
 OBJS	= main.o io.o new2fy.o aot.o traits.o comstruct.o nrutil.o fy2new.o bladj.o comnode.o combase.o prune.o comtrait.o stats.o
 OBJSP	= phylomatic.o io.o new2fy.o nrutil.o fy2new.o prune.o combase.o
-OBJSE	= ecomain.o prune.o nrutil.o fy2new.o combase.o new2fy.o io.o 
+OBJSE	= ecomain.o prune.o nrutil.o fy2new.o combase.o new2fy.o io.o
 LIBS	= -lm
 
 all: phylocom ecovolve phylomatic
@@ -50,7 +50,7 @@ phylomatic: $(OBJSP)
 
 phylomatic.o: phylomatic.c $(HDRS)
 
-clean: 	
+clean:
 	rm *.o
 
 
@@ -64,7 +64,7 @@ clean:
 w32:
 	mkdir w32
 	cp *.[hc] Makefile w32
-	# Fix lack of random and srandom in W32 
+	# Fix lack of random and srandom in W32
 	sed -i -e 's/random\ *(/rand(/g' w32/*.c
 	# Diffent compiler chain, replace with appropriate
 	sed -i -e 's/gcc/i486-mingw32-gcc/g' w32/Makefile
