@@ -1,6 +1,6 @@
 # Makefile for phylocom
 
-CC = gcc -Wall -g -O3 -fcommon -std=c17 -march=native -static
+CC = gcc -Wall -Wextra -g0 -DNDEBUG -D_NDEBUG -O3 -fcommon -std=c17 -march=native -static
 HDRS	= phylocom.h nrutil.h ecovolve.h stats.h
 OBJS	= main.o io.o new2fy.o aot.o traits.o comstruct.o nrutil.o fy2new.o bladj.o comnode.o combase.o prune.o comtrait.o stats.o
 OBJSP	= phylomatic.o io.o new2fy.o nrutil.o fy2new.o prune.o combase.o
@@ -52,14 +52,6 @@ phylomatic.o: phylomatic.c $(HDRS)
 
 clean:
 	rm *.o
-
-
-# Compiling for Windows:
-#   yum install mingw32-gcc
-#   make w32
-#   file phylocom.exe
-#   wineconsole --backend=user ~/.wine/drive_c/windows/system32/cmd.exe
-#   Z:\..\..> phylocom.exe
 
 w32:
 	mkdir w32
