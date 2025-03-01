@@ -1,6 +1,6 @@
 # Makefile for phylocom
 
-CC = gcc -Wall -Wextra -g0 -DNDEBUG -D_NDEBUG -O2 -fcommon -std=c17 -march=native -static
+CC = gcc -Wall -Wextra -g0 -DNDEBUG -D_NDEBUG -O0 -fcommon -std=c17 -march=native -static
 HDRS	= phylocom.h nrutil.h ecovolve.h stats.h
 OBJS	= main.o io.o new2fy.o aot.o traits.o comstruct.o nrutil.o fy2new.o bladj.o comnode.o combase.o prune.o comtrait.o stats.o
 OBJSP	= phylomatic.o io.o new2fy.o nrutil.o fy2new.o prune.o combase.o
@@ -51,6 +51,7 @@ phylomatic: $(OBJSP)
 phylomatic.o: phylomatic.c $(HDRS)
 
 clean:
+	mv *.exe ./../bin
 	rm *.o
 
 w32:
