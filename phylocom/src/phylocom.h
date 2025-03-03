@@ -307,11 +307,11 @@ typedef struct sample {           // really need to switch this into a S x T mat
         int**          id;        // taxon codes (as in taxa) id[sample][rec]
         int**          abund;     // species abundance  abund[sample][rec]
         float**        pabund;    // proportional species abundance[sample][rec]
-        unsigned long* sppabund;  //species total abundance[id]
-        float*         psppabund; //proportional species total abundance[id]
-        unsigned long* sppfreq;   //species occurrence frequency[id]
-        float*         psppfreq;  //proportional species occurrence frequency[id]
-        long           totabund;  //total abundance across all species
+        unsigned long* sppabund;  // species total abundance[id]
+        float*         psppabund; // proportional species total abundance[id]
+        unsigned long* sppfreq;   // species occurrence frequency[id]
+        float*         psppfreq;  // proportional species occurrence frequency[id]
+        long           totabund;  // total abundance across all species
         int            ntaxa;     // number of unique taxa
         char**         taxa;      // vactor of char strings for taxa names
 } sample;
