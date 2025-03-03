@@ -1,5 +1,7 @@
 // practicing agent based modelling https://caam37830.github.io/book/09_computing/agent_based_models.html
 
+#include <execution>
+#include <fstream>
 #include <iostream>
 #include <numeric>
 #include <random>
@@ -39,10 +41,10 @@ class person final {
         unsigned long long operator+(const person& _other) const noexcept { return _has_rumour + _other._has_rumour; }
 
         // person + value
-        unsigned long long operator+(const unsigned long long& _sum) const noexcept { return _has_rumour + _sum; }
+        template<typename _TyNumeric> constexpr long double operator+(const _TyNumeric& _sum) const noexcept { return _has_rumour + _sum; }
 
         // value + person
-        friend constexpr unsigned long long operator+(const unsigned long long _sum, const person& _other) noexcept {
+        template<typename _TyNumeric> friend constexpr long double operator+(const _TyNumeric& _sum, const person& _other) noexcept {
             return _sum + _other._has_rumour;
         }
 };
@@ -54,10 +56,10 @@ auto wmain() -> int {
     std::uniform_int_distribution<unsigned> randint { 0, population_size - 1 };
     const person                            dumbass { L"There are aliens in area 51, my brother's friend in CIA told me!!" };
 
-    std::vector<person>             population(population_size);
-    std::vector<unsigned long long> daily_records(max_days);
+    std::vector<person> population(population_size);
 
     population.at(0).converse(dumbass); // the first point of contact
+    std::ofstream logfile { LR"(./abmlog.dat)", std::ios::out | std::ios::binary };
 
     // simulate subsequent contacts
     unsigned random_selection {}, contacts {}; // NOLINT(readability-isolate-declaration)
@@ -71,10 +73,10 @@ auto wmain() -> int {
             }
         }
 
-        daily_records.at(d) = std::accumulate(population.cbegin(), population.cend(), 0LU);
-
-        std::wcout << daily_records.at(d) / static_cast<double>(population_size) << L',';
+        logfile << (std::reduce(std::execution::par_unseq, population.cbegin(), population.cend(), 0.00L) / population_size);
     }
+
+    logfile.close();
 
     return EXIT_SUCCESS;
 }
