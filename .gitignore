@@ -206,3 +206,4 @@ dkms.conf
 GRooTFullVersion.csv
 wfo_taxonomy_clean.csv
 .ipynb_checkpoints
+.Rproj.user
