@@ -206,4 +206,6 @@ dkms.conf
 GRooTFullVersion.csv
 wfo_taxonomy_clean.csv
 .ipynb_checkpoints
+
+# RStudio crap
 .Rproj.user
