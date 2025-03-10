@@ -12,6 +12,16 @@ template<typename _TyFirst, typename... _TyRest> static consteval long double su
     return (arg + ... + rest);
 }
 
+template<class _Ty> static consteval long double prod(const _Ty& _input) noexcept { return _input; }
+
+template<class _TyFirst, class... _TyRest> static consteval long double prod(const _TyFirst& _argf, const _TyRest&... _argr) noexcept {
+    return _argf * ::prod(_argr...);
+}
+
+static_assert(::prod(1, 2, 3, 4, 5, 6, 7, 8, 9) == 362880);
+static_assert(::prod(11, 12, 13, 14, 15, 16, 17, 18, 19) == 33522128640);
+static_assert(::prod(0, 12, 13, 14, 15, 16, 17, 18, 19) == 0);
+
 auto wmain() -> int {
     ::srand(std::chrono::steady_clock::now().time_since_epoch().count()); // ::time(nullptr), fucking C++ idioms
     std::vector<float> randoms(100'000'000);
