@@ -1,10 +1,8 @@
-# a simple build script using Intel oneAPI C/C++ compiler
-
 $cfiles = [System.Collections.ArrayList]::new()
 $unrecognized = [System.Collections.ArrayList]::new()
 
 foreach ($arg in $args) {
-    if ($arg -clike "*.cpp" -or $arg -clike "*.cc") {
+    if ($arg -clike "*.cpp" -or $arg -clike "*.cc") { # .cc is here only for gtest sources :(
         [void]$cfiles.Add($arg.ToString().Replace(".\", ""))
     }
     else {
@@ -18,7 +16,7 @@ if ($unrecognized.Count -ne 0) {
 }
 
 $cflags = @(
-    # "/arch:AVX512",
+    # "/arch:AVX512", # university laptop with Core ULTRA 5 doesn't have zmm lanes
     "/debug:none"
     "/diagnostics:caret",
     "/DNDEBUG",
@@ -41,7 +39,7 @@ $cflags = @(
     "/O3",
     "/Oi",
     "/Ot",
-    # "/QaxCORE-AVX512",
+    # "/QaxCORE-AVX512", # university laptop :(
     "/Qbranches-within-32B-boundaries",
     "/Qftz",
     "/Qgather-",
@@ -58,7 +56,7 @@ $cflags = @(
 	"/Qfp-speculation:safe",
     "/Qipo",
 	"/Qkeep-static-consts-",
-	# "/Qlong-double", causes compiler errors with c++20 and above
+	# "/Qlong-double", causes compiler errors with c++20 and above (80 bits wide doubles lack formatting support in UCRT I guess!!)
     "/Qm64",
     "/Qopt-assume-no-loop-carried-dep=2",
     "/Qopt-dynamic-align",
