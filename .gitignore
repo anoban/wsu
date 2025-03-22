@@ -209,3 +209,6 @@ wfo_taxonomy_clean.csv
 
 # RStudio crap
 .Rproj.user
+
+# FRED
+FRED/
