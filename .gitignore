@@ -203,12 +203,11 @@ dkms.conf
 # NuGet packages
 *packages/
 
+# large .csv files
 GRooTFullVersion.csv
 wfo_taxonomy_clean.csv
-.ipynb_checkpoints
-
-# RStudio crap
-.Rproj.user
-
-# FRED
 FRED/
+austraits-3.0.2/
+
+.ipynb_checkpoints
+.Rproj.user
