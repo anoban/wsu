@@ -1,5 +1,6 @@
 // practicing agent based modelling https://caam37830.github.io/book/09_computing/agent_based_models.html
 
+// clang-format off
 #include <execution>
 #include <fstream>
 #include <iostream>
@@ -7,6 +8,7 @@
 #include <random>
 #include <ranges>
 #include <vector>
+// clang-format on
 
 // let's model how a rumour/gossip might spread in a population
 
@@ -45,6 +47,11 @@ class person final {
 
         // value + person
         template<typename _TyNumeric> friend constexpr long double operator+(const _TyNumeric& _sum, const person& _other) noexcept {
+            return _sum + _other._has_rumour;
+        }
+
+        // value += person
+        template<typename _TyNumeric> friend constexpr void operator+=(const _TyNumeric& _sum, person& _other) noexcept {
             return _sum + _other._has_rumour;
         }
 };
