@@ -211,3 +211,4 @@ austraits-3.0.2/
 
 .ipynb_checkpoints
 .Rproj.user
+*.dat
