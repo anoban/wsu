@@ -3,14 +3,40 @@
 
 # import re
 # from bs4 import BeautifulSoup
-# from urllib.request import (urlopen, Request)
 # from numba import jit
+from typing import MutableMapping, Union
+from urllib.request import Request
 
-BASE_URL_WALLPAPERSWIDE: str = r"https://wallpaperswide.com/"
+WALLPAPERSWIDE_BASE_URL: str = "https://wallpaperswide.com/"
+WALLPAPERSWIDE_WALLPAPER_CATEGORY_URL_TEMPLATE: str = "https://wallpaperswide.com/{}-desktop-wallpapers.html"
 
 
-def extract_best_resolution(html_chunk: str) -> tuple[int, int]:
-    """ """
+class FirefoxImpersonator(Request):
+    pass
+
+    def __init__(
+        self,
+        url: str,
+        data: Buffer | SupportsRead[bytes] | Iterable[bytes] | None = None,
+        headers: MutableMapping[str, str] = ...,
+        origin_req_host: str | None = None,
+        unverifiable: bool = False,
+        method: str | None = None,
+    ) -> None:
+        super().__init__(url, data, headers, origin_req_host, unverifiable, method)
+
+
+def extract_best_169_resolution_link(wallpaper_resolutions_html_div: str) -> Union[str, None]:
+    """
+    16:9
+    """
+    pass
+
+
+def extract_best_1610_resolution_link(wallpaper_resolutions_html_div: str) -> Union[str, None]:
+    """
+    16:10
+    """
     pass
 
 
