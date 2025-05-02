@@ -203,11 +203,8 @@ dkms.conf
 # NuGet packages
 *packages/
 
-# large .csv files
-GRooTFullVersion.csv
-wfo_taxonomy_clean.csv
-FRED/
-austraits-3.0.2/
+# .csv files
+data/
 
 .ipynb_checkpoints
 .Rproj.user
