@@ -4,7 +4,7 @@
 # import re
 # from bs4 import BeautifulSoup
 # from numba import jit
-from typing import MutableMapping, Union
+from typing import Iterable, MutableMapping, Union
 from urllib.request import Request
 
 WALLPAPERSWIDE_BASE_URL: str = "https://wallpaperswide.com/"
