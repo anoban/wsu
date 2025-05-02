@@ -74,6 +74,12 @@ class FirefoxImpersonator(Request):
     ) -> None:
         super().__init__(url, data, headers, origin_req_host, unverifiable, method)
 
+def download_category_firstpage_html()->str:
+    pass
+
+def harvest_wallpaper_webpage_html(_wallpaper_url:str)->str:
+
+
 
 def extract_best_169_resolution_link(wallpaper_resolutions_html_div: str) -> Union[str, None]:
     """
