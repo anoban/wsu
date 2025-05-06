@@ -5,7 +5,7 @@
 # from bs4 import BeautifulSoup
 # from numba import jit
 from typing import Iterable, MutableMapping, Union, override
-from urllib.request import Request
+from urllib.request import (Request, urlopen)
 
 WALLPAPERSWIDE_BASE_URL: str = "https://wallpaperswide.com"
 WALLPAPERSWIDE_WALLPAPER_DOWNLOAD_TEMPLATE_URL: str = "https://wallpaperswide.com/download/{}"
@@ -74,8 +74,14 @@ class FirefoxImpersonator(Request):
     ) -> None:
         super().__init__(url, data, headers, origin_req_host, unverifiable, method)
 
-def download_category_firstpage_html()->str:
-    pass
+def download_category_firstpage_html(category: WallpaperCategory)->str:
+    try:
+        with urlopen(FirefoxImpersonator(category.url())) as connection:
+            page = connection.read()
+    except ConnectionError as cnctn_err:
+        raise RuntimeError("") from cnctn_err
+
+
 
 def harvest_wallpaper_webpage_html(_wallpaper_url:str)->str:
 
