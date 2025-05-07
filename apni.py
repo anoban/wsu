@@ -22,16 +22,18 @@ def parse_apni_name_list(path_to_html: str | None = None) -> "NDArray[str]":
         import numpy as np
         from bs4 import BeautifulSoup
 
-        if path_to_html:  # if the parameter is None
-            with open(file=path_to_html, mode="r") as fp:
-                soup = BeautifulSoup(markup=fp.read(), features=r"html.parser")
+        if path_to_html:  # if the parameter is not None
+            try:
+                # working with a local file seems terribly slow comapred to a file downloaded on the fly from internet????
+                with open(file=path_to_html, mode="r") as fp:
+                    soup = BeautifulSoup(markup=fp.read(), features=r"html.parser")
+            except FileNotFoundError as fnf_err:
+                raise RuntimeError(f"Invalid path! {path_to_html}") from fnf_err
         else:
             with urlopen(url=APNI_TOTAL_PLANT_NAME_LIST_URI) as connexion:
                 soup = BeautifulSoup(markup=connexion.read(), features=r"html.parser")
 
     except ModuleNotFoundError as mnf_err:
         raise RuntimeError("This function requires modules numpy and bs4 to be installed on the machine!") from mnf_err
-    except FileNotFoundError as fnf_err:
-        raise RuntimeError(f"Invalid path! {path_to_html}") from fnf_err
 
-    return np.array([_.text for _ in soup.find_all("a", attrs={"href": PATTERN})])
+    return np.array([_.text for _ in soup.find_all("a", attrs={"href": PATTERN})], dtype=str)
