@@ -4,44 +4,44 @@
 # import re
 # from bs4 import BeautifulSoup
 # from numba import jit
-from typing import Iterable, MutableMapping, Union, override
-from urllib.request import (Request, urlopen)
+from typing import Union, override
+from urllib.request import Request, urlopen
 
-WALLPAPERSWIDE_BASE_URL: str = "https://wallpaperswide.com"
-WALLPAPERSWIDE_WALLPAPER_DOWNLOAD_TEMPLATE_URL: str = "https://wallpaperswide.com/download/{}"
+WALLPAPERSWIDE_BASE_URL: str = r"https://wallpaperswide.com"
+WALLPAPERSWIDE_WALLPAPER_DOWNLOAD_TEMPLATE_URL: str = r"https://wallpaperswide.com/download/{}"
 
 
 class WallpaperCategory(object):
-    WALLPAPERSWIDE_WALLPAPER_CATEGORY_TEMPLATE_URL: str = "https://wallpaperswide.com/{}-desktop-wallpapers.html"
+    WALLPAPERSWIDE_WALLPAPER_CATEGORY_TEMPLATE_URL: str = r"https://wallpaperswide.com/{}-desktop-wallpapers.html"
     WALLPAPERSWIDE_VALID_WALLPAPER_CATEGORIES: list[str] = [
-        "aero",
-        "animals",
-        "architecture",
-        "army",
-        "artistic",
-        "awareness",
-        "black_and_white",
-        "cartoons",
-        "celebrities",
-        "city",
-        "computers",
-        "cute",
-        "elements",
-        "food_and_drink",
-        "funny",
-        "games",
-        "girls",
-        "holidays",
-        "love",
-        "motors",
-        "movies",
-        "music",
-        "nature",
-        "seasons",
-        "space",
-        "sports",
-        "travel",
-        "vintage",
+        r"aero",
+        r"animals",
+        r"architecture",
+        r"army",
+        r"artistic",
+        r"awareness",
+        r"black_and_white",
+        r"cartoons",
+        r"celebrities",
+        r"city",
+        r"computers",
+        r"cute",
+        r"elements",
+        r"food_and_drink",
+        r"funny",
+        r"games",
+        r"girls",
+        r"holidays",
+        r"love",
+        r"motors",
+        r"movies",
+        r"music",
+        r"nature",
+        r"seasons",
+        r"space",
+        r"sports",
+        r"travel",
+        r"vintage",
     ]
 
     def __init__(self, _category: str) -> None:
@@ -61,30 +61,28 @@ class WallpaperCategory(object):
 
 
 class FirefoxImpersonator(Request):
-    pass
+    def __init__(self, url: str) -> None:
+        super().__init__(
+            url,
+            data=None,
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"},
+            origin_req_host=None,
+            unverifiable=False,
+            method="GET",
+        )
 
-    def __init__(
-        self,
-        url: str,
-        data: Buffer | SupportsRead[bytes] | Iterable[bytes] | None = None,
-        headers: MutableMapping[str, str] = ...,
-        origin_req_host: str | None = None,
-        unverifiable: bool = False,
-        method: str | None = None,
-    ) -> None:
-        super().__init__(url, data, headers, origin_req_host, unverifiable, method)
 
-def download_category_firstpage_html(category: WallpaperCategory)->str:
+def download_category_firstpage_html(category: WallpaperCategory) -> str | None:
     try:
         with urlopen(FirefoxImpersonator(category.url())) as connection:
-            page = connection.read()
-    except ConnectionError as cnctn_err:
-        raise RuntimeError("") from cnctn_err
+            html_page = connection.read()
+    except BaseException as error:
+        raise RuntimeError("") from error
+    return html_page
 
 
-
-def harvest_wallpaper_webpage_html(_wallpaper_url:str)->str:
-
+def harvest_wallpaper_webpage_html(_wallpaper_url: str) -> str:
+    pass
 
 
 def extract_best_169_resolution_link(wallpaper_resolutions_html_div: str) -> Union[str, None]:
@@ -103,3 +101,7 @@ def extract_best_1610_resolution_link(wallpaper_resolutions_html_div: str) -> Un
 
 def main() -> None:
     pass
+
+
+if __name__ == r"__main__":
+    main()
