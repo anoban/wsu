@@ -14,34 +14,34 @@ WALLPAPERSWIDE_WALLPAPER_DOWNLOAD_TEMPLATE_URL: str = r"https://wallpaperswide.c
 class WallpaperCategory(object):
     WALLPAPERSWIDE_WALLPAPER_CATEGORY_TEMPLATE_URL: str = r"https://wallpaperswide.com/{}-desktop-wallpapers.html"
     WALLPAPERSWIDE_VALID_WALLPAPER_CATEGORIES: list[str] = [
-        r"aero",
-        r"animals",
-        r"architecture",
-        r"army",
-        r"artistic",
-        r"awareness",
-        r"black_and_white",
-        r"cartoons",
-        r"celebrities",
-        r"city",
-        r"computers",
-        r"cute",
-        r"elements",
-        r"food_and_drink",
-        r"funny",
-        r"games",
-        r"girls",
-        r"holidays",
-        r"love",
-        r"motors",
-        r"movies",
-        r"music",
-        r"nature",
-        r"seasons",
-        r"space",
-        r"sports",
-        r"travel",
-        r"vintage",
+        "aero",
+        "animals",
+        "architecture",
+        "army",
+        "artistic",
+        "awareness",
+        "black_and_white",
+        "cartoons",
+        "celebrities",
+        "city",
+        "computers",
+        "cute",
+        "elements",
+        "food_and_drink",
+        "funny",
+        "games",
+        "girls",
+        "holidays",
+        "love",
+        "motors",
+        "movies",
+        "music",
+        "nature",
+        "seasons",
+        "space",
+        "sports",
+        "travel",
+        "vintage",
     ]
 
     def __init__(self, _category: str) -> None:
@@ -104,5 +104,5 @@ def main() -> None:
     print(first_page)
 
 
-if __name__ == r"__main__":
+if __name__ == "__main__":
     main()
