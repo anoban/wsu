@@ -77,7 +77,7 @@ def download_category_firstpage_html(category: WallpaperCategory) -> str | None:
         with urlopen(FirefoxImpersonator(category.url())) as connection:
             html_page = connection.read()
     except BaseException as error:
-        raise RuntimeError("") from error
+        raise RuntimeError(f"{error.__dict__}") from error
     return html_page
 
 
@@ -100,7 +100,8 @@ def extract_best_1610_resolution_link(wallpaper_resolutions_html_div: str) -> Un
 
 
 def main() -> None:
-    pass
+    first_page: str | None = download_category_firstpage_html(WallpaperCategory(r"girls"))
+    print(first_page)
 
 
 if __name__ == r"__main__":
