@@ -207,9 +207,9 @@ dkms.conf
 data/
 
 .ipynb_checkpoints
-.dat
+*.dat
 
 # images
-.jpg
-.jpeg
-.png
+*.jpg
+*.jpeg
+*.png
