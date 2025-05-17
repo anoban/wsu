@@ -207,5 +207,9 @@ dkms.conf
 data/
 
 .ipynb_checkpoints
-.Rproj.user
-*.dat
+.dat
+
+# images
+.jpg
+.jpeg
+.png
