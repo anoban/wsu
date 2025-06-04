@@ -213,3 +213,6 @@ data/
 *.jpg
 *.jpeg
 *.png
+
+# idx files
+FashionMNIST/*
