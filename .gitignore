@@ -216,3 +216,4 @@ data/
 
 # idx files
 FashionMNIST/*
+cifar-10-batches-py/*
