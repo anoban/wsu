@@ -212,7 +212,6 @@ data/
 *.jpg
 *.jpeg
 *.png
-*.TIF
 cowpea/*
 
 # idx files
