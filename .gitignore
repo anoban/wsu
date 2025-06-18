@@ -213,6 +213,7 @@ data/*
 *.jpeg
 *.png
 cowpea/*
+plots/*
 
 # data files
 FashionMNIST/*
