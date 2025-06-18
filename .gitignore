@@ -204,6 +204,7 @@ dkms.conf
 
 # .csv files
 data/
+Emma Sumner/*.csv
 
 .ipynb_checkpoints
 *.dat
@@ -214,6 +215,6 @@ data/
 *.png
 cowpea/*
 
-# idx files
+# data files
 FashionMNIST/*
 cifar-10-batches-py/*
