@@ -203,8 +203,7 @@ dkms.conf
 *packages/
 
 # .csv files
-data/
-Emma Sumner/*.csv
+data/*
 
 .ipynb_checkpoints
 *.dat
