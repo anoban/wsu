@@ -5,11 +5,15 @@ indent-width = 4
 line-length = 120
 output-format = "full"
 respect-gitignore = false
-target-version = "py312"
+target-version = "py314"
+
+[lint]
+fixable = ["ALL"]
+unfixable = []
 
 [format]
 docstring-code-format = true
-docstring-code-line-length = 100
+docstring-code-line-length = 120
 indent-style = "space"
 line-ending = "native"
 quote-style = "double"
