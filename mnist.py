@@ -5,21 +5,15 @@ import torch
 import torch.nn as nn
 from numpy.typing import NDArray
 from torch.nn.functional import relu
-from torch.utils.data import Dataset
+from torch.optim import SGD
+from torch.utils.data import DataLoader, Dataset
 
 
-class Idx1(Dataset):
+class Idx1(Dataset[torch.uint8]):
     """
     A minimal class to handle IO operations using idx1 files
 
-    IDX1 file format:
-    [offset] [type]          [value]          [description]
-    0000     32 bit integer  0x00000801(2049) magic number (MSB first)
-    0004     32 bit integer  10000            number of items
-    0008     unsigned byte   ??               label
-    0009     unsigned byte   ??               label
-    ........
-    xxxx     unsigned byte   ??               label
+
     """
 
     def __init__(self, filepath: str) -> None:
@@ -44,7 +38,7 @@ class Idx1(Dataset):
         self.__magic: int = int.from_bytes(ubytes[:4], byteorder="big")  # idx magic number
         self.__count: int = int.from_bytes(ubytes[4:8], byteorder="big")  # count of the data elements (labels)
         assert self.__count == ubytes.size - 8, "There seems to be a parsing error or the binary file is corrupted!"
-        self.__data: torch.FloatTensor = torch.Tensor(
+        self.__data: torch.FloatTensor = torch.FloatTensor(
             ubytes[8:].astype(np.float32)
         )  # type casting the data from np.uint8 to np.float64 since np.exp() raises FloatingPointError with np.uint8 arrays
 
@@ -57,7 +51,7 @@ class Idx1(Dataset):
         return self.__count
 
     @override
-    def __getitem__(self, index: int) -> torch.float32:  #
+    def __getitem__(self, index: int) -> torch.FloatTensor:
         """
         `Parameters`:
         index: int - offset of the element to return from the labels array.
@@ -75,9 +69,18 @@ class Idx1(Dataset):
         raise PermissionError("Idx1 objects are immutable!")
 
 
-class Idx3(Dataset):
+class IdxDataset(Dataset[torch.uint8]):
     """
-    A minimal class to handle IO operations using idx3 files
+    A PyTorch compatible class to handle IO and iteration operations with idx1 (labels) and Idx3 (images) files
+
+    IDX1 file format:
+    [offset] [type]          [value]          [description]
+    0000     32 bit integer  0x00000801(2049) magic number (MSB first)
+    0004     32 bit integer  10000            number of items
+    0008     unsigned byte   ??               label
+    0009     unsigned byte   ??               label
+    ........
+    xxxx     unsigned byte   ??               label
 
     IDX3 file format:
     [offset] [type]          [value]          [description]
@@ -91,38 +94,46 @@ class Idx3(Dataset):
     xxxx     unsigned byte   ??               pixel
     """
 
-    def __init__(self, filepath: str) -> None:
+    def __init__(self, idx1_filepath: str, idx3_filepath: str) -> None:
         """
         `Parameters`:
-        filepath: str - path to unzipped idx3 resource
+        idx1_filepath: str - path to unzipped idx1 resource (labels)
+        idx3_filepath: str - path to unzipped idx3 resource (images)
 
         `Returns`:
         None
 
         `Notes`:
-        Depends on NumPy
+        Depends on NumPy and PyTorch
         """
-        super(Idx3, self).__init__()
 
-        try:
-            with open(file=filepath, mode="rb") as fp:
-                ubytes: NDArray[np.uint8] = np.fromfile(fp, dtype=np.uint8)  # private
+        super(IdxDataset, self).__init__()
+
+        try:  # OPEN THE IDX1 FILE
+            with open(file=idx1_filepath, mode="rb") as fp:
+                idx1_ubytes: NDArray[np.uint8] = np.fromfile(fp, dtype=np.uint8)
         except FileNotFoundError as fnf_error:
-            raise RuntimeError(f"{filepath} is not found on this computer!") from fnf_error
+            raise RuntimeError(f"{idx1_filepath} is not found on this computer!") from fnf_error
 
-        self.__magic: int = int.from_bytes(ubytes[:4], byteorder="big")  # idx3 magic number
-        self.__count: int = int.from_bytes(ubytes[4:8], byteorder="big")  # count of the data elements (images)
+        try:  # OPEN THE IDX3 FILE
+            with open(file=idx3_filepath, mode="rb") as fp:
+                idx1_ubytes: NDArray[np.uint8] = np.fromfile(fp, dtype=np.uint8)
+        except FileNotFoundError as fnf_error:
+            raise RuntimeError(f"{idx3_filepath} is not found on this computer!") from fnf_error
+
+        self.__magic: int = int.from_bytes(idx1_ubytes[:4], byteorder="big")  # idx3 magic number
+        self.__count: int = int.from_bytes(idx1_ubytes[4:8], byteorder="big")  # count of the data elements (images)
         self.__image_res: tuple[int, int] = (
-            int.from_bytes(ubytes[8:12], byteorder="big"),
-            int.from_bytes(ubytes[12:16], byteorder="big"),
+            int.from_bytes(idx1_ubytes[8:12], byteorder="big"),
+            int.from_bytes(idx1_ubytes[12:16], byteorder="big"),
         )  # shape of each element
-        assert (self.__count * self.__image_res[0] * self.__image_res[1]) == (ubytes.size - 16), (
+        assert (self.__count * self.__image_res[0] * self.__image_res[1]) == (idx1_ubytes.size - 16), (
             "There seems to be a parsing error or the binary file is corrupted!"
         )
 
         # idx3 file stores data as bytes but we'll load in each byte as a 32 bit floats because np.exp() raises a FloatingPointError with np.uint8 type arrays
-        self.__data: torch.FloatTensor = torch.Tensor(
-            ubytes[16:].reshape(self.__count, self.__image_res[0], self.__image_res[1]).astype(np.float32)
+        self.__data: torch.FloatTensor = torch.FloatTensor(
+            idx1_ubytes[16:].reshape(self.__count, self.__image_res[0], self.__image_res[1]).astype(np.float32)
         )
 
     @override
@@ -183,7 +194,7 @@ class ConvNNet(nn.Module):
         self.__fcon_03 = nn.Linear(in_features=32, out_features=self.__nclasses)
 
     @override
-    def forward(self, _input: torch.FloatTensor) -> torch.FloatTensor:
+    def forward(self, _input: torch.Tensor) -> torch.Tensor:
         """ """
 
         _input = self.__conv_01(_input)  # apply the first convolution operation
@@ -208,3 +219,19 @@ def main() -> None:
 
     test_x = Idx3(r"../FashionMNIST/t10k-images-idx3-ubyte")
     test_y = Idx1(r"../FashionMNIST/t10k-labels-idx1-ubyte")
+
+    train_loader = DataLoader(dataset=(train_x, train_y), batch_size=100, shuffle=True, num_workers=1)
+    test_loader = DataLoader(dataset=(test_x, test_y), batch_size=100, shuffle=True, num_workers=1)
+
+    model = ConvNNet(n_channels=1, n_classes=10)
+
+    optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
+    criterion = nn.CrossEntropyLoss()
+
+    for i, batch in enumerate(train_loader):
+        data, labels = batch
+        print(data, labels)
+        out = model(data)
+
+        loss = criterion(out, labels)
+        loss.backward()
