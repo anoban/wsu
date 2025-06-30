@@ -75,8 +75,8 @@ class IdxDataset(Dataset[torch.uint8]):
         self.__idx3_magic: int = int.from_bytes(idx3_ubytes[:4], byteorder="big")  # idx3 magic number
         self.__idx3_count: int = int.from_bytes(idx3_ubytes[4:8], byteorder="big")  # count of the data elements (images)
         self.__image_res: tuple[int, int] = (
-            int.from_bytes(idx1_ubytes[8:12], byteorder="big"),
-            int.from_bytes(idx1_ubytes[12:16], byteorder="big"),
+            int.from_bytes(idx3_ubytes[8:12], byteorder="big"),
+            int.from_bytes(idx3_ubytes[12:16], byteorder="big"),
         )  # shape of each element
 
         assert ((self.__idx3_count * self.__image_res[0] * self.__image_res[1]) == (idx3_ubytes.size - 16)) and (
@@ -85,7 +85,7 @@ class IdxDataset(Dataset[torch.uint8]):
 
         # idx3 file stores data as bytes but we'll load in each byte as a 32 bit floats because np.exp() raises a FloatingPointError with np.uint8 type arrays
         self.__data: torch.FloatTensor = torch.FloatTensor(
-            idx1_ubytes[16:].reshape(self.__idx3_count, self.__image_res[0], self.__image_res[1]).astype(np.float32)
+            idx3_ubytes[16:].reshape(self.__idx3_count, self.__image_res[0], self.__image_res[1]).astype(np.float32)
         )
 
         assert self.__idx1_count == self.__idx3_count, (
@@ -174,8 +174,8 @@ def main() -> None:
     train = IdxDataset(r"./FashionMNIST/train-labels-idx1-ubyte", r"./FashionMNIST/train-images-idx3-ubyte")
     test = IdxDataset(r"./FashionMNIST/t10k-labels-idx1-ubyte", r"./FashionMNIST/t10k-images-idx3-ubyte")
 
-    train_loader = DataLoader(dataset=train, batch_size=100, shuffle=True, num_workers=6)
-    test_loader = DataLoader(dataset=test, batch_size=100, shuffle=True, num_workers=6)
+    train_loader = DataLoader(dataset=train, batch_size=1, shuffle=True, num_workers=6)
+    test_loader = DataLoader(dataset=test, batch_size=1, shuffle=True, num_workers=6)
 
     model = ConvNNet(n_channels=1, n_classes=10)
 
@@ -184,9 +184,8 @@ def main() -> None:
 
     for i, batch in enumerate(train_loader):
         data, labels = batch
-        print(data, labels)
         out = model(data)
-        print(i)
+
         loss = criterion(out, labels)
         loss.backward()
 
