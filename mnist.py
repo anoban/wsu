@@ -6,7 +6,7 @@ from torch.nn.functional import relu
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 
-from .idx import IdxDataset
+from idx import IdxDataset
 
 
 class ConvNNet(nn.Module):
@@ -73,11 +73,11 @@ def main() -> None:
     optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
     criterion = nn.CrossEntropyLoss()
 
-    for i, batch in enumerate(train_loader):
-        data, labels = batch
+    for data, label in train_loader:
+        print(data.shape)
         out = model(data)
 
-        loss = criterion(out, labels)
+        loss = criterion(out, label)
         loss.backward()
 
 
