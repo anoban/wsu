@@ -9,66 +9,6 @@ from torch.optim import SGD
 from torch.utils.data import DataLoader, Dataset
 
 
-class Idx1(Dataset[torch.uint8]):
-    """
-    A minimal class to handle IO operations using idx1 files
-
-
-    """
-
-    def __init__(self, filepath: str) -> None:
-        """
-        `Parameters`:
-        filepath: str - path to unzipped idx1 resource
-
-        `Returns`:
-        None
-
-        `Notes`:
-        Depends on NumPy
-        """
-        super(Idx1, self).__init__()
-
-        try:
-            with open(file=filepath, mode="rb") as fp:
-                ubytes: NDArray[np.uint8] = np.fromfile(fp, dtype=np.uint8)  # private
-        except FileNotFoundError as fnf_error:
-            raise RuntimeError(f"{filepath} is not found on this computer!") from fnf_error
-
-        self.__magic: int = int.from_bytes(ubytes[:4], byteorder="big")  # idx magic number
-        self.__count: int = int.from_bytes(ubytes[4:8], byteorder="big")  # count of the data elements (labels)
-        assert self.__count == ubytes.size - 8, "There seems to be a parsing error or the binary file is corrupted!"
-        self.__data: torch.FloatTensor = torch.FloatTensor(
-            ubytes[8:].astype(np.float32)
-        )  # type casting the data from np.uint8 to np.float64 since np.exp() raises FloatingPointError with np.uint8 arrays
-
-    @override
-    def __repr__(self) -> str:
-        return f"Idx1 object (magic: {self.__magic}, count: {self.__count:,})"
-
-    @override
-    def __len__(self) -> int:
-        return self.__count
-
-    @override
-    def __getitem__(self, index: int) -> torch.FloatTensor:
-        """
-        `Parameters`:
-        index: int - offset of the element to return from the labels array.
-
-        `Returns`:
-        np.float64 - the index th element in the labels array
-
-        `Notes`:
-        IndexErrors are left for NumPy to handle.
-        """
-
-        return self.__data[index]
-
-    def __setitem__(self, index: int) -> None:
-        raise PermissionError("Idx1 objects are immutable!")
-
-
 class IdxDataset(Dataset[torch.uint8]):
     """
     A PyTorch compatible class to handle IO and iteration operations with idx1 (labels) and Idx3 (images) files
@@ -117,53 +57,70 @@ class IdxDataset(Dataset[torch.uint8]):
 
         try:  # OPEN THE IDX3 FILE
             with open(file=idx3_filepath, mode="rb") as fp:
-                idx1_ubytes: NDArray[np.uint8] = np.fromfile(fp, dtype=np.uint8)
+                idx3_ubytes: NDArray[np.uint8] = np.fromfile(fp, dtype=np.uint8)
         except FileNotFoundError as fnf_error:
             raise RuntimeError(f"{idx3_filepath} is not found on this computer!") from fnf_error
 
-        self.__magic: int = int.from_bytes(idx1_ubytes[:4], byteorder="big")  # idx3 magic number
-        self.__count: int = int.from_bytes(idx1_ubytes[4:8], byteorder="big")  # count of the data elements (images)
+        self.__idx1_magic: int = int.from_bytes(idx1_ubytes[:4], byteorder="big")  # idx1 magic number
+        self.__idx1_count: int = int.from_bytes(idx1_ubytes[4:8], byteorder="big")  # count of the data elements (labels)
+
+        assert (self.__idx1_count == idx1_ubytes.size - 8) and (self.__idx1_magic == 2049), (
+            f"There seems to be a parsing error or the binary file {idx1_filepath} is corrupted!"
+        )
+
+        self.__labels: torch.FloatTensor = torch.FloatTensor(
+            idx1_ubytes[8:].astype(np.float32)
+        )  # type casting the data from np.uint8 to np.float32 since np.exp() raises FloatingPointError with np.uint8 arrays
+
+        self.__idx3_magic: int = int.from_bytes(idx3_ubytes[:4], byteorder="big")  # idx3 magic number
+        self.__idx3_count: int = int.from_bytes(idx3_ubytes[4:8], byteorder="big")  # count of the data elements (images)
         self.__image_res: tuple[int, int] = (
             int.from_bytes(idx1_ubytes[8:12], byteorder="big"),
             int.from_bytes(idx1_ubytes[12:16], byteorder="big"),
         )  # shape of each element
-        assert (self.__count * self.__image_res[0] * self.__image_res[1]) == (idx1_ubytes.size - 16), (
-            "There seems to be a parsing error or the binary file is corrupted!"
-        )
+
+        assert ((self.__idx3_count * self.__image_res[0] * self.__image_res[1]) == (idx3_ubytes.size - 16)) and (
+            self.__idx3_magic == 2051
+        ), f"There seems to be a parsing error or the binary file {idx3_filepath} is corrupted!"
 
         # idx3 file stores data as bytes but we'll load in each byte as a 32 bit floats because np.exp() raises a FloatingPointError with np.uint8 type arrays
         self.__data: torch.FloatTensor = torch.FloatTensor(
-            idx1_ubytes[16:].reshape(self.__count, self.__image_res[0], self.__image_res[1]).astype(np.float32)
+            idx1_ubytes[16:].reshape(self.__idx3_count, self.__image_res[0], self.__image_res[1]).astype(np.float32)
+        )
+
+        assert self.__idx1_count == self.__idx3_count, (
+            f"The pair of Idx1 and Idx3 files passed seem incompatible!, {idx3_filepath} has {self.__idx3_count} images while {idx1_filepath} has {self.__idx1_count} labels!"
         )
 
     @override
     def __repr__(self) -> str:
         return f"Idx3 object (magic: {self.__magic}, shape: {self.__image_res}, count: {self.__count:,})"
 
-    @override
     def __len__(self) -> int:
-        return self.__count
+        return self.__idx3_count  # __idx3_count == __idx1_count, so ...
 
     @override
-    def __getitem__(self, index: int) -> torch.FloatTensor:
+    def __getitem__(self, index: int) -> tuple[torch.FloatTensor, torch.FloatType]:
         """
         `Parameters`:
         index: int - the column to return from the matrix.
 
         `Returns`:
-        NDArray[np.float64] - all pixels of index th image, i.e returns the index th column of the transposed matrix
+        (torch.FloatTensor, torch.float64) - all pixels of index th image and it's corresponding label
 
         `Notes`:
-        IndexErrors are left for NumPy to handle.
+        IndexErrors are left to PyTorch to handle.
         """
 
-        return self.__data[index]
+        return self.__data[index], self.__labels[index]
 
     def __setitem__(self, index: int) -> None:
-        raise PermissionError("Idx3 objects are immutable!")
+        raise PermissionError("IdIdxDataset objects are immutable!")
 
 
 class ConvNNet(nn.Module):
+    """ """
+
     def __init__(self, n_channels: int, n_classes: int) -> None:
         """ """
 
@@ -214,14 +171,11 @@ class ConvNNet(nn.Module):
 
 
 def main() -> None:
-    train_x = Idx3(r"../FashionMNIST/train-images-idx3-ubyte")
-    train_y = Idx1(r"../FashionMNIST/train-labels-idx1-ubyte")
+    train = IdxDataset(r"./FashionMNIST/train-labels-idx1-ubyte", r"./FashionMNIST/train-images-idx3-ubyte")
+    test = IdxDataset(r"./FashionMNIST/t10k-labels-idx1-ubyte", r"./FashionMNIST/t10k-images-idx3-ubyte")
 
-    test_x = Idx3(r"../FashionMNIST/t10k-images-idx3-ubyte")
-    test_y = Idx1(r"../FashionMNIST/t10k-labels-idx1-ubyte")
-
-    train_loader = DataLoader(dataset=(train_x, train_y), batch_size=100, shuffle=True, num_workers=1)
-    test_loader = DataLoader(dataset=(test_x, test_y), batch_size=100, shuffle=True, num_workers=1)
+    train_loader = DataLoader(dataset=train, batch_size=100, shuffle=True, num_workers=6)
+    test_loader = DataLoader(dataset=test, batch_size=100, shuffle=True, num_workers=6)
 
     model = ConvNNet(n_channels=1, n_classes=10)
 
@@ -232,6 +186,10 @@ def main() -> None:
         data, labels = batch
         print(data, labels)
         out = model(data)
-
+        print(i)
         loss = criterion(out, labels)
         loss.backward()
+
+
+if __name__ == r"__main__":
+    main()
