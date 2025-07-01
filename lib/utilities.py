@@ -26,13 +26,13 @@ def rgb_matrix_to_tensor(image: NDArray[np.uint8]) -> torch.FloatTensor:
     return result
 
 
-def tensor_to_rgb_matrix(tensor: torch.FloatTensor) -> torch.FloatTensor:
+def tensor_to_rgb_matrix(tensor: torch.FloatTensor) -> NDArray[np.float32]:
     """
     transforms a tensor of R, G & B matrices into a matrix of [R, G, B] pixels
     i.e from (3, H, W) to (H, W, 3)
     """
 
-    return np.stack(tensor, axis=-1)
+    return np.stack(tensor, axis=-1, dtype=np.float32)
 
 
 @torch.no_grad
