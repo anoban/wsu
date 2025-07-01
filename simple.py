@@ -2,52 +2,69 @@ from typing import override
 
 import torch
 import torch.nn as nn
-from torch.nn.functional import relu
+from torch.nn.functional import log_softmax, relu
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 
 from lib.idx import IdxDataset
 
 
-class SimNet(nn.Module):
+class SimpleNNet(nn.Module):
     """ """
 
-    def __init__(self, n_channels: int, n_classes: int) -> None:
-        """ """
+    def __init__(self, n_channels: int = 1, n_classes: int = 10) -> None:
+        """
+        n_channels: int - number of colour channels in the input images
+        n_classes: int - number of image classes
+        """
 
-        super(SimNet, self).__init__()
-        self.__nchannels = n_channels  # number of colour channels
-        self.__nclasses = n_classes  # number of image classes
+        super(SimpleNNet, self).__init__()
+        self.__nchannels = n_channels
+        self.__nclasses = n_classes
 
-        # convolution layers
-        self.__conv_01 = nn.Conv2d(
-            in_channels=self.__nchannels, out_channels=8, kernel_size=(4, 4), stride=1
-        )  # using a 4 x 4 kernel since our images are 28 x 28
+        # first convolution layer, a 28 x 28 image becomes a 26 x 26 image????
+        self.__conv_01 = nn.Conv2d(in_channels=self.__nchannels, out_channels=24, kernel_size=(3, 3), stride=1)
 
-        # pooling layers
-        self.__maxpool = nn.MaxPool2d(kernel_size=(4, 4), stride=4)  # a 28 x 28 image will be transformed into a 7 x 7 image
+        # second convolution layer, the 26 x 26 image becomes a 24 x 24 image???
+        self.__conv_02 = nn.Conv2d(in_channels=24, out_channels=48, kernel_size=(3, 3), stride=1)
 
-        # fully connected layers
-        self.__fcon_01 = nn.Linear(
-            in_features=8
-            * 7
-            * 7,  # output from the convolutional layer will have 40 channels, after the two pooling transformations, we'll have 7 x 7 matrices for images
-            out_features=16,
-        )
-        self.__fcon_02 = nn.Linear(in_features=16, out_features=self.__nclasses)
+        # pooling layer
+        self.__maxpool = nn.MaxPool2d(kernel_size=(2, 2), stride=2)  # a 28 x 28 image will be transformed into a 21 x 21 image
+
+        # first fully connected layer, output from the convolutional layer will have 12 channels, after max pooling, we'll have 12 x 12 matrices for images
+        self.__fcon_01 = nn.Linear(in_features=48 * 144, out_features=24)
+
+        # second fully connected layer
+        self.__fcon_02 = nn.Linear(in_features=24, out_features=self.__nclasses)
 
     @override
-    def forward(self, _input: torch.Tensor) -> torch.Tensor:
+    def forward(self, image: torch.Tensor) -> torch.Tensor:
         """ """
 
-        _input = self.__conv_01(_input)  # apply the convolution
-        _input = relu(_input)  # activation
-        _input = self.__maxpool(_input)  # apply max pooling, 28 x 28 matrices will become 14 x 14 matrices
-        # pass the result through the fully connected layer
-        _input = self.__fcon_01(_input)
-        _input = self.__fcon_02(_input)
+        image = self.__conv_01(image)  # apply the first convolution
+        # image becomes a 24 x 26 x 26 tensor
+        image = relu(image)  # activation
 
-        return _input
+        image = self.__conv_02(image)  # apply the second convolution
+        # image becomes a 48 x 24 x 24 tensor
+        image = relu(image)  # activation
+
+        image = self.__maxpool(image)  # apply max pooling, 24 x 24 matrices will become 12 x 12 matrices
+        print(image.shape)
+
+        # flatten the tensor i.e the 48 x 12 x 12 tensor will become a 48 x 144 matrix
+        image = torch.flatten(input=image, start_dim=1)
+        print(image.shape)
+
+        # pass the result through the fully connected layers
+        image = self.__fcon_01(image)
+        image = relu(image)  # activation
+        image = self.__fcon_02(image)
+
+        # apply softmax
+        image = log_softmax(image, dim=1)
+
+        return image
 
 
 def main() -> None:
@@ -57,13 +74,13 @@ def main() -> None:
     train_loader = DataLoader(dataset=train, batch_size=1, shuffle=True, num_workers=6)
     test_loader = DataLoader(dataset=test, batch_size=1, shuffle=True, num_workers=6)
 
-    model = SimNet(n_channels=1, n_classes=10)
+    model = SimpleNNet(n_channels=1, n_classes=10)
 
     optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
     criterion = nn.CrossEntropyLoss()
 
-    for data, label in train_loader:
-        out = model(data)
+    for image, label in train_loader:
+        out = model(image)
         loss = criterion(out, label)
         loss.backward()
 
