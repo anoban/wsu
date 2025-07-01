@@ -6,7 +6,7 @@ from torch.nn.functional import relu
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 
-from idx import IdxDataset
+from lib.idx import IdxDataset
 
 
 class ConvNNet(nn.Module):
