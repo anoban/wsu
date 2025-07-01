@@ -29,10 +29,10 @@ class SimpleNNet(nn.Module):
         self.__conv_02 = nn.Conv2d(in_channels=24, out_channels=48, kernel_size=(3, 3), stride=1)
 
         # pooling layer
-        self.__maxpool = nn.MaxPool2d(kernel_size=(2, 2), stride=2)  # a 28 x 28 image will be transformed into a 21 x 21 image
+        self.__maxpool = nn.MaxPool2d(kernel_size=(2, 2), stride=2)  # a 24 x 24 image will be transformed into a 12 x 12 image
 
-        # first fully connected layer, output from the convolutional layer will have 12 channels, after max pooling, we'll have 12 x 12 matrices for images
-        self.__fcon_01 = nn.Linear(in_features=48 * 144, out_features=24)
+        # first fully connected layer, output from the convolutional layer will have 48 channels, after max pooling, we'll have 12 x 12 matrices for images
+        self.__fcon_01 = nn.Linear(in_features=144, out_features=24)
 
         # second fully connected layer
         self.__fcon_02 = nn.Linear(in_features=24, out_features=self.__nclasses)
@@ -50,6 +50,7 @@ class SimpleNNet(nn.Module):
         image = relu(image)  # activation
 
         image = self.__maxpool(image)  # apply max pooling, 24 x 24 matrices will become 12 x 12 matrices
+        # image becomes a 48 x 12 x 12 tensor
         print(image.shape)
 
         # flatten the tensor i.e the 48 x 12 x 12 tensor will become a 48 x 144 matrix
@@ -58,6 +59,7 @@ class SimpleNNet(nn.Module):
 
         # pass the result through the fully connected layers
         image = self.__fcon_01(image)
+        print(image.shape)
         image = relu(image)  # activation
         image = self.__fcon_02(image)
 
