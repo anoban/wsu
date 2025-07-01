@@ -6,7 +6,7 @@ from numpy.typing import NDArray
 from torch.utils.data import Dataset
 
 
-class IdxDataset(Dataset[torch.uint8]):
+class IdxDataset(Dataset[torch.float32]):
     """
     A PyTorch compatible class to handle IO and iteration operations with idx1 (labels) and Idx3 (images) files
 
