@@ -5,6 +5,8 @@ import torch
 from numpy.typing import NDArray
 from torch.utils.data import Dataset
 
+__all__: tuple[str, ...] = ("IdxDataset",)
+
 
 class IdxDataset(Dataset[torch.float32]):
     """
