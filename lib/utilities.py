@@ -35,7 +35,7 @@ def tensor_to_rgb_image(tensor: torch.Tensor) -> NDArray[np.float32]:
     return np.stack(tensor, axis=-1, dtype=np.float32)
 
 
-@torch.no_grad
+@torch.no_grad  # type: ignore
 def downscale_to_uchars(tensor: torch.Tensor | NDArray[np.floating]) -> torch.Tensor | NDArray[np.uint8]:
     """
     scales a tensor or array of floats with unknown bounds into a tensor or array of uint8s with an inclusive range [0, 255]
