@@ -41,7 +41,11 @@ class Net(nn.Module):
         return output
 
     @override
-    def train(self, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer) -> None:
+    def train(self, train_loader: DataLoader[IdxDataset], optimizer: Optimizer) -> None:
+        """ """
+
+        super().train(mode=True)  # set the module on training mode
+
         for data, label in train_loader:
             optimizer.zero_grad()
             output = self.forward(data)
@@ -49,21 +53,21 @@ class Net(nn.Module):
             loss.backward()
             optimizer.step()
 
-    def test(self, test_loader: DataLoader[torch.Tensor]) -> torch.Tensor:
+    @torch.no_grad
+    def test(self, test_loader: DataLoader[IdxDataset]) -> torch.Tensor:
         """ """
 
-        self.eval()
+        super().eval()  # set the module on evaluation mode
 
         test_loss: float = 0.000
         correct: float = 0.000
 
-        with torch.no_grad():
-            for data, label in test_loader:
-                data, label = data, label
-                output = model(data)
-                test_loss += nll_loss(output, label, reduction="sum").item()  # sum up batch loss
-                pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-                correct += pred.eq(label.view_as(pred)).sum().item()
+        for data, label in test_loader:
+            data, label = data, label
+            output = self.forward(data)
+            test_loss += nll_loss(output, label, reduction="sum").item()  # sum up batch loss
+            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
+            correct += pred.eq(label.view_as(pred)).sum().item()
 
         test_loss /= len(test_loader.dataset)
 
@@ -87,7 +91,8 @@ def main() -> None:
     )
 
     model = Net()
-    train(model, trainloader)
+    model.train(trainloader)
+    model.test(testloader)
 
 
 if __name__ == r"__main__":
