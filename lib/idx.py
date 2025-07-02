@@ -99,7 +99,7 @@ class IdxDataset(Dataset[torch.Tensor]):
         return self.__idx3_count  # __idx3_count == __idx1_count, so ...
 
     @override
-    def __getitem__(self, index: int) -> tuple[torch.FloatTensor, torch.FloatType]:
+    def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor]:
         """
         `Parameters`:
         index: int - the column to return from the matrix.

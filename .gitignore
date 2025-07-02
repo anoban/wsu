@@ -219,3 +219,5 @@ plots/*
 MNIST/*
 FashionMNIST/*
 cifar-10-batches-py/*
+Kuzushiji-49/*
+Kuzushiji-MNIST/*

@@ -25,19 +25,19 @@ class Net(nn.Module):
         self.fcon_02 = nn.Linear(128, 10)
 
     @override
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.conv_01(x)
-        x = relu(x)
-        x = self.conv_02(x)
-        x = relu(x)
-        x = max_pool2d(x, 2)
-        x = self.dropout_01(x)
-        x = torch.flatten(x, 1)
-        x = self.fcon_01(x)
-        x = relu(x)
-        x = self.dropout_02(x)
-        x = self.fcon_02(x)
-        output = log_softmax(x, dim=1)
+    def forward(self, _image: torch.Tensor) -> torch.Tensor:
+        _image = self.conv_01(_image)
+        _image = relu(_image)
+        _image = self.conv_02(_image)
+        _image = relu(_image)
+        _image = max_pool2d(_image, 2)
+        _image = self.dropout_01(_image)
+        _image = torch.flatten(_image, 1)
+        _image = self.fcon_01(_image)
+        _image = relu(_image)
+        _image = self.dropout_02(_image)
+        _image = self.fcon_02(_image)
+        output = log_softmax(_image, dim=1)
         return output
 
     def fit(self, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer) -> None:
