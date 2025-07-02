@@ -40,8 +40,7 @@ class Net(nn.Module):
         output = log_softmax(x, dim=1)
         return output
 
-    @override
-    def train(self, train_loader: DataLoader[IdxDataset], optimizer: Optimizer) -> None:
+    def fit(self, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer) -> None:
         """ """
 
         super().train(mode=True)  # set the module on training mode
@@ -54,8 +53,14 @@ class Net(nn.Module):
             optimizer.step()
 
     @torch.no_grad
-    def test(self, test_loader: DataLoader[IdxDataset]) -> torch.Tensor:
-        """ """
+    def predict(self, x: torch.Tensor) -> torch.Tensor:
+        return self.forward(x).argmax()
+
+    @torch.no_grad
+    def evaluate(self, test_loader: DataLoader[torch.Tensor]) -> tuple[float, float]:
+        """
+        retruns tuple[float, float] - (average loss, accuracy score)
+        """
 
         super().eval()  # set the module on evaluation mode
 
@@ -91,8 +96,8 @@ def main() -> None:
     )
 
     model = Net()
-    model.train(trainloader)
-    model.test(testloader)
+    model.fit(trainloader)
+    model.evaluate(testloader)
 
 
 if __name__ == r"__main__":
