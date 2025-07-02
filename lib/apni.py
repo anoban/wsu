@@ -1,3 +1,6 @@
+__all__ = ("parse_apni_name_list",)
+
+
 def parse_apni_name_list(path_to_html: str | None = None) -> "NDArray[str]":
     """
     Extracts and returns the species list from Australian Plant Name Index (APNI) HTML file,
