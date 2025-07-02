@@ -2,10 +2,10 @@ import numpy as np
 import torch
 from numpy.typing import NDArray
 
-__all__: tuple[str, ...] = ("rgb_matrix_to_tensor", "tensor_to_rgb_matrix", "scale_to_standard_rgb_channels")
+__all__: tuple[str, ...] = ("rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars")
 
 
-def rgb_matrix_to_tensor(image: NDArray[np.uint8]) -> torch.FloatTensor:
+def rgb_image_to_tensor(image: NDArray[np.uint8]) -> torch.Tensor:
     """
     input is expected to be a H x W matrix made of [R, G, B] channels
     i.e (H, W, 3) to (3, H, W)
@@ -26,7 +26,7 @@ def rgb_matrix_to_tensor(image: NDArray[np.uint8]) -> torch.FloatTensor:
     return result
 
 
-def tensor_to_rgb_matrix(tensor: torch.FloatTensor) -> NDArray[np.float32]:
+def tensor_to_rgb_image(tensor: torch.Tensor) -> NDArray[np.float32]:
     """
     transforms a tensor of R, G & B matrices into a matrix of [R, G, B] pixels
     i.e from (3, H, W) to (H, W, 3)
@@ -36,12 +36,12 @@ def tensor_to_rgb_matrix(tensor: torch.FloatTensor) -> NDArray[np.float32]:
 
 
 @torch.no_grad
-def scale_to_standard_rgb_channels(tensor: torch.FloatTensor | NDArray[np.floating]) -> torch.IntTensor | NDArray[np.uint8]:
+def downscale_to_uchars(tensor: torch.Tensor | NDArray[np.floating]) -> torch.Tensor | NDArray[np.uint8]:
     """
     scales a tensor or array of floats with unknown bounds into a tensor or array of uint8s with an inclusive range [0, 255]
     """
 
     tensor += abs(tensor.min())  # probably a negative value, hence the abs()
-    tensor /= tensor.max()  # downscale to [0.00, 1.00]
+    tensor /= tensor.max()  # downscale to [0.00, 1.00] (inclusive range)
     tensor *= 255  # upscale to RGB channel max 255
     return tensor.type(torch.uint8) if isinstance(tensor, torch.Tensor) else tensor.astype(np.uint8)
