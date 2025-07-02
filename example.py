@@ -15,7 +15,7 @@ class Net(nn.Module):
     """ """
 
     def __init__(self):
-        super(Net, self).__init__()
+        super(Net, self).__init__()  # type: ignore
 
         self.conv_01 = nn.Conv2d(1, 32, 3, 1)
         self.conv_02 = nn.Conv2d(32, 64, 3, 1)
@@ -52,11 +52,11 @@ class Net(nn.Module):
             loss.backward()
             optimizer.step()
 
-    @torch.no_grad
+    @torch.no_grad  # type: ignore
     def predict(self, x: torch.Tensor) -> torch.Tensor:
         return self.forward(x).argmax()
 
-    @torch.no_grad
+    @torch.no_grad  # type: ignore
     def evaluate(self, test_loader: DataLoader[torch.Tensor]) -> tuple[float, float]:
         """
         retruns tuple[float, float] - (average loss, accuracy score)
