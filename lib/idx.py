@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 __all__: tuple[str, ...] = ("IdxDataset",)
 
 
-class IdxDataset(Dataset[torch.float32]):
+class IdxDataset(Dataset[torch.Tensor]):
     """
     A PyTorch compatible class to handle IO and iteration operations with idx1 (labels) and Idx3 (images) files
 
