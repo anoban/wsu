@@ -45,6 +45,7 @@ class ConvNNet(nn.Module):
     def forward(self, _input: torch.Tensor) -> torch.Tensor:
         """ """
 
+        super().train(mode=True)  # set the base class on training mode
         _input = self.__conv_01(_input)  # apply the first convolution operation
         _input = relu(_input)  # activation
         _input = self.__maxpool(_input)  # apply max pooling, 28 x 28 matrices will become 14 x 14 matrices

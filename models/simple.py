@@ -41,6 +41,7 @@ class SimpleNNet(nn.Module):
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         """ """
 
+        super().train(mode=True)
         image = self.__conv_01(image)  # apply the first convolution
         # image becomes a 24 x 26 x 26 tensor
         image = relu(image)  # activation
