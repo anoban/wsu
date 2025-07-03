@@ -64,6 +64,7 @@ class Net(nn.Module):
     def predict(self, x: torch.Tensor) -> torch.Tensor:
         """ """
 
+        super().eval()  # set the base class on evaluation mode, equivalent to super().train(mode=False)
         return self.forward(x).argmax()
 
     @torch.no_grad  # type: ignore
@@ -72,7 +73,7 @@ class Net(nn.Module):
         retruns tuple[float, float] - (average loss, accuracy score)
         """
 
-        super().eval()  # set the module on evaluation mode
+        super().eval()  # set base class module on evaluation mode, equivalent to super().train(mode=False)
 
         average_loss: float = 0.000
         accuracy_score: float = 0.000
