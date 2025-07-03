@@ -38,36 +38,36 @@ class SimpleNNet(nn.Module):
         self.__fcon_02 = nn.Linear(in_features=24, out_features=self.__nclasses)
 
     @override
-    def forward(self, image: torch.Tensor) -> torch.Tensor:
+    def forward(self, _image: torch.Tensor) -> torch.Tensor:
         """ """
 
         super().train(mode=True)
-        image = self.__conv_01(image)  # apply the first convolution
+        _image = self.__conv_01(_image)  # apply the first convolution
         # image becomes a 24 x 26 x 26 tensor
-        image = relu(image)  # activation
+        _image = relu(_image)  # activation
 
-        image = self.__conv_02(image)  # apply the second convolution
+        _image = self.__conv_02(_image)  # apply the second convolution
         # image becomes a 48 x 24 x 24 tensor
-        image = relu(image)  # activation
+        _image = relu(_image)  # activation
 
-        image = self.__maxpool(image)  # apply max pooling, 24 x 24 matrices will become 12 x 12 matrices
+        _image = self.__maxpool(_image)  # apply max pooling, 24 x 24 matrices will become 12 x 12 matrices
         # image becomes a 48 x 12 x 12 tensor
-        print(image.shape)
+        print(_image.shape)
 
         # flatten the tensor i.e the 48 x 12 x 12 tensor will become a 48 x 144 matrix
-        image = torch.flatten(input=image, start_dim=1)
-        print(image.shape)
+        _image = torch.flatten(input=_image, start_dim=1)
+        print(_image.shape)
 
         # pass the result through the fully connected layers
-        image = self.__fcon_01(image)
-        print(image.shape)
-        image = relu(image)  # activation
-        image = self.__fcon_02(image)
+        _image = self.__fcon_01(_image)
+        print(_image.shape)
+        _image = relu(_image)  # activation
+        _image = self.__fcon_02(_image)
 
         # apply softmax
-        image = log_softmax(image, dim=1)
+        _image = log_softmax(_image, dim=1)
 
-        return image
+        return _image
 
 
 def main() -> None:
