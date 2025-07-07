@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="226" height="74" src="doc/amfinder.png">
+  <img width="226" height="74" src="./doc/amfinder.png">
 </p>
 
 The Automatic Mycorrhiza Finder (AMFinder) allows for high-throughput computer
@@ -9,7 +9,7 @@ convolutional neural networks.
 
 **The current version of AMFinder is v2.0.**
 
-If you use AMFinder in your manuscript, please cite: 
+If you use AMFinder in your manuscript, please cite:
 [Evangelisti _et al._, 2021, Deep learning-based quantification of arbuscular mycorrhizal fungi in plant roots, _New Phytologist_ **232**(5): 2207-2219](https://doi.org/10.1111/nph.17697).
 
 
@@ -35,14 +35,14 @@ It is used as follows:
 
 ```
 $ source amfenv/bin/activate
-(amfenv) $ amf <action> <parameters> <images> 
+(amfenv) $ amf <action> <parameters> <images>
 ```
 where `<action>` is either:
-- `predict`: prediction of fungal colonisation (CNN1) and intraradical hyphal structures (CNN2), 
+- `predict`: prediction of fungal colonisation (CNN1) and intraradical hyphal structures (CNN2),
 - `convert`: automatic conversion of predictions to annotations, or
 - `train`: neural network training.
 
-`<images>` are the paths to the JPEG or TIFF images to analyse.  
+`<images>` are the paths to the JPEG or TIFF images to analyse.
 Details about `<parameters>` are given in the following sections.
 
 
@@ -119,8 +119,8 @@ deactivate
 
 ## Annotation browser (`amfbrowser`)<a name="amfbrowser"></a>
 
-The AMFinder standalone graphical interface `amfbrowser` enables the manual inspection of 
-predictions and annotations. This tool can display predictions and 
+The AMFinder standalone graphical interface `amfbrowser` enables the manual inspection of
+predictions and annotations. This tool can display predictions and
 annotations on top of the corresponding images. It enables users to edit values,
 to browse low-quality predictions, and to perform automatic conversion of `amf`
 predictions to annotations. You can run `amfbrowser` as follows:
@@ -136,7 +136,7 @@ where `<parameter>` can be used to specify tile size (see below).
 |`-t N`|`--tile_size N`|**Optional**. Use `N` pixels as tile size.|N = 126|
 
 <p align="center">
-  <img width="648" height="369" src="doc/amfbrowser.gif">
+  <img width="648" height="369" src="./doc/amfbrowser.gif">
 </p>
 
 
@@ -177,6 +177,6 @@ An optimised ink-staining protocol with additional clearing is available in [Eva
 
 |View from above|View from below|With plastic lid|
 |-|-|-|
-|![](doc/Staining_sieves_1.jpg)|![](doc/Staining_sieves_2.jpg)|![](doc/Staining_sieves_3.jpg)
+|![](./doc/Staining_sieves_1.jpg)|![](./doc/Staining_sieves_2.jpg)|![](./doc/Staining_sieves_3.jpg)
 
 Credit: devices from Dr [Albin Teulet](https://twitter.com/albinteulet) and [Alex Guyon](https://twitter.com/alexwguyon) (Schornack lab), derived from an original idea by Dr Clément Quan.
