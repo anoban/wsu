@@ -35,10 +35,9 @@ Functions
 """
 
 import random
+
 random.seed(42)
 import numpy as np
-from scipy.ndimage import median_filter
-
 
 
 def invert(tile):
@@ -48,40 +47,29 @@ def invert(tile):
     return 255 - tile
 
 
-
 def grayscale(tile):
     """
     Converts the input image to grayscale.
     """
 
-    gray = np.dot(tile[...,:3], [0.2989, 0.5870, 0.1140])
+    gray = np.dot(tile[..., :3], [0.2989, 0.5870, 0.1140])
     return np.stack((gray,) * 3, axis=-1)
 
 
-
 def do_normalise(tile):
-
-    return -np.log(1/((1 + tile)/257) - 1)
-
+    return -np.log(1 / ((1 + tile) / 257) - 1)
 
 
 def undo_normalise(tile):
-
-    return (1 + 1/(np.exp(-tile) + 1) * 257)
-
+    return 1 + 1 / (np.exp(-tile) + 1) * 257
 
 
 def rotation_matrix(theta):
     """
     3D rotation matrix around the X-axis by angle theta
     """
-   
-    return np.c_[
-        [1,0,0],
-        [0,np.cos(theta),-np.sin(theta)],
-        [0,np.sin(theta),np.cos(theta)]
-    ]
 
+    return np.c_[[1, 0, 0], [0, np.cos(theta), -np.sin(theta)], [0, np.sin(theta), np.cos(theta)]]
 
 
 def rotate_colours(tile):
@@ -93,5 +81,3 @@ def rotate_colours(tile):
     print(theta)
     norm_rot = np.einsum("ijk,lk->ijl", norm, rotation_matrix(theta))
     return undo_normalise(norm_rot)
-
-
