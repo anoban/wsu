@@ -22,7 +22,6 @@
 # IN THE SOFTWARE.
 
 
-
 """
 ConvNet Builder.
 
@@ -43,28 +42,24 @@ Functions
 :function load: main function, to be called from outside.
 """
 
-
-
 import os
-import keras
 
+import amfinder_config as AmfConfig
+import amfinder_log as AmfLog
+import keras
+from keras.initializers import he_uniform
+from keras.layers import Conv2D, Dense, Dropout, Flatten, Input, MaxPooling2D
 from keras.models import Model
-from keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+
 # From keras 2.5, the following will be replaced by:
 # from keras.optimizers import adam_v2
-# Thanks to matevzl533 for reporting this. 
+# Thanks to matevzl533 for reporting this.
 # Reference: https://stackoverflow.com/a/68704757
 from keras.optimizers import Adam
-from keras.initializers import he_uniform
-
-import amfinder_log as AmfLog
-import amfinder_config as AmfConfig
-
-
 
 INPUT_SIZE = 126
-CNN1_NAME = 'col'
-CNN2_NAME = 'myc'
+CNN1_NAME = "col"
+CNN2_NAME = "myc"
 
 
 def convolutions():
@@ -76,54 +71,45 @@ def convolutions():
     input_layer = Input(shape=(INPUT_SIZE, INPUT_SIZE, 3))
 
     # Convolution block 1: 126x126 -> 120x120
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C11')(input_layer)
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C12')(x)
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C13')(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C11")(input_layer)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C12")(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C13")(x)
 
-    x = MaxPooling2D(pool_size=2, name='M1')(x)
+    x = MaxPooling2D(pool_size=2, name="M1")(x)
 
-    kc *= 2 # 64
+    kc *= 2  # 64
 
     # Convolution block 2: 60x60 -> 56x56
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C21')(x)
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C22')(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C21")(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C22")(x)
 
-    x = MaxPooling2D(pool_size=2, name='M2')(x)
+    x = MaxPooling2D(pool_size=2, name="M2")(x)
 
-    kc *= 2 # 128
+    kc *= 2  # 128
 
     # Convolution block 3: 28x28 -> 24x24
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C31')(x)
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C32')(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C31")(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C32")(x)
 
-    x = MaxPooling2D(pool_size=2, name='M3')(x)
+    x = MaxPooling2D(pool_size=2, name="M3")(x)
 
-    kc *= 2 # 256
+    kc *= 2  # 256
 
     # Last convolution: 12x12 -> 10x10
-    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(),
-               activation='relu', name='C4')(x)
+    x = Conv2D(kc, kernel_size=3, kernel_initializer=he_uniform(), activation="relu", name="C4")(x)
 
     # Final size: 5x5
-    x = MaxPooling2D(pool_size=2, name='M4')(x)
-    flatten = Flatten(name='F')(x)
+    x = MaxPooling2D(pool_size=2, name="M4")(x)
+    flatten = Flatten(name="F")(x)
 
     return (input_layer, flatten)
 
 
-
-def fc_layers(x, label, count=1, activation='sigmoid'):
+def fc_layers(x, label, count=1, activation="sigmoid"):
     """
     Builds fully connected layers (with dropout).
-    
-    :param x: last layer of conv/maxpool blocks (= Flatten). 
+
+    :param x: last layer of conv/maxpool blocks (= Flatten).
     :param label: Either 'RS' (root segmentation) or 'A', 'V', 'I', 'H'.
     :param count: Size of the output dense layer (defaults to 1).
     :param activation: Activation function (defaults to sigmoid).
@@ -131,16 +117,13 @@ def fc_layers(x, label, count=1, activation='sigmoid'):
     :rtype: tensorflow.python.framework.ops.Tensor
     """
 
-    x = Dense(128, kernel_initializer=he_uniform(), activation='relu',
-              name = f'FC{label}1')(x)
-    x = Dropout(0.3, name = f'D{label}1')(x)
-    x = Dense(64, kernel_initializer=he_uniform(), activation='relu',
-              name = f'FC{label}2')(x)
-    x = Dropout(0.2, name = f'D{label}2')(x)
+    x = Dense(128, kernel_initializer=he_uniform(), activation="relu", name=f"FC{label}1")(x)
+    x = Dropout(0.3, name=f"D{label}1")(x)
+    x = Dense(64, kernel_initializer=he_uniform(), activation="relu", name=f"FC{label}2")(x)
+    x = Dropout(0.2, name=f"D{label}2")(x)
     output = Dense(count, activation=activation, name=label)(x)
 
     return output
-
 
 
 def create_cnn1():
@@ -150,19 +133,14 @@ def create_cnn1():
     """
 
     input_layer, flatten = convolutions()
-    output_layer = fc_layers(flatten, 'RS', count=3, activation='softmax')
+    output_layer = fc_layers(flatten, "RS", count=3, activation="softmax")
 
-    model = Model(inputs=input_layer,
-                  outputs=output_layer,
-                  name=CNN1_NAME)
+    model = Model(inputs=input_layer, outputs=output_layer, name=CNN1_NAME)
 
-    opt = Adam(learning_rate=AmfConfig.get('learning_rate'))
-    model.compile(loss='categorical_crossentropy',
-                  optimizer=opt,
-                  metrics=['acc'])
+    opt = Adam(learning_rate=AmfConfig.get("learning_rate"))
+    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["acc"])
 
     return model
-
 
 
 def create_cnn2():
@@ -173,19 +151,14 @@ def create_cnn2():
     """
 
     input_layer, flatten = convolutions()
-    output_layers = [fc_layers(flatten, x) for x in AmfConfig.get('header')]
+    output_layers = [fc_layers(flatten, x) for x in AmfConfig.get("header")]
 
-    model = Model(inputs=input_layer,
-                  outputs=output_layers,
-                  name=CNN2_NAME)
+    model = Model(inputs=input_layer, outputs=output_layers, name=CNN2_NAME)
 
-    opt = Adam(learning_rate=AmfConfig.get('learning_rate'))
-    model.compile(loss='binary_crossentropy',
-                  optimizer=opt,
-                  metrics=['acc'])
+    opt = Adam(learning_rate=AmfConfig.get("learning_rate"))
+    model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["acc"])
 
     return model
-
 
 
 def load(name=None):
@@ -194,48 +167,36 @@ def load(name=None):
     """
 
     if name is not None:
-    
-        path = os.path.join(AmfConfig.get_appdir(), 'trained_networks', name)
+        path = os.path.join(AmfConfig.get_appdir(), "trained_networks", name)
 
     else:
-
-        path = AmfConfig.get('model')
+        path = AmfConfig.get("model")
 
     if path is not None and os.path.isfile(path):
-    
-        AmfLog.text(f'Model: {path}')
+        AmfLog.text(f"Model: {path}")
         model = keras.models.load_model(path)
 
         if model.name == CNN1_NAME:
-
-            AmfConfig.set('level', 1)
+            AmfConfig.set("level", 1)
 
         else:
+            AmfConfig.set("level", 2)
 
-            AmfConfig.set('level', 2)
-            
-        AmfLog.text(f'Classes: {AmfConfig.get_class_documentation()}.')
+        AmfLog.text(f"Classes: {AmfConfig.get_class_documentation()}.")
         return model
 
     else:
+        if AmfConfig.get("run_mode") == "train":
+            AmfLog.text("Initializes a new network.")
 
-        if AmfConfig.get('run_mode') == 'train':
-
-            AmfLog.text('Initializes a new network.')
-
-            if AmfConfig.get('level') == 1:
-
+            if AmfConfig.get("level") == 1:
                 return create_cnn1()
 
             else:
-
                 return create_cnn2()
-        
-        else: # missing pre-trained model in prediction mode.
-        
-            AmfLog.error('A pre-trained model is required in prediction mode',
-                         exit_code=AmfLog.ERR_NO_PRETRAINED_MODEL)
 
+        else:  # missing pre-trained model in prediction mode.
+            AmfLog.error("A pre-trained model is required in prediction mode", exit_code=AmfLog.ERR_NO_PRETRAINED_MODEL)
 
 
 def filter(model, layer_type):
@@ -246,11 +207,9 @@ def filter(model, layer_type):
     return [x for x in model.layers if isinstance(x, layer_type)]
 
 
-
 def get_feature_extractors(model):
     """
-    Builds submodels for all convolutional layers (Conv2D). 
+    Builds submodels for all convolutional layers (Conv2D).
     """
-    
-    return [(x, Model(model.input, x.output)) for x in filter(model, Conv2D)]
 
+    return [(x, Model(model.input, x.output)) for x in filter(model, Conv2D)]

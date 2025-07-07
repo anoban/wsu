@@ -32,21 +32,19 @@ Functions
 
 """
 
-
-
 import io
+
 import matplotlib
-matplotlib.use('Agg')
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as pyplot
 from matplotlib.ticker import MaxNLocator
 
 
-
 def initialize():
-    """ Defines graph style. """
+    """Defines graph style."""
 
-    pyplot.style.use('classic')
-
+    pyplot.style.use("classic")
 
 
 def draw(history, epochs, title, x_range, t_name, v_name):
@@ -58,33 +56,31 @@ def draw(history, epochs, title, x_range, t_name, v_name):
 
     t_values = history[t_name]
     v_values = history[v_name]
-    pyplot.plot(x_range, t_values, 'b-o', label='Test set')
-    pyplot.plot(x_range, v_values, 'g-s', label='Validation set')
+    pyplot.plot(x_range, t_values, "b-o", label="Test set")
+    pyplot.plot(x_range, v_values, "g-s", label="Validation set")
 
-    pyplot.xlabel('Epoch')
-    pyplot.ylabel('Value')
+    pyplot.xlabel("Epoch")
+    pyplot.ylabel("Value")
     pyplot.title(title)
 
     padding = 0.1
-    legend_pos = 'upper right'
+    legend_pos = "upper right"
 
-    if title[0:4] == 'Loss':
-
+    if title[0:4] == "Loss":
         pyplot.xlim(-padding, epochs + padding)
 
     else:
-
-        legend_pos = 'lower right'
+        legend_pos = "lower right"
         pyplot.axis([-padding, epochs + padding, 0, 1])
 
     axes = pyplot.gca()
-    axes.autoscale(enable=True, axis='x', tight=False)
+    axes.autoscale(enable=True, axis="x", tight=False)
     axes.xaxis.set_major_locator(MaxNLocator(integer=True))
 
     pyplot.legend(loc=legend_pos)
     pyplot.draw()
 
     plot_data = io.BytesIO()
-    pyplot.savefig(plot_data, format='png')
+    pyplot.savefig(plot_data, format="png")
 
     return plot_data
