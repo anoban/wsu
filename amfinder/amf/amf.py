@@ -24,54 +24,44 @@
 # IN THE SOFTWARE.
 
 import os
-# Disables tensorflow messages/warnings.
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-import amfinder_log as AmfLog
-import amfinder_train as AmfTrain
+# Disables tensorflow messages/warnings.
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 import amfinder_config as AmfConfig
 import amfinder_convert as AmfConvert
-import amfinder_predict as AmfPredict
 import amfinder_diagnose as AmfDiagnose
+import amfinder_log as AmfLog
+import amfinder_predict as AmfPredict
 import amfinder_superresolution as AmfSR
-
+import amfinder_train as AmfTrain
 
 
 def main():
-
     AmfConfig.initialize()
-    run_mode = AmfConfig.get('run_mode')
+    run_mode = AmfConfig.get("run_mode")
     input_files = AmfConfig.get_input_files()
 
-    AmfLog.text(f'Mode: {run_mode.upper()}')
-    if run_mode == 'train':
-       
-        if AmfConfig.get('super_resolution'):
-       
+    AmfLog.text(f"Mode: {run_mode.upper()}")
+    if run_mode == "train":
+        if AmfConfig.get("super_resolution"):
             AmfSR.train(input_files)
-        
+
         else:
-       
             AmfTrain.run(input_files)
 
-    elif run_mode == 'predict':
-
+    elif run_mode == "predict":
         AmfPredict.run(input_files)
 
-    elif run_mode == 'convert':
-    
+    elif run_mode == "convert":
         AmfConvert.run(input_files)
 
-    elif run_mode == 'diagnose':
-    
+    elif run_mode == "diagnose":
         AmfDiagnose.run(input_files)
 
     else:
-
         pass
 
 
-
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     main()
