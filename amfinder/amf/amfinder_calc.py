@@ -21,22 +21,19 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from copy import deepcopy 
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input
-import tensorflow.keras.backend as K
+from copy import deepcopy
 
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+import numpy as np
+import tensorflow as tf
+import tensorflow.keras.backend as K
+
 
 def compute_loss(model, input_image, filter_index):
     activation = model(input_image)
     # We avoid border artifacts by only involving non-border pixels in the loss.
     filter_activation = activation[:, 2:-2, 2:-2, filter_index]
     return tf.reduce_mean(filter_activation)
-
 
 
 @tf.function
@@ -50,7 +47,6 @@ def gradient_ascent_step(model, img, filter_index, learning_rate=10.0):
     grads = tf.math.l2_normalize(grads)
     img += learning_rate * grads
     return loss, img
-
 
 
 def deprocess_image(img):
@@ -77,13 +73,12 @@ def visualize_filter(model, filter_index):
     return loss, img
 
 
-
 def make_gradcam_heatmap(img_array, model, pred_index=None):
     # First, we create a model that maps the input image to the activations
     # of the last conv layer as well as the output predictions
-  
+
     grad_model = deepcopy(model)
-    grad_model.outputs = [model.get_layer('C4').output, model.output]
+    grad_model.outputs = [model.get_layer("C4").output, model.output]
     grad_model.summary()
 
     # Then, we compute the gradient of the top predicted class for our input image
@@ -115,9 +110,10 @@ def make_gradcam_heatmap(img_array, model, pred_index=None):
     heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
     return heatmap.numpy()
 
-def normalize(x):
 
+def normalize(x):
     return x / 255.0
+
 
 def get_cam(tile, model):
     tiles = normalize(np.array([tile], np.float32))
