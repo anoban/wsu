@@ -215,7 +215,7 @@ data/*
 cowpea/*
 plots/*
 
-# data files
+# binary files
 MNIST/*
 FashionMNIST/*
 cifar-10-batches-py/*
