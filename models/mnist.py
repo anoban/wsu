@@ -6,7 +6,7 @@ from torch.nn.functional import log_softmax, max_pool2d, nll_loss, relu
 from torch.optim import SGD, Optimizer
 from torch.utils.data import DataLoader
 
-from lib import IdxDataset
+from ..lib import IdxDataset
 
 __doc__ = r"A collection of CNN classifiers with different architecures for MNIST style datasets"
 __all__ = (r"CNN0",)
