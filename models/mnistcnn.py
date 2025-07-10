@@ -9,17 +9,10 @@ from torch.utils.data import DataLoader
 from ..lib import IdxDataset
 
 __doc__ = r"A collection of CNN classifiers with different architecures for MNIST style datasets"
-__all__ = (r"CNN0",)
+__all__ = (r"AdvancedCNN", r"ComplexCNN")
 
 
-class CNN0(nn.Module):
-    """"""
-
-    def __init__(self) -> None:
-        super(CNN0, self).__init__()
-
-
-class CNN1(nn.Module):
+class AdvancedCNN(nn.Module):
     """
     Architecture:
 
@@ -28,7 +21,7 @@ class CNN1(nn.Module):
     def __init__(self, n_channels: int = 1, n_classes: int = 10) -> None:
         """ """
 
-        super(CNN1, self).__init__()  # type: ignore - pyright keeps bitching about __init__()'s type
+        super(AdvancedCNN, self).__init__()  # type: ignore - pyright keeps bitching about __init__()'s type
         self.__nchannels = n_channels  # number of colour channels
         self.__nclasses = n_classes  # number of image classes
 
@@ -70,11 +63,11 @@ class CNN1(nn.Module):
 
         return _input
 
-    def fit(self) -> None:
+    def learn(self) -> None:
         pass
 
 
-class CNN2(nn.Module):
+class ComplexCNN(nn.Module):
     """
     a stripped down MNIST classifier example from https://github.com/pytorch/examples/blob/main/mnist/main.py
 
@@ -85,7 +78,7 @@ class CNN2(nn.Module):
     def __init__(self, n_channels: int = 1, n_classes: int = 10):
         """ """
 
-        super(CNN2, self).__init__()  # type: ignore
+        super(ComplexCNN, self).__init__()  # type: ignore
 
         self._conv_01 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(3, 3), stride=1)
         self._conv_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), stride=1)
@@ -112,7 +105,7 @@ class CNN2(nn.Module):
         output = log_softmax(_image, dim=1)
         return output
 
-    def fit(self, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer) -> None:
+    def learn(self, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer) -> None:
         """
         train the convolutional neural network with the provided dataset and optimizer.
         """
@@ -165,7 +158,7 @@ def main() -> None:
     train_loader = DataLoader(dataset=train, batch_size=1, shuffle=True, num_workers=6)
     test_loader = DataLoader(dataset=test, batch_size=1, shuffle=True, num_workers=6)
 
-    model = CNN1(n_channels=1, n_classes=10)
+    model = AdvancedCNN(n_channels=1, n_classes=10)
 
     optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
     criterion = nn.CrossEntropyLoss()
@@ -190,8 +183,8 @@ def main() -> None:
         num_workers=8,
     )
 
-    model = CNN2()
-    model.fit(trainloader, SGD(params=model.parameters(), lr=0.001))
+    model = ComplexCNN()
+    model.learn(trainloader, SGD(params=model.parameters(), lr=0.001))
     model.evaluate(testloader)
 
 
