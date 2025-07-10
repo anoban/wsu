@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 from torch.nn.functional import relu, softmax
+from torch.utils.data import DataLoader
+
+from ..lib import IdxDataset
 
 __doc__ = r"A collection of CNN classifiers with different architecures for MNIST style datasets"
 __all__ = (r"BareBonesNN",)
@@ -16,11 +19,11 @@ class BareBonesNN(nn.Module):
 
     """
 
-    def __init__(self, n_classes: int = 10) -> None:
+    def __init__(self, n_classes: int = 10, n_iterations: int = 1000) -> None:
         """ """
 
         super(BareBonesNN, self).__init__()  # type: ignore
-
+        self._niterations: int = n_iterations
         self._fucon_01 = nn.Linear(
             in_features=784,  # 28 x 28 pixels
             out_features=784 * 2,
@@ -33,5 +36,12 @@ class BareBonesNN(nn.Module):
         image = self._fucon_02(image)
         return softmax(image)
 
-    def learn(self) -> None:
+    def learn(self, path_images: str, path_labels: str) -> None:
         super().train(mode=True)
+        train_loader = DataLoader(
+            dataset=IdxDataset(idx3_filepath=path_images, idx1_filepath=path_labels), batch_size=1, shuffle=True, num_workers=6
+        )
+
+        for _ in range(self._niterations):
+            for image, label in train_loader:
+                self.forwrad(image=image)
