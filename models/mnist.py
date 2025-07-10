@@ -10,50 +10,53 @@ from lib import IdxDataset
 
 
 class RelNNet(nn.Module):
-    """ """
+    """
+    Architecture:
 
-    def __init__(self, n_channels: int, n_classes: int) -> None:
+    """
+
+    def __init__(self, n_channels: int = 1, n_classes: int = 10) -> None:
         """ """
 
-        super(RelNNet, self).__init__()
+        super(RelNNet, self).__init__()  # type: ignore - pyright keeps bitching about __init__()'s type
         self.__nchannels = n_channels  # number of colour channels
         self.__nclasses = n_classes  # number of image classes
 
         # convolution layers
-        self.__conv_01 = nn.Conv2d(
+        self._conv_01 = nn.Conv2d(
             in_channels=self.__nchannels, out_channels=8, kernel_size=(4, 4), stride=1
         )  # using a 4 x 4 kernel since our images will be 28 x 28
-        self.__conv_02 = nn.Conv2d(
+        self._conv_02 = nn.Conv2d(
             in_channels=8, out_channels=16, kernel_size=(4, 4), stride=1
         )  # in channels of the next layer should match the out channels of the previous layer
 
         # fully connected layers
-        self.__fcon_01 = nn.Linear(
+        self._fcon_01 = nn.Linear(
             in_features=16
             * 7
             * 7,  # last output from the second convolutional layer will have 40 channels, after the two pooling transformations, we'll have 7 x 7 matrices for images
             out_features=64,
         )
-        self.__fcon_02 = nn.Linear(in_features=64, out_features=32)
-        self.__fcon_03 = nn.Linear(in_features=32, out_features=self.__nclasses)
+        self._fcon_02 = nn.Linear(in_features=64, out_features=32)
+        self._fcon_03 = nn.Linear(in_features=32, out_features=self.__nclasses)
 
     @override
     def forward(self, _input: torch.Tensor) -> torch.Tensor:
         """ """
 
         super().train(mode=True)  # set the base class on training mode
-        _input = self.__conv_01(_input)  # apply the first convolution operation
+        _input = self._conv_01(_input)  # apply the first convolution operation
         _input = relu(_input)  # activation
         _input = nn.MaxPool2d(kernel_size=(2, 2), stride=4)(_input)  # apply max pooling, 28 x 28 matrices will become 14 x 14 matrices
 
-        _input = self.__conv_02(_input)  # apply the second convolution
+        _input = self._conv_02(_input)  # apply the second convolution
         _input = relu(_input)  # activation
         _input = nn.AvgPool2d(kernel_size=(2, 2), stride=4)(_input)  # apply average pooling, 14 x 14 matrices will become 7 x 7 matrices
 
         # pass the result through the fully connected layers
-        _input = self.__fcon_01(_input)
-        _input = self.__fcon_02(_input)
-        _input = self.__fcon_03(_input)
+        _input = self._fcon_01(_input)
+        _input = self._fcon_02(_input)
+        _input = self._fcon_03(_input)
 
         return _input
 
@@ -61,17 +64,20 @@ class RelNNet(nn.Module):
 class DropNNet(nn.Module):
     """
     a stripped down MNIST classifier example from https://github.com/pytorch/examples/blob/main/mnist/main.py
+
+    Architecture:
+
     """
 
-    def __init__(self):
+    def __init__(self, n_channels: int = 1, n_classes: int = 10):
         """ """
 
-        super(DropNNet, self).__init__()  # type: ignore - pyright keeps bitching
+        super(DropNNet, self).__init__()  # type: ignore
 
-        self.conv_01 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(3, 3), stride=1)
-        self.conv_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), stride=1)
-        self.fucon_01 = nn.Linear(in_features=9216, out_features=128)
-        self.fucon_02 = nn.Linear(in_features=128, out_features=10)
+        self._conv_01 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(3, 3), stride=1)
+        self._conv_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), stride=1)
+        self._fucon_01 = nn.Linear(in_features=9216, out_features=128)
+        self._fucon_02 = nn.Linear(in_features=128, out_features=10)
 
     @override
     def forward(self, _image: torch.Tensor) -> torch.Tensor:
@@ -79,17 +85,17 @@ class DropNNet(nn.Module):
         carry out the forward pass of the data through the layers of the CNN, applying activation functions where appropriate.
         """
 
-        _image = self.conv_01(_image)
+        _image = self._conv_01(_image)
         _image = relu(_image)
-        _image = self.conv_02(_image)
+        _image = self._conv_02(_image)
         _image = relu(_image)
         _image = max_pool2d(_image, 2)
         _image = nn.Dropout(0.25)(_image)
         _image = torch.flatten(_image, 1)
-        _image = self.fucon_01(_image)
+        _image = self._fucon_01(_image)
         _image = relu(_image)
         _image = nn.Dropout(0.5)(_image)
-        _image = self.fucon_02(_image)
+        _image = self._fucon_02(_image)
         output = log_softmax(_image, dim=1)
         return output
 
