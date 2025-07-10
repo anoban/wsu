@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-from torch.nn.functional import relu, softmax
+from torch.nn.functional import nll_loss, relu, softmax
+from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
 from ..lib import IdxDataset
@@ -36,7 +37,7 @@ class BareBonesNN(nn.Module):
         image = self._fucon_02(image)
         return softmax(image)
 
-    def learn(self, path_images: str, path_labels: str) -> None:
+    def learn(self, path_images: str, path_labels: str, optimizer: Optimizer) -> None:
         super().train(mode=True)
         train_loader = DataLoader(
             dataset=IdxDataset(idx3_filepath=path_images, idx1_filepath=path_labels), batch_size=1, shuffle=True, num_workers=6
@@ -44,4 +45,7 @@ class BareBonesNN(nn.Module):
 
         for _ in range(self._niterations):
             for image, label in train_loader:
-                self.forwrad(image=image)
+                optimizer.zero_grad()
+                result = self.forwrad(image=image)
+                loss = nll_loss(input=result, target=label)
+                loss.backward()
