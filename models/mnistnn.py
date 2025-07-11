@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 
 from ..lib import IdxDataset
 
-__doc__ = r"A collection of CNN classifiers with different architecures for MNIST style datasets"
+__doc__ = r"A collection of NN classifiers with different architecures for MNIST style datasets"
 __all__ = (r"BareBonesNN",)
 
 
