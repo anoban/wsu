@@ -18,7 +18,7 @@ class CNNet(nn.Module):
         n_classes: int - number of image classes
         """
 
-        super(CNNet, self).__init__()
+        super(CNNet, self).__init__()  # type: ignore
         self.__nchannels = n_channels
         self.__nclasses = n_classes
 
