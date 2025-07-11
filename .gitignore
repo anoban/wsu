@@ -212,7 +212,7 @@ data/*
 *.jpg
 *.jpeg
 *.png
-cowpea/*
+RootImages/*
 plots/*
 
 # binary files
