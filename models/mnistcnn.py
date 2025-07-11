@@ -9,7 +9,59 @@ from torch.utils.data import DataLoader
 from ..lib import IdxDataset
 
 __doc__ = r"A collection of CNN classifiers with different architecures for MNIST style datasets"
-__all__ = (r"AdvancedCNN", r"ComplexCNN")
+__all__ = (r"SmallCNN", r"AdvancedCNN", r"ComplexCNN")
+
+
+class SmallCNN(nn.Module):
+    """
+    Architecture:
+
+    """
+
+    def __init__(self, n_channels: int = 1, n_classes: int = 10) -> None:
+        """ """
+
+        super(SmallCNN, self).__init__()  # type: ignore - pyright keeps bitching about __init__()'s type
+        self.__nchannels = n_channels  # number of colour channels
+        self.__nclasses = n_classes  # number of image classes
+
+        # convolution layers
+        self._conv_01 = nn.Conv2d(
+            in_channels=self.__nchannels, out_channels=8, kernel_size=(4, 4), stride=1
+        )  # using a 4 x 4 kernel since our images will be 28 x 28
+        # in channels of the next layer should match the out channels of the previous layer
+
+        # fully connected layers
+        self._fcon_01 = nn.Linear(
+            in_features=16
+            * 7
+            * 7,  # last output from the second convolutional layer will have 40 channels, after the two pooling transformations, we'll have 7 x 7 matrices for images
+            out_features=32,
+        )
+        self._fcon_02 = nn.Linear(in_features=32, out_features=self.__nclasses)
+
+    @override
+    def forward(self, _input: torch.Tensor) -> torch.Tensor:
+        """ """
+
+        super().train(mode=True)  # set the base class on training mode
+        _input = self._conv_01(_input)  # apply the first convolution operation
+        _input = relu(_input)  # activation
+        _input = nn.MaxPool2d(kernel_size=(2, 2), stride=4)(_input)  # apply max pooling, 28 x 28 matrices will become 14 x 14 matrices
+
+        _input = self._conv_02(_input)  # apply the second convolution
+        _input = relu(_input)  # activation
+        _input = nn.AvgPool2d(kernel_size=(2, 2), stride=4)(_input)  # apply average pooling, 14 x 14 matrices will become 7 x 7 matrices
+
+        # pass the result through the fully connected layers
+        _input = self._fcon_01(_input)
+        _input = self._fcon_02(_input)
+        _input = self._fcon_02(_input)
+
+        return _input
+
+    def learn(self) -> None:
+        pass
 
 
 class AdvancedCNN(nn.Module):
