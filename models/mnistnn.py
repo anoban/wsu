@@ -35,7 +35,7 @@ class BareBonesNN(nn.Module):
         image = self._fucon_01(image)
         image = relu(image)
         image = self._fucon_02(image)
-        return softmax(image)
+        return softmax(image, dim=1)
 
     def learn(self, path_images: str, path_labels: str, optimizer: Optimizer) -> None:
         super().train(mode=True)
