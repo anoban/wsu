@@ -12,19 +12,20 @@ __all__ = (r"BareBonesNN",)
 
 class BareBonesNN(nn.Module):
     """
-    Architecture:
+    a barebones neural network that doesn't use convolutional layers
 
+    Architecture::
     input layer   - 01
     hidden layers - 01
     output layer  - 01
 
     """
 
-    def __init__(self, n_classes: int = 10, n_iterations: int = 1000) -> None:
+    def __init__(self, n_classes: int = 10) -> None:
         """ """
 
         super(BareBonesNN, self).__init__()  # type: ignore
-        self._niterations: int = n_iterations
+
         self._fucon_01 = nn.Linear(
             in_features=784,  # 28 x 28 pixels
             out_features=784 * 2,
@@ -37,15 +38,24 @@ class BareBonesNN(nn.Module):
         image = self._fucon_02(image)
         return softmax(image, dim=1)
 
-    def learn(self, path_images: str, path_labels: str, optimizer: Optimizer) -> None:
+    def learn(self, path_images: str, path_labels: str, optimizer: Optimizer, n_epochs: int = 100) -> None:
         super().train(mode=True)
         train_loader = DataLoader(
             dataset=IdxDataset(idx3_filepath=path_images, idx1_filepath=path_labels), batch_size=1, shuffle=True, num_workers=6
         )
 
-        for _ in range(self._niterations):
+        for _ in range(n_epochs):
             for image, label in train_loader:
                 optimizer.zero_grad()
                 result = self.forwrad(image=image)
                 loss = nll_loss(input=result, target=label)
-                loss.backward()
+                loss.backward()  # type: ignore
+                optimizer.step()
+
+    def save(self, path: str) -> None:
+        with open(file=path, mode="rb") as fp:
+            torch.save(obj=self, f=fp)
+
+    def predict(self, image: torch.Tensor) -> torch.Tensor:
+        super().eval()  # equivalent to super().train(mode=False)
+        return self.forward(image).argmax()

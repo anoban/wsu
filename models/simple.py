@@ -6,10 +6,10 @@ from torch.nn.functional import log_softmax, relu
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 
-from lib.idx import IdxDataset
+from ..lib import IdxDataset
 
 
-class SimpleNNet(nn.Module):
+class CNNet(nn.Module):
     """ """
 
     def __init__(self, n_channels: int = 1, n_classes: int = 10) -> None:
@@ -18,7 +18,7 @@ class SimpleNNet(nn.Module):
         n_classes: int - number of image classes
         """
 
-        super(SimpleNNet, self).__init__()
+        super(CNNet, self).__init__()
         self.__nchannels = n_channels
         self.__nclasses = n_classes
 
@@ -77,7 +77,7 @@ def main() -> None:
     train_loader = DataLoader(dataset=train, batch_size=1, shuffle=True, num_workers=6)
     test_loader = DataLoader(dataset=test, batch_size=1, shuffle=True, num_workers=6)
 
-    model = SimpleNNet(n_channels=1, n_classes=10)
+    model = CNNet(n_channels=1, n_classes=10)
 
     optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
     criterion = nn.CrossEntropyLoss()
