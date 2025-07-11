@@ -52,8 +52,11 @@ class BareBonesNN(nn.Module):
                 loss.backward()  # type: ignore
                 optimizer.step()
 
-    def save(self, path: str) -> None:
-        with open(file=path, mode="rb") as fp:
+    def save(self, path_without_extension: str) -> None:
+        """ """
+
+        with open(file=f"{path_without_extension}.trch", mode="rb") as fp:
+            # PyTorch recommends .pt or .pth extensions but .trch sounds way cooler :)
             torch.save(obj=self, f=fp)
 
     def predict(self, image: torch.Tensor) -> torch.Tensor:
