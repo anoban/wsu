@@ -28,9 +28,12 @@ class BareBonesNN(nn.Module):
 
         self._fucon_01 = nn.Linear(
             in_features=784,  # 28 x 28 pixels
-            out_features=784 * 2,
+            out_features=784 * 2,  # this is an arbitrary choice
         )
-        self._fucon_02 = nn.Linear(in_features=784 * 3, out_features=n_classes)
+        self._fucon_02 = nn.Linear(
+            in_features=784 * 2,  # same as the output features of the previous layer
+            out_features=n_classes,
+        )
 
     def forwrad(self, image: torch.Tensor) -> torch.Tensor:
         image = self._fucon_01(image)
