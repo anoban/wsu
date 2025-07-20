@@ -227,3 +227,7 @@ Kuzushiji-MNIST/*
 
 # keep all the explicitly specified dirs
 !.gitkeep
+
+# pytorch models
+*.pt
+*.pth
