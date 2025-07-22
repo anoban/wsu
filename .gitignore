@@ -212,6 +212,9 @@ data/*
 *.jpg
 *.jpeg
 *.png
+*.webp
+*.bmp
+*.tiff
 RootImages/*
 plots/*
 
