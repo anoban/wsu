@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from numpy.typing import NDArray
 
-__all__: tuple[str, ...] = ("rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars")
+__all__: list[str] = ["rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars"]
 
 
 def rgb_image_to_tensor(image: NDArray[np.uint8]) -> torch.Tensor:

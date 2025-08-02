@@ -5,7 +5,7 @@ import torch
 from numpy.typing import NDArray
 from torch.utils.data import Dataset
 
-__all__: tuple[str, ...] = ("IdxDataset",)
+__all__: list[str] = ["IdxDataset"]
 
 
 class IdxDataset(Dataset[torch.Tensor]):
@@ -99,7 +99,7 @@ class IdxDataset(Dataset[torch.Tensor]):
         return self.__idx3_count  # __idx3_count == __idx1_count, so ...
 
     @override
-    def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor]:  # type: ignore
         """
         `Parameters`:
         index: int - the column to return from the matrix.

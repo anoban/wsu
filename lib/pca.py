@@ -1,6 +1,7 @@
 from  matplotlib.axes import Axes
 from sklearn.decomposition import PCA
 
+__all__ :list[str] = ["draw_pca_loadings"]
 
 def draw_pca_loadings(names: tuple[str], colors: tuple[str], vprops: dict[str, str], axis: Axes, model: PCA) -> None:
     """
