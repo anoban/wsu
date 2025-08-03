@@ -3,10 +3,10 @@ from matplotlib.axes import Axes
 from numpy.typing import NDArray
 from sklearn.decomposition import PCA
 
-__all__: list[str] = ["plot_2d_pca_loadings"]
+__all__: list[str] = ["biplot"]
 
 
-def plot_2d_pca_loadings(
+def biplot(
     axis: Axes,
     names: tuple[str],
     colors: tuple[str],
