@@ -1,23 +1,44 @@
-from  matplotlib.axes import Axes
+import numpy as np
+from matplotlib.axes import Axes
+from numpy.typing import NDArray
 from sklearn.decomposition import PCA
 
-__all__ :list[str] = ["draw_pca_loadings"]
+__all__: list[str] = ["plot_2d_pca_loadings"]
 
-def draw_pca_loadings(names: tuple[str], colors: tuple[str], vprops: dict[str, str], axis: Axes, model: PCA) -> None:
+
+def plot_2d_pca_loadings(
+    axis: Axes,
+    names: tuple[str],
+    colors: tuple[str],
+    arrow_props: dict[str, str],
+    label_props: dict[str, str],
+    axis_ticks: bool,
+    model: PCA,
+    projections: NDArray[np.integer | np.floating],
+) -> Axes:
     """
     Lookup the following sources for implementation details::
-
     - https://jakevdp.github.io/PythonDataScienceHandbook/05.09-principal-component-analysis.html
     - https://plotly.com/python/pca-visualization/
     - https://stackoverflow.com/questions/39216897/plot-pca-loadings-and-loading-in-biplot-in-sklearn-like-rs-autoplot
 
-    components define the direction of the vector
-    explained variance defines the squared-length of the vector
     """
 
-    assert(len(names)==len(colors)), ""
+    assert (len(names) == len(colors)) or (len(colors) == 1), ""
 
-    for (label, color, direction, squared_length) in zip(names, colors, model.components_, model.explained_variance_):
+    for label, (dx, dy) in zip(names, np.abs(projections).max(axis=0) * model.components_.T):
+        axis.annotate(  # type: ignore
+            text="",
+            xytext=(0, 0),  # origin of the arrow
+            xy=(dx, dy),  # horizontal and vertical distance to the distal end of the vector from the origin
+            arrowprops=arrow_props,
+        )
+        axis.text(x=dx, y=dy, s=label, fontdict=label_props)  # label the arrow tip # type: ignore
+        axis.set_xlabel(f"PC1 ({model.explained_variance_ratio_[0] * 100:.3f}%)")  # type: ignore
+        axis.set_ylabel(f"PC2 ({model.explained_variance_ratio_[1] * 100:.3f}%)")  # type: ignore
 
-    axis.annotate(arrowprops=vprops, )
-    return
+        if not axis_ticks:
+            axis.set_xticks([])  # type: ignore
+            axis.set_yticks([])  # type: ignore
+
+    return axis
