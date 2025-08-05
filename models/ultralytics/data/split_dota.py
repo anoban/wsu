@@ -10,9 +10,9 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from ultralytics.data.utils import exif_size, img2label_paths
-from ultralytics.utils import TQDM
-from ultralytics.utils.checks import check_requirements
+from ..data.utils import exif_size, img2label_paths
+from ..utils import TQDM
+from ..utils.checks import check_requirements
 
 
 def bbox_iof(polygon1: np.ndarray, bbox2: np.ndarray, eps: float = 1e-6) -> np.ndarray:
@@ -166,12 +166,7 @@ def get_window_obj(anno: Dict[str, Any], windows: np.ndarray, iof_thr: float = 0
 
 
 def crop_and_save(
-    anno: Dict[str, Any],
-    windows: np.ndarray,
-    window_objs: List[np.ndarray],
-    im_dir: str,
-    lb_dir: str,
-    allow_background_images: bool = True,
+    anno: Dict[str, Any], windows: np.ndarray, window_objs: List[np.ndarray], im_dir: str, lb_dir: str, allow_background_images: bool = True
 ) -> None:
     """
     Crop images and save new labels for each window.
@@ -218,11 +213,7 @@ def crop_and_save(
 
 
 def split_images_and_labels(
-    data_root: str,
-    save_dir: str,
-    split: str = "train",
-    crop_sizes: Tuple[int, ...] = (1024,),
-    gaps: Tuple[int, ...] = (200,),
+    data_root: str, save_dir: str, split: str = "train", crop_sizes: Tuple[int, ...] = (1024,), gaps: Tuple[int, ...] = (200,)
 ) -> None:
     """
     Split both images and labels for a given dataset split.
@@ -260,9 +251,7 @@ def split_images_and_labels(
         crop_and_save(anno, windows, window_objs, str(im_dir), str(lb_dir))
 
 
-def split_trainval(
-    data_root: str, save_dir: str, crop_size: int = 1024, gap: int = 200, rates: Tuple[float, ...] = (1.0,)
-) -> None:
+def split_trainval(data_root: str, save_dir: str, crop_size: int = 1024, gap: int = 200, rates: Tuple[float, ...] = (1.0,)) -> None:
     """
     Split train and val sets of DOTA dataset with multiple scaling rates.
 
@@ -299,9 +288,7 @@ def split_trainval(
         split_images_and_labels(data_root, save_dir, split, crop_sizes, gaps)
 
 
-def split_test(
-    data_root: str, save_dir: str, crop_size: int = 1024, gap: int = 200, rates: Tuple[float, ...] = (1.0,)
-) -> None:
+def split_test(data_root: str, save_dir: str, crop_size: int = 1024, gap: int = 200, rates: Tuple[float, ...] = (1.0,)) -> None:
     """
     Split test set of DOTA dataset, labels are not included within this set.
 

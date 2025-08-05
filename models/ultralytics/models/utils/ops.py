@@ -134,11 +134,7 @@ class HungarianMatcher(nn.Module):
         cost_giou = 1.0 - bbox_iou(pred_bboxes.unsqueeze(1), gt_bboxes.unsqueeze(0), xywh=True, GIoU=True).squeeze(-1)
 
         # Combine costs into final cost matrix
-        C = (
-            self.cost_gain["class"] * cost_class
-            + self.cost_gain["bbox"] * cost_bbox
-            + self.cost_gain["giou"] * cost_giou
-        )
+        C = self.cost_gain["class"] * cost_class + self.cost_gain["bbox"] * cost_bbox + self.cost_gain["giou"] * cost_giou
 
         # Add mask costs if available
         if self.with_mask:
@@ -150,10 +146,7 @@ class HungarianMatcher(nn.Module):
         C = C.view(bs, nq, -1).cpu()
         indices = [linear_sum_assignment(c[i]) for i, c in enumerate(C.split(gt_groups, -1))]
         gt_groups = torch.as_tensor([0, *gt_groups[:-1]]).cumsum_(0)  # (idx for queries, idx for gt)
-        return [
-            (torch.tensor(i, dtype=torch.long), torch.tensor(j, dtype=torch.long) + gt_groups[k])
-            for k, (i, j) in enumerate(indices)
-        ]
+        return [(torch.tensor(i, dtype=torch.long), torch.tensor(j, dtype=torch.long) + gt_groups[k]) for k, (i, j) in enumerate(indices)]
 
     # This function is for future RT-DETR Segment models
     # def _cost_mask(self, bs, num_gts, masks=None, gt_mask=None):
@@ -309,9 +302,4 @@ def get_cdn_group(
         "dn_num_split": [num_dn, num_queries],
     }
 
-    return (
-        padding_cls.to(class_embed.device),
-        padding_bbox.to(class_embed.device),
-        attn_mask.to(class_embed.device),
-        dn_meta,
-    )
+    return (padding_cls.to(class_embed.device), padding_bbox.to(class_embed.device), attn_mask.to(class_embed.device), dn_meta)

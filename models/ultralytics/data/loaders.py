@@ -15,10 +15,10 @@ import numpy as np
 import torch
 from PIL import Image
 
-from ultralytics.data.utils import FORMATS_HELP_MSG, IMG_FORMATS, VID_FORMATS
-from ultralytics.utils import IS_COLAB, IS_KAGGLE, LOGGER, ops
-from ultralytics.utils.checks import check_requirements
-from ultralytics.utils.patches import imread
+from ..data.utils import FORMATS_HELP_MSG, IMG_FORMATS, VID_FORMATS
+from ..utils import IS_COLAB, IS_KAGGLE, LOGGER, ops
+from ..utils.checks import check_requirements
+from ..utils.patches import imread
 
 
 @dataclass
@@ -127,8 +127,7 @@ class LoadStreams:
             s = eval(s) if s.isnumeric() else s  # i.e. s = '0' local webcam
             if s == 0 and (IS_COLAB or IS_KAGGLE):
                 raise NotImplementedError(
-                    "'source=0' webcam not supported in Colab and Kaggle notebooks. "
-                    "Try running 'source=0' in a local environment."
+                    "'source=0' webcam not supported in Colab and Kaggle notebooks. Try running 'source=0' in a local environment."
                 )
             self.caps[i] = cv2.VideoCapture(s)  # store video capture object
             if not self.caps[i].isOpened():
@@ -136,9 +135,7 @@ class LoadStreams:
             w = int(self.caps[i].get(cv2.CAP_PROP_FRAME_WIDTH))
             h = int(self.caps[i].get(cv2.CAP_PROP_FRAME_HEIGHT))
             fps = self.caps[i].get(cv2.CAP_PROP_FPS)  # warning: may return 0 or nan
-            self.frames[i] = max(int(self.caps[i].get(cv2.CAP_PROP_FRAME_COUNT)), 0) or float(
-                "inf"
-            )  # infinite stream fallback
+            self.frames[i] = max(int(self.caps[i].get(cv2.CAP_PROP_FRAME_COUNT)), 0) or float("inf")  # infinite stream fallback
             self.fps[i] = max((fps if math.isfinite(fps) else 0) % 100, 0) or 30  # 30 FPS fallback
 
             success, im = self.caps[i].read()  # guarantee first frame
@@ -161,9 +158,7 @@ class LoadStreams:
                 cap.grab()  # .read() = .grab() followed by .retrieve()
                 if n % self.vid_stride == 0:
                     success, im = cap.retrieve()
-                    im = (
-                        cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)[..., None] if self.cv2_flag == cv2.IMREAD_GRAYSCALE else im
-                    )
+                    im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)[..., None] if self.cv2_flag == cv2.IMREAD_GRAYSCALE else im
                     if not success:
                         im = np.zeros(self.shape[i], dtype=np.uint8)
                         LOGGER.warning("Video stream unresponsive, please check your IP camera connection.")
@@ -426,11 +421,7 @@ class LoadImagesAndVideos:
 
                 if success:
                     success, im0 = self.cap.retrieve()
-                    im0 = (
-                        cv2.cvtColor(im0, cv2.COLOR_BGR2GRAY)[..., None]
-                        if self.cv2_flag == cv2.IMREAD_GRAYSCALE
-                        else im0
-                    )
+                    im0 = cv2.cvtColor(im0, cv2.COLOR_BGR2GRAY)[..., None] if self.cv2_flag == cv2.IMREAD_GRAYSCALE else im0
                     if success:
                         self.frame += 1
                         paths.append(path)
@@ -611,9 +602,7 @@ class LoadTensor:
         if im.shape[2] % stride or im.shape[3] % stride:
             raise ValueError(s)
         if im.max() > 1.0 + torch.finfo(im.dtype).eps:  # torch.float32 eps is 1.2e-07
-            LOGGER.warning(
-                f"torch.Tensor inputs should be normalized 0.0-1.0 but max value is {im.max()}. Dividing input by 255."
-            )
+            LOGGER.warning(f"torch.Tensor inputs should be normalized 0.0-1.0 but max value is {im.max()}. Dividing input by 255.")
             im = im.float() / 255.0
 
         return im

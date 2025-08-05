@@ -15,24 +15,11 @@ import cv2
 import numpy as np
 from PIL import Image, ImageOps
 
-from ultralytics.nn.autobackend import check_class_names
-from ultralytics.utils import (
-    DATASETS_DIR,
-    LOGGER,
-    MACOS,
-    NUM_THREADS,
-    ROOT,
-    SETTINGS_FILE,
-    TQDM,
-    YAML,
-    clean_url,
-    colorstr,
-    emojis,
-    is_dir_writeable,
-)
-from ultralytics.utils.checks import check_file, check_font, is_ascii
-from ultralytics.utils.downloads import download, safe_download, unzip_file
-from ultralytics.utils.ops import segments2boxes
+from ..nn.autobackend import check_class_names
+from ..utils import DATASETS_DIR, LOGGER, MACOS, NUM_THREADS, ROOT, SETTINGS_FILE, TQDM, YAML, clean_url, colorstr, emojis, is_dir_writeable
+from ..utils.checks import check_file, check_font, is_ascii
+from ..utils.downloads import download, safe_download, unzip_file
+from ..utils.ops import segments2boxes
 
 HELP_URL = "See https://docs.ultralytics.com/datasets for dataset formatting guidance."
 IMG_FORMATS = {"bmp", "dng", "jpeg", "jpg", "mpo", "png", "tif", "tiff", "webp", "pfm", "heic"}  # image suffixes
@@ -47,9 +34,7 @@ def img2label_paths(img_paths: List[str]) -> List[str]:
     return [sb.join(x.rsplit(sa, 1)).rsplit(".", 1)[0] + ".txt" for x in img_paths]
 
 
-def check_file_speeds(
-    files: List[str], threshold_ms: float = 10, threshold_mb: float = 50, max_files: int = 5, prefix: str = ""
-):
+def check_file_speeds(files: List[str], threshold_ms: float = 10, threshold_mb: float = 50, max_files: int = 5, prefix: str = ""):
     """
     Check dataset file access speed and provide performance feedback.
 
@@ -223,8 +208,7 @@ def verify_image_label(args: Tuple) -> List:
                     lb[:, 0] = 0
                 max_cls = lb[:, 0].max()  # max label count
                 assert max_cls < num_cls, (
-                    f"Label class {int(max_cls)} exceeds dataset class count {num_cls}. "
-                    f"Possible class labels are 0-{num_cls - 1}"
+                    f"Label class {int(max_cls)} exceeds dataset class count {num_cls}. Possible class labels are 0-{num_cls - 1}"
                 )
                 _, i = np.unique(lb, axis=0, return_index=True)
                 if len(i) < nl:  # duplicate row check
@@ -295,9 +279,7 @@ def visualize_image_annotations(image_path: str, txt_path: str, label_map: Dict[
     plt.show()
 
 
-def polygon2mask(
-    imgsz: Tuple[int, int], polygons: List[np.ndarray], color: int = 1, downsample_ratio: int = 1
-) -> np.ndarray:
+def polygon2mask(imgsz: Tuple[int, int], polygons: List[np.ndarray], color: int = 1, downsample_ratio: int = 1) -> np.ndarray:
     """
     Convert a list of polygons to a binary mask of the specified image size.
 
@@ -320,9 +302,7 @@ def polygon2mask(
     return cv2.resize(mask, (nw, nh))
 
 
-def polygons2masks(
-    imgsz: Tuple[int, int], polygons: List[np.ndarray], color: int, downsample_ratio: int = 1
-) -> np.ndarray:
+def polygons2masks(imgsz: Tuple[int, int], polygons: List[np.ndarray], color: int, downsample_ratio: int = 1) -> np.ndarray:
     """
     Convert a list of polygons to a set of binary masks of the specified image size.
 
@@ -339,14 +319,9 @@ def polygons2masks(
     return np.array([polygon2mask(imgsz, [x.reshape(-1)], color, downsample_ratio) for x in polygons])
 
 
-def polygons2masks_overlap(
-    imgsz: Tuple[int, int], segments: List[np.ndarray], downsample_ratio: int = 1
-) -> Tuple[np.ndarray, np.ndarray]:
+def polygons2masks_overlap(imgsz: Tuple[int, int], segments: List[np.ndarray], downsample_ratio: int = 1) -> Tuple[np.ndarray, np.ndarray]:
     """Return a (640, 640) overlap mask."""
-    masks = np.zeros(
-        (imgsz[0] // downsample_ratio, imgsz[1] // downsample_ratio),
-        dtype=np.int32 if len(segments) > 255 else np.uint8,
-    )
+    masks = np.zeros((imgsz[0] // downsample_ratio, imgsz[1] // downsample_ratio), dtype=np.int32 if len(segments) > 255 else np.uint8)
     areas = []
     ms = []
     for si in range(len(segments)):
@@ -415,9 +390,7 @@ def check_det_dataset(dataset: str, autodownload: bool = True) -> Dict[str, Any]
     for k in "train", "val":
         if k not in data:
             if k != "val" or "validation" not in data:
-                raise SyntaxError(
-                    emojis(f"{dataset} '{k}:' key missing ❌.\n'train' and 'val' are required in all data YAMLs.")
-                )
+                raise SyntaxError(emojis(f"{dataset} '{k}:' key missing ❌.\n'train' and 'val' are required in all data YAMLs."))
             LOGGER.warning("renaming data YAML 'validation' key to 'val' to match YOLO format.")
             data["val"] = data.pop("validation")  # replace 'validation' key with 'val' key
     if "names" not in data and "nc" not in data:
@@ -641,9 +614,7 @@ class HUBDatasetStats:
         if not str(path).endswith(".zip"):  # path is data.yaml
             return False, None, path
         unzip_dir = unzip_file(path, path=path.parent)
-        assert unzip_dir.is_dir(), (
-            f"Error unzipping {path}, {unzip_dir} not found. path/to/abc.zip MUST unzip to path/to/abc/"
-        )
+        assert unzip_dir.is_dir(), f"Error unzipping {path}, {unzip_dir} not found. path/to/abc.zip MUST unzip to path/to/abc/"
         return True, str(unzip_dir), find_dataset_yaml(unzip_dir)  # zipped, data_dir, yaml_path
 
     def _hub_ops(self, f: str):

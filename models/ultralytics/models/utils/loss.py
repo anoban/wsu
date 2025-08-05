@@ -119,9 +119,7 @@ class DETRLoss(nn.Module):
 
         return {name_class: loss_cls.squeeze() * self.loss_gain["class"]}
 
-    def _get_loss_bbox(
-        self, pred_bboxes: torch.Tensor, gt_bboxes: torch.Tensor, postfix: str = ""
-    ) -> Dict[str, torch.Tensor]:
+    def _get_loss_bbox(self, pred_bboxes: torch.Tensor, gt_bboxes: torch.Tensor, postfix: str = "") -> Dict[str, torch.Tensor]:
         """
         Compute bounding box and GIoU losses for predicted and ground truth bounding boxes.
 
@@ -247,11 +245,7 @@ class DETRLoss(nn.Module):
             #     loss[3] += loss_[f'loss_mask{postfix}']
             #     loss[4] += loss_[f'loss_dice{postfix}']
 
-        loss = {
-            f"loss_class_aux{postfix}": loss[0],
-            f"loss_bbox_aux{postfix}": loss[1],
-            f"loss_giou_aux{postfix}": loss[2],
-        }
+        loss = {f"loss_class_aux{postfix}": loss[0], f"loss_bbox_aux{postfix}": loss[1], f"loss_giou_aux{postfix}": loss[2]}
         # if masks is not None and gt_mask is not None:
         #     loss[f'loss_mask_aux{postfix}'] = loss[3]
         #     loss[f'loss_dice_aux{postfix}'] = loss[4]
@@ -290,16 +284,10 @@ class DETRLoss(nn.Module):
             gt_assigned (torch.Tensor): Assigned ground truth bounding boxes.
         """
         pred_assigned = torch.cat(
-            [
-                t[i] if len(i) > 0 else torch.zeros(0, t.shape[-1], device=self.device)
-                for t, (i, _) in zip(pred_bboxes, match_indices)
-            ]
+            [t[i] if len(i) > 0 else torch.zeros(0, t.shape[-1], device=self.device) for t, (i, _) in zip(pred_bboxes, match_indices)]
         )
         gt_assigned = torch.cat(
-            [
-                t[j] if len(j) > 0 else torch.zeros(0, t.shape[-1], device=self.device)
-                for t, (_, j) in zip(gt_bboxes, match_indices)
-            ]
+            [t[j] if len(j) > 0 else torch.zeros(0, t.shape[-1], device=self.device) for t, (_, j) in zip(gt_bboxes, match_indices)]
         )
         return pred_assigned, gt_assigned
 
@@ -333,9 +321,7 @@ class DETRLoss(nn.Module):
             (Dict[str, torch.Tensor]): Dictionary of losses.
         """
         if match_indices is None:
-            match_indices = self.matcher(
-                pred_bboxes, pred_scores, gt_bboxes, gt_cls, gt_groups, masks=masks, gt_mask=gt_mask
-            )
+            match_indices = self.matcher(pred_bboxes, pred_scores, gt_bboxes, gt_cls, gt_groups, masks=masks, gt_mask=gt_mask)
 
         idx, gt_idx = self._get_index(match_indices)
         pred_bboxes, gt_bboxes = pred_bboxes[idx], gt_bboxes[gt_idx]
@@ -355,12 +341,7 @@ class DETRLoss(nn.Module):
         }
 
     def forward(
-        self,
-        pred_bboxes: torch.Tensor,
-        pred_scores: torch.Tensor,
-        batch: Dict[str, Any],
-        postfix: str = "",
-        **kwargs: Any,
+        self, pred_bboxes: torch.Tensor, pred_scores: torch.Tensor, batch: Dict[str, Any], postfix: str = "", **kwargs: Any
     ) -> Dict[str, torch.Tensor]:
         """
         Calculate loss for predicted bounding boxes and scores.
@@ -388,11 +369,7 @@ class DETRLoss(nn.Module):
         )
 
         if self.aux_loss:
-            total_loss.update(
-                self._get_loss_aux(
-                    pred_bboxes[:-1], pred_scores[:-1], gt_bboxes, gt_cls, gt_groups, match_indices, postfix
-                )
-            )
+            total_loss.update(self._get_loss_aux(pred_bboxes[:-1], pred_scores[:-1], gt_bboxes, gt_cls, gt_groups, match_indices, postfix))
 
         return total_loss
 

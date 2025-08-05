@@ -8,20 +8,10 @@ import numpy as np
 import torch
 from PIL import Image
 
-from ultralytics.cfg import TASK2DATA, get_cfg, get_save_dir
-from ultralytics.engine.results import Results
-from ultralytics.nn.tasks import attempt_load_one_weight, guess_model_task, yaml_model_load
-from ultralytics.utils import (
-    ARGV,
-    ASSETS,
-    DEFAULT_CFG_DICT,
-    LOGGER,
-    RANK,
-    SETTINGS,
-    YAML,
-    callbacks,
-    checks,
-)
+from ..cfg import TASK2DATA, get_cfg, get_save_dir
+from ..engine.results import Results
+from ..nn.tasks import attempt_load_one_weight, guess_model_task, yaml_model_load
+from ..utils import ARGV, DEFAULT_CFG_DICT, LOGGER, RANK, SETTINGS, YAML, callbacks, checks
 
 
 class Model(torch.nn.Module):
@@ -77,12 +67,7 @@ class Model(torch.nn.Module):
         >>> model.export(format="onnx")
     """
 
-    def __init__(
-        self,
-        model: Union[str, Path, "Model"] = "yolo11n.pt",
-        task: str = None,
-        verbose: bool = False,
-    ) -> None:
+    def __init__(self, model: Union[str, Path, "Model"] = "yolo11n.pt", task: str = None, verbose: bool = False) -> None:
         """
         Initialize a new instance of the YOLO model class.
 
@@ -154,10 +139,7 @@ class Model(torch.nn.Module):
         del self.training
 
     def __call__(
-        self,
-        source: Union[str, Path, int, Image.Image, list, tuple, np.ndarray, torch.Tensor] = None,
-        stream: bool = False,
-        **kwargs: Any,
+        self, source: Union[str, Path, int, Image.Image, list, tuple, np.ndarray, torch.Tensor] = None, stream: bool = False, **kwargs: Any
     ) -> list:
         """
         Alias for the predict method, enabling the model instance to be callable for predictions.
@@ -463,10 +445,7 @@ class Model(torch.nn.Module):
         self.model.fuse()
 
     def embed(
-        self,
-        source: Union[str, Path, int, list, tuple, np.ndarray, torch.Tensor] = None,
-        stream: bool = False,
-        **kwargs: Any,
+        self, source: Union[str, Path, int, list, tuple, np.ndarray, torch.Tensor] = None, stream: bool = False, **kwargs: Any
     ) -> list:
         """
         Generate image embeddings based on the provided source.
@@ -493,13 +472,7 @@ class Model(torch.nn.Module):
             kwargs["embed"] = [len(self.model.model) - 2]  # embed second-to-last layer if no indices passed
         return self.predict(source, stream, **kwargs)
 
-    def predict(
-        self,
-        source: Union[str, Path, int, Image.Image, list, tuple, np.ndarray, torch.Tensor] = None,
-        stream: bool = False,
-        predictor=None,
-        **kwargs: Any,
-    ) -> List[Results]:
+    def predict(self, source: torch.Tensor, stream: bool = False, predictor=None, **kwargs: Any) -> List[Results]:
         """
         Perform predictions on the given image source using the YOLO model.
 
@@ -531,9 +504,6 @@ class Model(torch.nn.Module):
             - The method sets up a new predictor if not already present and updates its arguments with each call.
             - For SAM-type models, 'prompts' can be passed as a keyword argument.
         """
-        if source is None:
-            source = "https://ultralytics.com/images/boats.jpg" if self.task == "obb" else ASSETS
-            LOGGER.warning(f"'source' is missing. Using 'source={source}'.")
 
         is_cli = (ARGV[0].endswith("yolo") or ARGV[0].endswith("ultralytics")) and any(
             x in ARGV for x in ("predict", "track", "mode=predict", "mode=track")
@@ -598,11 +568,7 @@ class Model(torch.nn.Module):
         kwargs["mode"] = "track"
         return self.predict(source=source, stream=stream, **kwargs)
 
-    def val(
-        self,
-        validator=None,
-        **kwargs: Any,
-    ):
+    def val(self, validator=None, **kwargs: Any):
         """
         Validate the model using a specified dataset and validation configuration.
 
@@ -685,10 +651,7 @@ class Model(torch.nn.Module):
             **export_kwargs,
         )
 
-    def export(
-        self,
-        **kwargs: Any,
-    ) -> str:
+    def export(self, **kwargs: Any) -> str:
         """
         Export the model to a different format suitable for deployment.
 
@@ -733,11 +696,7 @@ class Model(torch.nn.Module):
         args = {**self.overrides, **custom, **kwargs, "mode": "export"}  # highest priority args on the right
         return Exporter(overrides=args, _callbacks=self.callbacks)(model=self.model)
 
-    def train(
-        self,
-        trainer=None,
-        **kwargs: Any,
-    ):
+    def train(self, trainer=None, **kwargs: Any):
         """
         Train the model using the specified dataset and training configuration.
 
@@ -805,13 +764,7 @@ class Model(torch.nn.Module):
             self.metrics = getattr(self.trainer.validator, "metrics", None)  # TODO: no metrics returned by DDP
         return self.metrics
 
-    def tune(
-        self,
-        use_ray=False,
-        iterations=10,
-        *args: Any,
-        **kwargs: Any,
-    ):
+    def tune(self, use_ray=False, iterations=10, *args: Any, **kwargs: Any):
         """
         Conduct hyperparameter tuning for the model, with an option to use Ray Tune.
 
