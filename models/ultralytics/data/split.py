@@ -5,8 +5,8 @@ import shutil
 from pathlib import Path
 from typing import Tuple, Union
 
-from ultralytics.data.utils import IMG_FORMATS, img2label_paths
-from ultralytics.utils import DATASETS_DIR, LOGGER, TQDM
+from ..data.utils import IMG_FORMATS, img2label_paths
+from .utils import DATASETS_DIR, LOGGER, TQDM
 
 
 def split_classify_dataset(source_dir: Union[str, Path], train_ratio: float = 0.8) -> Path:
@@ -96,9 +96,7 @@ def split_classify_dataset(source_dir: Union[str, Path], train_ratio: float = 0.
 
 
 def autosplit(
-    path: Path = DATASETS_DIR / "coco8/images",
-    weights: Tuple[float, float, float] = (0.9, 0.1, 0.0),
-    annotated_only: bool = False,
+    path: Path = DATASETS_DIR / "coco8/images", weights: Tuple[float, float, float] = (0.9, 0.1, 0.0), annotated_only: bool = False
 ) -> None:
     """
     Automatically split a dataset into train/val/test splits and save the resulting splits into autosplit_*.txt files.

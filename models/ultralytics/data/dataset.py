@@ -13,25 +13,17 @@ import torch
 from PIL import Image
 from torch.utils.data import ConcatDataset
 
-from ultralytics.utils import LOCAL_RANK, LOGGER, NUM_THREADS, TQDM, colorstr
-from ultralytics.utils.instance import Instances
-from ultralytics.utils.ops import resample_segments, segments2boxes
-from ultralytics.utils.torch_utils import TORCHVISION_0_18
-
-from .augment import (
-    Compose,
-    Format,
-    LetterBox,
-    RandomLoadText,
-    classify_augmentations,
-    classify_transforms,
-    v8_transforms,
-)
+from .augment import Compose, Format, LetterBox, RandomLoadText, classify_augmentations, classify_transforms, v8_transforms
 from .base import BaseDataset
 from .converter import merge_multi_segment
 from .utils import (
     HELP_URL,
+    LOCAL_RANK,
+    LOGGER,
+    NUM_THREADS,
+    TQDM,
     check_file_speeds,
+    colorstr,
     get_hash,
     img2label_paths,
     load_dataset_cache_file,
@@ -39,6 +31,9 @@ from .utils import (
     verify_image,
     verify_image_label,
 )
+from .utils.instance import Instances
+from .utils.ops import resample_segments, segments2boxes
+from .utils.torch_utils import TORCHVISION_0_18
 
 # Ultralytics dataset *.cache version, >= 1.0.0 for Ultralytics YOLO models
 DATASET_CACHE_VERSION = "1.0.3"
@@ -185,9 +180,7 @@ class YOLODataset(BaseDataset):
         [cache.pop(k) for k in ("hash", "version", "msgs")]  # remove items
         labels = cache["labels"]
         if not labels:
-            raise RuntimeError(
-                f"No valid images found in {cache_path}. Images with incorrectly formatted labels are ignored. {HELP_URL}"
-            )
+            raise RuntimeError(f"No valid images found in {cache_path}. Images with incorrectly formatted labels are ignored. {HELP_URL}")
         self.im_files = [lb["im_file"] for lb in labels]  # update im_files
 
         # Check if the dataset is all boxes or all segments
@@ -377,9 +370,7 @@ class YOLOMultiModalDataset(YOLODataset):
             # the strategy of selecting negative is restricted in one dataset,
             # while official pre-saved neg embeddings from all datasets at once.
             transform = RandomLoadText(
-                max_samples=min(self.data["nc"], 80),
-                padding=True,
-                padding_value=self._get_neg_texts(self.category_freq),
+                max_samples=min(self.data["nc"], 80), padding=True, padding_value=self._get_neg_texts(self.category_freq)
             )
             transforms.insert(-1, transform)
         return transforms
@@ -558,11 +549,7 @@ class GroundingDataset(YOLODataset):
                             s = (np.concatenate(s, axis=0) / np.array([w, h], dtype=np.float32)).reshape(-1).tolist()
                         else:
                             s = [j for i in ann["segmentation"] for j in i]  # all segments concatenated
-                            s = (
-                                (np.array(s, dtype=np.float32).reshape(-1, 2) / np.array([w, h], dtype=np.float32))
-                                .reshape(-1)
-                                .tolist()
-                            )
+                            s = (np.array(s, dtype=np.float32).reshape(-1, 2) / np.array([w, h], dtype=np.float32)).reshape(-1).tolist()
                         s = [cls] + s
                         segments.append(s)
             lb = np.array(bboxes, dtype=np.float32) if len(bboxes) else np.zeros((0, 5), dtype=np.float32)
@@ -628,9 +615,7 @@ class GroundingDataset(YOLODataset):
             # the strategy of selecting negative is restricted in one dataset,
             # while official pre-saved neg embeddings from all datasets at once.
             transform = RandomLoadText(
-                max_samples=min(self.max_samples, 80),
-                padding=True,
-                padding_value=self._get_neg_texts(self.category_freq),
+                max_samples=min(self.max_samples, 80), padding=True, padding_value=self._get_neg_texts(self.category_freq)
             )
             transforms.insert(-1, transform)
         return transforms
