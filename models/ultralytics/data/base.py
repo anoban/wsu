@@ -120,6 +120,7 @@ class BaseDataset(Dataset):
         self.batch_size = batch_size
         self.stride = stride
         self.pad = pad
+
         if self.rect:
             assert self.batch_size is not None
             self.set_rectangle()
