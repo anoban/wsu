@@ -3,7 +3,7 @@ from matplotlib.axes import Axes
 from numpy.typing import NDArray
 from sklearn.decomposition import PCA
 
-__all__: list[str] = ["biplot"]
+__all__: list[str] = ["biplot", "screeplot"]
 
 
 def biplot(
@@ -24,7 +24,8 @@ def biplot(
 
     """
 
-    assert (len(names) == len(colors)) or (len(colors) == 1), ""
+    if (len(names) == len(colors)) or (len(colors) == 1):
+        raise ValueError("Mismatch in the lengths of names and colours!")
 
     for label, (dx, dy) in zip(names, np.abs(projections).max(axis=0) * model.components_.T):
         axis.annotate(  # type: ignore
@@ -41,4 +42,11 @@ def biplot(
             axis.set_xticks([])  # type: ignore
             axis.set_yticks([])  # type: ignore
 
+    return axis
+
+
+# INCOMPLETE
+def screeplot(axis: Axes, color: str, line_props: dict[str, str], model: PCA) -> Axes:
+    """ """
+    axis.plot(model.explained_variance_, *line_props, color=color)  # type: ignore
     return axis
