@@ -1,10 +1,12 @@
 import numpy as np
 import torch
+from numba import njit  # type: ignore
 from numpy.typing import NDArray
 
 __all__: list[str] = ["rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars"]
 
 
+@njit(fastmath=True, parallel=False)  # type: ignore
 def rgb_image_to_tensor(image: NDArray[np.uint8]) -> torch.Tensor:
     """
     input is expected to be a H x W matrix made of [R, G, B] channels
@@ -26,16 +28,18 @@ def rgb_image_to_tensor(image: NDArray[np.uint8]) -> torch.Tensor:
     return result
 
 
+@njit(fastmath=True, parallel=False)  # type: ignore
 def tensor_to_rgb_image(tensor: torch.Tensor) -> NDArray[np.float32]:
     """
     transforms a tensor of R, G & B matrices into a matrix of [R, G, B] pixels
     i.e from (3, H, W) to (H, W, 3)
     """
 
-    return np.stack(tensor, axis=-1, dtype=np.float32)
+    return np.stack(tensor.numpy(force=False), axis=-1, dtype=np.float32)  # type: ignore
 
 
-@torch.no_grad  # type: ignore
+@torch.no_grad()  # type: ignore
+@njit(fastmath=True, parallel=False)  # type: ignore
 def downscale_to_uchars(tensor: torch.Tensor | NDArray[np.floating]) -> torch.Tensor | NDArray[np.uint8]:
     """
     scales a tensor or array of floats with unknown bounds into a tensor or array of uint8s with an inclusive range [0, 255]

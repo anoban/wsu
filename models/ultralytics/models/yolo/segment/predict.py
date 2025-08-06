@@ -1,8 +1,8 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-from ultralytics.engine.results import Results
-from ultralytics.models.yolo.detect.predict import DetectionPredictor
-from ultralytics.utils import DEFAULT_CFG, ops
+from .engine.results import Results
+from .models.yolo.detect.predict import DetectionPredictor
+from .utils import DEFAULT_CFG, ops
 
 
 class SegmentationPredictor(DetectionPredictor):
