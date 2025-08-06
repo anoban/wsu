@@ -26,7 +26,8 @@ def biplot(
 
     if (len(names) == len(colors)) or (len(colors) == 1):
         raise ValueError("Mismatch in the lengths of names and colours!")
-
+    axis.scatter(x=projections[:, 0], y=projections[:, 1], edgecolor="black", c=,#
+                  alpha=0.75)
     for label, (dx, dy) in zip(names, np.abs(projections).max(axis=0) * model.components_.T):
         axis.annotate(  # type: ignore
             text="",
