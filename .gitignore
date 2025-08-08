@@ -223,17 +223,14 @@ plots/*
 *.mpeg
 
 # binary files
-MNIST/*
-FashionMNIST/*
-cifar-10-batches-py/*
-Kuzushiji-49/*
-Kuzushiji-MNIST/*
+
 
 # trained .hdf5 models
 *.h5
 
 # keep all the explicitly specified dirs
 !.gitkeep
+!.keep
 
 # pytorch models
 *.pt
