@@ -235,3 +235,6 @@ plots/*
 # pytorch models
 *.pt
 *.pth
+
+# R crap
+.Rhistory
