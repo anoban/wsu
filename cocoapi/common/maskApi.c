@@ -9,16 +9,16 @@
 
 #include "maskApi.h"
 
-uint umin(uint a, uint b) { return (a < b) ? a : b; }
+uint32_t umin(uint32_t a, uint32_t b) { return (a < b) ? a : b; }
 
-uint umax(uint a, uint b) { return (a > b) ? a : b; }
+uint32_t umax(uint32_t a, uint32_t b) { return (a > b) ? a : b; }
 
-void rleInit(RLE* R, siz h, siz w, siz m, uint* cnts) {
+void rleInit(RLE* R, uint64_t h, uint64_t w, uint64_t m, uint32_t* cnts) {
     R->h    = h;
     R->w    = w;
     R->m    = m;
-    R->cnts = (m == 0) ? 0 : malloc(sizeof(uint) * m);
-    siz j;
+    R->cnts = (m == 0) ? 0 : malloc(sizeof(uint32_t) * m);
+    uint64_t j;
     if (cnts)
         for (j = 0; j < m; j++) R->cnts[j] = cnts[j];
 }
@@ -28,29 +28,29 @@ void rleFree(RLE* R) {
     R->cnts = 0;
 }
 
-void rlesInit(RLE** R, siz n) {
-    siz i;
+void rlesInit(RLE** R, uint64_t n) {
+    uint64_t i;
     *R = (RLE*) malloc(sizeof(RLE) * n);
     for (i = 0; i < n; i++) rleInit((*R) + i, 0, 0, 0, 0);
 }
 
-void rlesFree(RLE** R, siz n) {
-    siz i;
+void rlesFree(RLE** R, uint64_t n) {
+    uint64_t i;
     for (i = 0; i < n; i++) rleFree((*R) + i);
     free(*R);
     *R = 0;
 }
 
-void rleEncode(RLE* R, const byte* M, siz h, siz w, siz n) {
-    siz  i, j, k, a = w * h;
-    uint c, *cnts;
-    byte p;
-    cnts = malloc(sizeof(uint) * (a + 1));
+void rleEncode(RLE* R, const uint8_t* M, uint64_t h, uint64_t w, uint64_t n) {
+    uint64_t i, j, k, a = w * h;
+    uint32_t c, *cnts;
+    uint8_t  p;
+    cnts = malloc(sizeof(uint32_t) * (a + 1));
     for (i = 0; i < n; i++) {
-        const byte* T = M + a * i;
-        k             = 0;
-        p             = 0;
-        c             = 0;
+        const uint8_t* T = M + a * i;
+        k                = 0;
+        p                = 0;
+        c                = 0;
         for (j = 0; j < a; j++) {
             if (T[j] != p) {
                 cnts[k++] = c;
@@ -65,10 +65,10 @@ void rleEncode(RLE* R, const byte* M, siz h, siz w, siz n) {
     free(cnts);
 }
 
-void rleDecode(const RLE* R, byte* M, siz n) {
-    siz i, j, k;
+void rleDecode(const RLE* R, uint8_t* M, uint64_t n) {
+    uint64_t i, j, k;
     for (i = 0; i < n; i++) {
-        byte v = 0;
+        uint8_t v = 0;
         for (j = 0; j < R[i].m; j++) {
             for (k = 0; k < R[i].cnts[j]; k++) *(M++) = v;
             v = !v;
@@ -76,11 +76,11 @@ void rleDecode(const RLE* R, byte* M, siz n) {
     }
 }
 
-void rleMerge(const RLE* R, RLE* M, siz n, int intersect) {
-    uint *cnts, c, ca, cb, cc, ct;
-    int   v, va, vb, vp;
-    siz   i, a, b, h = R[0].h, w = R[0].w, m = R[0].m;
-    RLE   A, B;
+void rleMerge(const RLE* R, RLE* M, uint64_t n, int intersect) {
+    uint32_t *cnts, c, ca, cb, cc, ct;
+    int       v, va, vb, vp;
+    uint64_t  i, a, b, h = R[0].h, w = R[0].w, m = R[0].m;
+    RLE       A, B;
     if (n == 0) {
         rleInit(M, 0, 0, 0, 0);
         return;
@@ -89,7 +89,7 @@ void rleMerge(const RLE* R, RLE* M, siz n, int intersect) {
         rleInit(M, h, w, m, R[0].cnts);
         return;
     }
-    cnts = malloc(sizeof(uint) * (h * w + 1));
+    cnts = malloc(sizeof(uint32_t) * (h * w + 1));
     for (a = 0; a < m; a++) cnts[a] = R[0].cnts[a];
     for (i = 1; i < n; i++) {
         B = R[i];
@@ -137,18 +137,18 @@ void rleMerge(const RLE* R, RLE* M, siz n, int intersect) {
     free(cnts);
 }
 
-void rleArea(const RLE* R, siz n, uint* a) {
-    siz i, j;
+void rleArea(const RLE* R, uint64_t n, uint32_t* a) {
+    uint64_t i, j;
     for (i = 0; i < n; i++) {
         a[i] = 0;
         for (j = 1; j < R[i].m; j += 2) a[i] += R[i].cnts[j];
     }
 }
 
-void rleIou(RLE* dt, RLE* gt, siz m, siz n, byte* iscrowd, double* o) {
-    siz g, d;
-    BB  db, gb;
-    int crowd;
+void rleIou(RLE* dt, RLE* gt, uint64_t m, uint64_t n, uint8_t* iscrowd, double* o) {
+    uint64_t g, d;
+    double * db, gb;
+    int      crowd;
     db = malloc(sizeof(double) * m * 4);
     rleToBbox(dt, db, m);
     gb = malloc(sizeof(double) * n * 4);
@@ -164,9 +164,9 @@ void rleIou(RLE* dt, RLE* gt, siz m, siz n, byte* iscrowd, double* o) {
                     o[g * m + d] = -1;
                     continue;
                 }
-                siz  ka, kb, a, b;
-                uint c, ca, cb, ct, i, u;
-                int  va, vb;
+                uint64_t ka, kb, a, b;
+                uint32_t c, ca, cb, ct, i, u;
+                int      va, vb;
                 ca = dt[d].cnts[0];
                 ka = dt[d].m;
                 va = vb = 0;
@@ -203,9 +203,9 @@ void rleIou(RLE* dt, RLE* gt, siz m, siz n, byte* iscrowd, double* o) {
             }
 }
 
-void rleNms(RLE* dt, siz n, uint* keep, double thr) {
-    siz    i, j;
-    double u;
+void rleNms(RLE* dt, uint64_t n, uint32_t* keep, double thr) {
+    uint64_t i, j;
+    double   u;
     for (i = 0; i < n; i++) keep[i] = 1;
     for (i = 0; i < n; i++)
         if (keep[i]) {
@@ -217,16 +217,16 @@ void rleNms(RLE* dt, siz n, uint* keep, double thr) {
         }
 }
 
-void bbIou(BB dt, BB gt, siz m, siz n, byte* iscrowd, double* o) {
-    double h, w, i, u, ga, da;
-    siz    g, d;
-    int    crowd;
+void bbIou(double* dt, double* gt, uint64_t m, uint64_t n, uint8_t* iscrowd, double* o) {
+    double   h, w, i, u, ga, da;
+    uint64_t g, d;
+    int      crowd;
     for (g = 0; g < n; g++) {
-        BB G  = gt + g * 4;
-        ga    = G[2] * G[3];
-        crowd = iscrowd != NULL && iscrowd[g];
+        double* G = gt + g * 4;
+        ga        = G[2] * G[3];
+        crowd     = iscrowd != NULL && iscrowd[g];
         for (d = 0; d < m; d++) {
-            BB D         = dt + d * 4;
+            double* D    = dt + d * 4;
             da           = D[2] * D[3];
             o[g * m + d] = 0;
             w            = fmin(D[2] + D[0], G[2] + G[0]) - fmax(D[0], G[0]);
@@ -240,9 +240,9 @@ void bbIou(BB dt, BB gt, siz m, siz n, byte* iscrowd, double* o) {
     }
 }
 
-void bbNms(BB dt, siz n, uint* keep, double thr) {
-    siz    i, j;
-    double u;
+void bbNms(double* dt, uint64_t n, uint32_t* keep, double thr) {
+    uint64_t i, j;
+    double   u;
     for (i = 0; i < n; i++) keep[i] = 1;
     for (i = 0; i < n; i++)
         if (keep[i]) {
@@ -254,15 +254,15 @@ void bbNms(BB dt, siz n, uint* keep, double thr) {
         }
 }
 
-void rleToBbox(const RLE* R, BB bb, siz n) {
-    siz i;
+void rleToBbox(const RLE* R, double* bb, uint64_t n) {
+    uint64_t i;
     for (i = 0; i < n; i++) {
-        uint h, w, x, y, xs, ys, xe, ye, xp, cc, t;
-        siz  j, m;
-        h  = (uint) R[i].h;
-        w  = (uint) R[i].w;
+        uint32_t h, w, x, y, xs, ys, xe, ye, xp, cc, t;
+        uint64_t j, m;
+        h  = (uint32_t) R[i].h;
+        w  = (uint32_t) R[i].w;
         m  = R[i].m;
-        m  = ((siz) (m / 2)) * 2;
+        m  = ((uint64_t) (m / 2)) * 2;
         xs = w;
         ys = h;
         xe = ye = 0;
@@ -294,8 +294,8 @@ void rleToBbox(const RLE* R, BB bb, siz n) {
     }
 }
 
-void rleFrBbox(RLE* R, const BB bb, siz h, siz w, siz n) {
-    siz i;
+void rleFrBbox(RLE* R, const double* bb, uint64_t h, uint64_t w, uint64_t n) {
+    uint64_t i;
     for (i = 0; i < n; i++) {
         double xs = bb[4 * i + 0], xe = xs + bb[4 * i + 2];
         double ys = bb[4 * i + 1], ye = ys + bb[4 * i + 3];
@@ -305,16 +305,16 @@ void rleFrBbox(RLE* R, const BB bb, siz h, siz w, siz n) {
 }
 
 int uintCompare(const void* a, const void* b) {
-    uint c = *((uint*) a), d = *((uint*) b);
+    uint32_t c = *((uint32_t*) a), d = *((uint32_t*) b);
     return c > d ? 1 : c < d ? -1 : 0;
 }
 
-void rleFrPoly(RLE* R, const double* xy, siz k, siz h, siz w) {
+void rleFrPoly(RLE* R, const double* xy, uint64_t k, uint64_t h, uint64_t w) {
     /* upsample and get discrete points densely along entire boundary */
-    siz    j, m = 0;
-    double scale = 5;
-    int *  x, *y, *u, *v;
-    uint * a, *b;
+    uint64_t  j, m = 0;
+    double    scale = 5;
+    int *     x, *y, *u, *v;
+    uint32_t *a, *b;
     x = malloc(sizeof(int) * (k + 1));
     y = malloc(sizeof(int) * (k + 1));
     for (j = 0; j < k; j++) x[j] = (int) (scale * xy[j * 2 + 0] + .5);
@@ -382,21 +382,21 @@ void rleFrPoly(RLE* R, const double* xy, siz k, siz h, siz w) {
         }
     /* compute rle encoding given y-boundary points */
     k = m;
-    a = malloc(sizeof(uint) * (k + 1));
-    for (j = 0; j < k; j++) a[j] = (uint) (x[j] * (int) (h) + y[j]);
-    a[k++] = (uint) (h * w);
+    a = malloc(sizeof(uint32_t) * (k + 1));
+    for (j = 0; j < k; j++) a[j] = (uint32_t) (x[j] * (int) (h) + y[j]);
+    a[k++] = (uint32_t) (h * w);
     free(u);
     free(v);
     free(x);
     free(y);
-    qsort(a, k, sizeof(uint), uintCompare);
-    uint p = 0;
+    qsort(a, k, sizeof(uint32_t), uintCompare);
+    uint32_t p = 0;
     for (j = 0; j < k; j++) {
-        uint t  = a[j];
-        a[j]   -= p;
-        p       = t;
+        uint32_t t  = a[j];
+        a[j]       -= p;
+        p           = t;
     }
-    b = malloc(sizeof(uint) * k);
+    b = malloc(sizeof(uint32_t) * k);
     j = m  = 0;
     b[m++] = a[j++];
     while (j < k)
@@ -413,10 +413,10 @@ void rleFrPoly(RLE* R, const double* xy, siz k, siz h, siz w) {
 
 char* rleToString(const RLE* R) {
     /* Similar to LEB128 but using 6 bits/char and ascii chars 48-111. */
-    siz   i, m = R->m, p = 0;
-    long  x;
-    int   more;
-    char* s = malloc(sizeof(char) * m * 6);
+    uint64_t i, m = R->m, p = 0;
+    long     x;
+    int      more;
+    char*    s = malloc(sizeof(char) * m * 6);
     for (i = 0; i < m; i++) {
         x = (long) R->cnts[i];
         if (i > 2) x -= (long) R->cnts[i - 2];
@@ -434,13 +434,13 @@ char* rleToString(const RLE* R) {
     return s;
 }
 
-void rleFrString(RLE* R, char* s, siz h, siz w) {
-    siz   m = 0, p = 0, k;
-    long  x;
-    int   more;
-    uint* cnts;
+void rleFrString(RLE* R, char* s, uint64_t h, uint64_t w) {
+    uint64_t  m = 0, p = 0, k;
+    long      x;
+    int       more;
+    uint32_t* cnts;
     while (s[m]) m++;
-    cnts = malloc(sizeof(uint) * m);
+    cnts = malloc(sizeof(uint32_t) * m);
     m    = 0;
     while (s[p]) {
         x    = 0;
@@ -455,7 +455,7 @@ void rleFrString(RLE* R, char* s, siz h, siz w) {
             if (!more && (c & 0x10)) x |= -1 << 5 * k;
         }
         if (m > 2) x += (long) cnts[m - 2];
-        cnts[m++] = (uint) x;
+        cnts[m++] = (uint32_t) x;
     }
     rleInit(R, h, w, m, cnts);
     free(cnts);
