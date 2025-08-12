@@ -5,59 +5,56 @@
 * Licensed under the Simplified BSD License [see coco/license.txt]
 **************************************************************************/
 #pragma once
+#include <stdint.h>
 
-typedef unsigned int  uint;
-typedef unsigned long siz;
-typedef unsigned char byte;
-typedef double*       BB;
 typedef struct {
-        siz   h, w, m;
-        uint* cnts;
+        uint64_t  h, w, m;
+        uint32_t* cnts;
 } RLE;
 
 /* Initialize/destroy RLE. */
-void rleInit(RLE* R, siz h, siz w, siz m, uint* cnts);
+void rleInit(RLE* R, uint64_t h, uint64_t w, uint64_t m, uint32_t* cnts);
 void rleFree(RLE* R);
 
 /* Initialize/destroy RLE array. */
-void rlesInit(RLE** R, siz n);
-void rlesFree(RLE** R, siz n);
+void rlesInit(RLE** R, uint64_t n);
+void rlesFree(RLE** R, uint64_t n);
 
 /* Encode binary masks using RLE. */
-void rleEncode(RLE* R, const byte* mask, siz h, siz w, siz n);
+void rleEncode(RLE* R, const uint8_t* mask, uint64_t h, uint64_t w, uint64_t n);
 
 /* Decode binary masks encoded via RLE. */
-void rleDecode(const RLE* R, byte* mask, siz n);
+void rleDecode(const RLE* R, uint8_t* mask, uint64_t n);
 
 /* Compute union or intersection of encoded masks. */
-void rleMerge(const RLE* R, RLE* M, siz n, int intersect);
+void rleMerge(const RLE* R, RLE* M, uint64_t n, int intersect);
 
 /* Compute area of encoded masks. */
-void rleArea(const RLE* R, siz n, uint* a);
+void rleArea(const RLE* R, uint64_t n, uint32_t* a);
 
 /* Compute intersection over union between masks. */
-void rleIou(RLE* dt, RLE* gt, siz m, siz n, byte* iscrowd, double* o);
+void rleIou(RLE* dt, RLE* gt, uint64_t m, uint64_t n, uint8_t* iscrowd, double* o);
 
 /* Compute non-maximum suppression between bounding masks */
-void rleNms(RLE* dt, siz n, uint* keep, double thr);
+void rleNms(RLE* dt, uint64_t n, uint32_t* keep, double thr);
 
 /* Compute intersection over union between bounding boxes. */
-void bbIou(BB dt, BB gt, siz m, siz n, byte* iscrowd, double* o);
+void bbIou(double* dt, double* gt, uint64_t m, uint64_t n, uint8_t* iscrowd, double* o);
 
 /* Compute non-maximum suppression between bounding boxes */
-void bbNms(BB dt, siz n, uint* keep, double thr);
+void bbNms(double* dt, uint64_t n, uint32_t* keep, double thr);
 
 /* Get bounding boxes surrounding encoded masks. */
-void rleToBbox(const RLE* R, BB bb, siz n);
+void rleToBbox(const RLE* R, double* bb, uint64_t n);
 
 /* Convert bounding boxes to encoded masks. */
-void rleFrBbox(RLE* R, const BB bb, siz h, siz w, siz n);
+void rleFrBbox(RLE* R, const double* bb, uint64_t h, uint64_t w, uint64_t n);
 
 /* Convert polygon to encoded mask. */
-void rleFrPoly(RLE* R, const double* xy, siz k, siz h, siz w);
+void rleFrPoly(RLE* R, const double* xy, uint64_t k, uint64_t h, uint64_t w);
 
 /* Get compressed string representation of encoded mask. */
 char* rleToString(const RLE* R);
 
 /* Convert from compressed string representation of encoded mask. */
-void rleFrString(RLE* R, char* s, siz h, siz w);
+void rleFrString(RLE* R, char* s, uint64_t h, uint64_t w);
