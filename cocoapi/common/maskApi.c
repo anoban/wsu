@@ -7,10 +7,12 @@
 
 // clang .\common\maskApi.c -Wall -Wextra -Werror -O3 -static -std=c23
 
+// clang-format off
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+// clang-format on
 
 #if (!defined _WIN32) || (!defined _WIN64)
     #error This source has been customized only for Win32 systems!
@@ -22,7 +24,8 @@ typedef struct RLE {
 } RLE;
 
 static inline int __stdcall uintCompare(_In_ const void* const a, _In_ const void* const b) {
-    unsigned c = *((unsigned*) a), d = *((unsigned*) b);
+    unsigned c = *((unsigned*) a);
+    unsigned d = *((unsigned*) b);
     return c > d ? 1 : c < d ? -1 : 0;
 }
 
@@ -53,6 +56,7 @@ void __stdcall rleFree(_Inout_ RLE* const R) {
 /* Initialize RLE array. */
 void __stdcall rlesInit(RLE** R, unsigned long long n) {
     *R = malloc(sizeof(RLE) * n);
+    assert(*R);
     for (unsigned long long i = 0; i < n; i++) rleInit((*R) + i, 0, 0, 0, 0);
 }
 
@@ -65,10 +69,15 @@ void rlesFree(RLE** R, unsigned long long n) {
 
 /* Encode binary masks using RLE. */
 void rleEncode(RLE* R, const unsigned char* M, unsigned long long h, unsigned long long w, unsigned long long n) {
-    unsigned long long i, j, k, a = w * h;
-    unsigned           c, *cnts;
-    unsigned char      p;
-    cnts = malloc(sizeof(unsigned) * (a + 1));
+    unsigned long long i    = 0;
+    unsigned long long j    = 0;
+    unsigned long long k    = 0;
+    unsigned long long a    = w * h;
+    unsigned           c    = 0;
+    unsigned*          cnts = malloc(sizeof(unsigned) * (a + 1));
+    assert(cnts);
+    unsigned char p = 0;
+
     for (i = 0; i < n; i++) {
         const unsigned char* T = M + a * i;
         k = p = c = 0;
@@ -113,6 +122,7 @@ void rleMerge(const RLE* R, RLE* M, unsigned long long n, int intersect) {
         return;
     }
     cnts = malloc(sizeof(unsigned) * (h * w + 1));
+    assert(cnts);
     for (a = 0; a < m; a++) cnts[a] = R[0].cnts[a];
     for (i = 1; i < n; i++) {
         B = R[i];
@@ -463,10 +473,12 @@ char* rleToString(const RLE* R) {
 
 /* Convert from compressed string representation of encoded mask. */
 void rleFrString(RLE* R, char* s, unsigned long long h, unsigned long long w) {
-    unsigned long long m = 0, p = 0, k;
+    unsigned long long m = 0;
+    unsigned long long p = 0;
+    unsigned long long k;
     long               x;
     int                more;
-    unsigned*          cnts;
+    unsigned*          cnts = NULL;
     while (s[m]) m++;
     cnts = malloc(sizeof(unsigned) * m);
     m    = 0;
