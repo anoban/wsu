@@ -48,9 +48,9 @@ import copy
 import itertools
 import json
 import os
-import sys
 import time
 from collections import defaultdict
+from urllib.request import urlretrieve
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -58,12 +58,6 @@ from matplotlib.collections import PatchCollection
 from matplotlib.patches import Polygon
 
 from . import mask as maskUtils
-
-PYTHON_VERSION = sys.version_info[0]
-if PYTHON_VERSION == 2:
-    from urllib import urlretrieve
-elif PYTHON_VERSION == 3:
-    from urllib.request import urlretrieve
 
 
 def _isArrayLike(obj):
@@ -85,7 +79,7 @@ class COCO:
             print("loading annotations into memory...")
             tic = time.time()
             dataset = json.load(open(annotation_file, "r"))
-            assert type(dataset) == dict, "annotation file format {} not supported".format(type(dataset))
+            assert isinstance(dataset, dict), "annotation file format {} not supported".format(type(dataset))
             print("Done (t={:0.2f}s)".format(time.time() - tic))
             self.dataset = dataset
             self.createIndex()
