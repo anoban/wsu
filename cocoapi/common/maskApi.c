@@ -4,41 +4,40 @@
 * Code written by Piotr Dollar and Tsung-Yi Lin, 2015.
 * Licensed under the Simplified BSD License [see coco/license.txt]
 **************************************************************************/
+
 #include <math.h>
 #include <stdlib.h>
 
 #include "maskApi.h"
 
-uint32_t umin(uint32_t a, uint32_t b) { return (a < b) ? a : b; }
+uint32_t umin(_In_ uint32_t a, _In_ uint32_t b) { return (a < b) ? a : b; }
 
-uint32_t umax(uint32_t a, uint32_t b) { return (a > b) ? a : b; }
+uint32_t umax(_In_ uint32_t a, _In_ uint32_t b) { return (a > b) ? a : b; }
 
-void rleInit(RLE* R, uint64_t h, uint64_t w, uint64_t m, uint32_t* cnts) {
+void rleInit(_Inout_ RLE* const R, uint64_t h, uint64_t w, uint64_t m, _In_ const uint32_t* const cnts) {
     R->h    = h;
     R->w    = w;
     R->m    = m;
-    R->cnts = (m == 0) ? 0 : malloc(sizeof(uint32_t) * m);
-    uint64_t j;
+    R->cnts = !m ? NULL : malloc(sizeof(uint32_t) * m);
+
     if (cnts)
-        for (j = 0; j < m; j++) R->cnts[j] = cnts[j];
+        for (uint64_t j = 0; j < m; j++) R->cnts[j] = cnts[j];
 }
 
-void rleFree(RLE* R) {
+void rleFree(_Inout_ RLE* const R) {
     free(R->cnts);
-    R->cnts = 0;
+    R->cnts = NULL;
 }
 
 void rlesInit(RLE** R, uint64_t n) {
-    uint64_t i;
-    *R = (RLE*) malloc(sizeof(RLE) * n);
-    for (i = 0; i < n; i++) rleInit((*R) + i, 0, 0, 0, 0);
+    *R = malloc(sizeof(RLE) * n);
+    for (uint64_t i = 0; i < n; i++) rleInit((*R) + i, 0, 0, 0, 0);
 }
 
 void rlesFree(RLE** R, uint64_t n) {
-    uint64_t i;
-    for (i = 0; i < n; i++) rleFree((*R) + i);
+    for (uint64_t i = 0; i < n; i++) rleFree((*R) + i);
     free(*R);
-    *R = 0;
+    *R = NULL;
 }
 
 void rleEncode(RLE* R, const uint8_t* M, uint64_t h, uint64_t w, uint64_t n) {
@@ -48,9 +47,7 @@ void rleEncode(RLE* R, const uint8_t* M, uint64_t h, uint64_t w, uint64_t n) {
     cnts = malloc(sizeof(uint32_t) * (a + 1));
     for (i = 0; i < n; i++) {
         const uint8_t* T = M + a * i;
-        k                = 0;
-        p                = 0;
-        c                = 0;
+        k = p = c = 0;
         for (j = 0; j < a; j++) {
             if (T[j] != p) {
                 cnts[k++] = c;
@@ -304,7 +301,7 @@ void rleFrBbox(RLE* R, const double* bb, uint64_t h, uint64_t w, uint64_t n) {
     }
 }
 
-int uintCompare(const void* a, const void* b) {
+int uintCompare(_In_ const void* const a, _In_ const void* const b) {
     uint32_t c = *((uint32_t*) a), d = *((uint32_t*) b);
     return c > d ? 1 : c < d ? -1 : 0;
 }
