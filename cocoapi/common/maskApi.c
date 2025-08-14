@@ -250,8 +250,10 @@ void rleIou(RLE* dt, RLE* gt, unsigned long long m, unsigned long long n, unsign
     double *           db, *gb;
     int                crowd;
     db = malloc(sizeof(double) * m * 4);
+    assert(db);
     rleToBbox(dt, db, m);
     gb = malloc(sizeof(double) * n * 4);
+    assert(gb);
     rleToBbox(gt, gb, n);
     bbIou(db, gb, m, n, iscrowd, o);
     free(db);
