@@ -1,0 +1,57 @@
+{
+    "name": "osr_bluepaper",
+    "description": "Rapeseed grown on blue paper",
+    "uuid": "5edd7fdc-ceb1-44fa-9dfd-ef1197abac48",
+    "history": {
+        "model": {
+            "parent-model": "2d9ae372-b128-43de-87de-a905ac420b08",
+            "trained-by": {
+                "fullname": "Robail Yasrab",
+                "affiliation": "University of Nottingham",
+                "email": "robail.yasrab@nottingham.ac.uk"
+            },
+            "license": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "dataset": {
+            "owner": [
+                {
+                    "fullname": "Jonathan Atkinson",
+                    "affiliation": "University of Nottingham",
+                    "email": "jonathan.atkinson@nottingham.ac.uk"
+                },
+                {
+                    "fullname": "Darren Wells",
+                    "affiliation": "University of Nottingham",
+                    "email": "darren.wells@nottingham.ac.uk"
+                }
+            ],
+            "url": "https://plantimages.nottingham.ac.uk",
+            "license": "https://creativecommons.org/licenses/by-nc/4.0/"
+        }
+    },
+    "configuration": {
+        "multi-plant": false,
+        "network": {
+            "architecture": "hg",
+            "weights": "osr_bluepaper.pth",
+            "url":"https://cvl.cs.nott.ac.uk/resources/trainedmodels/osr_bluepaper-083ed788.pth",
+            "scale": 0.00392156862745098,
+            "input-size": 1024,
+            "output-size": 512,
+            "channel-bindings": {
+                "segmentation": { "Background": 0, "Primary": 3, "Lateral": 1 },
+                "heatmap": { "Seed": 5, "Primary": 4, "Lateral": 2 }
+            }
+        },
+        "pathing": {
+            "rtree-threshold": 36,
+            "nms-threshold": 0.7,
+            "max-primary-distance": 400,
+            "max-lateral-distance": 200,
+            "spline-config": {
+                "primary": { "tension": 0.5, "spacing": 50 },
+                "lateral": { "tension": 0.5, "spacing": 20 }
+            }
+        }
+    }
+}
