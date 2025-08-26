@@ -11,9 +11,11 @@ megatree <- ape::read.tree("../data/UPhyloMaker/plant_megatree.tre")
 
 
 runtime <- Sys.time()
+# this took forfuckingever
 phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations)
 runtime <- sys.time() - clock
 
+# serialize the new phylogenetic tree
 ape::write.tree(phy = phylogeny$phylo, file = "../data/UPhyloMaker/chapter03.tre")
 
 ggtree::ggtree(phylogeny$phylo, layout = "fan", open.angle = 120)
