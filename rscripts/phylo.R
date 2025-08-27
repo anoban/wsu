@@ -22,6 +22,7 @@ megatree <- ape::read.tree("../data/UPhyloMaker/plant_megatree.tre")
 fred <- utils::read.csv("../data/FRED/FRED3_Entire_Database_2021.csv", header = TRUE)
 
 chap3 <- ape::read.tree("../data/UPhyloMaker/chapter03.tre")
+# opting to use phytools instead of ggtree because ggtree replaces spaces in scientific names with fugly underscores
 # plot <- ggtree::ggtree(chap3, layout = "circular", size = 0.5) + ggtree::geom_tiplab(size = 3)
 # ggtree::ggsave(filename = "../plots/phyolo.png", plot = plot, device = png, width = 10, height = 10, units = "in", bg = "transparent", dpi = 500, scale = 1.5)
 # ggtree::gheatmap(plot)
