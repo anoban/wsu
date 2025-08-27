@@ -20,8 +20,16 @@ megatree <- ape::read.tree("../data/UPhyloMaker/plant_megatree.tre")
 # ggtree::ggtree(phylogeny$phylo, layout = "fan", open.angle = 120)
 
 fred <- utils::read.csv("../data/FRED/FRED3_Entire_Database_2021.csv", header = TRUE)
-chap3 <- ape::read.tree("../data/UPhyloMaker/chapter03.tre")
-plot <- ggtree::ggtree(chap3, layout = "circular", size = 0.5) + ggtree::geom_tiplab(size = 3)
-ggtree::ggsave(filename = "../plots/phyolo.png", plot = plot, device = png, width = 10, height = 10, units = "in", bg = "transparent", dpi = 500, scale = 1.5)
 
+chap3 <- ape::read.tree("../data/UPhyloMaker/chapter03.tre")
+# plot <- ggtree::ggtree(chap3, layout = "circular", size = 0.5) + ggtree::geom_tiplab(size = 3)
+# ggtree::ggsave(filename = "../plots/phyolo.png", plot = plot, device = png, width = 10, height = 10, units = "in", bg = "transparent", dpi = 500, scale = 1.5)
 # ggtree::gheatmap(plot)
+
+htree <- max(phytools::nodeHeights(chap3)) # timescale of the tree
+png("../plots/phyolo-phytools.png", width = 8000, height = 8000, units = "px", res = 300)
+plot <- phytools::plotTree(chap3, ftype = "i", fsize = 1.4, type = "fan", lwd = 1, part = 0.98)
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1.75, labels = FALSE, col = "red")
+text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1.5, col = "red")
+text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
+dev.off()
