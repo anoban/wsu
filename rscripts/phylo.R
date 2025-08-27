@@ -13,12 +13,15 @@ megatree <- ape::read.tree("../data/UPhyloMaker/plant_megatree.tre")
 # runtime <- Sys.time()
 # this took forfuckingever ~ 3 minutes
 # phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations)
-runtime <- Sys.time() - runtime
+# runtime <- Sys.time() - runtime
 
 # serialize the new phylogenetic tree
 # ape::write.tree(phy = phylogeny$phylo, file = "../data/UPhyloMaker/chapter03.tre")
 # ggtree::ggtree(phylogeny$phylo, layout = "fan", open.angle = 120)
 
+fred <- utils::read.csv("../data/FRED/FRED3_Entire_Database_2021.csv", header = TRUE)
 chap3 <- ape::read.tree("../data/UPhyloMaker/chapter03.tre")
-plot <- ggtree::ggtree(chap3, layout = "circular") + ggtree::geom_tiplab(size = 2)
-plot
+plot <- ggtree::ggtree(chap3, layout = "circular", size = 0.5) + ggtree::geom_tiplab(size = 3)
+ggtree::ggsave(filename = "../plots/phyolo.png", plot = plot, device = png, width = 10, height = 10, units = "in", bg = "transparent", dpi = 500, scale = 1.5)
+
+# ggtree::gheatmap(plot)
