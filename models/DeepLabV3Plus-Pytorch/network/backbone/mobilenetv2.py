@@ -1,16 +1,11 @@
-from torch import nn
-try: # for torchvision<0.4
-    from torchvision.models.utils import load_state_dict_from_url
-except: # for torchvision>=0.4
-    from torch.hub import load_state_dict_from_url
 import torch.nn.functional as F
+from torch import nn
+from torch.hub import load_state_dict_from_url  # for torchvision>=0.4
 
-__all__ = ['MobileNetV2', 'mobilenet_v2']
+__all__ = ["MobileNetV2", "mobilenet_v2"]
 
 
-model_urls = {
-    'mobilenet_v2': 'https://download.pytorch.org/models/mobilenet_v2-b0353104.pth',
-}
+model_urls = {"mobilenet_v2": "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth"}
 
 
 def _make_divisible(v, divisor, min_value=None):
@@ -35,19 +30,21 @@ def _make_divisible(v, divisor, min_value=None):
 
 class ConvBNReLU(nn.Sequential):
     def __init__(self, in_planes, out_planes, kernel_size=3, stride=1, dilation=1, groups=1):
-        #padding = (kernel_size - 1) // 2
+        # padding = (kernel_size - 1) // 2
         super(ConvBNReLU, self).__init__(
             nn.Conv2d(in_planes, out_planes, kernel_size, stride, 0, dilation=dilation, groups=groups, bias=False),
             nn.BatchNorm2d(out_planes),
-            nn.ReLU6(inplace=True)
+            nn.ReLU6(inplace=True),
         )
+
 
 def fixed_padding(kernel_size, dilation):
     kernel_size_effective = kernel_size + (kernel_size - 1) * (dilation - 1)
     pad_total = kernel_size_effective - 1
     pad_beg = pad_total // 2
     pad_end = pad_total - pad_beg
-    return (pad_beg, pad_end, pad_beg, pad_end) 
+    return (pad_beg, pad_end, pad_beg, pad_end)
+
 
 class InvertedResidual(nn.Module):
     def __init__(self, inp, oup, stride, dilation, expand_ratio):
@@ -63,16 +60,18 @@ class InvertedResidual(nn.Module):
             # pw
             layers.append(ConvBNReLU(inp, hidden_dim, kernel_size=1))
 
-        layers.extend([
-            # dw
-            ConvBNReLU(hidden_dim, hidden_dim, stride=stride, dilation=dilation, groups=hidden_dim),
-            # pw-linear
-            nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
-            nn.BatchNorm2d(oup),
-        ])
+        layers.extend(
+            [
+                # dw
+                ConvBNReLU(hidden_dim, hidden_dim, stride=stride, dilation=dilation, groups=hidden_dim),
+                # pw-linear
+                nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
+                nn.BatchNorm2d(oup),
+            ]
+        )
         self.conv = nn.Sequential(*layers)
 
-        self.input_padding = fixed_padding( 3, dilation )
+        self.input_padding = fixed_padding(3, dilation)
 
     def forward(self, x):
         x_pad = F.pad(x, self.input_padding)
@@ -80,6 +79,7 @@ class InvertedResidual(nn.Module):
             return x + self.conv(x_pad)
         else:
             return self.conv(x_pad)
+
 
 class MobileNetV2(nn.Module):
     def __init__(self, num_classes=1000, output_stride=8, width_mult=1.0, inverted_residual_setting=None, round_nearest=8):
@@ -113,15 +113,14 @@ class MobileNetV2(nn.Module):
 
         # only check the first element, assuming user knows t,c,n,s are required
         if len(inverted_residual_setting) == 0 or len(inverted_residual_setting[0]) != 4:
-            raise ValueError("inverted_residual_setting should be non-empty "
-                             "or a 4-element list, got {}".format(inverted_residual_setting))
+            raise ValueError("inverted_residual_setting should be non-empty or a 4-element list, got {}".format(inverted_residual_setting))
 
         # building first layer
         input_channel = _make_divisible(input_channel * width_mult, round_nearest)
         self.last_channel = _make_divisible(last_channel * max(1.0, width_mult), round_nearest)
         features = [ConvBNReLU(3, input_channel, stride=2)]
         current_stride *= 2
-        dilation=1
+        dilation = 1
         previous_dilation = 1
 
         # building inverted residual blocks
@@ -137,7 +136,7 @@ class MobileNetV2(nn.Module):
             output_channel = int(c * width_mult)
 
             for i in range(n):
-                if i==0:
+                if i == 0:
                     features.append(block(input_channel, output_channel, stride, previous_dilation, expand_ratio=t))
                 else:
                     features.append(block(input_channel, output_channel, 1, dilation, expand_ratio=t))
@@ -148,15 +147,12 @@ class MobileNetV2(nn.Module):
         self.features = nn.Sequential(*features)
 
         # building classifier
-        self.classifier = nn.Sequential(
-            nn.Dropout(0.2),
-            nn.Linear(self.last_channel, num_classes),
-        )
+        self.classifier = nn.Sequential(nn.Dropout(0.2), nn.Linear(self.last_channel, num_classes))
 
         # weight initialization
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out')
+                nn.init.kaiming_normal_(m.weight, mode="fan_out")
                 if m.bias is not None:
                     nn.init.zeros_(m.bias)
             elif isinstance(m, nn.BatchNorm2d):
@@ -184,7 +180,6 @@ def mobilenet_v2(pretrained=False, progress=True, **kwargs):
     """
     model = MobileNetV2(**kwargs)
     if pretrained:
-        state_dict = load_state_dict_from_url(model_urls['mobilenet_v2'],
-                                              progress=progress)
+        state_dict = load_state_dict_from_url(model_urls["mobilenet_v2"], progress=progress)
         model.load_state_dict(state_dict)
     return model
