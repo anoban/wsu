@@ -4,8 +4,12 @@
 
 library(taxonlookup)
 
-lookup_table(c("Pinus ponderosa","Quercus agrifolia"), by_species=TRUE)
-lookup_table(c("Cynodon dactylon", "Azadirachta indica"), by_species=TRUE)
-write.csv(data.frame(plant_lookup()), fileEncoding = "latin1",
-          file = "./plantlookup.csv", quote = FALSE, row.names = FALSE)
-
+lookup_table(c("Pinus ponderosa", "Quercus agrifolia"), by_species = TRUE)
+lookup_table(c("Cynodon dactylon", "Azadirachta indica"), by_species = TRUE)
+write.csv(
+  data.frame(plant_lookup()),
+  fileEncoding = "latin1",
+  file = "./plantlookup.csv",
+  quote = FALSE,
+  row.names = FALSE
+)
