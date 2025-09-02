@@ -215,6 +215,7 @@ data/*
 *.webp
 *.bmp
 *.tiff
+*.svg
 RootImages/*
 plots/*
 
