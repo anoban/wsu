@@ -3,7 +3,7 @@ library("U.PhyloMaker")
 library("ggplot2")
 library("maps")
 library("phytools")
-library("ggtree")
+# library("ggtree")
 
 genus_family_relations <- read.csv(
   "../data/UPhyloMaker/plant_genus_list.csv",
@@ -50,7 +50,7 @@ plot <- phytools::plotTree(
   fsize = 1.4,
   type = "fan",
   lwd = 1,
-  part = 0.98
+  part = 0.99
 )
 tscale_axis <- axis(
   1,
