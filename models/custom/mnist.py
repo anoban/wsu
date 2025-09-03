@@ -22,11 +22,11 @@ class CNNet(nn.Module):
         self.__nchannels = n_channels
         self.__nclasses = n_classes
 
-        # first convolution layer, a 28 x 28 image becomes a 26 x 26 image????
-        self.__conv_01 = nn.Conv2d(in_channels=self.__nchannels, out_channels=24, kernel_size=(3, 3), stride=1)
+        # first convolution layer, a 28 x 28 image becomes a 14 x 14 image
+        self.__conv_01 = nn.Conv2d(in_channels=self.__nchannels, out_channels=24, kernel_size=(2, 2), stride=2)
 
-        # second convolution layer, the 26 x 26 image becomes a 24 x 24 image???
-        self.__conv_02 = nn.Conv2d(in_channels=24, out_channels=48, kernel_size=(3, 3), stride=1)
+        # second convolution layer, the 14 x 14 image becomes a 7 x 7 image
+        self.__conv_02 = nn.Conv2d(in_channels=24, out_channels=48, kernel_size=(2, 2), stride=2)
 
         # pooling layer
         self.__maxpool = nn.MaxPool2d(kernel_size=(2, 2), stride=2)  # a 24 x 24 image will be transformed into a 12 x 12 image

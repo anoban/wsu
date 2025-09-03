@@ -205,6 +205,9 @@ dkms.conf
 # FRED stuff
 data/FRED/*
 
+# MNIST
+data/MNIST/*
+
 .ipynb_checkpoints
 *.dat
 
