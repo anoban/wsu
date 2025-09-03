@@ -202,8 +202,8 @@ dkms.conf
 # NuGet packages
 *packages/
 
-# .csv files
-data/*
+# FRED stuff
+data/FRED/*
 
 .ipynb_checkpoints
 *.dat
@@ -216,15 +216,10 @@ data/*
 *.bmp
 *.tiff
 *.svg
-RootImages/*
-plots/*
 
 # videos
 *.mp4
 *.mpeg
-
-# binary files
-
 
 # trained .hdf5 models
 *.h5
