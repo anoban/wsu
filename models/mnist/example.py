@@ -1,3 +1,5 @@
+# https://raw.githubusercontent.com/pytorch/examples/refs/heads/main/mnist/main.py
+
 import argparse
 from typing import override
 
@@ -5,7 +7,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from torch.optim import Optimizer
 from torch.optim.lr_scheduler import StepLR
+from torch.utils.data import DataLoader
 from torchvision import datasets, transforms  # type: ignore
 
 
@@ -20,60 +24,73 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(128, 10)
 
     @override
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.conv1(x)
-        x = F.relu(x)
-        x = self.conv2(x)
-        x = F.relu(x)
-        x = F.max_pool2d(x, 2)
-        x = self.dropout1(x)
-        x = torch.flatten(x, 1)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.dropout2(x)
-        x = self.fc2(x)
-        output = F.log_softmax(x, dim=1)
+    def forward(self, batch: torch.Tensor) -> torch.Tensor:
+        batch = self.conv1(batch)
+        batch = F.relu(batch)
+        batch = self.conv2(batch)
+        batch = F.relu(batch)
+        batch = F.max_pool2d(batch, 2)
+        batch = self.dropout1(batch)
+        batch = torch.flatten(batch, 1)
+        batch = self.fc1(batch)
+        batch = F.relu(batch)
+        batch = self.dropout2(batch)
+        batch = self.fc2(batch)
+        output = F.log_softmax(batch, dim=1)
         return output
 
-
-def train(args, model, device, train_loader, optimizer, epoch):
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = F.nll_loss(output, target)
-        loss.backward()
-        optimizer.step()
-        if batch_idx % args.log_interval == 0:
-            print(
-                "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
-                    epoch, batch_idx * len(data), len(train_loader.dataset), 100.0 * batch_idx / len(train_loader), loss.item()
-                )
-            )
-            if args.dry_run:
-                break
-
-
-def test(model, device, test_loader):
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, target in test_loader:
+    def fit(
+        self, args, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer, epoch: int, device: torch.device = torch.device("cpu")
+    ) -> None:
+        super().train(mode=True)  # set nn.Module parent class's state to training
+        super().to(device=device)  # move the model to the specified device
+        for batch_idx, (data, target) in enumerate(train_loader):
             data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += F.nll_loss(output, target, reduction="sum").item()  # sum up batch loss
-            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-            correct += pred.eq(target.view_as(pred)).sum().item()
+            optimizer.zero_grad()
+            output = self(data)
+            loss = F.nll_loss(output, target)
+            loss.backward()  # type: ignore
+            optimizer.step()
+            if batch_idx % args.log_interval == 0:
+                print(
+                    "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
+                        epoch, batch_idx * len(data), len(train_loader.dataset), 100.0 * batch_idx / len(train_loader), loss.item()
+                    )
+                )
+                if args.dry_run:
+                    break
 
-    test_loss /= len(test_loader.dataset)
+    def predict(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> int:
+        super().eval()  # set the state of parent class nn.Module to predictions, equivalent to self.train(mode=False)
+        test_loss: float = 0.000
+        correct: int = 0
+        with torch.no_grad():
+            for data, target in test_loader:
+                data, target = data.to(device), target.to(device)
+                output = self(data)  # calls forward() and other internal hooks under the hood
+                test_loss += F.nll_loss(output, target, reduction="sum").item()  # sum up batch loss
+                pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
+                correct += pred.eq(target.view_as(pred)).sum().item()
 
-    print(
-        "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
-            test_loss, correct, len(test_loader.dataset), 100.0 * correct / len(test_loader.dataset)
+        test_loss /= len(
+            test_loader.dataset  # type: ignore
+        )  # calling the __len__() of DataLoader class can give misleading results as it provides the number of batches NOT the number of images in the Dataset
+        # hence the need to call the __len__() of the Dataset class directly
+        # since class Dataset does not have a default __len__() method defined, linters will bitch about the missing method
+        print(
+            "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
+                test_loss, correct, len(test_loader), 100.0 * correct / len(test_loader)
+            )
         )
-    )
+
+    def serialize(self, path: str) -> None:
+        """ """
+
+        try:
+            with open(file=path, mode=r"wb") as fp:
+                torch.save(super().state_dict(), f=fp)
+        except IOError as ioexcpt:
+            raise RuntimeError("###############################") from ioexcpt
 
 
 def main():
@@ -110,8 +127,8 @@ def main():
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
     dataset1 = datasets.MNIST("../data", train=True, download=True, transform=transform)
     dataset2 = datasets.MNIST("../data", train=False, transform=transform)
-    train_loader = torch.utils.data.DataLoader(dataset1, **train_kwargs)
-    test_loader = torch.utils.data.DataLoader(dataset2, **test_kwargs)
+    train_loader = DataLoader(dataset1, **train_kwargs)
+    test_loader = DataLoader(dataset2, **test_kwargs)
 
     model = Net().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
