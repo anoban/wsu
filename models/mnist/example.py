@@ -1,6 +1,5 @@
 # https://raw.githubusercontent.com/pytorch/examples/refs/heads/main/mnist/main.py
 
-import argparse
 from typing import override
 from warnings import warn
 
@@ -52,6 +51,7 @@ class CNNet(nn.Module):
     def fit(
         self,
         train_loader: DataLoader[torch.Tensor],
+        test_loader: DataLoader[torch.Tensor],
         optimizer: Optimizer,
         device: torch.device = torch.device("cpu"),
         gamma: float = 0.7,
@@ -67,6 +67,8 @@ class CNNet(nn.Module):
         super().to(device=device)  # move the model to the specified device
 
         scheduler = StepLR(optimizer, step_size=1, gamma=gamma)
+        BATCH_SIZE: int = train_loader.batch_size  # type: ignore
+        N_IMAGES: int = len(train_loader.dataset)  # type: ignore
 
         for epoch in range(1, epochs + 1):
             # train(args, model, device, train_loader, optimizer, epoch)
@@ -83,12 +85,15 @@ class CNNet(nn.Module):
                 if batch_idx % log_interval == 0:
                     print(
                         "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
-                            epoch, batch_idx * len(data), len(train_loader.dataset), 100.0 * batch_idx / len(train_loader), loss.item()
+                            epoch, batch_idx * BATCH_SIZE, N_IMAGES, 100.0 * batch_idx / N_IMAGES, loss.item()
                         )
                     )
 
-            if dry_run:  # if only a dry run, break after a single pass
-                break
+                if dry_run:  # if only a dry run, break after a single pass in the first epoch
+                    break
+
+            # at the end of every epoch, evaluate the model's performance
+            self.evaluate(device=device, test_loader=test_loader)
 
             scheduler.step()
 
@@ -135,47 +140,29 @@ class CNNet(nn.Module):
 
 
 def main() -> None:
-    # Training settings
-    parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
-    parser.add_argument("--batch-size", type=int, default=32, metavar="N", help="input batch size for training (default: 32)")
-    parser.add_argument("--test-batch-size", type=int, default=64, metavar="N", help="input batch size for testing (default: 64)")
-    parser.add_argument("--epochs", type=int, default=1000, metavar="N", help="number of epochs to train (default: 1000)")
-    parser.add_argument("--lr", type=float, default=1.0, metavar="LR", help="learning rate (default: 1.0)")
-    parser.add_argument("--gamma", type=float, default=0.7, metavar="M", help="Learning rate step gamma (default: 0.7)")
-    parser.add_argument("--no-accel", action="store_true", help="disables accelerator")
-    parser.add_argument("--dry-run", action="store_true", help="quickly check a single pass")
-    parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
-    parser.add_argument("--log-interval", type=int, default=10, metavar="N", help="how many batches to wait before logging training status")
-    # parser.add_argument("--save-model", action="store_true", help="For Saving the current Model")
-    args = parser.parse_args()
-
-    torch.manual_seed(args.seed)
+    """ """
 
     device = torch.device("cuda", 0) if torch.cuda.is_available() else torch.device("cpu", 0)
 
-    train_kwargs = {"batch_size": args.batch_size}
-    test_kwargs = {"batch_size": args.test_batch_size}
-    if use_accel:
-        accel_kwargs = {"num_workers": 1, "persistent_workers": True, "pin_memory": True, "shuffle": True}
+    train_kwargs = {"batch_size": 64}
+    test_kwargs = {"batch_size": 1000}
+    if torch.cuda.is_available():
+        accel_kwargs: dict[str, bool | int] = {"num_workers": 1, "persistent_workers": True, "pin_memory": True, "shuffle": True}
         train_kwargs.update(accel_kwargs)
         test_kwargs.update(accel_kwargs)
 
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
     )  # this is where the 2D PIL images get transformed and normalized into torch Tensors
-    dataset1 = MNIST(r"../data/MNIST/", train=True, download=False, transform=transform)
-    dataset2 = MNIST(r"../data/MNIST/", train=False, download=False, transform=transform)
-    train_loader = DataLoader(dataset1, **train_kwargs)
-    test_loader = DataLoader(dataset2, **test_kwargs)
+    dataset1 = MNIST(r"../../data/", train=True, download=False, transform=transform)
+    dataset2 = MNIST(r"../../data/", train=False, download=False, transform=transform)
+    train_loader = DataLoader(dataset1, **train_kwargs)  # type: ignore
+    test_loader = DataLoader(dataset2, **test_kwargs)  # type: ignore
 
     model = CNNet().to(device)
-    optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
-
-    scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
-    for epoch in range(1, args.epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch)
-        test(model, device, test_loader)
-        scheduler.step()
+    optimizer = optim.Adadelta(model.parameters(), lr=1.00)
+    model.fit(train_loader=train_loader, test_loader=test_loader, optimizer=optimizer, device=device)  # type: ignore
+    model.serialize(r"./mnist.pt")
 
 
 if __name__ == "__main__":
