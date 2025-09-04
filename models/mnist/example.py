@@ -157,8 +157,8 @@ def main() -> None:
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
     )  # this is where the 2D PIL images get transformed and normalized into torch Tensors
-    dataset1 = MNIST(r"../../data/MNIST/", train=True, download=False, transform=transform)
-    dataset2 = MNIST(r"../../data/MNIST/", train=False, download=False, transform=transform)
+    dataset1 = MNIST(r"../data/MNIST/", train=True, download=False, transform=transform)
+    dataset2 = MNIST(r"../data/MNIST/", train=False, download=False, transform=transform)
     train_loader = DataLoader(dataset1, **train_kwargs)
     test_loader = DataLoader(dataset2, **test_kwargs)
 
