@@ -19,23 +19,15 @@ class LiNN(nn.Module):
         """
 
         super(LiNN, self).__init__()  # type: ignore
-        self.__nchannels = n_channels
-        self.__nclasses = n_classes
 
-        # first convolution layer, a 28 x 28 image becomes a 14 x 14 image
-        self.__conv_01 = nn.Conv2d(in_channels=self.__nchannels, out_channels=4, kernel_size=(2, 2), stride=2)
-
-        # second convolution layer, the 14 x 14 image becomes a 7 x 7 image
-        self.__conv_02 = nn.Conv2d(in_channels=4, out_channels=12, kernel_size=(2, 2), stride=2)
-
-        # pooling layer
-        self.__maxpool = nn.MaxPool2d(kernel_size=(2, 2), stride=2)  # a 24 x 24 image will be transformed into a 12 x 12 image
-
-        # first fully connected layer, output from the convolutional layer will have 48 channels, after max pooling, we'll have 12 x 12 matrices for images
-        self.__fcon_01 = nn.Linear(in_features=144, out_features=24)
-
-        # second fully connected layer
-        self.__fcon_02 = nn.Linear(in_features=24, out_features=self.__nclasses)
+        self.fconn_01 = nn.Linear(
+            in_features=784,  # 28x28 pixels of the image
+            out_features=1280,
+        )
+        self.fconn_02 = nn.Linear(in_features=1280, out_features=4096)
+        self.fconn_03 = nn.Linear(in_features=4096, out_features=1024)
+        self.fconn_04 = nn.Linear(in_features=1024, out_features=128)
+        self.fconn_05 = nn.Linear(in_features=128, out_features=10)
 
     @override
     def forward(self, _image: torch.Tensor) -> torch.Tensor:
@@ -59,10 +51,10 @@ class LiNN(nn.Module):
         print(_image.shape)
 
         # pass the result through the fully connected layers
-        _image = self.__fcon_01(_image)
+        _image = self.fconn_01(_image)
         print(_image.shape)
         _image = relu(_image)  # activation
-        _image = self.__fcon_02(_image)
+        _image = self.fconn_02(_image)
 
         # apply softmax
         _image = log_softmax(_image, dim=1)
