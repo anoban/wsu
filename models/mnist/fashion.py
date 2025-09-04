@@ -1,5 +1,3 @@
-# https://raw.githubusercontent.com/pytorch/examples/refs/heads/main/mnist/main.py
-
 from typing import override
 from warnings import warn
 
@@ -11,7 +9,7 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import DataLoader
 from torchvision import transforms  # type: ignore
-from torchvision.datasets import MNIST  # type: ignore
+from torchvision.datasets import FashionMNIST  # type: ignore
 
 
 class CNNet(nn.Module):
@@ -89,7 +87,7 @@ class CNNet(nn.Module):
                 if dry_run:  # if only a dry run, break after a single pass in the first epoch
                     break
 
-            # at the end of every epoch, evaluate the model's current state's performance on the test dataset
+            # at the end of every epoch, evaluate the model's performance
             self.evaluate(device=device, test_loader=test_loader)
             scheduler.step()
 
@@ -154,15 +152,15 @@ def main() -> None:
         [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
     )  # this is where the 2D PIL images get transformed and normalized into torch Tensors
 
-    trn_dt = MNIST(r"../../data/", train=True, download=False, transform=transformations)
-    tst_dt = MNIST(r"../../data/", train=False, download=False, transform=transformations)
+    trn_dt = FashionMNIST(r"../../data/", train=True, download=True, transform=transformations)
+    tst_dt = FashionMNIST(r"../../data/", train=False, download=False, transform=transformations)
     trn_loader = DataLoader(trn_dt, **train_kwargs)  # type: ignore
     tst_loader = DataLoader(tst_dt, **test_kwargs)  # type: ignore
 
     model = CNNet().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=1.00)
     model.fit(train_loader=trn_loader, test_loader=tst_loader, optimizer=optimizer, device=device)  # type: ignore
-    model.serialize(r"./mnist.pt")
+    model.serialize(r"./fashionmnist.pt")
 
 
 if __name__ == "__main__":
