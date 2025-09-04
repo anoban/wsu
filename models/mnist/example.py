@@ -51,10 +51,13 @@ class CNNet(nn.Module):
 
     def fit(
         self,
-        args: argparse.Namespace,
         train_loader: DataLoader[torch.Tensor],
         optimizer: Optimizer,
         device: torch.device = torch.device("cpu"),
+        gamma: float = 0.7,
+        epochs: int = 20,
+        log_interval: int = 200,
+        dry_run: bool = False,
     ) -> None:
         """
         Fit the model to the training dataset
@@ -63,9 +66,9 @@ class CNNet(nn.Module):
         super().train(mode=True)  # set nn.Module parent class's state to training
         super().to(device=device)  # move the model to the specified device
 
-        scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+        scheduler = StepLR(optimizer, step_size=1, gamma=gamma)
 
-        for epoch in range(1, args.epochs + 1):
+        for epoch in range(1, epochs + 1):
             # train(args, model, device, train_loader, optimizer, epoch)
             # test(model, device, test_loader)
 
@@ -77,21 +80,24 @@ class CNNet(nn.Module):
                 loss.backward()  # type: ignore
                 optimizer.step()
 
-                if batch_idx % args.log_interval == 0:
+                if batch_idx % log_interval == 0:
                     print(
                         "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
                             epoch, batch_idx * len(data), len(train_loader.dataset), 100.0 * batch_idx / len(train_loader), loss.item()
                         )
                     )
 
-            if args.dry_run:  # if only a dry run, break after a single pass
+            if dry_run:  # if only a dry run, break after a single pass
                 break
 
             scheduler.step()
 
     @torch.no_grad()  # type: ignore
-    def evaluate(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> int:
-        """ """
+    def evaluate(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> None:
+        """
+        Evaluate the model's performance on the test dataset
+        """
+
         super().eval()  # set the state of parent class nn.Module to predictions, equivalent to self.train(mode=False)
         test_loss: float = 0.000
         correct: int = 0
