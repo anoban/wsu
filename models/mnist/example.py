@@ -64,13 +64,14 @@ class Net(nn.Module):
         super().eval()  # set the state of parent class nn.Module to predictions, equivalent to self.train(mode=False)
         test_loss: float = 0.000
         correct: int = 0
+
         with torch.no_grad():
-            for data, target in test_loader:
-                data, target = data.to(device), target.to(device)
-                output = self(data)  # calls forward() and other internal hooks under the hood
-                test_loss += F.nll_loss(output, target, reduction="sum").item()  # sum up batch loss
+            for batch, labels in test_loader:
+                batch, labels = batch.to(device), labels.to(device)
+                output = self(batch)  # calls forward() and other internal hooks under the hood
+                test_loss += F.nll_loss(output, labels, reduction="sum").item()  # sum up batch loss
                 pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-                correct += pred.eq(target.view_as(pred)).sum().item()
+                correct += pred.eq(labels.view_as(pred)).sum().item()
 
         test_loss /= len(
             test_loader.dataset  # type: ignore
@@ -105,17 +106,12 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="quickly check a single pass")
     parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
     parser.add_argument("--log-interval", type=int, default=10, metavar="N", help="how many batches to wait before logging training status")
-    parser.add_argument("--save-model", action="store_true", help="For Saving the current Model")
+    # parser.add_argument("--save-model", action="store_true", help="For Saving the current Model")
     args = parser.parse_args()
-
-    use_accel = not args.no_accel and torch.accelerator.is_available()
 
     torch.manual_seed(args.seed)
 
-    if use_accel:
-        device = torch.accelerator.current_accelerator()
-    else:
-        device = torch.device("cpu")
+    device = torch.device("cuda", 0) if torch.cuda.is_available() else torch.device("cpu", 0)
 
     train_kwargs = {"batch_size": args.batch_size}
     test_kwargs = {"batch_size": args.test_batch_size}
@@ -138,9 +134,6 @@ def main():
         train(args, model, device, train_loader, optimizer, epoch)
         test(model, device, test_loader)
         scheduler.step()
-
-    if args.save_model:
-        torch.save(model.state_dict(), "mnist_cnn.pt")
 
 
 if __name__ == "__main__":
