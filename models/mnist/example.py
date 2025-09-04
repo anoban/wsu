@@ -2,6 +2,7 @@
 
 import argparse
 from typing import override
+from warnings import warn
 
 import torch
 import torch.nn as nn
@@ -40,10 +41,16 @@ class Net(nn.Module):
         return output
 
     def fit(
-        self, args, train_loader: DataLoader[torch.Tensor], optimizer: Optimizer, epoch: int, device: torch.device = torch.device("cpu")
+        self,
+        args: argparse.Namespace,
+        train_loader: DataLoader[torch.Tensor],
+        optimizer: Optimizer,
+        epoch: int,
+        device: torch.device = torch.device("cpu"),
     ) -> None:
         super().train(mode=True)  # set nn.Module parent class's state to training
         super().to(device=device)  # move the model to the specified device
+
         for batch_idx, (data, target) in enumerate(train_loader):
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
@@ -60,18 +67,18 @@ class Net(nn.Module):
                 if args.dry_run:
                     break
 
+    @torch.no_grad()  # type: ignore
     def predict(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> int:
         super().eval()  # set the state of parent class nn.Module to predictions, equivalent to self.train(mode=False)
         test_loss: float = 0.000
         correct: int = 0
 
-        with torch.no_grad():
-            for batch, labels in test_loader:
-                batch, labels = batch.to(device), labels.to(device)
-                output = self(batch)  # calls forward() and other internal hooks under the hood
-                test_loss += F.nll_loss(output, labels, reduction="sum").item()  # sum up batch loss
-                pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-                correct += pred.eq(labels.view_as(pred)).sum().item()
+        for batch, labels in test_loader:
+            batch, labels = batch.to(device), labels.to(device)
+            output = self(batch)  # calls forward() and other internal hooks under the hood
+            test_loss += F.nll_loss(output, labels, reduction="sum").item()  # sum up batch loss
+            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
+            correct += pred.eq(labels.view_as(pred)).sum().item()
 
         test_loss /= len(
             test_loader.dataset  # type: ignore
@@ -86,12 +93,13 @@ class Net(nn.Module):
 
     def serialize(self, path: str) -> None:
         """ """
-
+        if not path.endswith(r".pt") and not path.endswith(r".pt"):
+            warn(r"It's advised to use .pt or .pth extensions for serializing PyTorch models!")
         try:
             with open(file=path, mode=r"wb") as fp:
                 torch.save(super().state_dict(), f=fp)
         except IOError as ioexcpt:
-            raise RuntimeError("###############################") from ioexcpt
+            raise RuntimeError(f"Unable to serialize the model to file {path} because of exception {ioexcpt.strerror}")
 
 
 def main():
