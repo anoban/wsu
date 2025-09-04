@@ -6,38 +6,47 @@ from warnings import warn
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
+from torch.nn.functional import log_softmax, max_pool2d, nll_loss, relu
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import DataLoader
-from torchvision import datasets, transforms  # type: ignore
+from torchvision import transforms  # type: ignore
+from torchvision.datasets import MNIST  # type: ignore
 
 
-class Net(nn.Module):
+class CNNet(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()  # type: ignore
-        self.conv1 = nn.Conv2d(1, 32, 3, 1)
-        self.conv2 = nn.Conv2d(32, 64, 3, 1)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.5)
-        self.fc1 = nn.Linear(9216, 128)
-        self.fc2 = nn.Linear(128, 10)
+        """
+        Initialize the class instance and configure the layer layouts and the architecure
+        """
+
+        super(CNNet, self).__init__()  # type: ignore
+        self.cnvltn_01 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(3, 3), stride=3)
+        self.cnvltn_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), stride=3)
+        self.dropout_01 = nn.Dropout(0.25)
+        self.dropout_02 = nn.Dropout(0.5)
+        self.fully_cnctd_01 = nn.Linear(in_features=9216, out_features=128)
+        self.fully_cnctd_02 = nn.Linear(in_features=128, out_features=10)
 
     @override
     def forward(self, batch: torch.Tensor) -> torch.Tensor:
-        batch = self.conv1(batch)
-        batch = F.relu(batch)
-        batch = self.conv2(batch)
-        batch = F.relu(batch)
-        batch = F.max_pool2d(batch, 2)
-        batch = self.dropout1(batch)
+        """
+        The method for performing a forward pass
+        """
+
+        batch = self.cnvltn_01(batch)
+        batch = relu(batch)
+        batch = self.cnvltn_02(batch)
+        batch = relu(batch)
+        batch = max_pool2d(batch, 2)
+        batch = self.dropout_01(batch)
         batch = torch.flatten(batch, 1)
-        batch = self.fc1(batch)
-        batch = F.relu(batch)
-        batch = self.dropout2(batch)
-        batch = self.fc2(batch)
-        output = F.log_softmax(batch, dim=1)
+        batch = self.fully_cnctd_01(batch)
+        batch = relu(batch)
+        batch = self.dropout_02(batch)
+        batch = self.fully_cnctd_02(batch)  # output features = 10
+        output = log_softmax(batch, dim=1)
         return output
 
     def fit(
@@ -45,38 +54,52 @@ class Net(nn.Module):
         args: argparse.Namespace,
         train_loader: DataLoader[torch.Tensor],
         optimizer: Optimizer,
-        epoch: int,
         device: torch.device = torch.device("cpu"),
     ) -> None:
+        """
+        Fit the model to the training dataset
+        """
+
         super().train(mode=True)  # set nn.Module parent class's state to training
         super().to(device=device)  # move the model to the specified device
 
-        for batch_idx, (data, target) in enumerate(train_loader):
-            data, target = data.to(device), target.to(device)
-            optimizer.zero_grad()
-            output = self(data)
-            loss = F.nll_loss(output, target)
-            loss.backward()  # type: ignore
-            optimizer.step()
-            if batch_idx % args.log_interval == 0:
-                print(
-                    "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
-                        epoch, batch_idx * len(data), len(train_loader.dataset), 100.0 * batch_idx / len(train_loader), loss.item()
+        scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+
+        for epoch in range(1, args.epochs + 1):
+            # train(args, model, device, train_loader, optimizer, epoch)
+            # test(model, device, test_loader)
+
+            for batch_idx, (data, target) in enumerate(train_loader):
+                data, target = data.to(device), target.to(device)
+                optimizer.zero_grad()
+                output = self(data)
+                loss = nll_loss(output, target)
+                loss.backward()  # type: ignore
+                optimizer.step()
+
+                if batch_idx % args.log_interval == 0:
+                    print(
+                        "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
+                            epoch, batch_idx * len(data), len(train_loader.dataset), 100.0 * batch_idx / len(train_loader), loss.item()
+                        )
                     )
-                )
-                if args.dry_run:
-                    break
+
+            if args.dry_run:  # if only a dry run, break after a single pass
+                break
+
+            scheduler.step()
 
     @torch.no_grad()  # type: ignore
-    def predict(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> int:
+    def evaluate(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> int:
+        """ """
         super().eval()  # set the state of parent class nn.Module to predictions, equivalent to self.train(mode=False)
         test_loss: float = 0.000
         correct: int = 0
 
         for batch, labels in test_loader:
             batch, labels = batch.to(device), labels.to(device)
-            output = self(batch)  # calls forward() and other internal hooks under the hood
-            test_loss += F.nll_loss(output, labels, reduction="sum").item()  # sum up batch loss
+            output = self(batch)  # overloaded __call__() of nn.Module invokes forward() and other necessary internal hooks under the hood
+            test_loss += nll_loss(output, labels, reduction="sum").item()  # sum up batch loss
             pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
             correct += pred.eq(labels.view_as(pred)).sum().item()
 
@@ -92,9 +115,12 @@ class Net(nn.Module):
         )
 
     def serialize(self, path: str) -> None:
-        """ """
-        if not path.endswith(r".pt") and not path.endswith(r".pt"):
-            warn(r"It's advised to use .pt or .pth extensions for serializing PyTorch models!")
+        """
+        Serialize the model's current state to a binary dictionary object
+        """
+
+        if not path.endswith(r".pt") and not path.endswith(r".pt"):  # using .pt or .pth extensions is recommended
+            warn(r"It's advised to use .pt or .pth extensions when serializing PyTorch models!")
         try:
             with open(file=path, mode=r"wb") as fp:
                 torch.save(super().state_dict(), f=fp)
@@ -102,12 +128,12 @@ class Net(nn.Module):
             raise RuntimeError(f"Unable to serialize the model to file {path} because of exception {ioexcpt.strerror}")
 
 
-def main():
+def main() -> None:
     # Training settings
     parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
-    parser.add_argument("--batch-size", type=int, default=64, metavar="N", help="input batch size for training (default: 64)")
-    parser.add_argument("--test-batch-size", type=int, default=1000, metavar="N", help="input batch size for testing (default: 1000)")
-    parser.add_argument("--epochs", type=int, default=14, metavar="N", help="number of epochs to train (default: 14)")
+    parser.add_argument("--batch-size", type=int, default=32, metavar="N", help="input batch size for training (default: 32)")
+    parser.add_argument("--test-batch-size", type=int, default=64, metavar="N", help="input batch size for testing (default: 64)")
+    parser.add_argument("--epochs", type=int, default=1000, metavar="N", help="number of epochs to train (default: 1000)")
     parser.add_argument("--lr", type=float, default=1.0, metavar="LR", help="learning rate (default: 1.0)")
     parser.add_argument("--gamma", type=float, default=0.7, metavar="M", help="Learning rate step gamma (default: 0.7)")
     parser.add_argument("--no-accel", action="store_true", help="disables accelerator")
@@ -128,13 +154,15 @@ def main():
         train_kwargs.update(accel_kwargs)
         test_kwargs.update(accel_kwargs)
 
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
-    dataset1 = datasets.MNIST("../data", train=True, download=True, transform=transform)
-    dataset2 = datasets.MNIST("../data", train=False, transform=transform)
+    transform = transforms.Compose(
+        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+    )  # this is where the 2D PIL images get transformed and normalized into torch Tensors
+    dataset1 = MNIST(r"../../data/MNIST/", train=True, download=False, transform=transform)
+    dataset2 = MNIST(r"../../data/MNIST/", train=False, download=False, transform=transform)
     train_loader = DataLoader(dataset1, **train_kwargs)
     test_loader = DataLoader(dataset2, **test_kwargs)
 
-    model = Net().to(device)
+    model = CNNet().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
