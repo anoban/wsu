@@ -6,11 +6,11 @@ from torch.nn.functional import log_softmax, relu
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 
-from ..lib import IdxDataset
 
-
-class CNNet(nn.Module):
-    """ """
+class LiNN(nn.Module):
+    """
+    A fully connected linear neural network without any convolutions
+    """
 
     def __init__(self, n_channels: int = 1, n_classes: int = 10) -> None:
         """
@@ -18,7 +18,7 @@ class CNNet(nn.Module):
         n_classes: int - number of image classes
         """
 
-        super(CNNet, self).__init__()  # type: ignore
+        super(LiNN, self).__init__()  # type: ignore
         self.__nchannels = n_channels
         self.__nclasses = n_classes
 
@@ -69,6 +69,12 @@ class CNNet(nn.Module):
 
         return _image
 
+    def fit(self) -> None:
+        pass
+
+    def save(self, path: str) -> None:
+        pass
+
 
 def main() -> None:
     train = IdxDataset(r"./FashionMNIST/train-labels-idx1-ubyte", r"./FashionMNIST/train-images-idx3-ubyte")
@@ -77,7 +83,7 @@ def main() -> None:
     train_loader = DataLoader(dataset=train, batch_size=1, shuffle=True, num_workers=6)
     test_loader = DataLoader(dataset=test, batch_size=1, shuffle=True, num_workers=6)
 
-    model = CNNet(n_channels=1, n_classes=10)
+    model = LiNN(n_channels=1, n_classes=10)
 
     optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
     criterion = nn.CrossEntropyLoss()
