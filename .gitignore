@@ -207,6 +207,7 @@ data/FRED/*
 
 # MNIST
 data/MNIST/*
+data/FashionMNIST/*
 
 .ipynb_checkpoints
 *.dat

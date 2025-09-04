@@ -54,7 +54,7 @@ class CNNet(nn.Module):
         device: torch.device = torch.device("cpu"),
         gamma: float = 0.7,
         epochs: int = 20,
-        log_interval: int = 100,
+        log_interval: int = 10,
         dry_run: bool = False,
     ) -> None:
         """
