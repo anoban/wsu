@@ -21,8 +21,8 @@ class CNNet(nn.Module):
         """
 
         super(CNNet, self).__init__()  # type: ignore
-        self.cnvltn_01 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(3, 3), stride=3)
-        self.cnvltn_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), stride=3)
+        self.cnvltn_01 = nn.Conv2d(in_channels=1, out_channels=32, kernel_size=(3, 3), stride=1)
+        self.cnvltn_02 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), stride=1)
         self.dropout_01 = nn.Dropout(0.25)
         self.dropout_02 = nn.Dropout(0.5)
         self.fully_cnctd_01 = nn.Linear(in_features=9216, out_features=128)
@@ -56,7 +56,7 @@ class CNNet(nn.Module):
         device: torch.device = torch.device("cpu"),
         gamma: float = 0.7,
         epochs: int = 20,
-        log_interval: int = 200,
+        log_interval: int = 100,
         dry_run: bool = False,
     ) -> None:
         """
@@ -85,7 +85,7 @@ class CNNet(nn.Module):
                 if batch_idx % log_interval == 0:
                     print(
                         "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
-                            epoch, batch_idx * BATCH_SIZE, N_IMAGES, 100.0 * batch_idx / N_IMAGES, loss.item()
+                            epoch, batch_idx * BATCH_SIZE, N_IMAGES, BATCH_SIZE * batch_idx / N_IMAGES * 100, loss.item()
                         )
                     )
 
@@ -94,7 +94,6 @@ class CNNet(nn.Module):
 
             # at the end of every epoch, evaluate the model's performance
             self.evaluate(device=device, test_loader=test_loader)
-
             scheduler.step()
 
     @torch.no_grad()  # type: ignore
@@ -116,12 +115,15 @@ class CNNet(nn.Module):
 
         test_loss /= len(
             test_loader.dataset  # type: ignore
-        )  # calling the __len__() of DataLoader class can give misleading results as it provides the number of batches NOT the number of images in the Dataset
+        )  # calling the __len__() of DataLoader class can give misleading results as it just gives the batch size NOT the number of images in the Dataset
         # hence the need to call the __len__() of the Dataset class directly
         # since class Dataset does not have a default __len__() method defined, linters will bitch about the missing method
         print(
-            "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
-                test_loss, correct, len(test_loader), 100.0 * correct / len(test_loader)
+            "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.4f}%)\n".format(
+                test_loss,
+                correct,
+                len(test_loader.dataset),  # type: ignore
+                100.0 * correct / len(test_loader.dataset),  # type: ignore
             )
         )
 
@@ -151,17 +153,18 @@ def main() -> None:
         train_kwargs.update(accel_kwargs)
         test_kwargs.update(accel_kwargs)
 
-    transform = transforms.Compose(
+    transformations = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
     )  # this is where the 2D PIL images get transformed and normalized into torch Tensors
-    dataset1 = MNIST(r"../../data/", train=True, download=False, transform=transform)
-    dataset2 = MNIST(r"../../data/", train=False, download=False, transform=transform)
-    train_loader = DataLoader(dataset1, **train_kwargs)  # type: ignore
-    test_loader = DataLoader(dataset2, **test_kwargs)  # type: ignore
+
+    trn_dt = MNIST(r"../../data/", train=True, download=False, transform=transformations)
+    tst_dt = MNIST(r"../../data/", train=False, download=False, transform=transformations)
+    trn_loader = DataLoader(trn_dt, **train_kwargs)  # type: ignore
+    tst_loader = DataLoader(tst_dt, **test_kwargs)  # type: ignore
 
     model = CNNet().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=1.00)
-    model.fit(train_loader=train_loader, test_loader=test_loader, optimizer=optimizer, device=device)  # type: ignore
+    model.fit(train_loader=trn_loader, test_loader=tst_loader, optimizer=optimizer, device=device)  # type: ignore
     model.serialize(r"./mnist.pt")
 
 
