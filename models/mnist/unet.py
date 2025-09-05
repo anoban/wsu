@@ -112,17 +112,17 @@ class UNet(nn.Module):
         self.outc = OutConv(64, n_classes)
 
     @override
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x1 = self.inc(x)
+    def forward(self, batch: torch.Tensor) -> torch.Tensor:
+        x1 = self.inc(batch)
         x2 = self.down1(x1)
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        x = self.up1(x5, x4)
-        x = self.up2(x, x3)
-        x = self.up3(x, x2)
-        x = self.up4(x, x1)
-        logits = self.outc(x)
+        batch = self.up1(x5, x4)
+        batch = self.up2(batch, x3)
+        batch = self.up3(batch, x2)
+        batch = self.up4(batch, x1)
+        logits = self.outc(batch)
         return logits
 
     def use_checkpointing(self) -> None:
