@@ -6,6 +6,7 @@ import torch.nn as nn
 from torch.nn.functional import log_softmax, relu
 from torch.optim import SGD, Optimizer
 from torch.utils.data import DataLoader
+from torchvision.datasets import MNIST
 
 
 class LiNN(nn.Module):
@@ -91,8 +92,8 @@ class LiNN(nn.Module):
 
 
 def main() -> None:
-    train = IdxDataset(r"./FashionMNIST/train-labels-idx1-ubyte", r"./FashionMNIST/train-images-idx3-ubyte")
-    test = IdxDataset(r"./FashionMNIST/t10k-labels-idx1-ubyte", r"./FashionMNIST/t10k-images-idx3-ubyte")
+    train = MNIST(root=r"../../data/", train=True, download=False)
+    test = MNIST(root=r"../../data/", train=False, download=False)
 
     train_loader = DataLoader(dataset=train, batch_size=1, shuffle=True, num_workers=6)
     test_loader = DataLoader(dataset=test, batch_size=1, shuffle=True, num_workers=6)
