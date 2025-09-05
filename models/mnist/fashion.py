@@ -88,13 +88,14 @@ class CNNet(nn.Module):
                     break
 
             # at the end of every epoch, evaluate the model's performance
-            self.evaluate(device=device, test_loader=test_loader)
+            self._impl_evaluate(device=device, test_loader=test_loader)
             scheduler.step()
 
     @torch.no_grad()  # type: ignore
-    def evaluate(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> None:
+    def _impl_evaluate(self, device: torch.device, test_loader: DataLoader[torch.Tensor]) -> None:
         """
         Evaluate the model's performance on the test dataset
+        This method is not intended to be invoked directly by users
         """
 
         super().eval()  # set the state of parent class nn.Module to predictions, equivalent to self.train(mode=False)

@@ -1,4 +1,5 @@
 from typing import override
+from warnings import warn
 
 import torch
 import torch.nn as nn
@@ -65,11 +66,28 @@ class LiNN(nn.Module):
         super().to(device=device)
 
     @torch.no_grad()  # type: ignore
-    def evaluate(self, test_loader: DataLoader[torch.Tensor], device: torch.device = torch.device("cpu", 0)) -> None:
+    def _impl_evaluate(self, test_loader: DataLoader[torch.Tensor], device: torch.device = torch.device("cpu", 0)) -> None:
+        """
+        Evaluate the model's current state's performance on the test dataset
+        This method is not mean to be directly invoked by users
+        """
+
         super().eval()
+        loss: float = 0.000
+        correct_predictions: int = 0
+
+        for batch, labels in test_loader:
+            batch, labels = batch.to(device), labels.to(device)  # move the pair of tensors to the specified device
+            probs = self(batch)  # predicted probabilities for labels
 
     def to_disk(self, path: str) -> None:
-        pass
+        if not path.endswith(r".pt") and not path.endswith(r".pt"):  # using .pt or .pth extensions is recommended
+            warn(r"It's advised to use .pt or .pth extensions when serializing PyTorch models!")
+        try:
+            with open(file=path, mode=r"wb") as fp:
+                torch.save(obj=super().state_dict(), f=fp)
+        except IOError as ioexcept:
+            raise RuntimeError(f"Cannot open file {path} for writing because of {ioexcept.strerror}")
 
 
 def main() -> None:
@@ -81,10 +99,8 @@ def main() -> None:
 
     model = LiNN()
 
-    optimizer = SGD(params=model.parameters(), lr=0.001, momentum=0.900)
+    optimizer = SGD(params=model.parameters(), lr=0.9, momentum=0.9)
     criterion = nn.CrossEntropyLoss()
-
-
 
 
 if __name__ == r"__main__":
