@@ -203,7 +203,7 @@ dkms.conf
 *packages/
 
 # FRED stuff
-data/FRED/*
+data/chapter2/FRED/*
 
 # MNIST
 data/MNIST/*
