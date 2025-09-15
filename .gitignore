@@ -220,6 +220,7 @@ data/FashionMNIST/*
 *.bmp
 *.tiff
 *.svg
+*.pdf
 
 # videos
 *.mp4
