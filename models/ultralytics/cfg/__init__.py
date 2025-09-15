@@ -49,13 +49,7 @@ SOLUTION_MAP = {
 # Define valid tasks and modes
 MODES = frozenset({"train", "val", "predict", "export", "track", "benchmark"})
 TASKS = frozenset({"detect", "segment", "classify", "pose", "obb"})
-TASK2DATA = {
-    "detect": "coco8.yaml",
-    "segment": "coco8-seg.yaml",
-    "classify": "imagenet10",
-    "pose": "coco8-pose.yaml",
-    "obb": "dota8.yaml",
-}
+TASK2DATA = {"detect": "coco8.yaml", "segment": "coco8-seg.yaml", "classify": "imagenet10", "pose": "coco8-pose.yaml", "obb": "dota8.yaml"}
 TASK2MODEL = {
     "detect": "yolo11n.pt",
     "segment": "yolo11n-seg.pt",
@@ -78,9 +72,9 @@ SOLUTIONS_HELP_MSG = f"""
         yolo solutions SOLUTION ARGS
 
         Where SOLUTION (optional) is one of {list(SOLUTION_MAP.keys())[:-1]}
-              ARGS (optional) are any number of custom 'arg=value' pairs like 'show_in=True' that override defaults 
+              ARGS (optional) are any number of custom 'arg=value' pairs like 'show_in=True' that override defaults
                   at https://docs.ultralytics.com/usage/cfg
-                
+
     1. Call object counting solution
         yolo solutions count source="path/to/video.mp4" region="[(20, 400), (1080, 400), (1080, 360), (20, 360)]"
 
@@ -95,10 +89,10 @@ SOLUTIONS_HELP_MSG = f"""
 
     5. Generate analytical graphs
         yolo solutions analytics analytics_type="pie"
-    
+
     6. Track objects within specific zones
         yolo solutions trackzone source="path/to/video.mp4" region="[(150, 150), (1130, 150), (1130, 570), (150, 570)]"
-        
+
     7. Streamlit real-time webcam inference GUI
         yolo streamlit-predict
     """
@@ -369,15 +363,12 @@ def check_cfg(cfg: Dict, hard: bool = True) -> None:
                     raise ValueError(f"'{k}={v}' is an invalid value. Valid '{k}' values are between 0.0 and 1.0.")
             elif k in CFG_INT_KEYS and not isinstance(v, int):
                 if hard:
-                    raise TypeError(
-                        f"'{k}={v}' is of invalid type {type(v).__name__}. '{k}' must be an int (i.e. '{k}=8')"
-                    )
+                    raise TypeError(f"'{k}={v}' is of invalid type {type(v).__name__}. '{k}' must be an int (i.e. '{k}=8')")
                 cfg[k] = int(v)
             elif k in CFG_BOOL_KEYS and not isinstance(v, bool):
                 if hard:
                     raise TypeError(
-                        f"'{k}={v}' is of invalid type {type(v).__name__}. "
-                        f"'{k}' must be a bool (i.e. '{k}=True' or '{k}=False')"
+                        f"'{k}={v}' is of invalid type {type(v).__name__}. '{k}' must be a bool (i.e. '{k}=True' or '{k}=False')"
                     )
                 cfg[k] = bool(v)
 
@@ -718,9 +709,7 @@ def handle_yolo_solutions(args: List[str]) -> None:
         cap = cv2.VideoCapture(solution.CFG["source"])  # read the video file
         if solution_name != "crop":
             # extract width, height and fps of the video file, create save directory and initialize video writer
-            w, h, fps = (
-                int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS)
-            )
+            w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
             if solution_name == "analytics":  # analytical graphs follow fixed shape for output i.e w=1920, h=1080
                 w, h = 1280, 720
             save_dir = get_save_dir(SimpleNamespace(project="runs/solutions", name="exp", exist_ok=False))
@@ -966,9 +955,7 @@ def entrypoint(debug: str = "") -> None:
 
     # Mode
     if mode in {"predict", "track"} and "source" not in overrides:
-        overrides["source"] = (
-            "https://ultralytics.com/images/boats.jpg" if task == "obb" else DEFAULT_CFG.source or ASSETS
-        )
+        overrides["source"] = "https://ultralytics.com/images/boats.jpg" if task == "obb" else DEFAULT_CFG.source or ASSETS
         LOGGER.warning(f"'source' argument is missing. Using default 'source={overrides['source']}'.")
     elif mode in {"train", "val"}:
         if "data" not in overrides and "resume" not in overrides:
