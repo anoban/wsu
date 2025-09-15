@@ -2,7 +2,7 @@
 
 import inspect
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, override
 
 import numpy as np
 import torch
@@ -10,7 +10,7 @@ from PIL import Image
 
 from ..cfg import TASK2DATA, get_cfg, get_save_dir
 from ..engine.results import Results
-from ..nn.tasks import attempt_load_one_weight, guess_model_task, yaml_model_load
+from ..nn.tasks import attempt_load_one_weight, guess_model_task
 from ..utils import ARGV, DEFAULT_CFG_DICT, LOGGER, RANK, SETTINGS, YAML, callbacks, checks
 
 
@@ -67,7 +67,7 @@ class Model(torch.nn.Module):
         >>> model.export(format="onnx")
     """
 
-    def __init__(self, model: Union[str, Path, "Model"] = "yolo11n.pt", task: str = None, verbose: bool = False) -> None:
+    def __init__(self, model: Union[str, Path, "Model"], task: str, verbose: bool = False) -> None:
         """
         Initialize a new instance of the YOLO model class.
 
@@ -96,6 +96,7 @@ class Model(torch.nn.Module):
         if isinstance(model, Model):
             self.__dict__ = model.__dict__  # accepts an already initialized Model
             return
+
         super().__init__()
         self.callbacks = callbacks.get_default_callbacks()
         self.predictor = None  # reuse predictor
@@ -111,34 +112,19 @@ class Model(torch.nn.Module):
         self.model_name = None  # model name
         model = str(model).strip()
 
-        # Check if Ultralytics HUB model from https://hub.ultralytics.com
-        if self.is_hub_model(model):
-            from ultralytics.hub import HUBTrainingSession
-
-            # Fetch model from HUB
-            checks.check_requirements("hub-sdk>=0.0.12")
-            session = HUBTrainingSession.create_session(model)
-            model = session.model_file
-            if session.train_args:  # training sent from HUB
-                self.session = session
-
-        # Check if Triton Server model
-        elif self.is_triton_model(model):
-            self.model_name = self.model = model
-            self.overrides["task"] = task or "detect"  # set `task=detect` if not explicitly set
-            return
-
         # Load or create new YOLO model
         __import__("os").environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"  # to avoid deterministic warnings
         if str(model).endswith((".yaml", ".yml")):
-            self._new(model, task=task, verbose=verbose)
+            # self._new(model, task=task, verbose=verbose)
+            raise RuntimeError(".yaml or .yml file based configurations are only accepted by the original YOLO models!")
         else:
             self._load(model, task=task)
 
         # Delete super().training for accessing self.model.training
         del self.training
 
-    def __call__(
+    @override  # redundant implementation by Ultralytics???? Module() will internally invoke the forward() method when __call__() is called ??????
+    def __call__(  # type: ignore
         self, source: Union[str, Path, int, Image.Image, list, tuple, np.ndarray, torch.Tensor] = None, stream: bool = False, **kwargs: Any
     ) -> list:
         """
@@ -164,90 +150,7 @@ class Model(torch.nn.Module):
             >>> for r in results:
             ...     print(f"Detected {len(r)} objects in image")
         """
-        return self.predict(source, stream, **kwargs)
-
-    @staticmethod
-    def is_triton_model(model: str) -> bool:
-        """
-        Check if the given model string is a Triton Server URL.
-
-        This static method determines whether the provided model string represents a valid Triton Server URL by
-        parsing its components using urllib.parse.urlsplit().
-
-        Args:
-            model (str): The model string to be checked.
-
-        Returns:
-            (bool): True if the model string is a valid Triton Server URL, False otherwise.
-
-        Examples:
-            >>> Model.is_triton_model("http://localhost:8000/v2/models/yolo11n")
-            True
-            >>> Model.is_triton_model("yolo11n.pt")
-            False
-        """
-        from urllib.parse import urlsplit
-
-        url = urlsplit(model)
-        return url.netloc and url.path and url.scheme in {"http", "grpc"}
-
-    @staticmethod
-    def is_hub_model(model: str) -> bool:
-        """
-        Check if the provided model is an Ultralytics HUB model.
-
-        This static method determines whether the given model string represents a valid Ultralytics HUB model
-        identifier.
-
-        Args:
-            model (str): The model string to check.
-
-        Returns:
-            (bool): True if the model is a valid Ultralytics HUB model, False otherwise.
-
-        Examples:
-            >>> Model.is_hub_model("https://hub.ultralytics.com/models/MODEL")
-            True
-            >>> Model.is_hub_model("yolo11n.pt")
-            False
-        """
-        from ultralytics.hub import HUB_WEB_ROOT
-
-        return model.startswith(f"{HUB_WEB_ROOT}/models/")
-
-    def _new(self, cfg: str, task=None, model=None, verbose=False) -> None:
-        """
-        Initialize a new model and infer the task type from model definitions.
-
-        Creates a new model instance based on the provided configuration file. Loads the model configuration, infers
-        the task type if not specified, and initializes the model using the appropriate class from the task map.
-
-        Args:
-            cfg (str): Path to the model configuration file in YAML format.
-            task (str, optional): The specific task for the model. If None, it will be inferred from the config.
-            model (torch.nn.Module, optional): A custom model instance. If provided, it will be used instead of
-                creating a new one.
-            verbose (bool): If True, displays model information during loading.
-
-        Raises:
-            ValueError: If the configuration file is invalid or the task cannot be inferred.
-            ImportError: If the required dependencies for the specified task are not installed.
-
-        Examples:
-            >>> model = Model()
-            >>> model._new("yolo11n.yaml", task="detect", verbose=True)
-        """
-        cfg_dict = yaml_model_load(cfg)
-        self.cfg = cfg
-        self.task = task or guess_model_task(cfg_dict)
-        self.model = (model or self._smart_load("model"))(cfg_dict, verbose=verbose and RANK == -1)  # build model
-        self.overrides["model"] = self.cfg
-        self.overrides["task"] = self.task
-
-        # Below added to allow export from YAMLs
-        self.model.args = {**DEFAULT_CFG_DICT, **self.overrides}  # combine default and model args (prefer model args)
-        self.model.task = self.task
-        self.model_name = cfg
+        return self.forward(source, stream, **kwargs)
 
     def _load(self, weights: str, task=None) -> None:
         """
@@ -470,9 +373,10 @@ class Model(torch.nn.Module):
         """
         if not kwargs.get("embed"):
             kwargs["embed"] = [len(self.model.model) - 2]  # embed second-to-last layer if no indices passed
-        return self.predict(source, stream, **kwargs)
+        return self.forward(source, stream, **kwargs)
 
-    def predict(self, source: torch.Tensor, stream: bool = False, predictor=None, **kwargs: Any) -> List[Results]:
+    @override
+    def forward(self, source: torch.Tensor, stream: bool = False, predictor=None, **kwargs: Any) -> List[Results]:
         """
         Perform predictions on the given image source using the YOLO model.
 
@@ -566,7 +470,7 @@ class Model(torch.nn.Module):
         kwargs["conf"] = kwargs.get("conf") or 0.1  # ByteTrack-based method needs low confidence predictions as input
         kwargs["batch"] = kwargs.get("batch") or 1  # batch-size 1 for tracking in videos
         kwargs["mode"] = "track"
-        return self.predict(source=source, stream=stream, **kwargs)
+        return self.forward(source=source, stream=stream, **kwargs)
 
     def val(self, validator=None, **kwargs: Any):
         """

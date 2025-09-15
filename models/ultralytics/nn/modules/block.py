@@ -151,15 +151,7 @@ class HGBlock(nn.Module):
     """
 
     def __init__(
-        self,
-        c1: int,
-        cm: int,
-        c2: int,
-        k: int = 3,
-        n: int = 6,
-        lightconv: bool = False,
-        shortcut: bool = False,
-        act: nn.Module = nn.ReLU(),
+        self, c1: int, cm: int, c2: int, k: int = 3, n: int = 6, lightconv: bool = False, shortcut: bool = False, act: nn.Module = nn.ReLU()
     ):
         """
         Initialize HGBlock with specified parameters.
@@ -458,9 +450,7 @@ class GhostBottleneck(nn.Module):
             DWConv(c_, c_, k, s, act=False) if s == 2 else nn.Identity(),  # dw
             GhostConv(c_, c2, 1, 1, act=False),  # pw-linear
         )
-        self.shortcut = (
-            nn.Sequential(DWConv(c1, c1, k, s, act=False), Conv(c1, c2, 1, 1, act=False)) if s == 2 else nn.Identity()
-        )
+        self.shortcut = nn.Sequential(DWConv(c1, c1, k, s, act=False), Conv(c1, c2, 1, 1, act=False)) if s == 2 else nn.Identity()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Apply skip connection and concatenation to input tensor."""
@@ -470,9 +460,7 @@ class GhostBottleneck(nn.Module):
 class Bottleneck(nn.Module):
     """Standard bottleneck."""
 
-    def __init__(
-        self, c1: int, c2: int, shortcut: bool = True, g: int = 1, k: Tuple[int, int] = (3, 3), e: float = 0.5
-    ):
+    def __init__(self, c1: int, c2: int, shortcut: bool = True, g: int = 1, k: Tuple[int, int] = (3, 3), e: float = 0.5):
         """
         Initialize a standard bottleneck module.
 
@@ -571,9 +559,7 @@ class ResNetLayer(nn.Module):
         self.is_first = is_first
 
         if self.is_first:
-            self.layer = nn.Sequential(
-                Conv(c1, c2, k=7, s=2, p=3, act=True), nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-            )
+            self.layer = nn.Sequential(Conv(c1, c2, k=7, s=2, p=3, act=True), nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
         else:
             blocks = [ResNetBlock(c1, c2, s, e=e)]
             blocks.extend([ResNetBlock(e * c2, c2, 1, e=e) for _ in range(n - 1)])
@@ -642,16 +628,7 @@ class C2fAttn(nn.Module):
     """C2f module with an additional attn module."""
 
     def __init__(
-        self,
-        c1: int,
-        c2: int,
-        n: int = 1,
-        ec: int = 128,
-        nh: int = 1,
-        gc: int = 512,
-        shortcut: bool = False,
-        g: int = 1,
-        e: float = 0.5,
+        self, c1: int, c2: int, n: int = 1, ec: int = 128, nh: int = 1, gc: int = 512, shortcut: bool = False, g: int = 1, e: float = 0.5
     ):
         """
         Initialize C2f module with attention mechanism.
@@ -710,9 +687,7 @@ class C2fAttn(nn.Module):
 class ImagePoolingAttn(nn.Module):
     """ImagePoolingAttn: Enhance the text embeddings with image-aware information."""
 
-    def __init__(
-        self, ec: int = 256, ch: Tuple[int, ...] = (), ct: int = 512, nh: int = 8, k: int = 3, scale: bool = False
-    ):
+    def __init__(self, ec: int = 256, ch: Tuple[int, ...] = (), ct: int = 512, nh: int = 8, k: int = 3, scale: bool = False):
         """
         Initialize ImagePoolingAttn module.
 
@@ -855,9 +830,7 @@ class BNContrastiveHead(nn.Module):
 class RepBottleneck(Bottleneck):
     """Rep bottleneck."""
 
-    def __init__(
-        self, c1: int, c2: int, shortcut: bool = True, g: int = 1, k: Tuple[int, int] = (3, 3), e: float = 0.5
-    ):
+    def __init__(self, c1: int, c2: int, shortcut: bool = True, g: int = 1, k: Tuple[int, int] = (3, 3), e: float = 0.5):
         """
         Initialize RepBottleneck.
 
@@ -1107,9 +1080,7 @@ class C3f(nn.Module):
 class C3k2(C2f):
     """Faster Implementation of CSP Bottleneck with 2 convolutions."""
 
-    def __init__(
-        self, c1: int, c2: int, n: int = 1, c3k: bool = False, e: float = 0.5, g: int = 1, shortcut: bool = True
-    ):
+    def __init__(self, c1: int, c2: int, n: int = 1, c3k: bool = False, e: float = 0.5, g: int = 1, shortcut: bool = True):
         """
         Initialize C3k2 module.
 
@@ -1123,9 +1094,7 @@ class C3k2(C2f):
             shortcut (bool): Whether to use shortcut connections.
         """
         super().__init__(c1, c2, n, shortcut, g, e)
-        self.m = nn.ModuleList(
-            C3k(self.c, self.c, 2, shortcut, g) if c3k else Bottleneck(self.c, self.c, shortcut, g) for _ in range(n)
-        )
+        self.m = nn.ModuleList(C3k(self.c, self.c, 2, shortcut, g) if c3k else Bottleneck(self.c, self.c, shortcut, g) for _ in range(n))
 
 
 class C3k(C3):
@@ -1279,9 +1248,7 @@ class C2fCIB(C2f):
         e (float, optional): Expansion ratio for CIB modules. Defaults to 0.5.
     """
 
-    def __init__(
-        self, c1: int, c2: int, n: int = 1, shortcut: bool = False, lk: bool = False, g: int = 1, e: float = 0.5
-    ):
+    def __init__(self, c1: int, c2: int, n: int = 1, shortcut: bool = False, lk: bool = False, g: int = 1, e: float = 0.5):
         """
         Initialize C2fCIB module.
 
@@ -1350,9 +1317,7 @@ class Attention(nn.Module):
         B, C, H, W = x.shape
         N = H * W
         qkv = self.qkv(x)
-        q, k, v = qkv.view(B, self.num_heads, self.key_dim * 2 + self.head_dim, N).split(
-            [self.key_dim, self.key_dim, self.head_dim], dim=2
-        )
+        q, k, v = qkv.view(B, self.num_heads, self.key_dim * 2 + self.head_dim, N).split([self.key_dim, self.key_dim, self.head_dim], dim=2)
 
         attn = (q.transpose(-2, -1) @ k) * self.scale
         attn = attn.softmax(dim=-1)
@@ -1638,9 +1603,7 @@ class TorchVision(nn.Module):
         split (bool, optional): Returns output from intermediate child modules as list. Default is False.
     """
 
-    def __init__(
-        self, model: str, weights: str = "DEFAULT", unwrap: bool = True, truncate: int = 2, split: bool = False
-    ):
+    def __init__(self, model: str, weights: str = "DEFAULT", unwrap: bool = True, truncate: int = 2, split: bool = False):
         """
         Load the model and weights from torchvision.
 
@@ -1901,9 +1864,7 @@ class A2C2f(nn.Module):
 
         self.gamma = nn.Parameter(0.01 * torch.ones(c2), requires_grad=True) if a2 and residual else None
         self.m = nn.ModuleList(
-            nn.Sequential(*(ABlock(c_, c_ // 32, mlp_ratio, area) for _ in range(2)))
-            if a2
-            else C3k(c_, c_, 2, shortcut, g)
+            nn.Sequential(*(ABlock(c_, c_ // 32, mlp_ratio, area) for _ in range(2))) if a2 else C3k(c_, c_, 2, shortcut, g)
             for _ in range(n)
         )
 
@@ -1985,15 +1946,12 @@ class SAVPE(nn.Module):
         """
         super().__init__()
         self.cv1 = nn.ModuleList(
-            nn.Sequential(
-                Conv(x, c3, 3), Conv(c3, c3, 3), nn.Upsample(scale_factor=i * 2) if i in {1, 2} else nn.Identity()
-            )
+            nn.Sequential(Conv(x, c3, 3), Conv(c3, c3, 3), nn.Upsample(scale_factor=i * 2) if i in {1, 2} else nn.Identity())
             for i, x in enumerate(ch)
         )
 
         self.cv2 = nn.ModuleList(
-            nn.Sequential(Conv(x, c3, 1), nn.Upsample(scale_factor=i * 2) if i in {1, 2} else nn.Identity())
-            for i, x in enumerate(ch)
+            nn.Sequential(Conv(x, c3, 1), nn.Upsample(scale_factor=i * 2) if i in {1, 2} else nn.Identity()) for i, x in enumerate(ch)
         )
 
         self.c = 16
