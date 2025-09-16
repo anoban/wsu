@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-PIXEL_SIZE_CENTIMETERS: float = 0.0063  # length represented by a pixel, in centimeters
+from .params import PIXEL_SIZE_CENTIMETERS
 
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

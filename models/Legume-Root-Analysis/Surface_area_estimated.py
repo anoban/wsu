@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jul 22 17:30:58 2024
-
-@author: USER
-"""
+# Created on Mon Jul 22 17:30:58 2024
+#
 
 import cv2
 
