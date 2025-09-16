@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+from .params import PIXEL_SIZE_CENTIMETERS
+
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 image = cv2.bitwise_not(image)
@@ -13,7 +15,7 @@ ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGL
 skeleton = cv2.ximgproc.thinning(image)
 
 
-def __component_length(skeletonized_component: NDArray[np.integer | np.floating]) -> float:
+def __component_length(skeletonized_component: NDArray[np.integer | np.floating], scale: bool = False) -> float:
     """ """
 
     coords = np.column_stack(np.where(skeletonized_component > 0))
@@ -25,7 +27,7 @@ def __component_length(skeletonized_component: NDArray[np.integer | np.floating]
             length += 1.4142
         else:
             length += 1
-    return length
+    return length if not scale else length * PIXEL_SIZE_CENTIMETERS
 
 
 def __total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float:
@@ -37,8 +39,8 @@ def __total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> flo
     for i in range(1, num_components):
         if stats[i, cv2.CC_STAT_AREA] > noise_threshold:
             component = (labels == i).astype(np.uint8)
-            total_length += __component_length(component)
-    return total_length
+            total_length += __component_length(component, scale=False)
+    return total_length * PIXEL_SIZE_CENTIMETERS
 
 
 total_length = __total_length(skeleton)
