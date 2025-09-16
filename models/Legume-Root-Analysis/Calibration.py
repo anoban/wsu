@@ -5,7 +5,12 @@ import cv2
 points = []
 
 
-def mouse_callback(event, x, y, flags, param):
+# do we really need this????
+def mouse_callback(event, x, y, flags, param) -> None:
+    """
+    GUI functionalities to delimit two points in the image
+    """
+
     global points
     if event == cv2.EVENT_LBUTTONDOWN:  # click left button of mouse indicating the known points
         points.append((x, y))

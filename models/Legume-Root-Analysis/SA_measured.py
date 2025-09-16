@@ -12,7 +12,7 @@ ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGL
 skeleton_image = cv2.ximgproc.thinning(image)
 distance_transform = cv2.distanceTransform(binary_image, cv2.DIST_L2, 5)
 
-surface_area = 0
+surface_area = 0.0000
 for y in range(skeleton_image.shape[0]):
     for x in range(skeleton_image.shape[1]):
         if skeleton_image[y, x] > 0:
