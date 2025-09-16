@@ -3,6 +3,7 @@
 
 import cv2
 import numpy as np
+from numpy.typing import NDArray
 
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -12,10 +13,25 @@ ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGL
 skeleton = cv2.ximgproc.thinning(image)
 
 
-def __total_length(skeleton) -> float:
+def __component_length(skeletonized_component: NDArray[np.integer | np.floating]) -> float:
     """ """
 
-    num_components, labels, stats, centroids = cv2.connectedComponentsWithStats(skeleton)
+    coords = np.column_stack(np.where(skeletonized_component > 0))
+    length = 0.00000
+    for j in range(len(coords) - 1):
+        dx = abs(coords[j + 1][0] - coords[j][0])
+        dy = abs(coords[j + 1][1] - coords[j][1])
+        if dx == dy == 1:
+            length += 1.4142
+        else:
+            length += 1
+    return length
+
+
+def __total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float:
+    """ """
+
+    num_components, labels, stats, centroids = cv2.connectedComponentsWithStats(skeletonized_image)
     total_length = 0.00000
     noise_threshold = 1
     for i in range(1, num_components):
@@ -23,21 +39,6 @@ def __total_length(skeleton) -> float:
             component = (labels == i).astype(np.uint8)
             total_length += __component_length(component)
     return total_length
-
-
-def __component_length(component) -> float:
-    """ """
-
-    coords = np.column_stack(np.where(component > 0))
-    length = 0.00000
-    for j in range(len(coords) - 1):
-        dx = abs(coords[j + 1][0] - coords[j][0])
-        dy = abs(coords[j + 1][1] - coords[j][1])
-        if dx == 1 and dy == 1:
-            length += 1.4142
-        else:
-            length += 1
-    return length
 
 
 total_length = __total_length(skeleton)

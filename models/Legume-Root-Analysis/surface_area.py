@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from numpy.typing import NDArray
 
 from .params import PIXEL_SIZE_CENTIMETERS
 
@@ -23,7 +24,15 @@ SA = surface_area * PIXEL_SIZE_CENTIMETERS
 print(SA)
 
 
-def __surface_area() -> float:
+def __surface_area(skeletonized_image: NDArray[np.integer | np.floating]) -> float:
     """ """
 
-    return 0.000
+    surface_area = 0.0000
+    for y in range(skeleton_image.shape[0]):
+        for x in range(skeleton_image.shape[1]):
+            if skeleton_image[y, x] > 0:
+                radius = distance_transform[y, x] * PIXEL_SIZE_CENTIMETERS
+                circumference = 2 * np.pi * radius
+                surface_area += circumference
+
+    return surface_area * PIXEL_SIZE_CENTIMETERS
