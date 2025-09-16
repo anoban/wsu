@@ -1,13 +1,13 @@
-#### ___Stripped Down Segmentation Model Skeletons___
+___Stripped Down Segmentation Model Skeletons___
 
 ------------------------------------------
 
-- Convolutional Neural Networks (CNN)
+- _Convolutional Neural Networks (CNN)_
 	1. DeepLabV3+
 	2. YOLO11
-	3. FCN (Fully Convolutional Network)
+	3. FCN (Fully Convolutional Network) †
 
-- Vision Transformers (ViT)
+- _Vision Transformers (ViT)_
 	1. SAM (Segment Anything Model)
 	2. SAM 2.1
 	3. EfficientViT-SAM

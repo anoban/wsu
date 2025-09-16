@@ -1,5 +1,7 @@
 import cv2
 
+# We'll port this to use scikitimage instead of the bloated OpenCV
+
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 image = cv2.bitwise_not(image)
@@ -29,3 +31,9 @@ for y in range(skeleton_image.shape[0]):
             diameter_sum += diameter
 average_diameter = diameter_sum / TRL
 print("Average Diameter (cm):", average_diameter)
+
+
+def __average_diameter() -> float:
+    """ """
+
+    return 0.0000
