@@ -1,8 +1,10 @@
 # Created on Mon Jul 22 17:17:42 2024
 #
 
+
 import cv2
 import numpy as np
+from numpy.typing import NDArray
 
 from .params import PIXEL_SIZE_CENTIMETERS
 
@@ -27,7 +29,7 @@ RV = total_area * PIXEL_SIZE_CENTIMETERS
 print("Root Volume (cm3)", RV)
 
 
-def __volume() -> float:
+def __volume(skeletonized_image: NDArray[np.floating | np.integer]) -> float:
     """ """
 
     return 0.000

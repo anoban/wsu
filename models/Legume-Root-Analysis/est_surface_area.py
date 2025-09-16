@@ -18,9 +18,9 @@ areas = stats[:, cv2.CC_STAT_AREA]
 areas = list(sorted(areas))
 assert len(areas) >= 2
 total_area = 0
-noise_threshold = 250
+NOISE_THRESHOLD = 250
 for i, area in enumerate(areas[:-1]):
-    if area > noise_threshold:
+    if area > NOISE_THRESHOLD:
         total_area += area
         areacm = total_area / 24800.049
 print(f"Total projected area is: {areacm}")
