@@ -11,7 +11,7 @@ from PIL import Image
 from ..cfg import TASK2DATA, get_cfg, get_save_dir
 from ..engine.results import Results
 from ..nn.tasks import attempt_load_one_weight, guess_model_task
-from ..utils import ARGV, DEFAULT_CFG_DICT, LOGGER, RANK, SETTINGS, YAML, callbacks, checks
+from ..utils import ARGV, DEFAULT_CFG_DICT, LOGGER, RANK, YAML, callbacks, checks
 
 
 class Model(torch.nn.Module):
@@ -116,7 +116,9 @@ class Model(torch.nn.Module):
         __import__("os").environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"  # to avoid deterministic warnings
         if str(model).endswith((".yaml", ".yml")):
             # self._new(model, task=task, verbose=verbose)
-            raise RuntimeError(".yaml or .yml file based configurations are only accepted by the original YOLO models!")
+            raise RuntimeError(
+                ".yaml or .yml file based configurations are only accepted by the original YOLO models from Ultralytics CLI!"
+            )
         else:
             self._load(model, task=task)
 
@@ -152,7 +154,7 @@ class Model(torch.nn.Module):
         """
         return self.forward(source, stream, **kwargs)
 
-    def _load(self, weights: str, task=None) -> None:
+    def _load(self, filepath: str, task: str | None = None) -> None:
         """
         Load a model from a checkpoint file or initialize it from a weights file.
 
@@ -172,23 +174,24 @@ class Model(torch.nn.Module):
             >>> model._load("yolo11n.pt")
             >>> model._load("path/to/weights.pth", task="detect")
         """
-        if weights.lower().startswith(("https://", "http://", "rtsp://", "rtmp://", "tcp://")):
-            weights = checks.check_file(weights, download_dir=SETTINGS["weights_dir"])  # download and return local file
-        weights = checks.check_model_file_from_stem(weights)  # add suffix, i.e. yolo11n -> yolo11n.pt
 
-        if str(weights).rpartition(".")[-1] == "pt":
-            self.model, self.ckpt = attempt_load_one_weight(weights)
+        if filepath.lower().startswith(("https://", "http://", "rtsp://", "rtmp://", "tcp://")):
+            # we won't be entertaining that shit
+            raise ValueError("Only the original YOLO models from Ultralytics CLI accepted remote checkpoints!")
+
+        if str(filepath).rpartition(".")[-1] == "pt":
+            self.model, self.ckpt = attempt_load_one_weight(filepath)
             self.task = self.model.task
             self.overrides = self.model.args = self._reset_ckpt_args(self.model.args)
             self.ckpt_path = self.model.pt_path
         else:
-            weights = checks.check_file(weights)  # runs in all cases, not redundant with above call
-            self.model, self.ckpt = weights, None
-            self.task = task or guess_model_task(weights)
-            self.ckpt_path = weights
-        self.overrides["model"] = weights
+            filepath = checks.check_file(filepath)  # runs in all cases, not redundant with above call
+            self.model, self.ckpt = filepath, None
+            self.task = task or guess_model_task(filepath)
+            self.ckpt_path = filepath
+        self.overrides["model"] = filepath
         self.overrides["task"] = self.task
-        self.model_name = weights
+        self.model_name = filepath
 
     def _check_is_pytorch_model(self) -> None:
         """
