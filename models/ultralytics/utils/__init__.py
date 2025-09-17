@@ -51,18 +51,7 @@ TORCH_VERSION = torch.__version__
 TORCHVISION_VERSION = importlib.metadata.version("torchvision")  # faster than importing torchvision
 IS_VSCODE = os.environ.get("TERM_PROGRAM", False) == "vscode"
 RKNN_CHIPS = frozenset(
-    {
-        "rk3588",
-        "rk3576",
-        "rk3566",
-        "rk3568",
-        "rk3562",
-        "rv1103",
-        "rv1106",
-        "rv1103b",
-        "rv1106b",
-        "rk2118",
-    }
+    {"rk3588", "rk3576", "rk3566", "rk3568", "rk3562", "rv1103", "rv1106", "rv1103b", "rv1106b", "rk2118"}
 )  # Rockchip processors available for export
 HELP_MSG = """
     Examples for running Ultralytics:
@@ -1530,9 +1519,7 @@ class SettingsManager(JSONDict):
                 raise KeyError(f"No Ultralytics setting '{k}'. {self.help_msg}")
             t = type(self.defaults[k])
             if not isinstance(v, t):
-                raise TypeError(
-                    f"Ultralytics setting '{k}' must be '{t.__name__}' type, not '{type(v).__name__}'. {self.help_msg}"
-                )
+                raise TypeError(f"Ultralytics setting '{k}' must be '{t.__name__}' type, not '{type(v).__name__}'. {self.help_msg}")
         super().update(*args, **kwargs)
 
     def reset(self):
@@ -1578,17 +1565,7 @@ PERSISTENT_CACHE = JSONDict(USER_CONFIG_DIR / "persistent_cache.json")  # initia
 DATASETS_DIR = Path(SETTINGS["datasets_dir"])  # global datasets directory
 WEIGHTS_DIR = Path(SETTINGS["weights_dir"])  # global weights directory
 RUNS_DIR = Path(SETTINGS["runs_dir"])  # global runs directory
-ENVIRONMENT = (
-    "Colab"
-    if IS_COLAB
-    else "Kaggle"
-    if IS_KAGGLE
-    else "Jupyter"
-    if IS_JUPYTER
-    else "Docker"
-    if IS_DOCKER
-    else platform.system()
-)
+ENVIRONMENT = "Colab" if IS_COLAB else "Kaggle" if IS_KAGGLE else "Jupyter" if IS_JUPYTER else "Docker" if IS_DOCKER else platform.system()
 TESTS_RUNNING = is_pytest_running() or is_github_action_running()
 set_sentry()
 
