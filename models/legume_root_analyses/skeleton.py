@@ -44,7 +44,9 @@ class RootSkeleton(object):
     @staticmethod
     def _impl_skeletonize(image: NDArray[np.floating | np.integer]) -> None:
         """
-        #
+        Steps::
+            1. convert the pixels to single channel greyscale representation
+            2.
         """
 
         # implement what's needed to reproduce the following with skimage
