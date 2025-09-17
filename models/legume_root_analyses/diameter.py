@@ -12,6 +12,8 @@ blur = cv2.medianBlur(image, 5)
 ret3, binary_image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE)
 skeleton_image = cv2.ximgproc.thinning(image)
+
+
 num_components, labels, stats, centroids = cv2.connectedComponentsWithStats(skeleton_image)
 length = stats[:, cv2.CC_STAT_AREA]
 length = list(sorted(length))

@@ -1,4 +1,4 @@
-___Stripped Down Segmentation Model Skeletons___
+___Stripping down segmentation models to skeletons___
 
 ------------------------------------------
 
