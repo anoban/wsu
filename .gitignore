@@ -204,7 +204,7 @@ dkms.conf
 
 # big datasets
 data/chapter2/FRED/*
-data/chapter2/TRY_TraitID22.tsv
+data/chapter2/TRY/*
 
 # MNIST
 data/MNIST/*
