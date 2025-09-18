@@ -202,8 +202,9 @@ dkms.conf
 # NuGet packages
 *packages/
 
-# FRED stuff
+# big datasets
 data/chapter2/FRED/*
+data/chapter2/TRY_TraitID22.tsv
 
 # MNIST
 data/MNIST/*
