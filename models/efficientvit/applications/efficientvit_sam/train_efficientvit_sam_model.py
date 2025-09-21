@@ -1,3 +1,4 @@
+# it's advised by the developers to use the distilled models for finetuning : https://huggingface.co/mit-han-lab/efficientvit-sam/tree/main/distilled_model
 import argparse
 import os
 import sys
@@ -43,18 +44,9 @@ def main():
 
     model = create_efficientvit_sam_model(config["net_config"]["name"], False)
 
-    trainer = SAMTrainer(
-        path=args.path,
-        model=model,
-        data_provider=data_provider,
-    )
+    trainer = SAMTrainer(path=args.path, model=model, data_provider=data_provider)
 
-    setup.init_model(
-        trainer.network,
-        init_from=config["net_config"]["ckpt"],
-        rand_init=args.rand_init,
-        last_gamma=args.last_gamma,
-    )
+    setup.init_model(trainer.network, init_from=config["net_config"]["ckpt"], rand_init=args.rand_init, last_gamma=args.last_gamma)
 
     trainer.prep_for_training(run_config, args.amp)
 

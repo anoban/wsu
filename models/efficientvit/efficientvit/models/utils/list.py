@@ -1,30 +1,22 @@
 from typing import Any, Optional
 
-__all__ = [
-    "list_sum",
-    "list_mean",
-    "weighted_list_sum",
-    "list_join",
-    "val2list",
-    "val2tuple",
-    "squeeze_list",
-]
+__all__ = ["list_sum", "list_mean", "weighted_list_sum", "list_join", "val2list", "val2tuple", "squeeze_list"]
 
 
 def list_sum(x: list) -> Any:
     return x[0] if len(x) == 1 else x[0] + list_sum(x[1:])
 
 
-def list_mean(x: list) -> Any:
+def list_mean(x: list[int | float]) -> float:
     return list_sum(x) / len(x)
 
 
-def weighted_list_sum(x: list, weights: list) -> Any:
+def weighted_list_sum(x: list[int | float], weights: list[int | float]) -> int | float:
     assert len(x) == len(weights)
     return x[0] * weights[0] if len(x) == 1 else x[0] * weights[0] + weighted_list_sum(x[1:], weights[1:])
 
 
-def list_join(x: list, sep="\t", format_str="%s") -> str:
+def list_join(x: list[str], sep: str = "\t", format_str: str = "%s") -> str:
     return sep.join([format_str % val for val in x])
 
 

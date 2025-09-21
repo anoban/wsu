@@ -46,7 +46,7 @@ __all__ = [
 
 
 class SamPad:
-    def __init__(self, size: int, fill: float = 0, pad_mode="corner") -> None:
+    def __init__(self, size: int, fill: float = 0, pad_mode: str = "corner") -> None:
         self.size = size
         self.fill = fill
         self.pad_mode = pad_mode
@@ -114,58 +114,22 @@ class SamNeck(DAGBlock):
     ):
         inputs = {}
         for fid, in_channel in zip(fid_list, in_channel_list):
-            inputs[fid] = OpSequential(
-                [
-                    ConvLayer(in_channel, head_width, 1, norm=norm, act_func=None),
-                    UpSampleLayer(size=(64, 64)),
-                ]
-            )
+            inputs[fid] = OpSequential([ConvLayer(in_channel, head_width, 1, norm=norm, act_func=None), UpSampleLayer(size=(64, 64))])
 
         middle = []
         for _ in range(head_depth):
             if middle_op == "mb":
-                block = MBConv(
-                    head_width,
-                    head_width,
-                    expand_ratio=expand_ratio,
-                    norm=norm,
-                    act_func=(act_func, act_func, None),
-                )
+                block = MBConv(head_width, head_width, expand_ratio=expand_ratio, norm=norm, act_func=(act_func, act_func, None))
             elif middle_op == "fmb":
-                block = FusedMBConv(
-                    head_width,
-                    head_width,
-                    expand_ratio=expand_ratio,
-                    norm=norm,
-                    act_func=(act_func, None),
-                )
+                block = FusedMBConv(head_width, head_width, expand_ratio=expand_ratio, norm=norm, act_func=(act_func, None))
             elif middle_op == "res":
-                block = ResBlock(
-                    head_width,
-                    head_width,
-                    expand_ratio=expand_ratio,
-                    norm=norm,
-                    act_func=(act_func, None),
-                )
+                block = ResBlock(head_width, head_width, expand_ratio=expand_ratio, norm=norm, act_func=(act_func, None))
             else:
                 raise NotImplementedError
             middle.append(ResidualBlock(block, IdentityLayer()))
         middle = OpSequential(middle)
 
-        outputs = {
-            "sam_encoder": OpSequential(
-                [
-                    ConvLayer(
-                        head_width,
-                        out_dim,
-                        1,
-                        use_bias=True,
-                        norm=None,
-                        act_func=None,
-                    ),
-                ]
-            )
-        }
+        outputs = {"sam_encoder": OpSequential([ConvLayer(head_width, out_dim, 1, use_bias=True, norm=None, act_func=None)])}
 
         super(SamNeck, self).__init__(inputs, "add", None, middle=middle, outputs=outputs)
 
@@ -209,35 +173,18 @@ class EfficientViTSam(nn.Module):
             [
                 SamResize(self.image_size[1]),
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[123.675 / 255, 116.28 / 255, 103.53 / 255],
-                    std=[58.395 / 255, 57.12 / 255, 57.375 / 255],
-                ),
+                transforms.Normalize(mean=[123.675 / 255, 116.28 / 255, 103.53 / 255], std=[58.395 / 255, 57.12 / 255, 57.375 / 255]),
                 SamPad(self.image_size[1]),
             ]
         )
 
-    def postprocess_masks(
-        self,
-        masks: torch.Tensor,
-        input_size: tuple[int, ...],
-        original_size: tuple[int, ...],
-    ) -> torch.Tensor:
-        masks = F.interpolate(
-            masks,
-            (self.image_size[0], self.image_size[0]),
-            mode="bilinear",
-            align_corners=False,
-        )
+    def postprocess_masks(self, masks: torch.Tensor, input_size: tuple[int, ...], original_size: tuple[int, ...]) -> torch.Tensor:
+        masks = F.interpolate(masks, (self.image_size[0], self.image_size[0]), mode="bilinear", align_corners=False)
         masks = masks[..., : input_size[0], : input_size[1]]
         masks = F.interpolate(masks, original_size, mode="bilinear", align_corners=False)
         return masks
 
-    def forward(
-        self,
-        batched_input: list[dict[str, Any]],
-        multimask_output: bool,
-    ):
+    def forward(self, batched_input: list[dict[str, Any]], multimask_output: bool):
         input_images = torch.stack([x["image"] for x in batched_input], dim=0)
 
         image_embeddings = self.image_encoder(input_images)
@@ -250,9 +197,7 @@ class EfficientViTSam(nn.Module):
             else:
                 points = None
             sparse_embeddings, dense_embeddings = self.prompt_encoder(
-                points=points,
-                boxes=image_record.get("boxes", None),
-                masks=image_record.get("mask_inputs", None),
+                points=points, boxes=image_record.get("boxes", None), masks=image_record.get("mask_inputs", None)
             )
             low_res_masks, iou_predictions = self.mask_decoder(
                 image_embeddings=curr_embedding.unsqueeze(0),
@@ -315,19 +260,14 @@ class EfficientViTSamPredictor:
 
     @torch.inference_mode()
     def set_image(self, image: np.ndarray, image_format: str = "RGB") -> None:
-        assert image_format in [
-            "RGB",
-            "BGR",
-        ], f"image_format must be in ['RGB', 'BGR'], is {image_format}."
+        assert image_format in ["RGB", "BGR"], f"image_format must be in ['RGB', 'BGR'], is {image_format}."
         if image_format != self.model.image_format:
             image = image[..., ::-1]
 
         self.reset_image()
 
         self.original_size = image.shape[:2]
-        self.input_size = ResizeLongestSide.get_preprocess_shape(
-            *self.original_size, long_side_length=self.model.image_size[0]
-        )
+        self.input_size = ResizeLongestSide.get_preprocess_shape(*self.original_size, long_side_length=self.model.image_size[0])
 
         torch_data = self.model.transform(image).unsqueeze(dim=0).to(get_device(self.model))
         self.features = self.model.image_encoder(torch_data)
@@ -342,9 +282,7 @@ class EfficientViTSamPredictor:
 
         original_height, original_width = image.shape[-2], image.shape[-1]
         self.original_size = (original_height, original_width)
-        self.input_size = ResizeLongestSide.get_preprocess_shape(
-            *self.original_size, long_side_length=self.model.image_size[0]
-        )
+        self.input_size = ResizeLongestSide.get_preprocess_shape(*self.original_size, long_side_length=self.model.image_size[0])
 
         self.features = self.model.image_encoder(image)
         self.is_image_set = True
@@ -411,12 +349,7 @@ class EfficientViTSamPredictor:
             mask_input_torch = mask_input_torch[None, :, :, :]
 
         masks, iou_predictions, low_res_masks = self.predict_torch(
-            coords_torch,
-            labels_torch,
-            box_torch,
-            mask_input_torch,
-            multimask_output,
-            return_logits=return_logits,
+            coords_torch, labels_torch, box_torch, mask_input_torch, multimask_output, return_logits=return_logits
         )
 
         masks = masks[0].detach().cpu().numpy()
@@ -476,11 +409,7 @@ class EfficientViTSamPredictor:
         else:
             points = None
         # Embed prompts
-        sparse_embeddings, dense_embeddings = self.model.prompt_encoder(
-            points=points,
-            boxes=boxes,
-            masks=mask_input,
-        )
+        sparse_embeddings, dense_embeddings = self.model.prompt_encoder(points=points, boxes=boxes, masks=mask_input)
 
         # Predict masks
         if image_index is not None:
@@ -519,25 +448,15 @@ class EfficientViTSamAutomaticMaskGenerator(SamAutomaticMaskGenerator):
         min_mask_region_area: int = 0,
         output_mode: str = "binary_mask",
     ) -> None:
-        assert (points_per_side is None) != (
-            point_grids is None
-        ), "Exactly one of points_per_side or point_grid must be provided."
+        assert (points_per_side is None) != (point_grids is None), "Exactly one of points_per_side or point_grid must be provided."
         if points_per_side is not None:
-            self.point_grids = build_all_layer_point_grids(
-                points_per_side,
-                crop_n_layers,
-                crop_n_points_downscale_factor,
-            )
+            self.point_grids = build_all_layer_point_grids(points_per_side, crop_n_layers, crop_n_points_downscale_factor)
         elif point_grids is not None:
             self.point_grids = point_grids
         else:
             raise ValueError("Can't have both points_per_side and point_grid be None.")
 
-        assert output_mode in [
-            "binary_mask",
-            "uncompressed_rle",
-            "coco_rle",
-        ], f"Unknown output_mode {output_mode}."
+        assert output_mode in ["binary_mask", "uncompressed_rle", "coco_rle"], f"Unknown output_mode {output_mode}."
 
         self.predictor = EfficientViTSamPredictor(model)
         self.points_per_batch = points_per_batch
@@ -556,20 +475,10 @@ class EfficientViTSamAutomaticMaskGenerator(SamAutomaticMaskGenerator):
 def build_efficientvit_sam(image_encoder: EfficientViTSamImageEncoder, image_size: int) -> EfficientViTSam:
     return EfficientViTSam(
         image_encoder=image_encoder,
-        prompt_encoder=PromptEncoder(
-            embed_dim=256,
-            image_embedding_size=(64, 64),
-            input_image_size=(1024, 1024),
-            mask_in_chans=16,
-        ),
+        prompt_encoder=PromptEncoder(embed_dim=256, image_embedding_size=(64, 64), input_image_size=(1024, 1024), mask_in_chans=16),
         mask_decoder=MaskDecoder(
             num_multimask_outputs=3,
-            transformer=TwoWayTransformer(
-                depth=2,
-                embedding_dim=256,
-                mlp_dim=2048,
-                num_heads=8,
-            ),
+            transformer=TwoWayTransformer(depth=2, embedding_dim=256, mlp_dim=2048, num_heads=8),
             transformer_dim=256,
             iou_head_depth=3,
             iou_head_hidden_dim=256,

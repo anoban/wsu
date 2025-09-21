@@ -46,14 +46,7 @@ def get_iou_metric(results: list[dict]) -> dict[str, float]:
     }
 
 
-def evaluate_predictions_on_coco(
-    coco_gt,
-    coco_results,
-    iou_type,
-    cocoeval_fn=COCOeval,
-    img_ids=None,
-    max_dets_per_image=None,
-):
+def evaluate_predictions_on_coco(coco_gt, coco_results, iou_type, cocoeval_fn=COCOeval, img_ids=None, max_dets_per_image=None):
     """
     Modified from https://github.com/facebookresearch/detectron2/blob/main/detectron2/evaluation/coco_evaluation.py.
     Evaluate the coco results using COCOEval API.
@@ -72,9 +65,7 @@ def evaluate_predictions_on_coco(
     if max_dets_per_image is None:
         max_dets_per_image = [1, 10, 100]  # Default from COCOEval
     else:
-        assert (
-            len(max_dets_per_image) >= 3
-        ), "COCOeval requires maxDets (and max_dets_per_image) to have length at least 3"
+        assert len(max_dets_per_image) >= 3, "COCOeval requires maxDets (and max_dets_per_image) to have length at least 3"
 
         if max_dets_per_image[2] != 100:
             raise NotImplementedError
