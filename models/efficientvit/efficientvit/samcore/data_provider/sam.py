@@ -10,12 +10,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data.distributed import DistributedSampler
 
 from efficientvit.apps.data_provider import DataProvider
-from efficientvit.samcore.data_provider.utils import (
-    Normalize_and_Pad,
-    RandomHFlip,
-    ResizeLongestSide,
-    SAMDistributedSampler,
-)
+from efficientvit.samcore.data_provider.utils import Normalize_and_Pad, RandomHFlip, ResizeLongestSide, SAMDistributedSampler
 
 __all__ = ["SAMDataProvider"]
 
@@ -76,13 +71,7 @@ class OnlineDataset(Dataset):
         points = torch.tensor(points, dtype=torch.float32)
         bboxs = torch.tensor(bboxs, dtype=torch.float32)
 
-        sample = {
-            "image": image,
-            "masks": masks,
-            "points": points,
-            "bboxs": bboxs,
-            "shape": torch.tensor(image.shape[-2:]),
-        }
+        sample = {"image": image, "masks": masks, "points": points, "bboxs": bboxs, "shape": torch.tensor(image.shape[-2:])}
 
         if self.transform:
             sample = self.transform(sample)
@@ -101,7 +90,7 @@ class SAMDataProvider(DataProvider):
         train_batch_size: int,
         test_batch_size: int,
         valid_size: Optional[int | float] = None,
-        n_worker=8,
+        n_worker: int = 8,
         image_size: int = 1024,
         num_replicas: Optional[int] = None,
         rank: Optional[int] = None,
@@ -112,17 +101,7 @@ class SAMDataProvider(DataProvider):
         self.num_masks = num_masks
         self.sub_epochs_per_epoch = sub_epochs_per_epoch
 
-        super().__init__(
-            train_batch_size,
-            test_batch_size,
-            valid_size,
-            n_worker,
-            image_size,
-            num_replicas,
-            rank,
-            train_ratio,
-            drop_last,
-        )
+        super().__init__(train_batch_size, test_batch_size, valid_size, n_worker, image_size, num_replicas, rank, train_ratio, drop_last)
 
     def build_train_transform(self):
         train_transforms = [
@@ -134,10 +113,7 @@ class SAMDataProvider(DataProvider):
         return transforms.Compose(train_transforms)
 
     def build_valid_transform(self):
-        valid_transforms = [
-            ResizeLongestSide(target_length=self.image_size[0]),
-            Normalize_and_Pad(target_length=self.image_size[0]),
-        ]
+        valid_transforms = [ResizeLongestSide(target_length=self.image_size[0]), Normalize_and_Pad(target_length=self.image_size[0])]
 
         return transforms.Compose(valid_transforms)
 
