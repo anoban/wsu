@@ -205,6 +205,7 @@ dkms.conf
 # big datasets
 data/chapter2/FRED/*
 data/chapter2/TRY/*
+data/chapter2/GRooTFullVersion.csv
 
 # MNIST
 data/MNIST/*
