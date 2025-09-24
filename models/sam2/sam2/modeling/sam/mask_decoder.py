@@ -4,12 +4,12 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-from typing import List, Optional, Tuple, Type
+from typing import List, Optional, Tuple, Type, override
 
 import torch
 from torch import nn
 
-from sam2.modeling.sam2_utils import LayerNorm2d, MLP
+from sam2.modeling.sam2_utils import MLP, LayerNorm2d
 
 
 class MaskDecoder(nn.Module):
@@ -23,10 +23,10 @@ class MaskDecoder(nn.Module):
         iou_head_depth: int = 3,
         iou_head_hidden_dim: int = 256,
         use_high_res_features: bool = False,
-        iou_prediction_use_sigmoid=False,
-        dynamic_multimask_via_stability=False,
-        dynamic_multimask_stability_delta=0.05,
-        dynamic_multimask_stability_thresh=0.98,
+        iou_prediction_use_sigmoid: bool = False,
+        dynamic_multimask_via_stability: bool = False,
+        dynamic_multimask_stability_delta: float = 0.05,
+        dynamic_multimask_stability_thresh: float = 0.98,
         pred_obj_scores: bool = False,
         pred_obj_scores_mlp: bool = False,
         use_multimask_token_for_obj_ptr: bool = False,
@@ -47,7 +47,7 @@ class MaskDecoder(nn.Module):
           iou_head_hidden_dim (int): the hidden dimension of the MLP
             used to predict mask quality
         """
-        super().__init__()
+        super().__init__()  # type: ignore
         self.transformer_dim = transformer_dim
         self.transformer = transformer
 
@@ -63,38 +63,23 @@ class MaskDecoder(nn.Module):
         self.use_multimask_token_for_obj_ptr = use_multimask_token_for_obj_ptr
 
         self.output_upscaling = nn.Sequential(
-            nn.ConvTranspose2d(
-                transformer_dim, transformer_dim // 4, kernel_size=2, stride=2
-            ),
+            nn.ConvTranspose2d(transformer_dim, transformer_dim // 4, kernel_size=2, stride=2),
             LayerNorm2d(transformer_dim // 4),
             activation(),
-            nn.ConvTranspose2d(
-                transformer_dim // 4, transformer_dim // 8, kernel_size=2, stride=2
-            ),
+            nn.ConvTranspose2d(transformer_dim // 4, transformer_dim // 8, kernel_size=2, stride=2),
             activation(),
         )
         self.use_high_res_features = use_high_res_features
         if use_high_res_features:
-            self.conv_s0 = nn.Conv2d(
-                transformer_dim, transformer_dim // 8, kernel_size=1, stride=1
-            )
-            self.conv_s1 = nn.Conv2d(
-                transformer_dim, transformer_dim // 4, kernel_size=1, stride=1
-            )
+            self.conv_s0 = nn.Conv2d(transformer_dim, transformer_dim // 8, kernel_size=1, stride=1)
+            self.conv_s1 = nn.Conv2d(transformer_dim, transformer_dim // 4, kernel_size=1, stride=1)
 
         self.output_hypernetworks_mlps = nn.ModuleList(
-            [
-                MLP(transformer_dim, transformer_dim, transformer_dim // 8, 3)
-                for i in range(self.num_mask_tokens)
-            ]
+            [MLP(transformer_dim, transformer_dim, transformer_dim // 8, 3) for i in range(self.num_mask_tokens)]
         )
 
         self.iou_prediction_head = MLP(
-            transformer_dim,
-            iou_head_hidden_dim,
-            self.num_mask_tokens,
-            iou_head_depth,
-            sigmoid_output=iou_prediction_use_sigmoid,
+            transformer_dim, iou_head_hidden_dim, self.num_mask_tokens, iou_head_depth, sigmoid_output=iou_prediction_use_sigmoid
         )
         if self.pred_obj_scores:
             self.pred_obj_score_head = nn.Linear(transformer_dim, 1)
@@ -107,6 +92,7 @@ class MaskDecoder(nn.Module):
         self.dynamic_multimask_stability_delta = dynamic_multimask_stability_delta
         self.dynamic_multimask_stability_thresh = dynamic_multimask_stability_thresh
 
+    @override
     def forward(
         self,
         image_embeddings: torch.Tensor,
@@ -178,22 +164,11 @@ class MaskDecoder(nn.Module):
         # Concatenate output tokens
         s = 0
         if self.pred_obj_scores:
-            output_tokens = torch.cat(
-                [
-                    self.obj_score_token.weight,
-                    self.iou_token.weight,
-                    self.mask_tokens.weight,
-                ],
-                dim=0,
-            )
+            output_tokens = torch.cat([self.obj_score_token.weight, self.iou_token.weight, self.mask_tokens.weight], dim=0)
             s = 1
         else:
-            output_tokens = torch.cat(
-                [self.iou_token.weight, self.mask_tokens.weight], dim=0
-            )
-        output_tokens = output_tokens.unsqueeze(0).expand(
-            sparse_prompt_embeddings.size(0), -1, -1
-        )
+            output_tokens = torch.cat([self.iou_token.weight, self.mask_tokens.weight], dim=0)
+        output_tokens = output_tokens.unsqueeze(0).expand(sparse_prompt_embeddings.size(0), -1, -1)
         tokens = torch.cat((output_tokens, sparse_prompt_embeddings), dim=1)
 
         # Expand per-image data in batch direction to be per-mask
@@ -203,9 +178,7 @@ class MaskDecoder(nn.Module):
             assert image_embeddings.shape[0] == tokens.shape[0]
             src = image_embeddings
         src = src + dense_prompt_embeddings
-        assert (
-            image_pe.size(0) == 1
-        ), "image_pe should have size 1 in batch dim (from `get_dense_pe()`)"
+        assert image_pe.size(0) == 1, "image_pe should have size 1 in batch dim (from `get_dense_pe()`)"
         pos_src = torch.repeat_interleave(image_pe, tokens.shape[0], dim=0)
         b, c, h, w = src.shape
 
@@ -226,9 +199,7 @@ class MaskDecoder(nn.Module):
 
         hyper_in_list: List[torch.Tensor] = []
         for i in range(self.num_mask_tokens):
-            hyper_in_list.append(
-                self.output_hypernetworks_mlps[i](mask_tokens_out[:, i, :])
-            )
+            hyper_in_list.append(self.output_hypernetworks_mlps[i](mask_tokens_out[:, i, :]))
         hyper_in = torch.stack(hyper_in_list, dim=1)
         b, c, h, w = upscaled_embedding.shape
         masks = (hyper_in @ upscaled_embedding.view(b, c, h * w)).view(b, -1, h, w)
@@ -267,9 +238,7 @@ class MaskDecoder(nn.Module):
         multimask_logits = all_mask_logits[:, 1:, :, :]
         multimask_iou_scores = all_iou_scores[:, 1:]
         best_scores_inds = torch.argmax(multimask_iou_scores, dim=-1)
-        batch_inds = torch.arange(
-            multimask_iou_scores.size(0), device=all_iou_scores.device
-        )
+        batch_inds = torch.arange(multimask_iou_scores.size(0), device=all_iou_scores.device)
         best_multimask_logits = multimask_logits[batch_inds, best_scores_inds]
         best_multimask_logits = best_multimask_logits.unsqueeze(1)
         best_multimask_iou_scores = multimask_iou_scores[batch_inds, best_scores_inds]
@@ -282,14 +251,6 @@ class MaskDecoder(nn.Module):
         is_stable = stability_scores >= self.dynamic_multimask_stability_thresh
 
         # Dynamically fall back to best multimask output upon low stability scores.
-        mask_logits_out = torch.where(
-            is_stable[..., None, None].expand_as(singlemask_logits),
-            singlemask_logits,
-            best_multimask_logits,
-        )
-        iou_scores_out = torch.where(
-            is_stable.expand_as(singlemask_iou_scores),
-            singlemask_iou_scores,
-            best_multimask_iou_scores,
-        )
+        mask_logits_out = torch.where(is_stable[..., None, None].expand_as(singlemask_logits), singlemask_logits, best_multimask_logits)
+        iou_scores_out = torch.where(is_stable.expand_as(singlemask_iou_scores), singlemask_iou_scores, best_multimask_iou_scores)
         return mask_logits_out, iou_scores_out
