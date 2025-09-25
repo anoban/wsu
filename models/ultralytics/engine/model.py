@@ -127,7 +127,10 @@ class Model(torch.nn.Module):
 
     @override  # redundant implementation by Ultralytics???? Module() will internally invoke the forward() method when __call__() is called ??????
     def __call__(  # type: ignore
-        self, source: Union[str, Path, int, Image.Image, list, tuple, np.ndarray, torch.Tensor] = None, stream: bool = False, **kwargs: Any
+        self,
+        source: Union[str, Path, int, Image.Image, list, tuple, np.ndarray, torch.Tensor, None] = None,
+        stream: bool = False,
+        **kwargs: Any,
     ) -> list:
         """
         Alias for the predict method, enabling the model instance to be callable for predictions.
@@ -177,7 +180,7 @@ class Model(torch.nn.Module):
 
         if filepath.lower().startswith(("https://", "http://", "rtsp://", "rtmp://", "tcp://")):
             # we won't be entertaining that shit
-            raise ValueError("Only the original YOLO models from Ultralytics CLI accepted remote checkpoints!")
+            raise ValueError("Only the original Ultralytics CLI accepted remote checkpoints!")
 
         if str(filepath).rpartition(".")[-1] == "pt":
             self.model, self.ckpt = attempt_load_one_weight(filepath)
@@ -214,11 +217,7 @@ class Model(torch.nn.Module):
         pt_module = isinstance(self.model, torch.nn.Module)
         if not (pt_module or pt_str):
             raise TypeError(
-                f"model='{self.model}' should be a *.pt PyTorch model to run this method, but is a different format. "
-                f"PyTorch models can train, val, predict and export, i.e. 'model.train(data=...)', but exported "
-                f"formats like ONNX, TensorRT etc. only support 'predict' and 'val' modes, "
-                f"i.e. 'yolo predict model=yolo11n.onnx'.\nTo run CUDA or MPS inference please pass the device "
-                f"argument directly in your inference command, i.e. 'model.predict(source=..., device=0)'"
+                f"model='{self.model}' should be a *.pt PyTorch model to run this method, but is a different format. PyTorch models can train, val, predict and export, i.e. 'model.train(data=...)', but exported formats like ONNX, TensorRT etc. only support 'predict' and 'val' modes, i.e. 'yolo predict model=yolo11n.onnx'.\nTo run CUDA or MPS inference please pass the device argument directly in your inference command, i.e. 'model.predict(source=..., device=0)'"
             )
 
     def reset_weights(self) -> "Model":
@@ -247,7 +246,7 @@ class Model(torch.nn.Module):
             p.requires_grad = True
         return self
 
-    def load(self, weights: Union[str, Path] = "yolo11n.pt") -> "Model":
+    def load(self, weights: Union[str, Path] = "yolo11x-seg.pt") -> "Model":
         """
         Load parameters from the specified weights file into the model.
 
@@ -265,7 +264,7 @@ class Model(torch.nn.Module):
 
         Examples:
             >>> model = Model()
-            >>> model.load("yolo11n.pt")
+            >>> model.load("yolo11x-seg.pt")
             >>> model.load(Path("path/to/weights.pt"))
         """
         self._check_is_pytorch_model()
@@ -275,7 +274,7 @@ class Model(torch.nn.Module):
         self.model.load(weights)
         return self
 
-    def save(self, filename: Union[str, Path] = "saved_model.pt") -> None:
+    def save(self, filename: Union[str, Path]) -> None:
         """
         Save the current model state to a file.
 
@@ -289,21 +288,16 @@ class Model(torch.nn.Module):
             AssertionError: If the model is not a PyTorch model.
 
         Examples:
-            >>> model = Model("yolo11n.pt")
+            >>> model = Model("yolo11x-seg.pt")
             >>> model.save("my_model.pt")
         """
         self._check_is_pytorch_model()
         from copy import deepcopy
         from datetime import datetime
 
-        from ultralytics import __version__
-
         updates = {
             "model": deepcopy(self.model).half() if isinstance(self.model, torch.nn.Module) else self.model,
             "date": datetime.now().isoformat(),
-            "version": __version__,
-            "license": "AGPL-3.0 License (https://ultralytics.com/license)",
-            "docs": "https://docs.ultralytics.com",
         }
         torch.save({**self.ckpt, **updates}, filename)
 
