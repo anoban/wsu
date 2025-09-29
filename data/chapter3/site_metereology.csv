@@ -1,11 +1,11 @@
-the monthly mean maximum temperature is the average of all available daily maxima for the month.,"mean of the the annual mean temperatures computed using means of monthly max temp data, for howevermany years the data is available ",all the data was collected on 28/08/2025,,,,,,,,,
-,,,,,,,,,,,
-site,state,latitude,longitude,annual_rainfall_weather_station,annual_rainfall_station_id,annual_rainfall_distance_from_site_km,annual_rainfall_mm,mean_annual_temp_weather_station,mean_annual_temp_station_id,mean_annual_temp_distance_from_site_km,mean_annual_temp_celsius
-Rainbow Valley,NT,-24.23764417,133.5536117,Hugh River,15676,14.31,189.3,Alice Springs Airport ,15590,59.52,28.9
-Panawonica,WA,-21.6449,116.3233,Panawonica,5069,1,404.4,Panawonica,5069,1,34.7
-Forbes,NSW,-33.40761239,147.9654943,Forbes (Bunderra),65113,1.64,520.4,Forbes Airport AWS,65103,4.43,24.5
-Hobart,TAS,-42.9056697,147.3230157,Hobart (Ellerslie Road) ,94029,1.81,611.4,Hobart (Ellerslie Road) ,94029,1.81,17
-Dalby,QLD,-27.11486799,151.1817615,Hereward,41240,8.77,621.4,Dalby Airport,41522,9.48,27
-Virginia Gardens,SA,-34.85388889,138.6205556,Greenacres,23133,2.22,468.7,Parafield Airport,23013,6.25,22.6
-Mt Fox National Park,QLD,-19.0013,145.4731167,Christmas Creek Station,32104,16.19,642.8,Ingham Composite,32078,83.07,29.3
-Sydney,NSW,-33.68810173,151.0624105,Hornsby Swimming Pool,67065,3.42,1156.9,Parramatta North,66124,12.16,23.4
+the monthly mean maximum temperature is the average of all available daily maxima for the month.,"mean of the the annual mean temperatures computed using means of monthly max temp data, for howevermany years the data is available ",all the data was collected on 28/08/2025,,,,,,,,,,
+,,,,,,,,,,,,
+site,state,latitude,longitude,site_code_emma,annual_rainfall_weather_station,annual_rainfall_station_id,annual_rainfall_distance_from_site_km,annual_rainfall_mm,mean_annual_temp_weather_station,mean_annual_temp_station_id,mean_annual_temp_distance_from_site_km,mean_annual_temp_celsius
+Rainbow Valley,NT,-24.23764417,133.5536117,TT17,Hugh River,15676,14.31,189.3,Alice Springs Airport ,15590,59.52,28.9
+Panawonica,WA,-21.6449,116.3233,TT15,Panawonica,5069,1,404.4,Panawonica,5069,1,34.7
+Forbes,NSW,-33.40761239,147.9654943,,Forbes (Bunderra),65113,1.64,520.4,Forbes Airport AWS,65103,4.43,24.5
+Hobart,TAS,-42.9056697,147.3230157,,Hobart (Ellerslie Road) ,94029,1.81,611.4,Hobart (Ellerslie Road) ,94029,1.81,17
+Dalby,QLD,-27.11486799,151.1817615,TT6,Hereward,41240,8.77,621.4,Dalby Airport,41522,9.48,27
+Virginia Gardens,SA,-34.85388889,138.6205556,TT4,Greenacres,23133,2.22,468.7,Parafield Airport,23013,6.25,22.6
+Mt Fox National Park,QLD,-19.0013,145.4731167,TT13,Christmas Creek Station,32104,16.19,642.8,Ingham Composite,32078,83.07,29.3
+Sydney,NSW,-33.68810173,151.0624105,TT7,Hornsby Swimming Pool,67065,3.42,1156.9,Parramatta North,66124,12.16,23.4
