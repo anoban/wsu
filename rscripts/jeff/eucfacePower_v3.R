@@ -5,10 +5,14 @@
 
 tryCatch.converg <- function(expr) {
     converged <- T
+
     w.handler <- function(w) {
         converged <<- F
+        # <<- operator targets the parent scope, akin to
+        # global variable_name in python!
         invokeRestart("muffleWarning")
     }
+
     list(
         value = withCallingHandlers(tryCatch(expr, error = function(e) e),
             warning = w.handler
