@@ -29,7 +29,7 @@ class RootSkeleton(object):
         elif isinstance(filepath_or_image, np.ndarray):  # type: ignore
             if not colour_channel:
                 raise ValueError(
-                    r"When the input is a Numpy array, argument colour_channel must be explicitly specified as it cannot be inferred!"
+                    r"When the input is a Numpy array, argument colour_channel must be explicitly specified as it cannot be inferred!"  # i.e. RGB vs BGR and whatnot
                 )
             self.pixels = filepath_or_image
             self.colourchannel = colour_channel
@@ -45,7 +45,7 @@ class RootSkeleton(object):
     def _impl_skeletonize(image: NDArray[np.floating | np.integer]) -> None:
         """
         Steps::
-            1. convert the pixels to single channel greyscale representation
+            1. convert the pixels to a single channel greyscale representation
             2.
         """
 
