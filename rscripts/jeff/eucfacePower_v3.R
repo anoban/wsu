@@ -8,8 +8,7 @@ tryCatch.converg <- function(expr) {
 
     w.handler <- function(w) {
         converged <<- F
-        # <<- operator targets the parent scope, akin to
-        # global variable_name in python!
+        # <<- operator targets the parent scope, akin to global variable_name in python!
         invokeRestart("muffleWarning")
     }
 
