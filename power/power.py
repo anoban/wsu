@@ -4,13 +4,53 @@
 
 
 import warnings
-from typing import Optional
+from typing import Any, NoReturn, Optional
 
 import numpy as np
+from numba import njit  # type: ignore
 from scipy import stats  # type: ignore
 from scipy.optimize import brenth  # type: ignore
 
 __all__ = ["power_ttest", "power_ttest2n", "power_anova", "power_rm_anova", "power_corr", "power_chi2"]
+
+
+def __validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
+    """
+    Make sure that only one of the provided arguments are None
+    Raise a ValueError otherwise, i.e when none of them are None or more than one of them are None
+    """
+    _nnone: int = sum([v is None for v in args])
+    if _nnone != 1:
+        raise ValueError(f"Only one argument can be None, received {_nnone:d}!")
+    return
+
+
+@njit()
+def __dispatch_less(
+    d: Optional[float], n: Optional[int], power: Optional[float], alpha: Optional[float], tsample: int, tside: int
+) -> float:
+    dof = (n - 1) * tsample
+    nc = d * np.sqrt(n / tsample)
+    tcrit = stats.t.ppf(alpha / tside, dof)
+    return 1 - stats.nct.sf(tcrit, dof, nc)
+
+
+def __dispatch_2sided(
+    d: Optional[float], n: Optional[int], power: Optional[float], alpha: Optional[float], tsample: int, tside: int
+) -> float:
+    dof = (n - 1) * tsample
+    nc = d * np.sqrt(n / tsample)
+    tcrit = stats.t.ppf(1 - alpha / tside, dof)
+    return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
+
+
+def __dispatch_greater(
+    d: Optional[float], n: Optional[int], power: Optional[float], alpha: Optional[float], tsample: int, tside: int
+) -> float:
+    dof = (n - 1) * tsample
+    nc = d * np.sqrt(n / tsample)
+    tcrit = stats.t.ppf(1 - alpha / tside, dof)
+    return stats.nct.sf(tcrit, dof, nc)
 
 
 def power_ttest(
@@ -20,7 +60,7 @@ def power_ttest(
     alpha: Optional[float] = 0.05,
     contrast: str = "two-samples",
     alternative: str = "two-sided",
-):
+) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a one-sample T-test,
     a paired T-test or an independent two-samples T-test with equal sample sizes.
@@ -125,11 +165,9 @@ def power_ttest(
     >>> print("power: %.4f" % power_ttest(d=0.5, n=20, alternative="less"))
     power: 0.0007
     """
-    # Check the number of arguments that are None
-    n_none = sum([v is None for v in [d, n, power, alpha]])
-    if n_none != 1:
-        raise ValueError("Exactly one of n, d, power, and alpha must be None.")
 
+    # Check the number of arguments that are None
+    __validate_only_one_is_none(d, n, power, alpha)
     # Safety checks
     assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
     assert contrast.lower() in ["one-sample", "paired", "two-samples"]
@@ -293,14 +331,12 @@ def power_ttest2n(
     >>> print("alpha: %.4f" % power_ttest2n(nx=20, ny=15, d=0.5, power=0.80, alpha=None))
     alpha: 0.5000
     """
-    # Check the number of arguments that are None
-    n_none = sum([v is None for v in [d, power, alpha]])
-    if n_none != 1:
-        raise ValueError("Exactly one of d, power, and alpha must be None")
 
+    # Check the number of arguments that are None
+    __validate_only_one_is_none(d, power, alpha)
     # Safety checks
     assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
-    
+
     tside = 2 if alternative == "two-sided" else 1
     if d is not None and tside == 2:
         d = abs(d)
@@ -466,12 +502,9 @@ def power_anova(eta_squared=None, k=None, n=None, power=None, alpha=0.05):
     >>> print("alpha: %.4f" % power_anova(eta_squared=0.1, n=20, k=4, power=0.80, alpha=None))
     alpha: 0.1085
     """
-    # Check the number of arguments that are None
-    n_none = sum([v is None for v in [eta_squared, k, n, power, alpha]])
-    if n_none != 1:
-        err = "Exactly one of eta, k, n, power, and alpha must be None."
-        raise ValueError(err)
 
+    # Check the number of arguments that are None
+    __validate_only_one_is_none(eta_squared, k, n, power, alpha)
     # Safety checks
     if eta_squared is not None:
         eta_squared = abs(eta_squared)
@@ -688,12 +721,9 @@ def power_rm_anova(eta_squared=None, m=None, n=None, power=None, alpha=0.05, cor
     >>> round(pg.power_rm_anova(eta_squared=0.346, m=m, n=n, epsilon=0.694, corr=avgcorr), 3)
     0.771
     """
-    # Check the number of arguments that are None
-    n_none = sum([v is None for v in [eta_squared, m, n, power, alpha]])
-    if n_none != 1:
-        msg = "Exactly one of eta, m, n, power, and alpha must be None."
-        raise ValueError(msg)
 
+    # Check the number of arguments that are None
+    __validate_only_one_is_none(eta_squared, m, n, power, alpha)
     # Safety checks
     assert 0 < epsilon <= 1, "epsilon must be between 0 and 1."
     assert -1 < corr < 1, "corr must be between -1 and 1."
@@ -835,11 +865,9 @@ def power_corr(r=None, n=None, power=None, alpha=0.05, alternative="two-sided"):
     >>> print("alpha: %.4f" % power_corr(r=0.5, n=20, power=0.80, alpha=None))
     alpha: 0.1377
     """
-    # Check the number of arguments that are None
-    n_none = sum([v is None for v in [r, n, power, alpha]])
-    if n_none != 1:
-        raise ValueError("Exactly one of n, r, power, and alpha must be None")
 
+    # Check the number of arguments that are None
+    __validate_only_one_is_none(r, n, power, alpha)
     # Safety checks
     assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
 
@@ -1012,13 +1040,10 @@ def power_chi2(dof, w=None, n=None, power=None, alpha=0.05):
     >>> print("alpha: %.4f" % power_chi2(dof=1, w=0.5, n=20, power=0.80, alpha=None))
     alpha: 0.1630
     """
+
     assert isinstance(dof, (int, float))
     # Check the number of arguments that are None
-    n_none = sum([v is None for v in [w, n, power, alpha]])
-    if n_none != 1:
-        err = "Exactly one of w, n, power, and alpha must be None."
-        raise ValueError(err)
-
+    __validate_only_one_is_none(w, n, power, alpha)
     # Safety checks
     if w is not None:
         w = abs(w)
