@@ -14,7 +14,7 @@ from scipy.optimize import brenth  # type: ignore
 __all__ = ["power_ttest", "power_ttest2n", "power_anova", "power_rm_anova", "power_corr", "power_chi2"]
 
 
-def __validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
+def _validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
     """
     Make sure that only one of the provided arguments are None
     Raise a ValueError otherwise, i.e when none of them are None or more than one of them are None
@@ -25,28 +25,28 @@ def __validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
     return
 
 
-@njit()
-def __dispatch_less(
-    d: Optional[float], n: Optional[int], power: Optional[float], alpha: Optional[float], tsample: int, tside: int
-) -> float:
+@njit(r"float64(float64, int64, float64, float64, int64, int64)", fastmath=True)  # type: ignore
+def _dispatch_less(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+    """ """
+
     dof = (n - 1) * tsample
     nc = d * np.sqrt(n / tsample)
     tcrit = stats.t.ppf(alpha / tside, dof)
     return 1 - stats.nct.sf(tcrit, dof, nc)
 
 
-def __dispatch_2sided(
-    d: Optional[float], n: Optional[int], power: Optional[float], alpha: Optional[float], tsample: int, tside: int
-) -> float:
+def _dispatch_2sided(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+    """ """
+
     dof = (n - 1) * tsample
     nc = d * np.sqrt(n / tsample)
     tcrit = stats.t.ppf(1 - alpha / tside, dof)
     return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
 
 
-def __dispatch_greater(
-    d: Optional[float], n: Optional[int], power: Optional[float], alpha: Optional[float], tsample: int, tside: int
-) -> float:
+def _dispatch_greater(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+    """ """
+
     dof = (n - 1) * tsample
     nc = d * np.sqrt(n / tsample)
     tcrit = stats.t.ppf(1 - alpha / tside, dof)
@@ -167,7 +167,7 @@ def power_ttest(
     """
 
     # Check the number of arguments that are None
-    __validate_only_one_is_none(d, n, power, alpha)
+    _validate_only_one_is_none(d, n, power, alpha)
     # Safety checks
     assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
     assert contrast.lower() in ["one-sample", "paired", "two-samples"]
@@ -251,8 +251,13 @@ def power_ttest(
 
 
 def power_ttest2n(
-    nx, ny, d: Optional[int] = None, power: Optional[float] = None, alpha: Optional[float] = 0.05, alternative: str = "two-sided"
-):
+    nx: int,
+    ny: int,
+    d: Optional[float] = None,
+    power: Optional[float] = None,
+    alpha: Optional[float] = 0.05,
+    alternative: str = "two-sided",
+) -> float:
     """
     Evaluate power, effect size or  significance level of an independent two-samples T-test
     with unequal sample sizes.
@@ -333,7 +338,7 @@ def power_ttest2n(
     """
 
     # Check the number of arguments that are None
-    __validate_only_one_is_none(d, power, alpha)
+    _validate_only_one_is_none(d, power, alpha)
     # Safety checks
     assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
 
@@ -504,7 +509,7 @@ def power_anova(eta_squared=None, k=None, n=None, power=None, alpha=0.05):
     """
 
     # Check the number of arguments that are None
-    __validate_only_one_is_none(eta_squared, k, n, power, alpha)
+    _validate_only_one_is_none(eta_squared, k, n, power, alpha)
     # Safety checks
     if eta_squared is not None:
         eta_squared = abs(eta_squared)
@@ -723,7 +728,7 @@ def power_rm_anova(eta_squared=None, m=None, n=None, power=None, alpha=0.05, cor
     """
 
     # Check the number of arguments that are None
-    __validate_only_one_is_none(eta_squared, m, n, power, alpha)
+    _validate_only_one_is_none(eta_squared, m, n, power, alpha)
     # Safety checks
     assert 0 < epsilon <= 1, "epsilon must be between 0 and 1."
     assert -1 < corr < 1, "corr must be between -1 and 1."
@@ -867,7 +872,7 @@ def power_corr(r=None, n=None, power=None, alpha=0.05, alternative="two-sided"):
     """
 
     # Check the number of arguments that are None
-    __validate_only_one_is_none(r, n, power, alpha)
+    _validate_only_one_is_none(r, n, power, alpha)
     # Safety checks
     assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
 
@@ -1043,7 +1048,7 @@ def power_chi2(dof, w=None, n=None, power=None, alpha=0.05):
 
     assert isinstance(dof, (int, float))
     # Check the number of arguments that are None
-    __validate_only_one_is_none(w, n, power, alpha)
+    _validate_only_one_is_none(w, n, power, alpha)
     # Safety checks
     if w is not None:
         w = abs(w)
