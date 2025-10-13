@@ -3,11 +3,9 @@
 # Date: April 2018
 
 
-import warnings
-from typing import Any, NoReturn, Optional
+from typing import Any, Callable, NoReturn, Optional
 
 import numpy as np
-from numba import njit  # type: ignore
 from scipy import stats  # type: ignore
 from scipy.optimize import brenth  # type: ignore
 
@@ -25,32 +23,35 @@ def _validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
     return
 
 
-@njit(r"float64(float64, int64, float64, float64, int64, int64)", fastmath=True)  # type: ignore
-def _dispatch_less(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+class ttest_dispatcher:
     """ """
 
-    dof = (n - 1) * tsample
-    nc = d * np.sqrt(n / tsample)
-    tcrit = stats.t.ppf(alpha / tside, dof)
-    return 1 - stats.nct.sf(tcrit, dof, nc)
+    @staticmethod
+    def less(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+        """ """
 
+        dof = (n - 1) * tsample
+        nc = d * np.sqrt(n / tsample)
+        tcrit = stats.t.ppf(alpha / tside, dof)
+        return 1 - stats.nct.sf(tcrit, dof, nc)
 
-def _dispatch_2sided(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
-    """ """
+    @staticmethod
+    def twosided(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+        """ """
 
-    dof = (n - 1) * tsample
-    nc = d * np.sqrt(n / tsample)
-    tcrit = stats.t.ppf(1 - alpha / tside, dof)
-    return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
+        dof = (n - 1) * tsample
+        nc = d * np.sqrt(n / tsample)
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)
+        return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
 
+    @staticmethod
+    def greater(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+        """ """
 
-def _dispatch_greater(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
-    """ """
-
-    dof = (n - 1) * tsample
-    nc = d * np.sqrt(n / tsample)
-    tcrit = stats.t.ppf(1 - alpha / tside, dof)
-    return stats.nct.sf(tcrit, dof, nc)
+        dof = (n - 1) * tsample
+        nc = d * np.sqrt(n / tsample)
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)
+        return stats.nct.sf(tcrit, dof, nc)
 
 
 def power_ttest(
@@ -59,7 +60,7 @@ def power_ttest(
     power: Optional[float] = None,
     alpha: Optional[float] = 0.05,
     contrast: str = "two-samples",
-    alternative: str = "two-sided",
+    _func_alternative: Callable[[float, int, float, float, int, int], float] = ttest_dispatcher.twosided,
 ) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a one-sample T-test,
@@ -169,11 +170,13 @@ def power_ttest(
     # Check the number of arguments that are None
     _validate_only_one_is_none(d, n, power, alpha)
     # Safety checks
-    assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
+    assert _func_alternative.__name__ in ["twosided", "greater", "less"], (
+        "Alternative must be one of 'twosided' (default), 'greater' or 'less'."
+    )
     assert contrast.lower() in ["one-sample", "paired", "two-samples"]
 
     tsample = 2 if contrast.lower() == "two-samples" else 1
-    tside = 2 if alternative == "two-sided" else 1
+    tside = 2 if _func_alternative.__name__ == "twosided" else 1
     if d is not None and tside == 2:
         d = abs(d)
     if alpha is not None:
@@ -181,40 +184,16 @@ def power_ttest(
     if power is not None:
         assert 0 < power <= 1
 
-    if alternative == "less":
-
-        def func(d, n, power, alpha):
-            dof = (n - 1) * tsample
-            nc = d * np.sqrt(n / tsample)
-            tcrit = stats.t.ppf(alpha / tside, dof)
-            return 1 - stats.nct.sf(tcrit, dof, nc)
-
-    elif alternative == "two-sided":
-
-        def func(d, n, power, alpha):
-            dof = (n - 1) * tsample
-            nc = d * np.sqrt(n / tsample)
-            tcrit = stats.t.ppf(1 - alpha / tside, dof)
-            return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
-
-    else:  # Alternative = 'greater'
-
-        def func(d, n, power, alpha):
-            dof = (n - 1) * tsample
-            nc = d * np.sqrt(n / tsample)
-            tcrit = stats.t.ppf(1 - alpha / tside, dof)
-            return stats.nct.sf(tcrit, dof, nc)
-
     # Evaluate missing variable
     if power is None:
         # Compute achieved power given d, n and alpha
-        return func(d, n, power=None, alpha=alpha)
+        return _func_alternative(d=d, n=n, power=None, alpha=alpha, tsample=tsample, tside=tside)
 
     elif n is None:
         # Compute required sample size given d, power and alpha
 
         def _eval_n(n, d, power, alpha):
-            return func(d, n, power, alpha) - power
+            return _func_alternative(d, n, power, alpha, tsample, tside) - power
 
         try:
             return brenth(_eval_n, 2 + 1e-10, 1e07, args=(d, power, alpha))
@@ -223,15 +202,15 @@ def power_ttest(
 
     elif d is None:
         # Compute achieved d given sample size, power and alpha level
-        if alternative == "two-sided":
+        if _func_alternative.__name__ == "twosided":
             b0, b1 = 1e-07, 10
-        elif alternative == "less":
+        elif _func_alternative.__name__ == "less":
             b0, b1 = -10, 5
         else:
             b0, b1 = -5, 10
 
         def _eval_d(d, n, power, alpha):
-            return func(d, n, power, alpha) - power
+            return _func_alternative(d, n, power, alpha, tsample, tside) - power
 
         try:
             return brenth(_eval_d, b0, b1, args=(n, power, alpha))
@@ -242,12 +221,37 @@ def power_ttest(
         # Compute achieved alpha (significance) level given d, n and power
 
         def _eval_alpha(alpha, d, n, power):
-            return func(d, n, power, alpha) - power
+            return _func_alternative(d, n, power, alpha, tsample, tside) - power
 
         try:
             return brenth(_eval_alpha, 1e-10, 1 - 1e-10, args=(d, n, power))
         except ValueError:  # pragma: no cover
             return np.nan
+
+
+class ttest2n_dispatcher:
+    """ """
+
+    @staticmethod
+    def less(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
+        dof = nx + ny - 2
+        nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
+        tcrit = stats.t.ppf(alpha / tside, dof)
+        return 1 - stats.nct.sf(tcrit, dof, nc)
+
+    @staticmethod
+    def twosided(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
+        dof = nx + ny - 2
+        nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)
+        return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
+
+    @staticmethod
+    def greater(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
+        dof = nx + ny - 2
+        nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)
+        return stats.nct.sf(tcrit, dof, nc)
 
 
 def power_ttest2n(
@@ -256,7 +260,7 @@ def power_ttest2n(
     d: Optional[float] = None,
     power: Optional[float] = None,
     alpha: Optional[float] = 0.05,
-    alternative: str = "two-sided",
+    _func_alternative: Callable[[float, int, int, float, float, int], float] = ttest2n_dispatcher.twosided,
 ) -> float:
     """
     Evaluate power, effect size or  significance level of an independent two-samples T-test
@@ -340,9 +344,11 @@ def power_ttest2n(
     # Check the number of arguments that are None
     _validate_only_one_is_none(d, power, alpha)
     # Safety checks
-    assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
+    assert _func_alternative.__name__ in ["twosided", "greater", "less"], (
+        "Alternative must be one of 'twosided' (default), 'greater' or 'less'."
+    )
 
-    tside = 2 if alternative == "two-sided" else 1
+    tside = 2 if _func_alternative.__name__ == "twosided" else 1
     if d is not None and tside == 2:
         d = abs(d)
     if alpha is not None:
@@ -350,46 +356,22 @@ def power_ttest2n(
     if power is not None:
         assert 0 < power <= 1
 
-    if alternative == "less":
-
-        def func(d, nx, ny, power, alpha):
-            dof = nx + ny - 2
-            nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
-            tcrit = stats.t.ppf(alpha / tside, dof)
-            return 1 - stats.nct.sf(tcrit, dof, nc)
-
-    elif alternative == "two-sided":
-
-        def func(d, nx, ny, power, alpha):
-            dof = nx + ny - 2
-            nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
-            tcrit = stats.t.ppf(1 - alpha / tside, dof)
-            return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
-
-    else:  # Alternative = 'greater'
-
-        def func(d, nx, ny, power, alpha):
-            dof = nx + ny - 2
-            nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
-            tcrit = stats.t.ppf(1 - alpha / tside, dof)
-            return stats.nct.sf(tcrit, dof, nc)
-
     # Evaluate missing variable
     if power is None:
         # Compute achieved power given d, n and alpha
-        return func(d, nx, ny, power=None, alpha=alpha)
+        return _func_alternative(d=d, nx=nx, ny=ny, power=None, alpha=alpha, tside=tside)
 
     elif d is None:
         # Compute achieved d given sample size, power and alpha level
-        if alternative == "two-sided":
+        if _func_alternative.__name__ == "twosided":
             b0, b1 = 1e-07, 10
-        elif alternative == "less":
+        elif _func_alternative == "less":
             b0, b1 = -10, 5
         else:
             b0, b1 = -5, 10
 
         def _eval_d(d, nx, ny, power, alpha):
-            return func(d, nx, ny, power, alpha) - power
+            return _func_alternative(d, nx, ny, power, alpha, tside) - power
 
         try:
             return brenth(_eval_d, b0, b1, args=(nx, ny, power, alpha))
@@ -400,7 +382,7 @@ def power_ttest2n(
         # Compute achieved alpha (significance) level given d, n and power
 
         def _eval_alpha(alpha, d, nx, ny, power):
-            return func(d, nx, ny, power, alpha) - power
+            return _func_alternative(d, nx, ny, power, alpha, tside) - power
 
         try:
             return brenth(_eval_alpha, 1e-10, 1 - 1e-10, args=(d, nx, ny, power))
@@ -408,7 +390,13 @@ def power_ttest2n(
             return np.nan
 
 
-def power_anova(eta_squared=None, k=None, n=None, power=None, alpha=0.05):
+def power_anova(
+    eta_squared: Optional[float] = None,
+    k: Optional[int] = None,
+    n: Optional[int] = None,
+    power: Optional[float] = None,
+    alpha: Optional[float] = 0.05,
+) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a one-way balanced ANOVA.
 
@@ -577,7 +565,15 @@ def power_anova(eta_squared=None, k=None, n=None, power=None, alpha=0.05):
             return np.nan
 
 
-def power_rm_anova(eta_squared=None, m=None, n=None, power=None, alpha=0.05, corr=0.5, epsilon=1):
+def power_rm_anova(
+    eta_squared: Optional[float] = None,
+    m: Optional[int] = None,
+    n: Optional[int] = None,
+    power: Optional[float] = None,
+    alpha: Optional[float] = 0.05,
+    corr: float = 0.5,
+    epsilon: int = 1,
+) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a balanced one-way
     repeated measures ANOVA.
@@ -802,7 +798,13 @@ def power_rm_anova(eta_squared=None, m=None, n=None, power=None, alpha=0.05, cor
             return np.nan
 
 
-def power_corr(r=None, n=None, power=None, alpha=0.05, alternative="two-sided"):
+def power_corr(
+    r: Optional[float] = None,
+    n: Optional[int] = None,
+    power: Optional[float] = None,
+    alpha: Optional[float] = 0.05,
+    alternative: str = "two-sided",
+) -> float:
     """
     Evaluate power, sample size, correlation coefficient or significance level of a correlation
     test.
@@ -886,8 +888,7 @@ def power_corr(r=None, n=None, power=None, alpha=0.05, alternative="two-sided"):
         assert 0 < power <= 1
     if n is not None:
         if n <= 4:
-            warnings.warn("Sample size is too small to estimate power (n <= 4). Returning NaN.")
-            return np.nan
+            raise ValueError("Sample size is too small to estimate power (n <= 4)!")
 
     # Define main function
     if alternative == "two-sided":
