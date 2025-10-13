@@ -9,7 +9,7 @@ import numpy as np
 from scipy import stats  # type: ignore
 from scipy.optimize import brenth  # type: ignore
 
-__all__ = ["power_ttest", "power_ttest2n", "power_anova", "power_rm_anova", "power_corr", "power_chi2"]
+__all__ = ["ttest", "ttest2n", "anova", "rm_anova", "corr", "chisquared"]
 
 
 def _validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
@@ -54,7 +54,7 @@ class TtestDispatcher:
         return stats.nct.sf(tcrit, dof, nc)
 
 
-def power_ttest(
+def ttest(
     d: Optional[float] = None,
     n: Optional[int] = None,
     power: Optional[float] = None,
@@ -254,7 +254,7 @@ class Ttest2nDispatcher:
         return stats.nct.sf(tcrit, dof, nc)
 
 
-def power_ttest2n(
+def ttest2n(
     nx: int,
     ny: int,
     d: Optional[float] = None,
@@ -390,7 +390,7 @@ def power_ttest2n(
             return np.nan
 
 
-def power_anova(
+def anova(
     eta_squared: Optional[float] = None,
     k: Optional[int] = None,
     n: Optional[int] = None,
@@ -565,7 +565,7 @@ def power_anova(
             return np.nan
 
 
-def power_rm_anova(
+def rm_anova(
     eta_squared: Optional[float] = None,
     m: Optional[int] = None,
     n: Optional[int] = None,
@@ -833,7 +833,7 @@ class corr_dispatcher:
         return power
 
 
-def power_corr(
+def corr(
     r: Optional[float] = None,
     n: Optional[int] = None,
     power: Optional[float] = None,
@@ -969,7 +969,7 @@ def power_corr(
             return np.nan
 
 
-def power_chi2(
+def chisquared(
     dof: int, w: Optional[float] = None, n: Optional[int] = None, power: Optional[float] = None, alpha: Optional[float] = 0.05
 ) -> float:
     """
