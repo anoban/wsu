@@ -23,7 +23,7 @@ def _validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
     return
 
 
-class ttest_dispatcher:
+class TtestDispatcher:
     """ """
 
     @staticmethod
@@ -60,7 +60,7 @@ def power_ttest(
     power: Optional[float] = None,
     alpha: Optional[float] = 0.05,
     contrast: str = "two-samples",
-    _func_alternative: Callable[[float, int, float, float, int, int], float] = ttest_dispatcher.twosided,
+    _func_alternative: Callable[[float, int, float, float, int, int], float] = TtestDispatcher.twosided,
 ) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a one-sample T-test,
@@ -229,7 +229,7 @@ def power_ttest(
             return np.nan
 
 
-class ttest2n_dispatcher:
+class Ttest2nDispatcher:
     """ """
 
     @staticmethod
@@ -260,7 +260,7 @@ def power_ttest2n(
     d: Optional[float] = None,
     power: Optional[float] = None,
     alpha: Optional[float] = 0.05,
-    _func_alternative: Callable[[float, int, int, float, float, int], float] = ttest2n_dispatcher.twosided,
+    _func_alternative: Callable[[float, int, int, float, float, int], float] = Ttest2nDispatcher.twosided,
 ) -> float:
     """
     Evaluate power, effect size or  significance level of an independent two-samples T-test
@@ -798,12 +798,47 @@ def power_rm_anova(
             return np.nan
 
 
+class corr_dispatcher:
+    """"""
+
+    @staticmethod
+    def twosided(r: float, n: int, power: float, alpha: float) -> float:
+        dof = n - 2
+        ttt = stats.t.ppf(1 - alpha / 2, dof)
+        rc = np.sqrt(ttt**2 / (ttt**2 + dof))
+        zr = np.arctanh(r) + r / (2 * (n - 1))
+        zrc = np.arctanh(rc)
+        power = stats.norm.cdf((zr - zrc) * np.sqrt(n - 3)) + stats.norm.cdf((-zr - zrc) * np.sqrt(n - 3))
+        return power
+
+    @staticmethod
+    def greater(r: float, n: int, power: float, alpha: float) -> float:
+        dof = n - 2
+        ttt = stats.t.ppf(1 - alpha, dof)
+        rc = np.sqrt(ttt**2 / (ttt**2 + dof))
+        zr = np.arctanh(r) + r / (2 * (n - 1))
+        zrc = np.arctanh(rc)
+        power = stats.norm.cdf((zr - zrc) * np.sqrt(n - 3))
+        return power
+
+    @staticmethod
+    def less(r: float, n: int, power: float, alpha: float) -> float:
+        r = -r
+        dof = n - 2
+        ttt = stats.t.ppf(1 - alpha, dof)
+        rc = np.sqrt(ttt**2 / (ttt**2 + dof))
+        zr = np.arctanh(r) + r / (2 * (n - 1))
+        zrc = np.arctanh(rc)
+        power = stats.norm.cdf((zr - zrc) * np.sqrt(n - 3))
+        return power
+
+
 def power_corr(
     r: Optional[float] = None,
     n: Optional[int] = None,
     power: Optional[float] = None,
     alpha: Optional[float] = 0.05,
-    alternative: str = "two-sided",
+    _func_alternative: Callable[[float, int, float, float], float] = corr_dispatcher.twosided,
 ) -> float:
     """
     Evaluate power, sample size, correlation coefficient or significance level of a correlation
@@ -876,11 +911,13 @@ def power_corr(
     # Check the number of arguments that are None
     _validate_only_one_is_none(r, n, power, alpha)
     # Safety checks
-    assert alternative in ["two-sided", "greater", "less"], "Alternative must be one of 'two-sided' (default), 'greater' or 'less'."
+    assert _func_alternative.__name__ in ["twosided", "greater", "less"], (
+        "Alternative must be one of 'twosided' (default), 'greater' or 'less'."
+    )
 
     if r is not None:
         assert -1 <= r <= 1
-        if alternative == "two-sided":
+        if _func_alternative.__name__ == "twosided":
             r = abs(r)
     if alpha is not None:
         assert 0 < alpha <= 1
@@ -890,51 +927,16 @@ def power_corr(
         if n <= 4:
             raise ValueError("Sample size is too small to estimate power (n <= 4)!")
 
-    # Define main function
-    if alternative == "two-sided":
-
-        def func(r, n, power, alpha):
-            dof = n - 2
-            ttt = stats.t.ppf(1 - alpha / 2, dof)
-            rc = np.sqrt(ttt**2 / (ttt**2 + dof))
-            zr = np.arctanh(r) + r / (2 * (n - 1))
-            zrc = np.arctanh(rc)
-            power = stats.norm.cdf((zr - zrc) * np.sqrt(n - 3)) + stats.norm.cdf((-zr - zrc) * np.sqrt(n - 3))
-            return power
-
-    elif alternative == "greater":
-
-        def func(r, n, power, alpha):
-            dof = n - 2
-            ttt = stats.t.ppf(1 - alpha, dof)
-            rc = np.sqrt(ttt**2 / (ttt**2 + dof))
-            zr = np.arctanh(r) + r / (2 * (n - 1))
-            zrc = np.arctanh(rc)
-            power = stats.norm.cdf((zr - zrc) * np.sqrt(n - 3))
-            return power
-
-    else:  # alternative == "less":
-
-        def func(r, n, power, alpha):
-            r = -r
-            dof = n - 2
-            ttt = stats.t.ppf(1 - alpha, dof)
-            rc = np.sqrt(ttt**2 / (ttt**2 + dof))
-            zr = np.arctanh(r) + r / (2 * (n - 1))
-            zrc = np.arctanh(rc)
-            power = stats.norm.cdf((zr - zrc) * np.sqrt(n - 3))
-            return power
-
     # Evaluate missing variable
     if power is None and n is not None and r is not None:
         # Compute achieved power given r, n and alpha
-        return func(r, n, power=None, alpha=alpha)
+        return _func_alternative(r, n, power=None, alpha=alpha)
 
     elif n is None and power is not None and r is not None:
         # Compute required sample size given r, power and alpha
 
         def _eval_n(n, r, power, alpha):
-            return func(r, n, power, alpha) - power
+            return _func_alternative(r, n, power, alpha) - power
 
         try:
             return brenth(_eval_n, 4 + 1e-10, 1e09, args=(r, power, alpha))
@@ -945,10 +947,10 @@ def power_corr(
         # Compute achieved r given sample size, power and alpha level
 
         def _eval_r(r, n, power, alpha):
-            return func(r, n, power, alpha) - power
+            return _func_alternative(r, n, power, alpha) - power
 
         try:
-            if alternative == "two-sided":
+            if _func_alternative.__name__ == "twosided":
                 return brenth(_eval_r, 1e-10, 1 - 1e-10, args=(n, power, alpha))
             else:
                 return brenth(_eval_r, -1 + 1e-10, 1 - 1e-10, args=(n, power, alpha))
@@ -959,7 +961,7 @@ def power_corr(
         # Compute achieved alpha (significance) level given r, n and power
 
         def _eval_alpha(alpha, r, n, power):
-            return func(r, n, power, alpha) - power
+            return _func_alternative(r, n, power, alpha) - power
 
         try:
             return brenth(_eval_alpha, 1e-10, 1 - 1e-10, args=(r, n, power))
@@ -967,13 +969,15 @@ def power_corr(
             return np.nan
 
 
-def power_chi2(dof, w=None, n=None, power=None, alpha=0.05):
+def power_chi2(
+    dof: int, w: Optional[float] = None, n: Optional[int] = None, power: Optional[float] = None, alpha: Optional[float] = 0.05
+) -> float:
     """
     Evaluate power, sample size, effect size or significance level of chi-squared tests.
 
     Parameters
     ----------
-    dof : float
+    dof : int
         Degree of freedom (depends on the chosen test).
     w : float
         Cohen's w effect size [1]_.
