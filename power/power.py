@@ -32,8 +32,8 @@ class TtestDispatcher:
 
         dof = (n - 1) * tsample
         nc = d * np.sqrt(n / tsample)
-        tcrit = stats.t.ppf(alpha / tside, dof)
-        return 1 - stats.nct.sf(tcrit, dof, nc)
+        tcrit = stats.t.ppf(alpha / tside, dof)  # type: ignore
+        return 1 - stats.nct.sf(tcrit, dof, nc)  # type: ignore
 
     @staticmethod
     def twosided(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
@@ -41,8 +41,8 @@ class TtestDispatcher:
 
         dof = (n - 1) * tsample
         nc = d * np.sqrt(n / tsample)
-        tcrit = stats.t.ppf(1 - alpha / tside, dof)
-        return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)  # type: ignore
+        return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))  # type: ignore
 
     @staticmethod
     def greater(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
@@ -50,8 +50,8 @@ class TtestDispatcher:
 
         dof = (n - 1) * tsample
         nc = d * np.sqrt(n / tsample)
-        tcrit = stats.t.ppf(1 - alpha / tside, dof)
-        return stats.nct.sf(tcrit, dof, nc)
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)  # type: ignore
+        return stats.nct.sf(tcrit, dof, nc)  # type: ignore
 
 
 def ttest(
@@ -236,22 +236,22 @@ class Ttest2nDispatcher:
     def less(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
         dof = nx + ny - 2
         nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
-        tcrit = stats.t.ppf(alpha / tside, dof)
-        return 1 - stats.nct.sf(tcrit, dof, nc)
+        tcrit = stats.t.ppf(alpha / tside, dof)  # type: ignore
+        return 1 - stats.nct.sf(tcrit, dof, nc)  # type: ignore
 
     @staticmethod
     def twosided(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
         dof = nx + ny - 2
         nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
-        tcrit = stats.t.ppf(1 - alpha / tside, dof)
-        return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)  # type: ignore
+        return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))  # type: ignore
 
     @staticmethod
     def greater(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
         dof = nx + ny - 2
         nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
-        tcrit = stats.t.ppf(1 - alpha / tside, dof)
-        return stats.nct.sf(tcrit, dof, nc)
+        tcrit = stats.t.ppf(1 - alpha / tside, dof)  # type: ignore
+        return stats.nct.sf(tcrit, dof, nc)  # type: ignore
 
 
 def ttest2n(
