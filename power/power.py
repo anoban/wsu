@@ -27,7 +27,7 @@ class TtestDispatcher:
     """ """
 
     @staticmethod
-    def less(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+    def less(d: float, n: int, alpha: float, tsample: int, tside: int) -> float:
         """ """
 
         dof = (n - 1) * tsample
@@ -36,7 +36,7 @@ class TtestDispatcher:
         return 1 - stats.nct.sf(tcrit, dof, nc)  # type: ignore
 
     @staticmethod
-    def twosided(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+    def twosided(d: float, n: int, alpha: float, tsample: int, tside: int) -> float:
         """ """
 
         dof = (n - 1) * tsample
@@ -45,7 +45,7 @@ class TtestDispatcher:
         return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))  # type: ignore
 
     @staticmethod
-    def greater(d: float, n: int, power: float, alpha: float, tsample: int, tside: int) -> float:
+    def greater(d: float, n: int, alpha: float, tsample: int, tside: int) -> float:
         """ """
 
         dof = (n - 1) * tsample
@@ -55,9 +55,9 @@ class TtestDispatcher:
 
 
 def ttest(
-    d: Optional[float] = None,
-    n: Optional[int] = None,
-    power: Optional[float] = None,
+    d: Optional[float],
+    n: Optional[int],
+    power: Optional[float],
     alpha: Optional[float] = 0.05,
     contrast: str = "two-samples",
     _func_alternative: Callable[[float, int, float, float, int, int], float] = TtestDispatcher.twosided,
@@ -187,16 +187,21 @@ def ttest(
     # Evaluate missing variable
     if power is None:
         # Compute achieved power given d, n and alpha
-        return _func_alternative(d=d, n=n, power=None, alpha=alpha, tsample=tsample, tside=tside)
+        return _func_alternative(d=d, n=n, alpha=alpha, tsample=tsample, tside=tside)
 
     elif n is None:
         # Compute required sample size given d, power and alpha
 
-        def _eval_n(n, d, power, alpha):
+        def _eval_n(n, d, power, alpha) -> float:
             return _func_alternative(d, n, power, alpha, tsample, tside) - power
 
         try:
-            return brenth(_eval_n, 2 + 1e-10, 1e07, args=(d, power, alpha))
+            return brenth(
+                lambda n, d, power, alpha: _func_alternative(d, n, power, alpha, tsample, tside) - power,
+                2 + 1e-10,
+                1e07,
+                args=(d, power, alpha),
+            )
         except ValueError:  # pragma: no cover
             return np.nan
 
@@ -257,8 +262,8 @@ class Ttest2nDispatcher:
 def ttest2n(
     nx: int,
     ny: int,
-    d: Optional[float] = None,
-    power: Optional[float] = None,
+    d: Optional[float],
+    power: Optional[float],
     alpha: Optional[float] = 0.05,
     _func_alternative: Callable[[float, int, int, float, float, int], float] = Ttest2nDispatcher.twosided,
 ) -> float:
@@ -398,13 +403,7 @@ def func(f_sq, k, n, power, alpha) -> float:
     return stats.ncf.sf(fcrit, dof1, dof2, nc)  # type: ignore
 
 
-def anova(
-    eta_squared: Optional[float] = None,
-    k: Optional[int] = None,
-    n: Optional[int] = None,
-    power: Optional[float] = None,
-    alpha: Optional[float] = 0.05,
-) -> float:
+def anova(eta_squared: Optional[float], k: Optional[int], n: Optional[int], power: Optional[float], alpha: Optional[float] = 0.05) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a one-way balanced ANOVA.
 
@@ -574,10 +573,10 @@ def anova(
 
 
 def rm_anova(
-    eta_squared: Optional[float] = None,
-    m: Optional[int] = None,
-    n: Optional[int] = None,
-    power: Optional[float] = None,
+    eta_squared: Optional[float],
+    m: Optional[int],
+    n: Optional[int],
+    power: Optional[float],
     alpha: Optional[float] = 0.05,
     corr: float = 0.5,
     epsilon: int = 1,
@@ -842,9 +841,9 @@ class corr_dispatcher:
 
 
 def corr(
-    r: Optional[float] = None,
-    n: Optional[int] = None,
-    power: Optional[float] = None,
+    r: Optional[float],
+    n: Optional[int],
+    power: Optional[float],
     alpha: Optional[float] = 0.05,
     _func_alternative: Callable[[float, int, float, float], float] = corr_dispatcher.twosided,
 ) -> float:
