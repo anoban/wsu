@@ -2,14 +2,13 @@
 # Author: Raphael Vallat <raphaelvallat9@gmail.com>
 # Date: April 2018
 
-
 from typing import Any, Callable, NoReturn, Optional
 
 import numpy as np
 from scipy import stats  # type: ignore
 from scipy.optimize import brenth  # type: ignore
 
-__all__ = ["ttest", "ttest2n", "anova", "rm_anova", "corr", "chisquared"]
+__all__ = ["ttest", "TtestDispatcher", "ttest2n", "anova", "rm_anova", "corr", "chisquared"]
 
 
 def _validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
@@ -60,7 +59,7 @@ def ttest(
     power: Optional[float],
     alpha: Optional[float] = 0.05,
     contrast: str = "two-samples",
-    _func_alternative: Callable[[float, int, float, float, int, int], float] = TtestDispatcher.twosided,
+    _func_alternative: Callable[[float, int, float, int, int], float] = TtestDispatcher.twosided,
 ) -> float:
     """
     Evaluate power, sample size, effect size or significance level of a one-sample T-test,
@@ -192,15 +191,9 @@ def ttest(
     elif n is None:
         # Compute required sample size given d, power and alpha
 
-        def _eval_n(n, d, power, alpha) -> float:
-            return _func_alternative(d, n, power, alpha, tsample, tside) - power
-
         try:
             return brenth(
-                lambda n, d, power, alpha: _func_alternative(d, n, power, alpha, tsample, tside) - power,
-                2 + 1e-10,
-                1e07,
-                args=(d, power, alpha),
+                lambda n, d, power, alpha: _func_alternative(d, n, alpha, tsample, tside) - power, 2 + 1e-10, 1e07, args=(d, power, alpha)
             )
         except ValueError:  # pragma: no cover
             return np.nan
@@ -211,25 +204,21 @@ def ttest(
             b0, b1 = 1e-07, 10
         elif _func_alternative.__name__ == "less":
             b0, b1 = -10, 5
-        else:
+        else:  # greater
             b0, b1 = -5, 10
 
-        def _eval_d(d, n, power, alpha):
-            return _func_alternative(d, n, power, alpha, tsample, tside) - power
-
         try:
-            return brenth(_eval_d, b0, b1, args=(n, power, alpha))
+            return brenth(lambda d, n, power, alpha: _func_alternative(d, n, alpha, tsample, tside) - power, b0, b1, args=(n, power, alpha))
         except ValueError:  # pragma: no cover
             return np.nan
 
     else:
         # Compute achieved alpha (significance) level given d, n and power
 
-        def _eval_alpha(alpha, d, n, power):
-            return _func_alternative(d, n, power, alpha, tsample, tside) - power
-
         try:
-            return brenth(_eval_alpha, 1e-10, 1 - 1e-10, args=(d, n, power))
+            return brenth(
+                lambda alpha, d, n, power: _func_alternative(d, n, alpha, tsample, tside) - power, 1e-10, 1 - 1e-10, args=(d, n, power)
+            )
         except ValueError:  # pragma: no cover
             return np.nan
 
@@ -238,21 +227,21 @@ class Ttest2nDispatcher:
     """ """
 
     @staticmethod
-    def less(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
+    def less(d: float, nx: int, ny: int, alpha: float, tside: int) -> float:
         dof = nx + ny - 2
         nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
         tcrit = stats.t.ppf(alpha / tside, dof)  # type: ignore
         return 1 - stats.nct.sf(tcrit, dof, nc)  # type: ignore
 
     @staticmethod
-    def twosided(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
+    def twosided(d: float, nx: int, ny: int, alpha: float, tside: int) -> float:
         dof = nx + ny - 2
         nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
         tcrit = stats.t.ppf(1 - alpha / tside, dof)  # type: ignore
         return stats.nct.sf(tcrit, dof, nc) + (1 - stats.nct.sf(-tcrit, dof, nc))  # type: ignore
 
     @staticmethod
-    def greater(d: float, nx: int, ny: int, power: float, alpha: float, tside: int) -> float:
+    def greater(d: float, nx: int, ny: int, alpha: float, tside: int) -> float:
         dof = nx + ny - 2
         nc = d * (1 / np.sqrt(1 / nx + 1 / ny))
         tcrit = stats.t.ppf(1 - alpha / tside, dof)  # type: ignore
@@ -265,7 +254,7 @@ def ttest2n(
     d: Optional[float],
     power: Optional[float],
     alpha: Optional[float] = 0.05,
-    _func_alternative: Callable[[float, int, int, float, float, int], float] = Ttest2nDispatcher.twosided,
+    _func_alternative: Callable[[float, int, int, float, int], float] = Ttest2nDispatcher.twosided,
 ) -> float:
     """
     Evaluate power, effect size or  significance level of an independent two-samples T-test
