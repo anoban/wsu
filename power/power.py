@@ -219,7 +219,7 @@ def ttest(
             return brenth(
                 lambda alpha, d, n, power: _func_alternative(d, n, alpha, tsample, tside) - power, 1e-10, 1 - 1e-10, args=(d, n, power)
             )
-        except ValueError:  # pragma: no cover
+        except ValueError:
             return np.nan
 
 
@@ -384,7 +384,9 @@ def ttest2n(
             return np.nan
 
 
-def func(f_sq, k, n, power, alpha) -> float:
+def _impl_anova(f_sq: float, k: int, n: int, alpha: float) -> float:
+    """ """
+
     nc = (n * k) * f_sq
     dof1 = k - 1
     dof2 = (n * k) - k
