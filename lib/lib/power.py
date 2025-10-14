@@ -2,6 +2,9 @@
 # Author: Raphael Vallat <raphaelvallat9@gmail.com>
 # Date: April 2018
 
+
+# TODO: COMPLETE ALL DOCUMENTATION
+
 from typing import Any, Callable, NoReturn, Optional
 
 import numpy as np
@@ -797,11 +800,13 @@ def rm_anova(
             return np.nan
 
 
-class corr_dispatcher:
+class CorrDispatcher:
     """"""
 
     @staticmethod
     def twosided(r: float, n: int, power: float, alpha: float) -> float:
+        """ """
+
         dof = n - 2
         ttt = stats.t.ppf(1 - alpha / 2, dof)
         rc = np.sqrt(ttt**2 / (ttt**2 + dof))
@@ -812,6 +817,8 @@ class corr_dispatcher:
 
     @staticmethod
     def greater(r: float, n: int, power: float, alpha: float) -> float:
+        """ """
+
         dof = n - 2
         ttt = stats.t.ppf(1 - alpha, dof)
         rc = np.sqrt(ttt**2 / (ttt**2 + dof))
@@ -822,6 +829,8 @@ class corr_dispatcher:
 
     @staticmethod
     def less(r: float, n: int, power: float, alpha: float) -> float:
+        """ """
+
         r = -r
         dof = n - 2
         ttt = stats.t.ppf(1 - alpha, dof)
@@ -837,7 +846,7 @@ def corr(
     n: Optional[int],
     power: Optional[float],
     alpha: Optional[float] = 0.05,
-    _func_alternative: Callable[[float, int, float, float], float] = corr_dispatcher.twosided,
+    _func_alternative: Callable[[float, int, float, float], float] = CorrDispatcher.twosided,
 ) -> float:
     """
     Evaluate power, sample size, correlation coefficient or significance level of a correlation
