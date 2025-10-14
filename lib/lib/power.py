@@ -353,7 +353,7 @@ def ttest2n(
     # Evaluate missing variable
     if power is None:
         # Compute achieved power given d, n and alpha
-        return _func_alternative(d=d, nx=nx, ny=ny, power=None, alpha=alpha, tside=tside)
+        return _func_alternative(d=d, nx=nx, ny=ny, alpha=alpha, tside=tside)
 
     elif d is None:
         # Compute achieved d given sample size, power and alpha level
@@ -364,22 +364,23 @@ def ttest2n(
         else:
             b0, b1 = -5, 10
 
-        def _eval_d(d, nx, ny, power, alpha):
-            return _func_alternative(d, nx, ny, power, alpha, tside) - power
-
         try:
-            return brenth(_eval_d, b0, b1, args=(nx, ny, power, alpha))
+            return brenth(
+                lambda d, nx, ny, power, alpha: _func_alternative(d, nx, ny, alpha, tside) - power, b0, b1, args=(nx, ny, power, alpha)
+            )
         except ValueError:  # pragma: no cover
             return np.nan
 
     else:
         # Compute achieved alpha (significance) level given d, n and power
 
-        def _eval_alpha(alpha, d, nx, ny, power):
-            return _func_alternative(d, nx, ny, power, alpha, tside) - power
-
         try:
-            return brenth(_eval_alpha, 1e-10, 1 - 1e-10, args=(d, nx, ny, power))
+            return brenth(
+                lambda alpha, d, nx, ny, power: _func_alternative(d, nx, ny, alpha, tside) - power,
+                1e-10,
+                1 - 1e-10,
+                args=(d, nx, ny, power),
+            )
         except ValueError:  # pragma: no cover
             return np.nan
 
