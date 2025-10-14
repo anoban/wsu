@@ -390,6 +390,14 @@ def ttest2n(
             return np.nan
 
 
+def func(f_sq, k, n, power, alpha) -> float:
+    nc = (n * k) * f_sq
+    dof1 = k - 1
+    dof2 = (n * k) - k
+    fcrit = stats.f.ppf(1 - alpha, dof1, dof2)  # type: ignore
+    return stats.ncf.sf(fcrit, dof1, dof2, nc)  # type: ignore
+
+
 def anova(
     eta_squared: Optional[float] = None,
     k: Optional[int] = None,
@@ -511,8 +519,8 @@ def anova(
         nc = (n * k) * f_sq
         dof1 = k - 1
         dof2 = (n * k) - k
-        fcrit = stats.f.ppf(1 - alpha, dof1, dof2)
-        return stats.ncf.sf(fcrit, dof1, dof2, nc)
+        fcrit = stats.f.ppf(1 - alpha, dof1, dof2)  # type: ignore
+        return stats.ncf.sf(fcrit, dof1, dof2, nc)  # type: ignore
 
     # Evaluate missing variable
     if power is None:
@@ -527,7 +535,7 @@ def anova(
 
         try:
             return brenth(_eval_k, 2, 100, args=(f_sq, n, power, alpha))
-        except ValueError:  # pragma: no cover
+        except ValueError:
             return np.nan
 
     elif n is None:
