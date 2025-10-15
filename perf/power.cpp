@@ -12,21 +12,37 @@
 
 namespace stats {
 
-    // the nc prefix stands for non central variants of the distributions
+    // the nc prefix stands for noncentral variants of the distributions
 
-    namespace t { }
+    namespace t {
+        constexpr inline long double __stdcall ppf(
+            _In_ const long double& quantile, _In_ const long long& dof, _In_ const long double& loc, _In_ const long double& scale
+        ) noexcept { }
+    } // namespace t
 
-    namespace nct { }
+    namespace nct {
+        constexpr inline long double __stdcall sf() noexcept { }
+    } // namespace nct
 
-    namespace f { }
+    namespace f {
+        constexpr inline long double __stdcall ppf() noexcept { }
+    } // namespace f
 
-    namespace ncf { }
+    namespace ncf {
+        constexpr inline long double __stdcall sf() noexcept { }
+    } // namespace ncf
 
-    namespace norm { }
+    namespace norm {
+        constexpr inline long double __stdcall cdf() noexcept { }
+    } // namespace norm
 
-    namespace chisq { }
+    namespace chisq {
+        constexpr inline long double __stdcall ppf() noexcept { }
+    } // namespace chisq
 
-    namespace ncchisq { }
+    namespace ncchisq {
+        constexpr inline long double __stdcall sf() noexcept { }
+    } // namespace ncchisq
 
 } // namespace stats
 
