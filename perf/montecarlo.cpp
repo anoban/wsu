@@ -1,5 +1,7 @@
-#include <montecarlo.h>
+#include <montecarlo>
+
 #include <stdlib.h>
+
 
 int main(void) {
     //
