@@ -1,6 +1,7 @@
 #pragma once
 #ifndef __STATS_
     #define __STATS_
+#endif // __STATS_
 
 // statistical functions that need to be handrolled or stolen from GSL :)
 // t ppf
@@ -12,10 +13,10 @@
 // ncchi2 sf
 // brenth
 
-    #include <cmath>
-    #include <cstdlib>
-    #include <numbers>
-    #include <numeric>
+#include <cmath>
+#include <cstdlib>
+#include <numbers>
+#include <numeric>
 
 namespace stats {
 
@@ -61,5 +62,3 @@ namespace stats {
     } // namespace noncentral
 
 } // namespace stats
-
-#endif // __STATS_
