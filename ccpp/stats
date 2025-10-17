@@ -19,6 +19,8 @@
 #include <numeric>
 
 namespace stats {
+    // for a continuous random variable x with an inclusive range [a, b], its cumulative distribution function cdf(x) is defined as P(x<=X)
+    // i.e the probability of x being less than or equal to the values in the X distribution
 
     namespace t {
         // cumulative distribution function of student's t distribution - two tailed
@@ -27,7 +29,9 @@ namespace stats {
             _In_ const long long&   dof,      // degrees of freedom = sample size - 1
             _In_ const long double& loc,      // mean
             _In_ const long double& scale     // std
-        ) noexcept { }
+        ) noexcept {
+            //
+        }
 
         // percent point function of student's t distribution, inverse of cdf
         static constexpr inline long double __stdcall ppf(
