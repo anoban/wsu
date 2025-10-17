@@ -21,9 +21,12 @@
 namespace stats {
 
     namespace t {
-        // cumulative distribution function of student's t distribution
+        // cumulative distribution function of student's t distribution - two tailed
         static constexpr inline long double __stdcall cdf(
-            _In_ const long double& quantile, _In_ const long long& dof, _In_ const long double& loc, _In_ const long double& scale
+            _In_ const long double& quantile, // quantile
+            _In_ const long long&   dof,      // degrees of freedom = sample size - 1
+            _In_ const long double& loc,      // mean
+            _In_ const long double& scale     // std
         ) noexcept { }
 
         // percent point function of student's t distribution, inverse of cdf
