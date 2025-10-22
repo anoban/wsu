@@ -26,6 +26,9 @@ namespace r {
     #define M_LN2 0.693147180559945309417232121458 /* ln(2) */
 #endif
 
+    constexpr long double LN2          = 0.693147180559945309417232121458L;
+    constexpr long double INV_SQRT_2PI = 0.398942280401432677939946059934L;
+
 #ifndef M_LN10
     #define M_LN10 2.302585092994045684017991454684 /* ln(10) */
 #endif
@@ -86,8 +89,6 @@ namespace r {
     #define M_1_SQRT_2PI 0.398942280401432677939946059934 /* 1/sqrt(2pi) */
 #endif
 
-    constexpr long double INV_SQRT_2PI = 0.398942280401432677939946059934L;
-
 #ifndef M_SQRT_2dPI
     #define M_SQRT_2dPI 0.797884560802865355879892119869 /* sqrt(2/pi) */
 #endif
@@ -114,60 +115,16 @@ namespace r {
 								   == log(pi/2)/2 */
 #endif
 
-#define ISNAN(x)                (isnan(x) != 0)
-#define ML_POSINF               (1.0 / 0.0)
-#define ML_NEGINF               ((-1.0) / 0.0)
-#define ML_NAN                  (0.0 / 0.0)
+#define ISNAN(x) (isnan(x) != 0)
 
-#define MATHLIB_WARNING(fmt, x) printf(fmt, x)
+#define INF      (1.0 / 0.0)
+#ifdef NAN
+    #undef NAN // undefine <cmath>'s NAN
+    #define NAN (0.0 / 0.0)
+#endif
 
-#define ML_WARN_return_NAN                                                                                                                 \
-    {                                                                                                                                      \
-        ML_WARNING(ME_DOMAIN, "");                                                                                                         \
-        return ML_NAN;                                                                                                                     \
-    }
+    /*
 
-/* For a long time prior to R 2.3.0 ML_WARNING did nothing.
-   We don't report ME_DOMAIN errors as the callers collect ML_NANs into
-   a single warning.
- */
-#define ML_WARNING(x, s)                                                                                                                   \
-    {                                                                                                                                      \
-        if (x > ME_DOMAIN) {                                                                                                               \
-            char* msg = "";                                                                                                                \
-            switch (x) {                                                                                                                   \
-                case ME_DOMAIN    : msg = _("argument out of domain in '%s'\n"); break;                                                    \
-                case ME_RANGE     : msg = _("value out of range in '%s'\n"); break;                                                        \
-                case ME_NOCONV    : msg = _("convergence failed in '%s'\n"); break;                                                        \
-                case ME_PRECISION : msg = _("full precision may not have been achieved in '%s'\n"); break;                                 \
-                case ME_UNDERFLOW : msg = _("underflow occurred in '%s'\n"); break;                                                        \
-            }                                                                                                                              \
-            MATHLIB_WARNING(msg, s);                                                                                                       \
-        }                                                                                                                                  \
-    }
-
-/*
- *  AUTHORS
- *	Catherine Loader, catherine@research.bell-labs.com, October 23, 2000. [ bd0() ]
- *	Morten Welinder, see Bugzilla PR#15628, 2014                          [ebd0() ]
- *
- *  Merge in to R (and much more):
- *
- *	Copyright (C) 2000-2025 The R Core Team
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, a copy is available at
- *  https://www.R-project.org/Licenses/
  *
  *
  *  DESCRIPTION
@@ -191,36 +148,37 @@ namespace r {
  * MM: The above is very nice, as the "simple" p1l1() function would be useful
  *    to have available in a fast numerical stable way more generally.
  */
-#include "nmath.h"
 
-    attribute_hidden double bd0(double x, double np) {
-        if (!R_FINITE(x) || !R_FINITE(np) || np == 0.0) ML_WARN_return_NAN;
+    static inline long double __stdcall bd0(_In_ const long double& x, _In_ const long double& np) noexcept {
+        if (!R_FINITE(x) || !R_FINITE(np) || np == 0.0) {
+            ::fputws(L"argument out of domain in " __FUNCTIONW__, stderr);
+            return NAN;
+        }
 
-        if (fabs(x - np) < 0.1 * (x + np)) {
-            double d = x - np, v = d / (x + np);
+        if (::fabs(x - np) < 0.1 * (x + np)) {
+            long double d = x - np, v = d / (x + np);
             if ((d != 0.0) && (v == 0.0)) { // v has underflown to 0 (as  x+np = inf)
-                double x_ = ldexp(x, -2), n_ = ldexp(np, -2);
+                long double x_ = ::ldexp(x, -2), n_ = ::ldexp(np, -2);
                 v = (x_ - n_) / (x_ + n_);
             }
-            double s = ldexp(d, -1) * v; // was d * v
-            if (fabs(ldexp(s, 1)) < DBL_MIN) return ldexp(s, 1);
-            double ej  = x * v;              // as 2*x*v could overflow:  v > 1/2  <==> ej = 2xv > x
-            v         *= v;                  // "v = v^2"
-            for (int j = 1; j < 1000; j++) { /* Taylor series; 1000: no infinite loop
-					    as |v| < .1,  v^2000 is "zero" */
-                ej        *= v;              // = x v^(2j+1)
-                double s_  = s;
-                s         += ej / ((j << 1) + 1);
+            long double s = ::ldexp(d, -1) * v; // was d * v
+            if (::fabs(::ldexp(s, 1)) < DBL_MIN) return ::ldexp(s, 1);
+            long double ej  = x * v;         // as 2*x*v could overflow:  v > 1/2  <==> ej = 2xv > x
+            v              *= v;             // "v = v^2"
+            for (int j = 1; j < 1000; j++) { /* Taylor series; 1000: no infinite loop as |v| < .1,  v^2000 is "zero" */
+                ej             *= v;         // = x v^(2j+1)
+                long double s_  = s;
+                s              += ej / ((j << 1) + 1);
                 if (s == s_) { /* last term was effectively 0 */
 #ifdef DEBUG_bd0
-                    REprintf("bd0(%g, %g): T.series w/ %d terms -> bd0=%g\n", x, np, j, ldexp(s, 1));
+                    REprintf("bd0(%g, %g): T.series w/ %d terms -> bd0=%g\n", x, np, j, ::ldexp(s, 1));
 #endif
-                    return ldexp(s, 1); // 2*s ; as we dropped '2 *' above
+                    return ::ldexp(s, 1); // 2*s ; as we dropped '2 *' above
                 }
             }
             /* ---- the following should _never_ happen ------------ */
-            MATHLIB_WARNING4(
-                "bd0(%g, %g): T.series failed to converge in 1000 it.; s=%g, ej/(2j+1)=%g\n", x, np, s, ej / ((1000 << 1) + 1)
+            ::fwprintf_s(
+                stderr, L"bd0(%g, %g): T.series failed to converge in 1000 it.; s=%g, ej/(2j+1)=%g\n", x, np, s, ej / ((1000 << 1) + 1)
             );
         }
         /* else:  | x - np |  is not too small */
@@ -239,7 +197,7 @@ namespace r {
  * the first entry is log(2).
  *
  * Entry i is associated with the value r = 0.5 + i / 256.0.  The
- * argument to log is p/q where q=1024 and p=floor(q / r + 0.5).
+ * argument to log is p/q where q=1024 and p=::floor(q / r + 0.5).
  * Thus r*p/q is close to 1.
  */
     static constexpr float bd0_scale[128 + 1][4] = {
@@ -380,10 +338,10 @@ namespace r {
  *
  * Deliver the result back in two parts, *yh and *yl.
  */
-    attribute_hidden void ebd0(double x, double M, double* yh, double* yl) {
-        const int    Sb = 10;
-        const double S  = 1u << Sb; // = 2^10 = 1024
-        const int    N  = 128;      // == ? == G_N_ELEMENTS(bd0_scale) - 1; <<<< FIXME:
+    static inline void __stdcall ebd0(long double x, long double M, long double* yh, long double* yl) noexcept {
+        const long        Sb = 10;
+        const long double S  = 1u << Sb; // = 2^10 = 1024
+        const long        N  = 128;      // == ? == G_N_ELEMENTS(bd0_scale) - 1; <<<< FIXME:
 
         *yl = *yh = 0;
 
@@ -393,49 +351,35 @@ namespace r {
             return;
         }
         if (M == 0) {
-            *yh = ML_POSINF;
+            *yh = INF;
             return;
         }
 
-        if (M / x == ML_POSINF) {
+        if (M / x == INF) {
             *yh = M;
             return;
         } //  as when (x == 0)
 
-        int    e;
+        int         e;
         // NB: M/x overflow handled above; underflow should be handled by fg = Inf
-        double r = frexp(M / x, &e); // => r in  [0.5, 1) and 'e' (int) such that  M/x = r * 2^e
+        long double r = ::frexp(M / x, &e); // => r in  [0.5, 1) and 'e' (int) such that  M/x = r * 2^e
 
         // prevent later overflow
-        if (M_LN2 * ((double) -e) > 1. + DBL_MAX / x) {
-            *yh = ML_POSINF;
+        if (M_LN2 * ((long double) -e) > 1. + DBL_MAX / x) {
+            *yh = INF;
             return;
         }
 
-        int    i  = (int) floor((r - 0.5) * (2 * N) + 0.5);
+        int         i  = (int) ::floor((r - 0.5) * (2 * N) + 0.5);
         // now,  0 <= i <= N
-        double f  = floor(S / (0.5 + i / (2.0 * N)) + 0.5);
-        double fg = ldexp(f, -(e + Sb)); // ldexp(f, E) := f * 2^E
-#ifdef DEBUG_bd0
-        REprintf("ebd0(x=%g, M=%g): M/x = (r=%.15g) * 2^(e=%d); i=%d,\n  f=%g, fg=f*2^-(e+%d)=%g\n", x, M, r, e, i, f, Sb, fg);
-        if (fg == ML_POSINF) {
-            REprintf(" --> fg = +Inf --> return( +Inf )\n");
+        long double f  = ::floor(S / (0.5 + i / (2.0 * N)) + 0.5);
+        long double fg = ::ldexp(f, -(e + Sb)); // ::ldexp(f, E) := f * 2^E
+
+        if (fg == INF) {
             *yh = fg;
             return;
         }
-        REprintf("     bd0_sc[0][0..3]= (");
-        for (int j = 0; j < 4; j++) REprintf("%g ", bd0_scale[0][j]);
-        REprintf(")\n");
-        REprintf("i -> bd0_sc[i][0..3]= (");
-        for (int j = 0; j < 4; j++) REprintf("%g ", bd0_scale[i][j]);
-        REprintf(")\n");
-        REprintf("  small(?)  (M*fg-x)/x = (M*fg)/x - 1 = %.16g\n", (M * fg - x) / x);
-#else
-        if (fg == ML_POSINF) {
-            *yh = fg;
-            return;
-        }
-#endif
+
         /* We now have (M * fg / x) close to 1.  */
 
         /*
@@ -459,39 +403,13 @@ namespace r {
 
 #define ADD1(d_)                                                                                                                           \
     do {                                                                                                                                   \
-        volatile double d   = (d_);                                                                                                        \
-        double          d1  = floor(d + 0.5);                                                                                              \
-        double          d2  = d - d1; /* in [-.5,.5) */                                                                                    \
-        *yh                += d1;                                                                                                          \
-        *yl                += d2;                                                                                                          \
+        volatile long double d   = (d_);                                                                                                   \
+        long double          d1  = ::floor(d + 0.5);                                                                                       \
+        long double          d2  = d - d1; /* in [-.5,.5) */                                                                               \
+        *yh                     += d1;                                                                                                     \
+        *yl                     += d2;                                                                                                     \
     } while (0)
 
-#ifdef DEBUG_bd0
-        {
-            double log1__ = log1pmx((M * fg - x) / x), xl = -x * log1__;
-            REprintf(" 1a. before adding  -x * log1pmx(.) = -x * %g = %g\n", log1__, xl);
-            ADD1(xl);
-            REprintf(" 1. after A.(-x*l..):       yl,yh = (%13g, %13g); yl+yh= %g\n", *yl, *yh, (*yl) + (*yh));
-        }
-        if (fg == 1) {
-            REprintf("___ fg = 1 ___ skipping further steps\n");
-            return;
-        }
-        // else  [ fg != 1 ]
-        REprintf(" 2:  A(x*b[i,j]) and A(-x*e*b[0,j]), j=1:4:\n");
-        for (int j = 0; j < 4; j++) {
-            ADD1(x * bd0_scale[i][j]); // handles  x*log(fg*2^e)
-            REprintf(" j=%d: (%13g, %13g);", j, *yl, *yh);
-            ADD1(-x * bd0_scale[0][j] * e); // handles  x*log(1/ 2^e)
-            REprintf(" (%13g, %13g); yl+yh= %g\n", *yl, *yh, (*yl) + (*yh));
-            if (!R_FINITE(*yh)) {
-                REprintf(" non-finite yh --> return((yh=Inf, yl=0))\n");
-                *yh = ML_POSINF;
-                *yl = 0;
-                return;
-            }
-        }
-#else
         ADD1(-x * log1pmx((M * fg - x) / x));
         if (fg == 1) return;
         // else (fg != 1) :
@@ -500,42 +418,35 @@ namespace r {
             ADD1(-x * bd0_scale[0][j] * e); // handles  x*log(1/ 2^e)
                                             //                        ^^^ at end prevents overflow in  ebd0(1e307, 1e300)
             if (!R_FINITE(*yh)) {
-                *yh = ML_POSINF;
+                *yh = INF;
                 *yl = 0;
                 return;
             }
         }
-#endif
 
         ADD1(M);
-#ifdef DEBUG_bd0
-        REprintf(" 3. after ADD1(M):            yl,yh = (%13g, %13g); yl+yh= %g\n", *yl, *yh, (*yl) + (*yh));
-#endif
         ADD1(-M * fg);
-#ifdef DEBUG_bd0
-        REprintf(" 4. after ADD1(- M*fg):       yl,yh = (%13g, %13g); yl+yh= %g\n\n", *yl, *yh, (*yl) + (*yh));
-#endif
     }
 
 #undef ADD1
 
-    static inline long double __stdcall dnorm4(double x, double mu, double sigma, int give_log) noexcept {
+    static inline long double __stdcall dnorm4(long double x, long double mu, long double sigma, int give_log) noexcept {
 #ifdef IEEE_754
         if (ISNAN(x) || ISNAN(mu) || ISNAN(sigma)) return x + mu + sigma;
 #endif
         if (sigma < 0) {
-            //
-            ::fputws(L"", stderr);
-            return ML_NAN;
+            ::fputws(L"argument out of domain in " __FUNCTIONW__, stderr);
+            return NAN;
         };
+
         if (!::isfinite(sigma)) return R_D__0;
-        if (!::isfinite(x) && mu == x) return ML_NAN; /* x-mu is NaN */
-        if (sigma == 0) return (x == mu) ? ML_POSINF : R_D__0;
+        if (!::isfinite(x) && mu == x) return NAN; /* x-mu is NaN */
+        if (sigma == 0) return (x == mu) ? INF : R_D__0;
         x = (x - mu) / sigma;
 
         if (!::isfinite(x)) return R_D__0;
 
-        x = fabs(x);
+        x = ::fabs(x);
         if (x >= 2 * sqrt(DBL_MAX)) return R_D__0;
         if (give_log) return -(M_LN_SQRT_2PI + 0.5 * x * x + log(sigma));
         //  M_1_SQRT_2PI = 1 / sqrt(2 * pi)
@@ -554,12 +465,12 @@ namespace r {
 
      * -- 1 --  No hoop jumping when we underflow to zero anyway:
 
-     *  -x^2/2 <         log(2)*.Machine$double.min.exp  <==>
-     *     x   > sqrt(-2*log(2)*.Machine$double.min.exp) =IEEE= 37.64031
+     *  -x^2/2 <         log(2)*.Machine$long double.min.exp  <==>
+     *     x   > sqrt(-2*log(2)*.Machine$long double.min.exp) =IEEE= 37.64031
      * but "thanks" to denormalized numbers, underflow happens a bit later,
-     *  effective.D.MIN.EXP <- with(.Machine, double.min.exp + double.ulp.digits)
+     *  effective.D.MIN.EXP <- with(.Machine, long double.min.exp + long double.ulp.digits)
      * for IEEE, DBL_MIN_EXP is -1022 but "effective" is -1074
-     * ==> boundary = sqrt(-2*log(2)*(.Machine$double.min.exp + .Machine$double.ulp.digits))
+     * ==> boundary = sqrt(-2*log(2)*(.Machine$long double.min.exp + .Machine$long double.ulp.digits))
      *              =IEEE=  38.58601
      * [on one x86_64 platform, effective boundary a bit lower: 38.56804]
      */
@@ -572,28 +483,32 @@ namespace r {
 
      * If we do not have IEEE this is still an improvement over the naive formula.
      */
-        double x1 = //  R_forceint(x * 65536) / 65536 =
-            ldexp(R_forceint(ldexp(x, 16)), -16);
-        double x2 = x - x1;
+        long double x1 = //  R_forceint(x * 65536) / 65536 =
+            ::ldexp(R_forceint(::ldexp(x, 16)), -16);
+        long double x2 = x - x1;
         return M_1_SQRT_2PI / sigma * (exp(-0.5 * x1 * x1) * exp((-0.5 * x2 - x1) * x2));
 #endif
     }
 
-    static inline long double __stdcall dt(double x, double n, int give_log) noexcept {
+    static inline long double __stdcall dt(long double x, long double n, int give_log) noexcept {
 #ifdef IEEE_754
         if (ISNAN(x) || ISNAN(n)) return x + n;
 #endif
-        if (n <= 0) ML_WARN_return_NAN;
+        if (n <= 0) {
+            ::fputws(L"argument out of domain in " __FUNCTIONW__, stderr);
+            return NAN;
+        };
+
         if (!::isfinite(x)) return R_D__0;
         if (!::isfinite(n)) return dnorm(x, 0., 1., give_log);
 
-        double u, t = -bd0(n / 2., (n + 1) / 2.) + stirlerr((n + 1) / 2.) - stirlerr(n / 2.),
-                  x2n = x * x / n, // in  [0, Inf]
-            ax        = 0.,        // <- -Wpedantic
-            l_x2n;                 // := log(sqrt(1 + x2n)) = log(1 + x2n)/2
+        long double u, t = -bd0(n / 2., (n + 1) / 2.) + stirlerr((n + 1) / 2.) - stirlerr(n / 2.),
+                       x2n = x * x / n, // in  [0, Inf]
+            ax             = 0.,        // <- -Wpedantic
+            l_x2n;                      // := log(sqrt(1 + x2n)) = log(1 + x2n)/2
         bool lrg_x2n = (x2n > 1. / DBL_EPSILON);
         if (lrg_x2n) { // large x^2/n :
-            ax    = fabs(x);
+            ax    = ::fabs(x);
             l_x2n = log(ax) - log(n) / 2.; // = log(x2n)/2 = 1/2 * log(x^2 / n)
             u     =                        //  log(1 + x2n) * n/2 =  n * log(1 + x2n)/2 =
                 n * l_x2n;
@@ -616,22 +531,26 @@ namespace r {
         if (give_log) return t - u - (M_LN_SQRT_2PI + l_x2n);
 
         // else :  if(lrg_x2n) : sqrt(1 + 1/x2n) ='= sqrt(1) = 1
-        double I_sqrt_ = (lrg_x2n ? sqrt(n) / ax : exp(-l_x2n));
+        long double I_sqrt_ = (lrg_x2n ? sqrt(n) / ax : exp(-l_x2n));
         return exp(t - u) * M_1_SQRT_2PI * I_sqrt_;
     }
 
-    double df(double x, double m, double n, int give_log) {
-        double p, q, f, dens;
+    static inline long double df(long double x, long double m, long double n, int give_log) noexcept {
+        long double p {}, q {}, f {}, dens {};
 
 #ifdef IEEE_754
         if (ISNAN(x) || ISNAN(m) || ISNAN(n)) return x + m + n;
 #endif
-        if (m <= 0 || n <= 0) ML_WARN_return_NAN;
+        if (m <= 0 || n <= 0) {
+            ::fputws(L"argument out of domain in " __FUNCTIONW__, stderr);
+            return NAN;
+        };
+
         if (x < 0.) return R_D__0;
-        if (x == 0.) return m > 2 ? R_D__0 : (m == 2 ? R_D__1 : ML_POSINF);
+        if (x == 0.) return m > 2 ? R_D__0 : (m == 2 ? R_D__1 : INF);
         if (!R_FINITE(m) && !R_FINITE(n)) { /* both +Inf */
             if (x == 1.)
-                return ML_POSINF;
+                return INF;
             else
                 return R_D__0;
         }
@@ -656,35 +575,41 @@ namespace r {
         return give_log ? log(f) + dens : f * dens;
     }
 
-    double dgamma(double x, double shape, double scale, int give_log) {
+    static inline long double __stdcall dgamma(long double x, long double shape, long double scale, bool logtrans) noexcept {
 #ifdef IEEE_754
         if (ISNAN(x) || ISNAN(shape) || ISNAN(scale)) return x + shape + scale;
 #endif
-        if (shape < 0 || scale <= 0) ML_WARN_return_NAN;
+        if (shape < 0 || scale <= 0) {
+            ::fputws(L"argument out of domain in " __FUNCTIONW__, stderr);
+            return NAN;
+        };
+
         if (x < 0) return R_D__0;
         if (shape == 0) /* point mass at 0 */
-            return (x == 0) ? ML_POSINF : R_D__0;
+            return (x == 0) ? INF : R_D__0;
         if (x == 0) {
-            if (shape < 1) return ML_POSINF;
+            if (shape < 1) return INF;
             if (shape > 1) return R_D__0;
             /* else */
-            return give_log ? -log(scale) : 1 / scale;
+            return logtrans ? -log(scale) : 1 / scale;
         }
 
-        double pr;
+        long double pr;
         if (shape < 1) {
-            pr = dpois_raw(shape, x / scale, give_log);
-            return give_log /* NB: currently *always*  shape/x > 0  if shape < 1:
+            pr = dpois_raw(shape, x / scale, logtrans);
+            return logtrans /* NB: currently *always*  shape/x > 0  if shape < 1:
 		     * -- overflow to Inf happens, but underflow to 0 does NOT : */
                        ?
                        pr + (R_FINITE(shape / x) ? log(shape / x) : /* shape/x overflows to +Inf */ log(shape) - log(x)) :
                        pr * shape / x;
         }
         /* else  shape >= 1 */
-        pr = dpois_raw(shape - 1, x / scale, give_log);
-        return give_log ? pr - log(scale) : pr / scale;
+        pr = dpois_raw(shape - 1, x / scale, logtrans);
+        return logtrans ? pr - log(scale) : pr / scale;
     }
 
-    double dchisq(double x, double df, int give_log) { return dgamma(x, df / 2., 2., give_log); }
+    static inline long double __stdcall dchisq(long double x, long double df, bool logtrans) noexcept {
+        return dgamma(x, df / 2., 2., logtrans);
+    }
 
 } // namespace r
