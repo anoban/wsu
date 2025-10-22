@@ -242,3 +242,4 @@ data/FashionMNIST/*
 
 # R crap
 .Rhistory
+R-4.5.1/*

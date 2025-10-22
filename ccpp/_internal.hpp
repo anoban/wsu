@@ -14,6 +14,12 @@
     #define NAN (0.0 / 0.0)
 #endif
 
+static constexpr long double LN2 { 0.693147180559945309417232121458 };          // ln(2)
+static constexpr long double LN_SQRT_2PI { 0.918938533204672741780329736406 };  // log(sqrt(2*pi))
+static constexpr long double INV_SQRT_2PI { 0.398942280401432677939946059934 }; // 1/sqrt(2pi)
+
+// most of the constants are defined in Rmath.h0.in in R sources
+
 /*
  *  DESCRIPTION
  *	Evaluates the "deviance part"
@@ -250,7 +256,7 @@ static inline void __stdcall ebd0(long double x, long double M, long double* yh,
     long double r = ::frexp(M / x, &e); // => r in  [0.5, 1) and 'e' (int) such that  M/x = r * 2^e
 
     // prevent later overflow
-    if (M_LN2 * ((long double) -e) > 1. + DBL_MAX / x) {
+    if (LN2 * ((long double) -e) > 1. + DBL_MAX / x) {
         *yh = INF;
         return;
     }
@@ -333,7 +339,7 @@ static inline long double __stdcall dnorm(long double x, long double mu, long do
 
     x = ::fabs(x);
     if (x >= 2 * sqrt(DBL_MAX)) return 0;
-    if (give_log) return -(M_LN_SQRT_2PI + 0.5 * x * x + log(sigma));
+    if (give_log) return -(LN_SQRT_2PI + 0.5 * x * x + log(sigma));
     //  INV_SQRT_2PI = 1 / sqrt(2 * pi)
 #ifdef MATHLIB_FAST_dnorm
     // and for R <= 3.0.x and R-devel upto 2014-01-01:
@@ -359,7 +365,7 @@ static inline long double __stdcall dnorm(long double x, long double mu, long do
      *              =IEEE=  38.58601
      * [on one x86_64 platform, effective boundary a bit lower: 38.56804]
      */
-    if (x > sqrt(-2 * M_LN2 * (DBL_MIN_EXP + 1 - DBL_MANT_DIG))) return 0.;
+    if (x > sqrt(-2 * LN2 * (DBL_MIN_EXP + 1 - DBL_MANT_DIG))) return 0.;
 
     /* Now, to get full accuracy, split x into two parts,
      *  x = x1+x2, such that |x2| <= 2^-16.
@@ -413,7 +419,7 @@ static inline long double __stdcall dt(long double x, long double n, bool logtra
     //	     1/sqrt(f) = 1/sqrt(2pi * (1+ x^2 / n))
     //		       = 1/sqrt(2pi)/(|x|/sqrt(n)*sqrt(1+1/x2n))
     //		       = INV_SQRT_2PI * sqrt(n)/ (|x|*sqrt(1+1/x2n))
-    if (logtrans) return t - u - (M_LN_SQRT_2PI + l_x2n);
+    if (logtrans) return t - u - (LN_SQRT_2PI + l_x2n);
 
     // else :  if(lrg_x2n) : sqrt(1 + 1/x2n) ='= sqrt(1) = 1
     long double I_sqrt_ = (lrg_x2n ? sqrt(n) / ax : exp(-l_x2n));
