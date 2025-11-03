@@ -3,7 +3,7 @@
 # Date: April 2018
 
 
-# TODO: COMPLETE ALL DOCUMENTATION
+# TODO: COMPLETE THE DOCUMENTATION
 
 from typing import Any, Callable, NoReturn, Optional
 
