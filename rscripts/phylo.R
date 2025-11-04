@@ -38,3 +38,9 @@ tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), ce
 text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1.5, col = "red")
 text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
 dev.off()
+
+
+# plot the whole megatree
+png("../plots/megatree.png", width = 10000, height = 10000, units = "px", res = 300)
+plot <- phytools::plotTree(megatree, ftype = "i", fsize = 1.4, type = "fan", lwd = 1, part = 0.99)
+dev.off()
