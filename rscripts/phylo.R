@@ -30,6 +30,8 @@ fredv3tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre")
 # ggtree::ggsave(filename = "../plots/phyolo.png", plot = plot, device = png, width = 10, height = 10, units = "in", bg = "transparent", dpi = 500, scale = 1.5)
 # ggtree::gheatmap(plot)
 
+length(fredv3tree$tip.label) # must be 203!!
+
 htree <- max(phytools::nodeHeights(fredv3tree)) # timescale of the tree
 png("../plots/phyolo-phytools.png", width = 8000, height = 8000, units = "px", res = 300)
 plot <- phytools::plotTree(fredv3tree, ftype = "i", fsize = 1.4, type = "fan", lwd = 1, part = 0.99)
