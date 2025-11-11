@@ -207,10 +207,7 @@ data/chapter2/FRED/*
 data/chapter2/TRY/*
 data/chapter2/GRooTFullVersion.csv
 data/chapter2/FungalRoot/*
-
-# MNIST
-data/MNIST/*
-data/FashionMNIST/*
+data/chapter2/wfotpl_06_2025.csv
 
 .ipynb_checkpoints
 *.dat
