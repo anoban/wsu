@@ -1,6 +1,7 @@
 
 ----------------------------------
 
-___A (relatively organized) dumpster for all my PhD related code work ___
+__A (relatively organized) dumpster for all my PhD related code work__
 
 ----------------------------------
+
