@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import math
-from typing import Tuple, Type
+from typing import Tuple, Type, override
 
 import torch
 from torch import Tensor, nn
@@ -132,6 +132,7 @@ class TwoWayAttentionBlock(nn.Module):
 
         self.skip_first_layer_pe = skip_first_layer_pe
 
+    @override
     def forward(self, queries: Tensor, keys: Tensor, query_pe: Tensor, key_pe: Tensor) -> Tuple[Tensor, Tensor]:
         # Self attention block
         if self.skip_first_layer_pe:
@@ -192,6 +193,7 @@ class Attention(nn.Module):
         x = x.transpose(1, 2)
         return x.reshape(b, n_tokens, n_heads * c_per_head)  # B x N_tokens x C
 
+    @override
     def forward(self, q: Tensor, k: Tensor, v: Tensor) -> Tensor:
         # Input projections
         q = self.q_proj(q)
