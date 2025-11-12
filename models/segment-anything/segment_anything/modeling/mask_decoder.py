@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-from typing import List, Tuple, Type
+from typing import List, Tuple, Type, override
 
 import torch
 from torch import nn
@@ -63,6 +63,7 @@ class MaskDecoder(nn.Module):
 
         self.iou_prediction_head = MLP(transformer_dim, iou_head_hidden_dim, self.num_mask_tokens, iou_head_depth)
 
+    @override
     def forward(
         self,
         image_embeddings: torch.Tensor,
@@ -154,6 +155,7 @@ class MLP(nn.Module):
         self.layers = nn.ModuleList(nn.Linear(n, k) for n, k in zip([input_dim] + h, h + [output_dim]))
         self.sigmoid_output = sigmoid_output
 
+    @override
     def forward(self, x):
         for i, layer in enumerate(self.layers):
             x = F.relu(layer(x)) if i < self.num_layers - 1 else layer(x)

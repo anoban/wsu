@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-from typing import Optional, Tuple, Type
+from typing import Optional, Tuple, Type, override
 
 import torch
 import torch.nn as nn
@@ -87,6 +87,7 @@ class ImageEncoderViT(nn.Module):
             LayerNorm2d(out_chans),
         )
 
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.patch_embed(x)
         if self.pos_embed is not None:
@@ -147,6 +148,7 @@ class Block(nn.Module):
 
         self.window_size = window_size
 
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         shortcut = x
         x = self.norm1(x)
@@ -203,6 +205,7 @@ class Attention(nn.Module):
             self.rel_pos_h = nn.Parameter(torch.zeros(2 * input_size[0] - 1, head_dim))
             self.rel_pos_w = nn.Parameter(torch.zeros(2 * input_size[1] - 1, head_dim))
 
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, H, W, _ = x.shape
         # qkv with shape (3, B, nHead, H * W, C)
@@ -355,8 +358,7 @@ class PatchEmbed(nn.Module):
 
         self.proj = nn.Conv2d(in_chans, embed_dim, kernel_size=kernel_size, stride=stride, padding=padding)
 
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.proj(x)
-        # B C H W -> B H W C
-        x = x.permute(0, 2, 3, 1)
-        return x
+        return x.permute(0, 2, 3, 1)  # B C H W -> B H W C

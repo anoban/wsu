@@ -4,10 +4,10 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-from typing import Type
+from typing import Type, override
 
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 class MLPBlock(nn.Module):
@@ -17,6 +17,7 @@ class MLPBlock(nn.Module):
         self.lin2 = nn.Linear(mlp_dim, embedding_dim)
         self.act = act()
 
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.lin2(self.act(self.lin1(x)))
 
@@ -30,6 +31,7 @@ class LayerNorm2d(nn.Module):
         self.bias = nn.Parameter(torch.zeros(num_channels))
         self.eps = eps
 
+    @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         u = x.mean(1, keepdim=True)
         s = (x - u).pow(2).mean(1, keepdim=True)

@@ -5,10 +5,15 @@
 # LICENSE file in the root directory of this source tree.
 
 from functools import partial
+from os import PathLike
+from typing import Optional
 
 import torch
 
 from .modeling import ImageEncoderViT, MaskDecoder, PromptEncoder, Sam, TwoWayTransformer
+
+# script with functions to initialize different flavours of the SAM model using checkpoints
+# do a top-down exploration of the codebase - having a holistic understanding of how each piece works will help better understand the individual pieces
 
 
 def build_sam_vit_h(checkpoint=None):
@@ -17,7 +22,7 @@ def build_sam_vit_h(checkpoint=None):
     )
 
 
-build_sam = build_sam_vit_h
+build_sam = build_sam_vit_h  # refactor this to be more explicit , i.e use build_sam_vit_h directly without aliases
 
 
 def build_sam_vit_l(checkpoint=None):
@@ -32,10 +37,15 @@ def build_sam_vit_b(checkpoint=None):
     )
 
 
+# we wouldn't need this????
 sam_model_registry = {"default": build_sam_vit_h, "vit_h": build_sam_vit_h, "vit_l": build_sam_vit_l, "vit_b": build_sam_vit_b}
 
 
-def _build_sam(encoder_embed_dim, encoder_depth, encoder_num_heads, encoder_global_attn_indexes, checkpoint=None):
+def _build_sam(
+    encoder_embed_dim, encoder_depth, encoder_num_heads, encoder_global_attn_indexes, checkpoint: Optional[str | PathLike[bytes]] = None
+) -> Sam:
+    """ """
+
     prompt_embed_dim = 256
     image_size = 1024
     vit_patch_size = 16
@@ -55,7 +65,7 @@ def _build_sam(encoder_embed_dim, encoder_depth, encoder_num_heads, encoder_glob
             window_size=14,
             out_chans=prompt_embed_dim,
         ),
-        prompt_encoder=PromptEncoder(
+        prompt_encoder=PromptEncoder(  # this is a part that we need to get rid of - WE DO NOT WANT PROMPTS!
             embed_dim=prompt_embed_dim,
             image_embedding_size=(image_embedding_size, image_embedding_size),
             input_image_size=(image_size, image_size),
@@ -72,7 +82,7 @@ def _build_sam(encoder_embed_dim, encoder_depth, encoder_num_heads, encoder_glob
         pixel_std=[58.395, 57.12, 57.375],
     )
     sam.eval()
-    if checkpoint is not None:
+    if checkpoint is not None:  # initialize the model from the pretrained weights
         with open(checkpoint, "rb") as f:
             state_dict = torch.load(f)
         sam.load_state_dict(state_dict)
