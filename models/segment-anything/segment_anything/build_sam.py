@@ -16,33 +16,30 @@ from .modeling import ImageEncoderViT, MaskDecoder, PromptEncoder, Sam, TwoWayTr
 # do a top-down exploration of the codebase - having a holistic understanding of how each piece works will help better understand the individual pieces
 
 
-def build_sam_vit_h(checkpoint=None):
+def build_sam_vit_h(checkpoint: Optional[str | PathLike[bytes]] = None) -> Sam:
     return _build_sam(
         encoder_embed_dim=1280, encoder_depth=32, encoder_num_heads=16, encoder_global_attn_indexes=[7, 15, 23, 31], checkpoint=checkpoint
     )
 
 
-build_sam = build_sam_vit_h  # refactor this to be more explicit , i.e use build_sam_vit_h directly without aliases
-
-
-def build_sam_vit_l(checkpoint=None):
+def build_sam_vit_l(checkpoint: Optional[str | PathLike[bytes]] = None) -> Sam:
     return _build_sam(
         encoder_embed_dim=1024, encoder_depth=24, encoder_num_heads=16, encoder_global_attn_indexes=[5, 11, 17, 23], checkpoint=checkpoint
     )
 
 
-def build_sam_vit_b(checkpoint=None):
+def build_sam_vit_b(checkpoint: Optional[str | PathLike[bytes]] = None) -> Sam:
     return _build_sam(
         encoder_embed_dim=768, encoder_depth=12, encoder_num_heads=12, encoder_global_attn_indexes=[2, 5, 8, 11], checkpoint=checkpoint
     )
 
 
-# we wouldn't need this????
-sam_model_registry = {"default": build_sam_vit_h, "vit_h": build_sam_vit_h, "vit_l": build_sam_vit_l, "vit_b": build_sam_vit_b}
-
-
 def _build_sam(
-    encoder_embed_dim, encoder_depth, encoder_num_heads, encoder_global_attn_indexes, checkpoint: Optional[str | PathLike[bytes]] = None
+    encoder_embed_dim: int,
+    encoder_depth: int,
+    encoder_num_heads: int,
+    encoder_global_attn_indexes: tuple[int, ...],
+    checkpoint: Optional[str | PathLike[bytes]] = None,
 ) -> Sam:
     """ """
 
@@ -83,7 +80,7 @@ def _build_sam(
     )
     sam.eval()
     if checkpoint is not None:  # initialize the model from the pretrained weights
-        with open(checkpoint, "rb") as f:
-            state_dict = torch.load(f)
+        with open(checkpoint, "rb") as fp:
+            state_dict = torch.load(fp)
         sam.load_state_dict(state_dict)
     return sam
