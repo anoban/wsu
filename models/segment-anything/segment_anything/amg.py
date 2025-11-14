@@ -4,13 +4,16 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
+# !!!!! this is a script to be run from the commandline with arguments
+
 import argparse
 import json
 import os
 from typing import Any, Dict, List
 
 import cv2  # type: ignore
-from segment_anything import SamAutomaticMaskGenerator, sam_model_registry
+
+from .automatic_mask_generator import SamAutomaticMaskGenerator, sam_model_registry
 
 parser = argparse.ArgumentParser(
     description=(
