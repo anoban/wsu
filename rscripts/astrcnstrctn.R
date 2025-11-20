@@ -33,18 +33,6 @@ plot(rtd_map, type = "fan")
 dev.off()
 
 
-
-# how to handle polytomies in ancestral state reconstruction - https://blog.phytools.org/2015/06/update-to-rerootingmethod-for-ancestral.html
-# Phylogenetically Independent Contrasts (PIC)
-ape::pic(x = log(named_rtd_vec), phy = tree) # Error - 'phy' is not rooted and fully dichotomous - we do have polytomies in the tree :/
-
-ape::is.binary(tree) # FALSE!!!
-ape::is.binary(ape::multi2di(tree)) # TRUE - that's how you convert a tree with polytomies into one without
-
-# https://www.mail-archive.com/r-sig-phylo@r-project.org/msg01363.html
-dichot <- ape::multi2di(tree) # dichotomized tree
-ape::pic(x = log(named_rtd_vec), phy = dichot) # works :)
-
 # if we try to fit a linear regression (Ordinary Least Squares) model between the mean SRL and RTD values for the 203 species without accounting for phylogenetic relationships
 crude_lm <- lm(log(named_srl_vec) ~ log(named_rtd_vec))
 summary(crude_lm)
@@ -53,3 +41,18 @@ par(mar = c(1, 1, 1, 1))
 plot(named_rtd_vec, named_srl_vec, xlab = "RTD", ylab = "SRL", log = "xy") # welp
 lines(named_rtd_vec, exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
 # exp is exponentiation - to undo the log transformation - since out plot axis will also do a log transformation, we pass the raw predictions to avoid -> log(log(predictions))
+
+# now to a model that accounts for phylogenetic relatedness, using Phylogenetically Independent Contrasts (PIC)
+ape::pic(x = log(named_rtd_vec), phy = tree) # Error - 'phy' is not rooted and fully dichotomous\
+# We do have polytomies in the tree :(
+
+ape::is.binary(tree) # FALSE!!!
+ape::is.binary(ape::multi2di(tree)) # TRUE - that's how you convert a tree with polytomies into one without
+
+# https://www.mail-archive.com/r-sig-phylo@r-project.org/msg01363.html
+dichot <- ape::multi2di(tree) # dichotomized tree
+pic_rtd <- ape::pic(x = log(named_rtd_vec), phy = dichot) # PICs for RTD
+pic_srl <- ape::pic(x = log(named_srl_vec), phy = dichot) # PICs for SRL
+
+# when we fit this to lm again, we need to make sure that our regression line does not have an intercept (Revell and Harmon, 2022)
+# this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny
