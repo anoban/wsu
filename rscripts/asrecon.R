@@ -34,4 +34,4 @@ plot(rtd_map, type = "fan")
 dev.off()
 
 # correlation between the evolution of these two traits
-phytools::sim.corrs(tree = tree, )
+plot(named_rtd_vec, named_srl_vec)
