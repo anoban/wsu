@@ -15,13 +15,23 @@ tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylog
 
 # ancestral state reconstruction for RTD & SRL
 # tip.labels have underscores in-between genus name and specific epithet :/
-rtd_vals <- rtd_srl[gsub(pattern = "_", replacement = " ", x = tree$tip.label), ]$F00709
-srl_vals <- rtd_srl[gsub(pattern = "_", replacement = " ", x = tree$tip.label), ]$F00727
+tip_labels <- tree$tip.label
+named_rtd_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00709, tip_labels)
+named_srl_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
 # these are mean RTD, SRL values in the same order as the tip labels of the phylogenetic tree
 
-astate_rtd <- phytools::fastAnc(tree = tree, x = rtd_vals, CI = TRUE)
-astate_srl <- phytools::fastAnc(tree = tree, x = srl_vals, CI = TRUE)
+astate_rtd <- phytools::fastAnc(tree = tree, x = named_rtd_vec, CI = TRUE)
+astate_srl <- phytools::fastAnc(tree = tree, x = named_srl_vec, CI = TRUE)
 
-# GOT A WARNING
-# x should be a vector with names corresponding to the taxon labels of the tree.
-# Assuming x is in the order of tree$tip.label (this is seldom true).
+png("../plots/asrRTD.png", width = 8000, height = 8000, units = "px", res = 300)
+rtd_map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(rtd_map, type = "fan")
+dev.off()
+
+png("../plots/asrSRL.png", width = 8000, height = 8000, units = "px", res = 300)
+rtd_map <- phytools::contMap(tree = tree, x = named_srl_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(rtd_map, type = "fan")
+dev.off()
+
+# correlation between the evolution of these two traits
+phytools::sim.corrs(tree = tree, )
