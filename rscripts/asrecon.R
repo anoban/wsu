@@ -36,4 +36,5 @@ dev.off()
 # correlation between the evolution of these two traits
 plot(named_rtd_vec, named_srl_vec) # welp
 
+# Phylogenetically Independent Contrasts (PIC)
 ape::pic(x = log(named_rtd_vec), phy = tree) #  'phy' is not rooted and fully dichotomous - we do have polytomies in the tree :/
