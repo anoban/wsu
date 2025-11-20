@@ -1,16 +1,19 @@
 # https://jhudatascience.org/AnVIL_Phylogenetic-Techniques/ancestral-state-reconstruction.html
 # http://www.phytools.org/eqg/Exercise_5.2/
+# Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press.
 
 library("ape")
 library("phytools")
 
 
-# "F00727" - SRL, "F00709" - RTD
-
-
 # did not do root order based trait normalizations :(
 rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal") # average RTD and SRL trait values for the 203 species
+# "F00727" - SRL, "F00709" - RTD
 tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylogenetic tree of the 203 species
+
+#---------------------------------------------------------------------
+# HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF SRL AND RTD ARE INDEPENDENT
+#---------------------------------------------------------------------
 
 # these are mean RTD, SRL values in the same order as the tip labels of the phylogenetic tree
 # tip.labels have underscores in-between genus name and specific epithet :/
@@ -37,9 +40,9 @@ dev.off()
 crude_lm <- lm(log(named_srl_vec) ~ log(named_rtd_vec))
 summary(crude_lm)
 # plot the data on a log transformed axis!!!
-par(mar = c(1, 1, 1, 1))
-plot(named_rtd_vec, named_srl_vec, xlab = "RTD", ylab = "SRL", log = "xy") # welp
-lines(named_rtd_vec, exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
+par(mar = c(5, 5, 1, 1))
+plot(x = named_srl_vec, y = named_rtd_vec,  xlab = "SRL", ylab = "RTD", log = "xy") # welp
+lines(x = named_srl_vec, y = exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
 # exp is exponentiation - to undo the log transformation - since out plot axis will also do a log transformation, we pass the raw predictions to avoid -> log(log(predictions))
 
 # now to a model that accounts for phylogenetic relatedness, using Phylogenetically Independent Contrasts (PIC)
@@ -55,4 +58,13 @@ pic_rtd <- ape::pic(x = log(named_rtd_vec), phy = dichot) # PICs for RTD
 pic_srl <- ape::pic(x = log(named_srl_vec), phy = dichot) # PICs for SRL
 
 # when we fit this to lm again, we need to make sure that our regression line does not have an intercept (Revell and Harmon, 2022)
-# this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny
+# this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny, so is the direction of the subtraction of the PICs
+# so the model shoud go through the origin (0, 0)
+pic_lm <- lm(pic_srl~pic_rtd+0) # + 0 is used to specify that we do not want an intercept
+summary(pic_lm)
+
+par(mar = c(5, 5, 1, 1))
+plot(pic_rtd, pic_srl, xlab = "ape::pic(log(RTD))", ylab = "ape::pic(log(SRL))")
+abline(h = 0, lty = "dotted")
+abline(v = 0, lty = "dotted")
+abline(pic_lm, lwd = 2, col = "red")
