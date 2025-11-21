@@ -46,7 +46,9 @@ dev.off()
 # the output of predict(model) will already be log transofrmed because we fit the model with log transformed data so exp() (exponentiation) is used to undo the log transformation - because out plotting axis will also do a log transformation
 # we do not want log(log(predictions))
 
+
 # METHOD 1 - Phylogenetically Independent Contrasts (PIC)
+#---------------------------------------------------------
 
 # now to a model that accounts for phylogenetic relatedness, using PICs
 ape::pic(x = log(named_rtd_vec), phy = tree) # Error - 'phy' is not rooted and fully dichotomous
@@ -75,7 +77,9 @@ abline(v = 0, lty = "dotted")
 abline(pic_lm, lwd = 2, col = "red")
 dev.off()
 
+
 # METHOD 2 - Phylogenetic Generalized Least Squares (PGLS)
+#-----------------------------------------------------------
 
 # column order in rtd_srl is F00727 F00709
 corr_matrix <- ape::corBrownian(phy = tree) # the form argument is used to specify the order of our data
@@ -94,26 +98,35 @@ pic_lm |> coef() # coefficients of the PIC OLS model
 # the difference between the coefficients of these two models is negligible
 abs(coef(pgls)[2] - coef(pic_lm)[1])
 
+
+
+
 #-------------------------------------------------------------------------------------------------------------------
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
 #-------------------------------------------------------------------------------------------------------------------
 
 # F00679 - RD, F00727 - SRL, F00645 - mycorrhizal state
+collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",")
+# this contains crude species avaraged records for RD and SRL (did not consider root order differences)
 
-collab_states_n_species_svg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",")
+# FIRST TIME PHYLOGENETIC TREE CREATION AND SERIALIZATION
+#---------------------------------------------------------
 
 # we'll need a new phylogeny as this is a superset of the previous phylogeny
-megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB_extended_WP.tre")
-genus_family_relations <- read.csv("../data/chapter2/uphylomaker/plant_genus_list.csv", sep = ",")
+# megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB_extended_WP.tre")
+# genus_family_relations <- read.csv("../data/chapter2/uphylomaker/plant_genus_list.csv", sep = ",")
 # we need a dataframe with columns - species,genus,family,species.relative,genus.relative for the species that we are interested in
-species_of_interest <- data.frame(species=collab_states_n_species_svg_traits$binominal, genus=collab_states_n_species_svg_traits$F01286, family=NA, species.relative=NA, genus.relative=NA)
-runtime <- Sys.time()
-phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations)
-runtime <- Sys.time() - runtime # 2.86052 mins
+# species_of_interest <- data.frame(species=collab_states_n_species_avg_traits$binominal, genus=collab_states_n_species_avg_traits$F01286, family=NA, species.relative=NA, genus.relative=NA)
+# runtime <- Sys.time()
+# phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations)
+# runtime <- Sys.time() - runtime # 2.86052 mins
 # serialize the phylogeny
-ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre") # cool
+# ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre") # cool
 
-# save the phylogenetic tree
+# read in the previously serialized phylogenetic tree
+collab_phylo <- ape::read.tree(file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre")
+
+# plot the phylogenetic tree
 htree <- max(phytools::nodeHeights(phylogeny$phylo))
 png("../plots/phylo_collab_states_n_traits.png", width = 10000, height = 10000, units = "px", res = 300)
 plot <- phytools::plotTree(phylogeny$phylo, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
@@ -125,10 +138,10 @@ dev.off()
 rooted_dichotomous_phylogeny <- ape::multi2di(phylogeny$phylo)
 
 # create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET TF???
-named_mycorrhizal_state_vec <- setNames(collab_states_n_species_svg_traits$F00645, nm = collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits$F00645, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
 # do not confuse this with named_srl_vec
-named_srl_vec_0 <- setNames(collab_states_n_species_svg_traits$F00727, nm = collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
-named_rd_vec <- setNames(collab_states_n_species_svg_traits$F00679, nm = collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+named_srl_vec_0 <- setNames(collab_states_n_species_avg_traits$F00727, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+named_rd_vec <- setNames(collab_states_n_species_avg_traits$F00679, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
 
 png("../plots/asr_collab_RD.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
@@ -157,6 +170,6 @@ dev.off()
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
 # we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
 
-corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
 ancova <- nlme::gls(log(named_rd_vec)~log(named_srl_vec_0)+named_mycorrhizal_state_vec, correlation = corr_matrix)
