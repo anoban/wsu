@@ -115,3 +115,9 @@ dev.off()
 
 ape::is.binary(phylogeny$phylo) # FALSE
 ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
+
+png("../plots/asr_collab_states_n_traits.png", width = 10000, height = 10000, units = "px", res = 300)
+# ape::ace - Ancestral Character Estimation - use model = "ER" & type = "discrete" for discrete categorical traits
+er_mystates <- phytools::rerootingMethod(x = named_mycorrhizal_state_vec, tree = rooted_dichotomous_phylogeny, model = "ER")
+phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
+phytools::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = c("red", "green", "yellow", "orange", "blue", "brown"))
