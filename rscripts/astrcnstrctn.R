@@ -7,27 +7,27 @@ library("phytools")
 library("U.PhyloMaker")
 library("nlme")
 
-# did not do root order based trait normalizations :(
-rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal") # average RTD and SRL trait values for the 203 species
-# "F00727" - SRL, "F00709" - RTD
-tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylogenetic tree of the 203 species
-
 #---------------------------------------------------------------------
 # HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF SRL AND RTD ARE INDEPENDENT
 #---------------------------------------------------------------------
 
-# these are mean RTD, SRL values in the same order as the tip labels of the phylogenetic tree
-# tip.labels have underscores in-between genus name and specific epithet :/
-tip_labels <- tree$tip.label
-# phytools functions expect the passed trait values to be a named vector, so ....
+rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal")
+# contains crude species averages of RTD and SRL for the 203 species - did not do root order based trait normalizations :(
+# F00727 - SRL, F00709 - RTD
+tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylogenetic tree of the 203 species in the above subset
+
+tip_labels <- tree$tip.label # tip.labels have underscores in-between genus names and specific epithets
+# phytools:: functions expect the passed trait values to be a named vector, with names matching that of the phylogenetic tree's tip labels
 named_rtd_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00709, tip_labels)
 named_srl_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
 
+# ancestral state reconstruction of root tissue density (conservation axis)
 png("../plots/asr_RTD.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
 dev.off()
 
+# ancestral state reconstruction of specific root length (collaboration axis)
 png("../plots/asr_SRL.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = tree, x = named_srl_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
@@ -49,6 +49,8 @@ ape::pic(x = log(named_rtd_vec), phy = tree) # Error - 'phy' is not rooted and f
 
 ape::is.binary(tree) # FALSE!!!
 ape::is.binary(ape::multi2di(tree)) # TRUE - that's how you convert a tree with polytomies into one without
+
+# INSTEAD OF ape::pic() FOLLOWED BY lm(), WE CAN ALSO USE ape::corBrownian() followed by nlme::gls() => phylogenetic generalized least squares
 
 # https://www.mail-archive.com/r-sig-phylo@r-project.org/msg01363.html
 dichot <- ape::multi2di(tree) # dichotomized tree
@@ -129,7 +131,8 @@ ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_my
 dev.off()
 
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
-# we opt for phylogenetic ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
+# we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
 
-
-
+corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+# form argument is used to pass the order (species names) in the data (trait values) (page 65)
+ancova <- nlme::gls(log(named_rd_vec)~log(named_srl_vec_0)+named_mycorrhizal_state_vec, correlation = corr_matrix)
