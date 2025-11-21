@@ -23,6 +23,7 @@ named_srl_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip
 
 # ancestral state reconstruction of root tissue density (conservation axis)
 png("../plots/asr_RTD.png", width = 8000, height = 8000, units = "px", res = 300)
+# phytools::contMap() does the reconstruction internally before plotting
 map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
 dev.off()
@@ -34,26 +35,29 @@ plot(map, type = "fan")
 dev.off()
 
 
-# if we try to fit a linear regression (Ordinary Least Squares) model between the mean SRL and RTD values for the 203 species without accounting for phylogenetic relationships
+# fit a linear regression (Ordinary Least Squares) model between the mean SRL and RTD values for the 203 species without accounting for phylogenetic relationships
 crude_lm <- lm(log(named_srl_vec) ~ log(named_rtd_vec))
-summary(crude_lm)
-# plot the data on a log transformed axis!!!
+crude_lm |> summary()
 par(mar = c(5, 5, 1, 1))
-plot(x = named_srl_vec, y = named_rtd_vec,  xlab = "SRL", ylab = "RTD", log = "xy") # welp
+png("../plots/SRL_RTD.png", width = 5000, height = 5000, units = "px", res = 500)
+plot(x = named_srl_vec, y = named_rtd_vec,  xlab = "SRL", ylab = "RTD", log = "xy") # plot the data on a log transformed axis
 lines(x = named_srl_vec, y = exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
-# exp is exponentiation - to undo the log transformation - since out plot axis will also do a log transformation, we pass the raw predictions to avoid -> log(log(predictions))
+dev.off()
+# the output of predict(model) will already be log transofrmed because we fit the model with log transformed data so exp() (exponentiation) is used to undo the log transformation - because out plotting axis will also do a log transformation
+# we do not want log(log(predictions))
 
-# now to a model that accounts for phylogenetic relatedness, using Phylogenetically Independent Contrasts (PIC)
-ape::pic(x = log(named_rtd_vec), phy = tree) # Error - 'phy' is not rooted and fully dichotomous\
+# METHOD 1 - Phylogenetically Independent Contrasts (PIC)
+
+# now to a model that accounts for phylogenetic relatedness, using PICs
+ape::pic(x = log(named_rtd_vec), phy = tree) # Error - 'phy' is not rooted and fully dichotomous
 # We do have polytomies in the tree :(
 
 ape::is.binary(tree) # FALSE!!!
-ape::is.binary(ape::multi2di(tree)) # TRUE - that's how you convert a tree with polytomies into one without
-
-# INSTEAD OF ape::pic() FOLLOWED BY lm(), WE CAN ALSO USE ape::corBrownian() followed by nlme::gls() => phylogenetic generalized least squares
+ape::is.binary(ape::multi2di(tree)) # TRUE
+# ape::multi2di() transforms polytomies into dichotomies with branch length 0
 
 # https://www.mail-archive.com/r-sig-phylo@r-project.org/msg01363.html
-dichot <- ape::multi2di(tree) # dichotomized tree
+dichot <- ape::multi2di(tree) # dichotomized phylogenetic tree
 pic_rtd <- ape::pic(x = log(named_rtd_vec), phy = dichot) # PICs for RTD
 pic_srl <- ape::pic(x = log(named_srl_vec), phy = dichot) # PICs for SRL
 
@@ -61,14 +65,34 @@ pic_srl <- ape::pic(x = log(named_srl_vec), phy = dichot) # PICs for SRL
 # this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny, so is the direction of the subtraction of the PICs
 # so the model shoud go through the origin (0, 0)
 pic_lm <- lm(pic_srl~pic_rtd+0) # + 0 is used to specify that we do not want an intercept => WE ASK THE MODEL BE IN Y = MX FORMAT INSTEAD OF Y = MX + C
-summary(pic_lm)
+pic_lm |> summary() # statistical summary for the model - accounting for phylogenetic relationships
 
 par(mar = c(5, 5, 1, 1))
-plot(pic_rtd, pic_srl, xlab = "ape::pic(log(RTD))", ylab = "ape::pic(log(SRL))")
+png("../plots/pic_SRL_RTD.png", width = 5000, height = 5000, units = "px", res = 500)
+plot(pic_srl, pic_rtd, xlab = "ape::pic(log(SRL))", ylab = "ape::pic(log(RTD))")
 abline(h = 0, lty = "dotted")
 abline(v = 0, lty = "dotted")
 abline(pic_lm, lwd = 2, col = "red")
+dev.off()
 
+# METHOD 2 - Phylogenetic Generalized Least Squares (PGLS)
+
+# column order in rtd_srl is F00727 F00709
+corr_matrix <- ape::corBrownian(phy = tree) # the form argument is used to specify the order of our data
+# since we have vectors with data in the same order as the tree here, it's not necessary
+pgls <- nlme::gls(log(named_srl_vec)~log(named_rtd_vec), correlation = corr_matrix)
+pgls |> summary()
+
+par(mar = c(5, 5, 1, 1))
+png("../plots/pgls_SRL_RTD.png", width = 5000, height = 5000, units = "px", res = 500)
+plot(log(named_srl_vec), log(named_rtd_vec), xlab = "log(SRL)", ylab = "log(RTD)")
+abline(pgls, lwd = 2, col = "red")
+dev.off()
+
+pgls |> coef() # coefficients of the PGLS model
+pic_lm |> coef() # coefficients of the PIC OLS model
+# the difference between the coefficients of these two models is negligible
+abs(coef(pgls)[2] - coef(pic_lm)[1])
 
 #-------------------------------------------------------------------------------------------------------------------
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
