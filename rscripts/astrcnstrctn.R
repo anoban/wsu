@@ -5,6 +5,7 @@
 library("ape")
 library("phytools")
 library("U.PhyloMaker")
+library("nlme")
 
 # did not do root order based trait normalizations :(
 rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal") # average RTD and SRL trait values for the 203 species
@@ -116,8 +117,19 @@ dev.off()
 ape::is.binary(phylogeny$phylo) # FALSE
 ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
 
-png("../plots/asr_collab_states_n_traits.png", width = 10000, height = 10000, units = "px", res = 300)
 # ape::ace - Ancestral Character Estimation - use model = "ER" & type = "discrete" for discrete categorical traits
 er_mystates <- phytools::rerootingMethod(x = named_mycorrhizal_state_vec, tree = rooted_dichotomous_phylogeny, model = "ER")
-phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
-phytools::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = c("red", "green", "yellow", "orange", "blue", "brown"))
+
+# map the discrete character state evolution onto the phylogeny
+png("../plots/asr_collab_states_n_traits.png", width = 12000, height = 12000, units = "px", res = 300)
+plot <- phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
+# label the internal nodes
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = c("red", "green", "yellow", "orange", "blue", "brown"), cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = c("red", "green", "yellow", "orange", "blue", "brown"), cex = 0.1) # label the leaf nodes
+dev.off()
+
+# since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
+# we opt for phylogenetic ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
+
+
+
