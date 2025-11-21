@@ -22,18 +22,14 @@ tip_labels <- tree$tip.label
 named_rtd_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00709, tip_labels)
 named_srl_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
 
-# ancestral state reconstruction
-astate_rtd <- phytools::fastAnc(tree = tree, x = named_rtd_vec, CI = TRUE)
-astate_srl <- phytools::fastAnc(tree = tree, x = named_srl_vec, CI = TRUE)
-
-png("../plots/asrRTD.png", width = 8000, height = 8000, units = "px", res = 300)
-rtd_map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
-plot(rtd_map, type = "fan")
+png("../plots/asr_RTD.png", width = 8000, height = 8000, units = "px", res = 300)
+map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
 dev.off()
 
-png("../plots/asrSRL.png", width = 8000, height = 8000, units = "px", res = 300)
-rtd_map <- phytools::contMap(tree = tree, x = named_srl_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
-plot(rtd_map, type = "fan")
+png("../plots/asr_SRL.png", width = 8000, height = 8000, units = "px", res = 300)
+map <- phytools::contMap(tree = tree, x = named_srl_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
 dev.off()
 
 
@@ -75,13 +71,9 @@ abline(pic_lm, lwd = 2, col = "red")
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
 #-------------------------------------------------------------------------------------------------------------------
 
-# F00679 -  RD, F00727 - SRL, F00645 - mycorrhizal state
+# F00679 - RD, F00727 - SRL, F00645 - mycorrhizal state
 
 collab_states_n_species_svg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",")
-named_mycorrhizal_state_vec <- setNames(collab_states_n_species_svg_traits$F00645, nm = collab_states_n_species_svg_traits$binominal)
-# do not confuse this with named_srl_vec
-named_srl_vec_0 <- setNames(collab_states_n_species_svg_traits$F00727, nm = collab_states_n_species_svg_traits$binominal)
-named_rd_vec <- setNames(collab_states_n_species_svg_traits$F00679, nm = collab_states_n_species_svg_traits$binominal)
 
 # we'll need a new phylogeny as this is a superset of the previous phylogeny
 megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB_extended_WP.tre")
@@ -90,4 +82,36 @@ genus_family_relations <- read.csv("../data/chapter2/uphylomaker/plant_genus_lis
 species_of_interest <- data.frame(species=collab_states_n_species_svg_traits$binominal, genus=collab_states_n_species_svg_traits$F01286, family=NA, species.relative=NA, genus.relative=NA)
 runtime <- Sys.time()
 phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations)
-runtime <- Sys.time() - runtime
+runtime <- Sys.time() - runtime # 2.86052 mins
+# serialize the phylogeny
+ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre") # cool
+
+# save the phylogenetic tree
+htree <- max(phytools::nodeHeights(phylogeny$phylo))
+png("../plots/phylo_collab_states_n_traits.png", width = 10000, height = 10000, units = "px", res = 300)
+plot <- phytools::plotTree(phylogeny$phylo, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1.75, labels = FALSE, col = "red")
+text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1.5, col = "red")
+text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
+dev.off()
+
+rooted_dichotomous_phylogeny <- ape::multi2di(phylogeny$phylo)
+
+# create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET TF???
+named_mycorrhizal_state_vec <- setNames(collab_states_n_species_svg_traits$F00645, nm = collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+# do not confuse this with named_srl_vec
+named_srl_vec_0 <- setNames(collab_states_n_species_svg_traits$F00727, nm = collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+named_rd_vec <- setNames(collab_states_n_species_svg_traits$F00679, nm = collab_states_n_species_svg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+
+png("../plots/asr_collab_RD.png", width = 8000, height = 8000, units = "px", res = 300)
+map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
+dev.off()
+
+png("../plots/asr_collab_SRL.png", width = 8000, height = 8000, units = "px", res = 300)
+map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_srl_vec_0, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
+dev.off()
+
+ape::is.binary(phylogeny$phylo) # FALSE
+ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
