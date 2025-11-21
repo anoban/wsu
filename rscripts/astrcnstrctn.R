@@ -4,7 +4,7 @@
 
 library("ape")
 library("phytools")
-
+library("U.PhyloMaker")
 
 # did not do root order based trait normalizations :(
 rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal") # average RTD and SRL trait values for the 203 species
@@ -75,4 +75,19 @@ abline(pic_lm, lwd = 2, col = "red")
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
 #-------------------------------------------------------------------------------------------------------------------
 
+# F00679 -  RD, F00727 - SRL, F00645 - mycorrhizal state
 
+collab_states_n_species_svg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",")
+named_mycorrhizal_state_vec <- setNames(collab_states_n_species_svg_traits$F00645, nm = collab_states_n_species_svg_traits$binominal)
+# do not confuse this with named_srl_vec
+named_srl_vec_0 <- setNames(collab_states_n_species_svg_traits$F00727, nm = collab_states_n_species_svg_traits$binominal)
+named_rd_vec <- setNames(collab_states_n_species_svg_traits$F00679, nm = collab_states_n_species_svg_traits$binominal)
+
+# we'll need a new phylogeny as this is a superset of the previous phylogeny
+megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB_extended_WP.tre")
+genus_family_relations <- read.csv("../data/chapter2/uphylomaker/plant_genus_list.csv", sep = ",")
+# we need a dataframe with columns - species,genus,family,species.relative,genus.relative for the species that we are interested in
+species_of_interest <- data.frame(species=collab_states_n_species_svg_traits$binominal, genus=collab_states_n_species_svg_traits$F01286, family=NA, species.relative=NA, genus.relative=NA)
+runtime <- Sys.time()
+phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations)
+runtime <- Sys.time() - runtime
