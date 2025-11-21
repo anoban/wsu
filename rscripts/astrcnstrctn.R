@@ -18,6 +18,7 @@ tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylog
 # these are mean RTD, SRL values in the same order as the tip labels of the phylogenetic tree
 # tip.labels have underscores in-between genus name and specific epithet :/
 tip_labels <- tree$tip.label
+# phytools functions expect the passed trait values to be a named vector, so ....
 named_rtd_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00709, tip_labels)
 named_srl_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
 
@@ -60,7 +61,7 @@ pic_srl <- ape::pic(x = log(named_srl_vec), phy = dichot) # PICs for SRL
 # when we fit this to lm again, we need to make sure that our regression line does not have an intercept (Revell and Harmon, 2022)
 # this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny, so is the direction of the subtraction of the PICs
 # so the model shoud go through the origin (0, 0)
-pic_lm <- lm(pic_srl~pic_rtd+0) # + 0 is used to specify that we do not want an intercept
+pic_lm <- lm(pic_srl~pic_rtd+0) # + 0 is used to specify that we do not want an intercept => WE ASK THE MODEL BE IN Y = MX FORMAT INSTEAD OF Y = MX + C
 summary(pic_lm)
 
 par(mar = c(5, 5, 1, 1))
@@ -68,3 +69,10 @@ plot(pic_rtd, pic_srl, xlab = "ape::pic(log(RTD))", ylab = "ape::pic(log(SRL))")
 abline(h = 0, lty = "dotted")
 abline(v = 0, lty = "dotted")
 abline(pic_lm, lwd = 2, col = "red")
+
+
+#-------------------------------------------------------------------------------------------------------------------
+# HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
+#-------------------------------------------------------------------------------------------------------------------
+
+
