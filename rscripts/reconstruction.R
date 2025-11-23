@@ -10,9 +10,9 @@ library("phytools")
 library("U.PhyloMaker")
 library("nlme")
 
-#---------------------------------------------------------------------
-# HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF SRL AND RTD ARE INDEPENDENT
-#---------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------
+# HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF COLLABORATION AXIS TRAITS (E.G. SRL) AND CONSERVATION AXIS TRAITS (E.G. RTD) ARE INDEPENDENT
+#--------------------------------------------------------------------------------------------------------------------------------------
 
 rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal")
 # contains crude species averages of RTD and SRL for the 203 species - did not do root order based trait normalizations :(
@@ -177,6 +177,7 @@ ape::is.binary(collab_phylo) # FALSE
 ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
 
 # ape::ace - Ancestral Character Estimation - use model = "ER" & type = "discrete" for discrete categorical traits
+# re rooting is a method used to reconstruct ancestral states of discrete categorical traits
 er_mystates <- phytools::rerootingMethod(x = named_mycorrhizal_state_vec, tree = rooted_dichotomous_phylogeny, model = "ER")
 
 # map the discrete character state evolution onto the phylogeny
