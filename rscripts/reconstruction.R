@@ -1,3 +1,6 @@
+# REFERENCES
+#-------------
+
 # https://jhudatascience.org/AnVIL_Phylogenetic-Techniques/ancestral-state-reconstruction.html
 # http://www.phytools.org/eqg/Exercise_5.2/
 # Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press.
@@ -80,8 +83,9 @@ abline(v = 0, lty = "dotted")
 abline(pic_lm, lwd = 2, col = "red")
 dev.off()
 
-
 # Phylomorphospace
+#-------------------
+
 par(mar = c(5, 5, 1, 1))
 png("../plots/phylomorphospace_rtd_srl.png", width = 10000, height = 10000, units = "px", res = 800)
 phytools::phylomorphospace(tree = dichot, X = cbind(log(named_rtd_vec), log(named_srl_vec)), xlab = "log(RTD)", ylab = "log(SRL)", label = "off", node.size = c(0, 0))
@@ -136,19 +140,22 @@ collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FR
 # serialize the phylogeny
 # ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre") # cool
 
+# DONSTREAM ANALYSES USING THE SERIALIZED PHYLOGENETIC TREE
+#-----------------------------------------------------------
+
 # read in the previously serialized phylogenetic tree
 collab_phylo <- ape::read.tree(file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre")
 
-# plot the phylogenetic tree
-htree <- max(phytools::nodeHeights(phylogeny$phylo))
+# plot and save the phylogenetic tree
+htree <- max(phytools::nodeHeights(collab_phylo))
 png("../plots/phylo_collab_states_n_traits.png", width = 10000, height = 10000, units = "px", res = 300)
-plot <- phytools::plotTree(phylogeny$phylo, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
+plot <- phytools::plotTree(collab_phylo, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
 tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1.75, labels = FALSE, col = "red")
 text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1.5, col = "red")
 text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
 dev.off()
 
-rooted_dichotomous_phylogeny <- ape::multi2di(phylogeny$phylo)
+rooted_dichotomous_phylogeny <- ape::multi2di(collab_phylo)
 
 # create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET TF???
 named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits$F00645, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
@@ -166,7 +173,7 @@ map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_srl_vec_
 plot(map, type = "fan")
 dev.off()
 
-ape::is.binary(phylogeny$phylo) # FALSE
+ape::is.binary(collab_phylo) # FALSE
 ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
 
 # ape::ace - Ancestral Character Estimation - use model = "ER" & type = "discrete" for discrete categorical traits
