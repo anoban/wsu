@@ -22,28 +22,31 @@ named_rtd_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip
 named_srl_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
 
 # ancestral state reconstruction of root tissue density (conservation axis)
-png("../plots/asr_RTD.png", width = 8000, height = 8000, units = "px", res = 300)
+png("../plots/asr_rtd.png", width = 8000, height = 8000, units = "px", res = 300)
 # phytools::contMap() does the reconstruction internally before plotting
 map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
 dev.off()
 
 # ancestral state reconstruction of specific root length (collaboration axis)
-png("../plots/asr_SRL.png", width = 8000, height = 8000, units = "px", res = 300)
+png("../plots/asr_srl.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = tree, x = named_srl_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
 dev.off()
 
 
 # fit a linear regression (Ordinary Least Squares) model between the mean SRL and RTD values for the 203 species without accounting for phylogenetic relationships
-crude_lm <- lm(log(named_srl_vec) ~ log(named_rtd_vec))
+# models for lm() are specified symbolically. a typical model has the form response ~ terms
+# where response is the (numeric) response vector and terms is a series of terms which specifies a linear predictor for response
+crude_lm <- lm(log(named_srl_vec)~log(named_rtd_vec)) # response ~ predictor
 crude_lm |> summary()
+
 par(mar = c(5, 5, 1, 1))
-png("../plots/SRL_RTD.png", width = 5000, height = 5000, units = "px", res = 500)
-plot(x = named_srl_vec, y = named_rtd_vec,  xlab = "SRL", ylab = "RTD", log = "xy") # plot the data on a log transformed axis
-lines(x = named_srl_vec, y = exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
+png("../plots/rtd_srl.png", width = 5000, height = 5000, units = "px", res = 500)
+plot(x = named_rtd_vec, y = named_srl_vec, xlab = "log(RTD)", ylab = "log(SRL)", log = "xy") # plot the data on a log transformed axis
+lines(x = named_rtd_vec, y = exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
 dev.off()
-# the output of predict(model) will already be log transofrmed because we fit the model with log transformed data so exp() (exponentiation) is used to undo the log transformation - because out plotting axis will also do a log transformation
+# the output of predict(model) will already be log transformed because we fit the model with log transformed data so exp() (exponentiation) is used to undo the log transformation - because out plotting axis will also do a log transformation
 # we do not want log(log(predictions))
 
 
@@ -70,11 +73,21 @@ pic_lm <- lm(pic_srl~pic_rtd+0) # + 0 is used to specify that we do not want an 
 pic_lm |> summary() # statistical summary for the model - accounting for phylogenetic relationships
 
 par(mar = c(5, 5, 1, 1))
-png("../plots/pic_SRL_RTD.png", width = 5000, height = 5000, units = "px", res = 500)
-plot(pic_srl, pic_rtd, xlab = "ape::pic(log(SRL))", ylab = "ape::pic(log(RTD))")
+png("../plots/pic_rtd_srl.png", width = 5000, height = 5000, units = "px", res = 500)
+plot(x = pic_rtd, y = pic_srl, xlab = "ape::pic(log(RTD))", ylab = "ape::pic(log(SRL))")
 abline(h = 0, lty = "dotted")
 abline(v = 0, lty = "dotted")
 abline(pic_lm, lwd = 2, col = "red")
+dev.off()
+
+
+# Phylomorphospace
+par(mar = c(5, 5, 1, 1))
+png("../plots/phylomorphospace_rtd_srl.png", width = 10000, height = 10000, units = "px", res = 800)
+phytools::phylomorphospace(tree = dichot, X = cbind(log(named_rtd_vec), log(named_srl_vec)), xlab = "log(RTD)", ylab = "log(SRL)", label = "off", node.size = c(0, 0))
+points(x = log(named_rtd_vec), y = log(named_srl_vec), pch = 21)
+grid()
+abline(crude_lm, lwd = 2, col = "red")
 dev.off()
 
 

@@ -33,7 +33,7 @@ fredv3tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre")
 length(fredv3tree$tip.label) # must be 203!!
 
 htree <- max(phytools::nodeHeights(fredv3tree)) # timescale of the tree
-png("../plots/phyolo-phytools.png", width = 8000, height = 8000, units = "px", res = 300)
+png("../plots/phyolo_phytools.png", width = 8000, height = 8000, units = "px", res = 300)
 plot <- phytools::plotTree(fredv3tree, ftype = "i", fsize = 1.4, type = "fan", lwd = 1, part = 0.99)
 # create a timescale axis that begins at the edge of the circle and increases towards the center
 tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1.75, labels = FALSE, col = "red")
