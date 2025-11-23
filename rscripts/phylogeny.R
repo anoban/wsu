@@ -1,6 +1,5 @@
 library("ape")
 library("U.PhyloMaker")
-library("ggplot2")
 library("maps")
 library("phytools")
 # library("ggtree")
@@ -41,5 +40,3 @@ text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, htree, length
 text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
 dev.off()
 
-
-# calculate what taxonomic fractions are actually covered in our subset at genus, family and order levels
