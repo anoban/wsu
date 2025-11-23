@@ -123,7 +123,7 @@ abs(coef(pgls)[2] - coef(pic_lm)[1])
 #-------------------------------------------------------------------------------------------------------------------
 
 # F00679 - RD, F00727 - SRL, F00645 - mycorrhizal state
-collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",")
+collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",", row.names = "binominal")
 # this contains crude species avaraged records for RD and SRL (did not consider root order differences)
 
 # FIRST TIME PHYLOGENETIC TREE CREATION AND SERIALIZATION
@@ -140,7 +140,7 @@ collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FR
 # serialize the phylogeny
 # ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre") # cool
 
-# DONSTREAM ANALYSES USING THE SERIALIZED PHYLOGENETIC TREE
+# DOWNSTREAM ANALYSES USING THE SERIALIZED PHYLOGENETIC TREE
 #-----------------------------------------------------------
 
 # read in the previously serialized phylogenetic tree
@@ -158,17 +158,17 @@ dev.off()
 rooted_dichotomous_phylogeny <- ape::multi2di(collab_phylo)
 
 # create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET TF???
-named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits$F00645, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00645, nm = rooted_dichotomous_phylogeny$tip.label)
 # do not confuse this with named_srl_vec
-named_srl_vec_0 <- setNames(collab_states_n_species_avg_traits$F00727, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
-named_rd_vec <- setNames(collab_states_n_species_avg_traits$F00679, nm = collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+named_srl_vec_0 <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00727, nm = rooted_dichotomous_phylogeny$tip.label)
+named_rd_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00679, nm = rooted_dichotomous_phylogeny$tip.label)
 
-png("../plots/asr_collab_RD.png", width = 8000, height = 8000, units = "px", res = 300)
+png("../plots/asr_collab_rd.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
 dev.off()
 
-png("../plots/asr_collab_SRL.png", width = 8000, height = 8000, units = "px", res = 300)
+png("../plots/asr_collab_srl.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_srl_vec_0, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
 dev.off()
@@ -178,19 +178,44 @@ ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
 
 # ape::ace - Ancestral Character Estimation - use model = "ER" & type = "discrete" for discrete categorical traits
 # re rooting is a method used to reconstruct ancestral states of discrete categorical traits
+runtime <- Sys.time()
 er_mystates <- phytools::rerootingMethod(x = named_mycorrhizal_state_vec, tree = rooted_dichotomous_phylogeny, model = "ER")
+runtime <- Sys.time() - runtime
 
 # map the discrete character state evolution onto the phylogeny
-png("../plots/asr_collab_states_n_traits.png", width = 12000, height = 12000, units = "px", res = 300)
-plot <- phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99)
+myco_state_cols <- c("red", "green", "yellow", "orange", "lightblue", "purple")
+png("../plots/asr_collab_myco_states.png", width = 12000, height = 12000, units = "px", res = 300)
+plot <- phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99, offset = 3)
 # label the internal nodes
-ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = c("red", "green", "yellow", "orange", "blue", "brown"), cex = 0.1)
-ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = c("red", "green", "yellow", "orange", "blue", "brown"), cex = 0.1) # label the leaf nodes
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1) # label the leaf nodes
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
 dev.off()
+
+
+# TRY OVERLAYING THE MYCORRHIZAL STATE PHYLOGENY ON THE RD & SRL PHYLOGENIES
+png("../plots/asr_collab_myco_states_n_rd.png", width = 12000, height = 12000, units = "px", res = 400)
+map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1)
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+dev.off()
+
+png("../plots/asr_collab_myco_states_n_srl.png", width = 12000, height = 12000, units = "px", res = 400)
+map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_srl_vec_0, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1)
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+dev.off()
+
+# PHYLOGENETIC GENERALIZED ANCOVA
+#---------------------------------
 
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
 # we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
 
 corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
-ancova <- nlme::gls(log(named_rd_vec)~log(named_srl_vec_0)+named_mycorrhizal_state_vec, correlation = corr_matrix)
+ancova <- nlme::gls(log(named_srl_vec_0)~log(named_rd_vec)+named_mycorrhizal_state_vec, correlation = corr_matrix)
