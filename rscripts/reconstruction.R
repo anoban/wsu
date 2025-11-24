@@ -29,12 +29,19 @@ png("../plots/asr_rtd.png", width = 8000, height = 8000, units = "px", res = 300
 # phytools::contMap() does the reconstruction internally before plotting
 map <- phytools::contMap(tree = tree, x = named_rtd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
+htree <- max(phytools::nodeHeights(tree)) # timescale of the tree
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 # ancestral state reconstruction of specific root length (collaboration axis)
 png("../plots/asr_srl.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = tree, x = named_srl_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 
@@ -46,7 +53,8 @@ crude_lm |> summary()
 
 par(mar = c(5, 5, 1, 1))
 png("../plots/rtd_srl.png", width = 5000, height = 5000, units = "px", res = 500)
-plot(x = named_rtd_vec, y = named_srl_vec, xlab = "log(RTD)", ylab = "log(SRL)", log = "xy") # plot the data on a log transformed axis
+plot(x = named_rtd_vec, y = named_srl_vec, xlab = "RTD", ylab = "SRL", log = "xy") # log = "xy" TRANSFORMS THE DATA BUT PLOTS THEM ON A REGULAR AXIS
+# plot(x, y, log = "xy") and plot(log(x), log(y)) WILL NOT GIVE INDENTICAL RESULTS!!!!!
 lines(x = named_rtd_vec, y = exp(predict(crude_lm)), lwd = 1, col = "red") # predict(model) gives the predictions without passing the inputs??? - strange that the model keeps it memorized???
 dev.off()
 # the output of predict(model) will already be log transformed because we fit the model with log transformed data so exp() (exponentiation) is used to undo the log transformation - because out plotting axis will also do a log transformation
@@ -66,6 +74,7 @@ ape::is.binary(ape::multi2di(tree)) # TRUE
 
 # https://www.mail-archive.com/r-sig-phylo@r-project.org/msg01363.html
 dichot <- ape::multi2di(tree) # dichotomized phylogenetic tree
+htree <- max(phytools::nodeHeights(dichot)) # timescale of the tree
 pic_rtd <- ape::pic(x = log(named_rtd_vec), phy = dichot) # PICs for RTD
 pic_srl <- ape::pic(x = log(named_srl_vec), phy = dichot) # PICs for SRL
 
@@ -88,10 +97,10 @@ dev.off()
 
 par(mar = c(5, 5, 1, 1))
 png("../plots/phylomorphospace_rtd_srl.png", width = 10000, height = 10000, units = "px", res = 800)
-phytools::phylomorphospace(tree = dichot, X = cbind(log(named_rtd_vec), log(named_srl_vec)), xlab = "log(RTD)", ylab = "log(SRL)", label = "off", node.size = c(0, 0))
-points(x = log(named_rtd_vec), y = log(named_srl_vec), pch = 21)
+phytools::phylomorphospace(tree = dichot, X = cbind(named_rtd_vec, named_srl_vec), xlab = "RTD", ylab = "SRL", label = "off", node.size = c(0, 0))
+points(x = named_rtd_vec, y = named_srl_vec, pch = 21)
 grid()
-abline(crude_lm, lwd = 2, col = "red")
+abline(lm(named_srl_vec~named_rtd_vec), lwd = 2, col = "red")
 dev.off()
 
 
@@ -105,8 +114,8 @@ pgls <- nlme::gls(log(named_srl_vec)~log(named_rtd_vec), correlation = corr_matr
 pgls |> summary()
 
 par(mar = c(5, 5, 1, 1))
-png("../plots/pgls_SRL_RTD.png", width = 5000, height = 5000, units = "px", res = 500)
-plot(log(named_srl_vec), log(named_rtd_vec), xlab = "log(SRL)", ylab = "log(RTD)")
+png("../plots/pgls_rtd_srl.png", width = 5000, height = 5000, units = "px", res = 500)
+plot(log(named_rtd_vec), log(named_srl_vec), xlab = "log(RTD)", ylab = "log(SRL)")
 abline(pgls, lwd = 2, col = "red")
 dev.off()
 
@@ -156,6 +165,7 @@ text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
 dev.off()
 
 rooted_dichotomous_phylogeny <- ape::multi2di(collab_phylo)
+htree <- max(phytools::nodeHeights(rooted_dichotomous_phylogeny)) # timescale of the tree
 
 # create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET TF???
 named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00645, nm = rooted_dichotomous_phylogeny$tip.label)
@@ -166,11 +176,17 @@ named_rd_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_p
 png("../plots/asr_collab_rd.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 png("../plots/asr_collab_srl.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_srl_vec_0, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 ape::is.binary(collab_phylo) # FALSE
@@ -190,6 +206,9 @@ plot <- phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.
 ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
 ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1) # label the leaf nodes
 legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 
@@ -200,6 +219,9 @@ plot(map, type = "fan")
 ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
 ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1)
 legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 png("../plots/asr_collab_myco_states_n_srl.png", width = 12000, height = 12000, units = "px", res = 400)
@@ -208,6 +230,9 @@ plot(map, type = "fan")
 ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
 ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1)
 legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
 # PHYLOGENETIC GENERALIZED ANCOVA
@@ -216,6 +241,20 @@ dev.off()
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
 # we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
 
-corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~collab_states_n_species_avg_traits$binominal |> gsub(pattern=' ', replacement='_'))
+corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny)
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
-ancova <- nlme::gls(log(named_srl_vec_0)~log(named_rd_vec)+named_mycorrhizal_state_vec, correlation = corr_matrix)
+ancova <- nlme::gls(log(named_srl_vec_0)~log(named_rd_vec)+named_mycorrhizal_state_vec, correlation = corr_matrix) # got a warning about the species order but WE DO HAVE THE TRAIT VALUES IN THE SAME SPECIES ORDER AS THE PHYLOGENY!!
+anova(ancova)
+
+# plot the results
+states_n_cols <- setNames(myco_state_cols, nm = sort(unique(named_mycorrhizal_state_vec)))
+png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
+plot(x = named_rd_vec, y = named_srl_vec_0, pch = 21, cex = 1, log = "xy", xlab = "RD", ylab = "SRL", bg = states_n_cols[named_mycorrhizal_state_vec])
+legend("topright", legend = names(states_n_cols), pt.bg = myco_state_cols, cex = 1, pt.cex = 1, pch = 21)
+dummy_rds <- seq(min(named_rd_vec), max(named_rd_vec), length.out = 100) # dummy root diameter values
+# plot model predictions for each mycorrhizal state
+for (state in sort(unique(named_mycorrhizal_state_vec))) {
+    print(as.factor(rep(state, 100)))
+    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(named_rd_vec = dummy_rds, named_mycorrhizal_state_vec = as.factor(rep(state, 100))))), lwd = 2, col = states_n_cols[state])
+}
+dev.off()
