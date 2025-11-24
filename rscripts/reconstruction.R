@@ -97,10 +97,10 @@ dev.off()
 
 par(mar = c(5, 5, 1, 1))
 png("../plots/phylomorphospace_rtd_srl.png", width = 10000, height = 10000, units = "px", res = 800)
-phytools::phylomorphospace(tree = dichot, X = cbind(named_rtd_vec, named_srl_vec), xlab = "RTD", ylab = "SRL", label = "off", node.size = c(0, 0))
+phytools::phylomorphospace(tree = dichot, X = cbind(log(named_rtd_vec), log(named_srl_vec)), xlab = "log(RTD)", ylab = "log(SRL)", label = "off", node.size = c(0, 0), log = "xy", xlim = c(0, max(log(named_rtd_vec))))
 points(x = named_rtd_vec, y = named_srl_vec, pch = 21)
 grid()
-abline(lm(named_srl_vec~named_rtd_vec), lwd = 2, col = "red")
+abline(lm(log(named_srl_vec)~log(named_rtd_vec)), lwd = 2, col = "red")
 dev.off()
 
 
