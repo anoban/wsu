@@ -132,7 +132,7 @@ abs(coef(pgls)[2] - coef(pic_lm)[1])
 #-------------------------------------------------------------------------------------------------------------------
 
 # F00679 - RD, F00727 - SRL, F00645 - mycorrhizal state
-collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",", row.names = "binominal")
+collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",", row.names = "binominal", stringsAsFactors = TRUE)
 # this contains crude species avaraged records for RD and SRL (did not consider root order differences)
 
 # FIRST TIME PHYLOGENETIC TREE CREATION AND SERIALIZATION
@@ -247,14 +247,16 @@ ancova <- nlme::gls(log(named_srl_vec_0)~log(named_rd_vec)+named_mycorrhizal_sta
 anova(ancova)
 
 # plot the results
-states_n_cols <- setNames(myco_state_colours, nm = sort(unique(named_mycorrhizal_state_vec)))
+states_n_colours <- setNames(myco_state_colours, nm = sort(unique(named_mycorrhizal_state_vec)))
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
-plot(x = named_rd_vec, y = named_srl_vec_0, pch = 21, cex = 1, log = "xy", xlab = "RD", ylab = "SRL", bg = states_n_cols[named_mycorrhizal_state_vec])
-legend("topright", legend = names(states_n_cols), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
-dummy_rds <- seq(min(named_rd_vec), max(named_rd_vec), length.out = 100) # dummy root diameter values
+plot(x = named_rd_vec, y = named_srl_vec_0, pch = 21, cex = 1, log = "xy", xlab = "RD", ylab = "SRL", bg = states_n_colours[named_mycorrhizal_state_vec])
+legend("topright", legend = names(states_n_colours), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
+dummy_rds <- seq(min(named_rd_vec), max(named_rd_vec), length.out = 100) # dummy root diameter values - independent variable
 # plot model predictions for each mycorrhizal state
 for (state in sort(unique(named_mycorrhizal_state_vec))) {
-    print(as.factor(rep(state, 100)))
-    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(named_rd_vec = dummy_rds, named_mycorrhizal_state_vec = rep(state, 100)))), lwd = 2, col = states_n_cols[state])
+    # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) :
+    # contrasts can be applied only to factors with 2 or more levels
+    # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
+    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(named_rd_vec = dummy_rds, named_mycorrhizal_state_vec = rep(state, 100)))), lwd = 2, col = states_n_colours[state])
 }
 dev.off()
