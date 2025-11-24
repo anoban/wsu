@@ -199,13 +199,13 @@ er_mystates <- phytools::rerootingMethod(x = named_mycorrhizal_state_vec, tree =
 runtime <- Sys.time() - runtime
 
 # map the discrete character state evolution onto the phylogeny
-myco_state_cols <- c("red", "green", "yellow", "orange", "lightblue", "purple")
+myco_state_colours <- c("red", "green", "yellow", "orange", "lightblue", "purple")
 png("../plots/asr_collab_myco_states.png", width = 12000, height = 12000, units = "px", res = 300)
 plot <- phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99, offset = 3)
 # label the internal nodes
-ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
-ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1) # label the leaf nodes
-legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_colours, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_colours, cex = 0.1) # label the leaf nodes
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_colours, cex = 3, pt.cex = 5, pch = 21)
 tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
 text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
@@ -216,9 +216,9 @@ dev.off()
 png("../plots/asr_collab_myco_states_n_rd.png", width = 12000, height = 12000, units = "px", res = 400)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
-ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
-ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1)
-legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_colours, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_colours, cex = 0.1)
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_colours, cex = 3, pt.cex = 5, pch = 21)
 tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
 text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
@@ -227,9 +227,9 @@ dev.off()
 png("../plots/asr_collab_myco_states_n_srl.png", width = 12000, height = 12000, units = "px", res = 400)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_srl_vec_0, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
-ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_cols, cex = 0.1)
-ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_cols, cex = 0.1)
-legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_cols, cex = 3, pt.cex = 5, pch = 21)
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_colours, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_colours, cex = 0.1)
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_colours, cex = 3, pt.cex = 5, pch = 21)
 tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
 text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
@@ -247,14 +247,14 @@ ancova <- nlme::gls(log(named_srl_vec_0)~log(named_rd_vec)+named_mycorrhizal_sta
 anova(ancova)
 
 # plot the results
-states_n_cols <- setNames(myco_state_cols, nm = sort(unique(named_mycorrhizal_state_vec)))
+states_n_cols <- setNames(myco_state_colours, nm = sort(unique(named_mycorrhizal_state_vec)))
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
 plot(x = named_rd_vec, y = named_srl_vec_0, pch = 21, cex = 1, log = "xy", xlab = "RD", ylab = "SRL", bg = states_n_cols[named_mycorrhizal_state_vec])
-legend("topright", legend = names(states_n_cols), pt.bg = myco_state_cols, cex = 1, pt.cex = 1, pch = 21)
+legend("topright", legend = names(states_n_cols), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
 dummy_rds <- seq(min(named_rd_vec), max(named_rd_vec), length.out = 100) # dummy root diameter values
 # plot model predictions for each mycorrhizal state
 for (state in sort(unique(named_mycorrhizal_state_vec))) {
     print(as.factor(rep(state, 100)))
-    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(named_rd_vec = dummy_rds, named_mycorrhizal_state_vec = as.factor(rep(state, 100))))), lwd = 2, col = states_n_cols[state])
+    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(named_rd_vec = dummy_rds, named_mycorrhizal_state_vec = rep(state, 100)))), lwd = 2, col = states_n_cols[state])
 }
 dev.off()
