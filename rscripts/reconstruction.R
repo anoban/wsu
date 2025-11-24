@@ -241,22 +241,36 @@ dev.off()
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
 # we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
 
-corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny)
+collab_data <- data.frame(binominal = as.factor(gsub(rownames(collab_states_n_species_avg_traits), pattern = ' ', replacement = '_')), # because phylogenetic tree has underscores inplace of spaces
+                          rd = collab_states_n_species_avg_traits$F00679, srl = collab_states_n_species_avg_traits$F00727, myco = as.factor(collab_states_n_species_avg_traits$F00645))
+row_indices <- match(rooted_dichotomous_phylogeny$tip.label, collab_data$binominal) # row indices according to the order of species in the phylogenetic tree
+# match(vector to be matched, vector to be matched against)
+all(collab_data$binominal[row_indices] == rooted_dichotomous_phylogeny$tip.label) # good :)
+collab_data <- collab_data[row_indices, ]
+collab_data <- collab_data[rooted_dichotomous_phylogeny$tip.label, ] # reorder the dataframe based on the species order in the phylogenetic tree
+all(collab_data$binominal == rooted_dichotomous_phylogeny$tip.label) # double checking
+
+states_n_colours <- setNames(myco_state_colours, nm = sort(unique(collab_data$myco))) # mycorrhizal state - colour lookup table for plotting
+dummy_rds <- seq(min(collab_data$rd), max(collab_data$rd), length.out = 100) # dummy root diameter values - independent variable
+
+# to see how the form argument actually works look up https://www.mail-archive.com/search?l=r-sig-phylo@r-project.org&q=subject:%22Re%5C%3A+%5C%5BR%5C-sig%5C-phylo%5C%5D+How+to+sort+trait+data+according+to+tree%22&o=newest&f=1
+corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~binominal)
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
-ancova <- nlme::gls(log(named_srl_vec_0)~log(named_rd_vec)+named_mycorrhizal_state_vec, correlation = corr_matrix) # got a warning about the species order but WE DO HAVE THE TRAIT VALUES IN THE SAME SPECIES ORDER AS THE PHYLOGENY!!
+ancova <- nlme::gls(log(srl)~log(rd)+myco, data = as.data.frame(collab_data), correlation = corr_matrix)
 anova(ancova)
 
 # plot the results
-states_n_colours <- setNames(myco_state_colours, nm = sort(unique(named_mycorrhizal_state_vec)))
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
-plot(x = named_rd_vec, y = named_srl_vec_0, pch = 21, cex = 1, log = "xy", xlab = "RD", ylab = "SRL", bg = states_n_colours[named_mycorrhizal_state_vec])
+plot(x = collab_data$rd, y = collab_data$srl, pch = 21, cex = 1, xlab = "RD", ylab = "SRL", bg = states_n_colours[collab_data$myco])
 legend("topright", legend = names(states_n_colours), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
-dummy_rds <- seq(min(named_rd_vec), max(named_rd_vec), length.out = 100) # dummy root diameter values - independent variable
+
 # plot model predictions for each mycorrhizal state
-for (state in sort(unique(named_mycorrhizal_state_vec))) {
+for (state in sort(unique(collab_data$myco))) {
     # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) :
     # contrasts can be applied only to factors with 2 or more levels
     # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
-    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(named_rd_vec = dummy_rds, named_mycorrhizal_state_vec = rep(state, 100)))), lwd = 2, col = states_n_colours[state])
+    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100)))), lwd = 2, col = states_n_colours[state])
 }
 dev.off()
+
+
