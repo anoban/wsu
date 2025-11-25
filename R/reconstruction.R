@@ -92,11 +92,13 @@ plot(x = pic_rtd, y = pic_srl, xlab = "ape::pic(log(RTD))", ylab = "ape::pic(log
 abline(h = 0, lty = "dotted")
 abline(v = 0, lty = "dotted")
 abline(pic_lm, lwd = 1, col = "red")
-mtext(paste0("y = ", coef(pic_lm), " x"), side = 3, col = "red", line = -2)
+mtext(paste0("y = ", round(coef(pic_lm), 2), " x"), side = 3, col = "red", line = -2)
 dev.off()
 
 # Phylomorphospace
 #-------------------
+
+# TODO - redo this!!!!
 
 par(mar = c(5, 5, 1, 1))
 png("../plots/phylomorphospace_rtd_srl.png", width = 10000, height = 10000, units = "px", res = 800)
@@ -265,16 +267,12 @@ anova(ancova)
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
-plot(x = collab_data$rd, y = collab_data$srl, pch = 21, cex = 1, xlab = "RD", ylab = "SRL", bg = states_n_colours[collab_data$myco])
+plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "RD", ylab = "SRL", bg = states_n_colours[collab_data$myco])
 legend("topright", legend = names(states_n_colours), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
-
 # plot model predictions for each mycorrhizal state
-for (state in sort(unique(collab_data$myco))) {
-    # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) :
-    # contrasts can be applied only to factors with 2 or more levels
-    # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
-    lines(x = dummy_rds, y = exp(predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100)))), lwd = 2, col = states_n_colours[state])
-}
+for (state in sort(unique(collab_data$myco))) lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = states_n_colours[state])
+# Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : contrasts can be applied only to factors with 2 or more levels
+# ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
 dev.off()
 
 
