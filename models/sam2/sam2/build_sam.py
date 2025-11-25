@@ -22,7 +22,7 @@ if os.path.isdir(os.path.join(sam2.__path__[0], "sam2")):
     # as "sam2" rather than importing the "sam2" python package (i.e. "sam2/sam2" directory).
     # This typically happens because the user is running Python from the parent directory
     # that contains the sam2 repo they cloned.
-    raise RuntimeError(
+    raise RuntimeError(  # that's exactly what we're gonna do lol :)
         "You're likely running Python from the parent directory of the sam2 repository "
         "(i.e. the directory where https://github.com/facebookresearch/sam2 is cloned into). "
         "This is not supported since the `sam2` Python package could be shadowed by the "
@@ -33,51 +33,18 @@ if os.path.isdir(os.path.join(sam2.__path__[0], "sam2")):
 
 
 HF_MODEL_ID_TO_FILENAMES = {
-    "facebook/sam2-hiera-tiny": (
-        "configs/sam2/sam2_hiera_t.yaml",
-        "sam2_hiera_tiny.pt",
-    ),
-    "facebook/sam2-hiera-small": (
-        "configs/sam2/sam2_hiera_s.yaml",
-        "sam2_hiera_small.pt",
-    ),
-    "facebook/sam2-hiera-base-plus": (
-        "configs/sam2/sam2_hiera_b+.yaml",
-        "sam2_hiera_base_plus.pt",
-    ),
-    "facebook/sam2-hiera-large": (
-        "configs/sam2/sam2_hiera_l.yaml",
-        "sam2_hiera_large.pt",
-    ),
-    "facebook/sam2.1-hiera-tiny": (
-        "configs/sam2.1/sam2.1_hiera_t.yaml",
-        "sam2.1_hiera_tiny.pt",
-    ),
-    "facebook/sam2.1-hiera-small": (
-        "configs/sam2.1/sam2.1_hiera_s.yaml",
-        "sam2.1_hiera_small.pt",
-    ),
-    "facebook/sam2.1-hiera-base-plus": (
-        "configs/sam2.1/sam2.1_hiera_b+.yaml",
-        "sam2.1_hiera_base_plus.pt",
-    ),
-    "facebook/sam2.1-hiera-large": (
-        "configs/sam2.1/sam2.1_hiera_l.yaml",
-        "sam2.1_hiera_large.pt",
-    ),
+    "facebook/sam2-hiera-tiny": ("configs/sam2/sam2_hiera_t.yaml", "sam2_hiera_tiny.pt"),
+    "facebook/sam2-hiera-small": ("configs/sam2/sam2_hiera_s.yaml", "sam2_hiera_small.pt"),
+    "facebook/sam2-hiera-base-plus": ("configs/sam2/sam2_hiera_b+.yaml", "sam2_hiera_base_plus.pt"),
+    "facebook/sam2-hiera-large": ("configs/sam2/sam2_hiera_l.yaml", "sam2_hiera_large.pt"),
+    "facebook/sam2.1-hiera-tiny": ("configs/sam2.1/sam2.1_hiera_t.yaml", "sam2.1_hiera_tiny.pt"),
+    "facebook/sam2.1-hiera-small": ("configs/sam2.1/sam2.1_hiera_s.yaml", "sam2.1_hiera_small.pt"),
+    "facebook/sam2.1-hiera-base-plus": ("configs/sam2.1/sam2.1_hiera_b+.yaml", "sam2.1_hiera_base_plus.pt"),
+    "facebook/sam2.1-hiera-large": ("configs/sam2.1/sam2.1_hiera_l.yaml", "sam2.1_hiera_large.pt"),
 }
 
 
-def build_sam2(
-    config_file,
-    ckpt_path=None,
-    device="cuda",
-    mode="eval",
-    hydra_overrides_extra=[],
-    apply_postprocessing=True,
-    **kwargs,
-):
-
+def build_sam2(config_file, ckpt_path=None, device="cuda", mode="eval", hydra_overrides_extra=[], apply_postprocessing=True, **kwargs):
     if apply_postprocessing:
         hydra_overrides_extra = hydra_overrides_extra.copy()
         hydra_overrides_extra += [
@@ -107,9 +74,7 @@ def build_sam2_video_predictor(
     vos_optimized=False,
     **kwargs,
 ):
-    hydra_overrides = [
-        "++model._target_=sam2.sam2_video_predictor.SAM2VideoPredictor",
-    ]
+    hydra_overrides = ["++model._target_=sam2.sam2_video_predictor.SAM2VideoPredictor"]
     if vos_optimized:
         hydra_overrides = [
             "++model._target_=sam2.sam2_video_predictor.SAM2VideoPredictorVOS",
@@ -156,9 +121,7 @@ def build_sam2_hf(model_id, **kwargs):
 
 def build_sam2_video_predictor_hf(model_id, **kwargs):
     config_name, ckpt_path = _hf_download(model_id)
-    return build_sam2_video_predictor(
-        config_file=config_name, ckpt_path=ckpt_path, **kwargs
-    )
+    return build_sam2_video_predictor(config_file=config_name, ckpt_path=ckpt_path, **kwargs)
 
 
 def _load_checkpoint(model, ckpt_path):
