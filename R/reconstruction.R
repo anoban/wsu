@@ -171,9 +171,9 @@ text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
 dev.off()
 
 rooted_dichotomous_phylogeny <- ape::multi2di(collab_phylo)
-htree <- max(phytools::nodeHeights(rooted_dichotomous_phylogeny)) # timescale of the tree
+htree <- max(phytools::nodeHeights(rooted_dichotomous_phylogeny))
 
-# create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET TF???
+# create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET
 named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00645, nm = rooted_dichotomous_phylogeny$tip.label)
 # do not confuse this with named_srl_vec_hypo_1
 named_srl_vec_hypo_2 <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00727, nm = rooted_dichotomous_phylogeny$tip.label)
@@ -253,7 +253,6 @@ row_indices <- match(rooted_dichotomous_phylogeny$tip.label, collab_data$binomin
 # match(vector to be matched, vector to be matched against)
 all(collab_data$binominal[row_indices] == rooted_dichotomous_phylogeny$tip.label) # good :)
 collab_data <- collab_data[row_indices, ]
-collab_data <- collab_data[rooted_dichotomous_phylogeny$tip.label, ] # reorder the dataframe based on the species order in the phylogenetic tree
 all(collab_data$binominal == rooted_dichotomous_phylogeny$tip.label) # double checking
 
 states_n_colours <- setNames(myco_state_colours, nm = sort(unique(collab_data$myco))) # mycorrhizal state - colour lookup table for plotting
@@ -267,12 +266,10 @@ anova(ancova)
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
-plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "RD", ylab = "SRL", bg = states_n_colours[collab_data$myco])
+plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "log(RD)", ylab = "log(SRL)", bg = states_n_colours[collab_data$myco])
 legend("topright", legend = names(states_n_colours), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
 # plot model predictions for each mycorrhizal state
 for (state in sort(unique(collab_data$myco))) lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = states_n_colours[state])
 # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : contrasts can be applied only to factors with 2 or more levels
 # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
 dev.off()
-
-
