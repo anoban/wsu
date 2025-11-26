@@ -6,9 +6,14 @@
 # Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press.
 
 library("ape")
+library("maps")
 library("phytools")
 library("U.PhyloMaker")
 library("nlme")
+
+
+
+
 
 #--------------------------------------------------------------------------------------------------------------------------------------
 # HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF COLLABORATION AXIS TRAITS (E.G. SRL) AND CONSERVATION AXIS TRAITS (E.G. RTD) ARE INDEPENDENT
@@ -133,6 +138,7 @@ abs(coef(pgls)[2] - coef(pic_lm)[1])
 
 
 
+
 #-------------------------------------------------------------------------------------------------------------------
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
 #-------------------------------------------------------------------------------------------------------------------
@@ -172,12 +178,21 @@ dev.off()
 
 rooted_dichotomous_phylogeny <- ape::multi2di(collab_phylo)
 htree <- max(phytools::nodeHeights(rooted_dichotomous_phylogeny))
+ape::is.binary(collab_phylo) # FALSE
+ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
+
+collab_data <- data.frame(binominal = as.factor(gsub(rownames(collab_states_n_species_avg_traits), pattern = ' ', replacement = '_')), # because phylogenetic tree has underscores inplace of spaces
+                          rd = collab_states_n_species_avg_traits$F00679, srl = collab_states_n_species_avg_traits$F00727, myco = as.factor(collab_states_n_species_avg_traits$F00645))
+row_indices <- match(rooted_dichotomous_phylogeny$tip.label, collab_data$binominal) # row indices according to the order of species in the phylogenetic tree
+# match(vector to be matched, vector to be matched against)
+all(collab_data$binominal[row_indices] == rooted_dichotomous_phylogeny$tip.label) # good :)
+collab_data <- collab_data[row_indices, ]
+all(collab_data$binominal == rooted_dichotomous_phylogeny$tip.label) # double checking
 
 # create named trait vectors with species order identical to the phylogeny - PHYLOGENY HAS UNDERSCORES BETWEEN THE GENUS NAME AND SPECIFIC EPITHET
-named_mycorrhizal_state_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00645, nm = rooted_dichotomous_phylogeny$tip.label)
-# do not confuse this with named_srl_vec_hypo_1
-named_srl_vec_hypo_2 <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00727, nm = rooted_dichotomous_phylogeny$tip.label)
-named_rd_vec <- setNames(collab_states_n_species_avg_traits[rooted_dichotomous_phylogeny$tip.label |> gsub(pattern='_', replacement=' '), ]$F00679, nm = rooted_dichotomous_phylogeny$tip.label)
+named_mycorrhizal_state_vec <- setNames(collab_data$myco, nm = collab_data$binominal)
+named_srl_vec_hypo_2 <- setNames(collab_data$srl, nm = collab_data$binominal) # do not confuse this with named_srl_vec_hypo_1
+named_rd_vec <- setNames(collab_data$rd, nm = collab_data$binominal)
 
 png("../plots/asr_collab_rd.png", width = 8000, height = 8000, units = "px", res = 300)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
@@ -195,17 +210,16 @@ text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
-ape::is.binary(collab_phylo) # FALSE
-ape::is.binary(rooted_dichotomous_phylogeny) # TRUE
-
 # ape::ace - Ancestral Character Estimation - use model = "ER" & type = "discrete" for discrete categorical traits
 # re rooting is a method used to reconstruct ancestral states of discrete categorical traits
 runtime <- Sys.time()
 er_mystates <- phytools::rerootingMethod(x = named_mycorrhizal_state_vec, tree = rooted_dichotomous_phylogeny, model = "ER")
 runtime <- Sys.time() - runtime
 
-# map the discrete character state evolution onto the phylogeny
 myco_state_colours <- c("red", "green", "yellow", "orange", "lightblue", "purple")
+mycstate_colour_lookup_table <- setNames(myco_state_colours, nm = sort(unique(collab_data$myco))) # mycorrhizal state - colour lookup table for plotting
+
+# map the discrete character state evolution onto the phylogeny
 png("../plots/asr_collab_myco_states.png", width = 12000, height = 12000, units = "px", res = 300)
 plot <- phytools::plotTree(rooted_dichotomous_phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99, offset = 3)
 # label the internal nodes
@@ -241,35 +255,31 @@ text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
+
 # PHYLOGENETIC GENERALIZED ANCOVA
 #---------------------------------
 
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
 # we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
 
-collab_data <- data.frame(binominal = as.factor(gsub(rownames(collab_states_n_species_avg_traits), pattern = ' ', replacement = '_')), # because phylogenetic tree has underscores inplace of spaces
-                          rd = collab_states_n_species_avg_traits$F00679, srl = collab_states_n_species_avg_traits$F00727, myco = as.factor(collab_states_n_species_avg_traits$F00645))
-row_indices <- match(rooted_dichotomous_phylogeny$tip.label, collab_data$binominal) # row indices according to the order of species in the phylogenetic tree
-# match(vector to be matched, vector to be matched against)
-all(collab_data$binominal[row_indices] == rooted_dichotomous_phylogeny$tip.label) # good :)
-collab_data <- collab_data[row_indices, ]
-all(collab_data$binominal == rooted_dichotomous_phylogeny$tip.label) # double checking
-
-mycstate_colour_lookup_table <- setNames(myco_state_colours, nm = sort(unique(collab_data$myco))) # mycorrhizal state - colour lookup table for plotting
 dummy_rds <- seq(min(collab_data$rd), max(collab_data$rd), length.out = 100) # dummy root diameter values - independent variable
 
 # to see how the form argument actually works look up https://www.mail-archive.com/search?l=r-sig-phylo@r-project.org&q=subject:%22Re%5C%3A+%5C%5BR%5C-sig%5C-phylo%5C%5D+How+to+sort+trait+data+according+to+tree%22&o=newest&f=1
-corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~binominal)
+corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny), form = ~binominal)
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
-ancova <- nlme::gls(log(srl)~log(rd)+myco, data = as.data.frame(collab_data), correlation = corr_matrix)
+ancova <- nlme::gls(log(srl)~log(rd)+myco, data = collab_data, correlation = corr_matrix)
 anova(ancova)
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
 plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "log(RD)", ylab = "log(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
 legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
-# plot model predictions for each mycorrhizal state
-for (state in sort(unique(collab_data$myco))) lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
+# plot model predictions for the dumy RD values for each mycorrhizal state
+for (state in sort(unique(collab_data$myco))) {
+    lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
+    # mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
+}
 # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : contrasts can be applied only to factors with 2 or more levels
 # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
 dev.off()
+
