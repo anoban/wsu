@@ -255,7 +255,7 @@ all(collab_data$binominal[row_indices] == rooted_dichotomous_phylogeny$tip.label
 collab_data <- collab_data[row_indices, ]
 all(collab_data$binominal == rooted_dichotomous_phylogeny$tip.label) # double checking
 
-states_n_colours <- setNames(myco_state_colours, nm = sort(unique(collab_data$myco))) # mycorrhizal state - colour lookup table for plotting
+mycstate_colour_lookup_table <- setNames(myco_state_colours, nm = sort(unique(collab_data$myco))) # mycorrhizal state - colour lookup table for plotting
 dummy_rds <- seq(min(collab_data$rd), max(collab_data$rd), length.out = 100) # dummy root diameter values - independent variable
 
 # to see how the form argument actually works look up https://www.mail-archive.com/search?l=r-sig-phylo@r-project.org&q=subject:%22Re%5C%3A+%5C%5BR%5C-sig%5C-phylo%5C%5D+How+to+sort+trait+data+according+to+tree%22&o=newest&f=1
@@ -266,10 +266,10 @@ anova(ancova)
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
-plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "log(RD)", ylab = "log(SRL)", bg = states_n_colours[collab_data$myco])
-legend("topright", legend = names(states_n_colours), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
+plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "log(RD)", ylab = "log(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
+legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
 # plot model predictions for each mycorrhizal state
-for (state in sort(unique(collab_data$myco))) lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = states_n_colours[state])
+for (state in sort(unique(collab_data$myco))) lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
 # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : contrasts can be applied only to factors with 2 or more levels
 # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
 dev.off()
