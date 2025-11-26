@@ -10,6 +10,7 @@ library("maps")
 library("phytools")
 library("U.PhyloMaker")
 library("nlme")
+library("car")
 
 
 
@@ -265,10 +266,12 @@ dev.off()
 dummy_rds <- seq(min(collab_data$rd), max(collab_data$rd), length.out = 100) # dummy root diameter values - independent variable
 
 # to see how the form argument actually works look up https://www.mail-archive.com/search?l=r-sig-phylo@r-project.org&q=subject:%22Re%5C%3A+%5C%5BR%5C-sig%5C-phylo%5C%5D+How+to+sort+trait+data+according+to+tree%22&o=newest&f=1
-corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny), form = ~binominal)
+corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~binominal)
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
+# https://bookdown.org/ndphillips/YaRrr/linear-regression-with-lm.html
 ancova <- nlme::gls(log(srl)~log(rd)+myco, data = collab_data, correlation = corr_matrix)
-anova(ancova)
+anova(ancova, type = "marginal")
+car::Anova(ancova)
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
@@ -282,4 +285,23 @@ for (state in sort(unique(collab_data$myco))) {
 # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : contrasts can be applied only to factors with 2 or more levels
 # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
 dev.off()
+
+# this formula claims there's no interaction between RD and mycorrhizal states => we just specify two independent variables
+linmod <- lm(formula = log(srl)~log(rd)+myco, data = collab_data) # fits a constant slope across all the groups in the categorical variable but allows different intercepts for each group
+summary(linmod)
+
+# look up => https://bookdown.org/ndphillips/YaRrr/linear-regression-with-lm.html
+# to accomodate interactions between independent variables use *
+linmod_inter <- lm(formula = log(srl)~log(rd)*myco, data = collab_data)
+summary(linmod_inter)
+
+# try refitting the gls() allowing for interactions between independent variables
+ancova_interact <- nlme::gls(model = log(srl)~log(rd)*myco, data = collab_data)
+anova(ancova_interact)
+summary(ancova_interact)
+
+# if allowing interactions between independent variables, THEY NEED TO BE CENTERED???
+ancova_interact_centered <- nlme::gls(model = scale(srl)~scale(rd)*myco, data = collab_data)
+stats::anova(ancova_interact_centered)
+
 
