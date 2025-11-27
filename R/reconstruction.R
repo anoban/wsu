@@ -10,7 +10,6 @@ library("maps")
 library("phytools")
 library("U.PhyloMaker")
 library("nlme")
-library("car")
 
 
 
@@ -269,13 +268,15 @@ dummy_rds <- seq(min(collab_data$rd), max(collab_data$rd), length.out = 100) # d
 corr_matrix <- ape::corBrownian(phy = rooted_dichotomous_phylogeny, form = ~binominal)
 # form argument is used to pass the order (species names) in the data (trait values) (page 65)
 # https://bookdown.org/ndphillips/YaRrr/linear-regression-with-lm.html
-ancova <- nlme::gls(log(srl)~log(rd)+myco, data = collab_data, correlation = corr_matrix)
-anova(ancova, type = "marginal")
-car::Anova(ancova)
+ancova <- nlme::gls(scale(srl)~scale(rd)*myco, data = collab_data, correlation = corr_matrix) # allowing interactions between RD and mycorrhizal states - independent variables
+stats::anova(ancova, type = "marginal")
+
+
+# TODO - SOMETHING'S WRONG WITH THE PLOTS - THE MARKERS AND THE LINES DO NOT ALIGN
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
-plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "log(RD)", ylab = "log(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
+plot(x = scale(collab_data$rd), y = scale(collab_data$srl), pch = 21, cex = 1, xlab = "scale(RD)", ylab = "scale(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
 legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
 # plot model predictions for the dumy RD values for each mycorrhizal state
 for (state in sort(unique(collab_data$myco))) {
@@ -291,17 +292,16 @@ linmod <- lm(formula = log(srl)~log(rd)+myco, data = collab_data) # fits a const
 summary(linmod)
 
 # look up => https://bookdown.org/ndphillips/YaRrr/linear-regression-with-lm.html
-# to accomodate interactions between independent variables use *
-linmod_inter <- lm(formula = log(srl)~log(rd)*myco, data = collab_data)
+# to accomodate interactions between independent variables use * instead of +, this allows different slopes and different intercepts for each group
+linmod_inter <- lm(formula = scale(srl)~scale(rd)*myco, data = collab_data)
 summary(linmod_inter)
 
 # try refitting the gls() allowing for interactions between independent variables
-ancova_interact <- nlme::gls(model = log(srl)~log(rd)*myco, data = collab_data)
-anova(ancova_interact)
+ancova_interact <- nlme::gls(model = scale(srl)~scale(rd)*myco, data = collab_data)
+stats::anova(ancova_interact)
 summary(ancova_interact)
 
-# if allowing interactions between independent variables, THEY NEED TO BE CENTERED???
+# if allowing interactions between independent variables, THEY NEED TO BE CENTERED
+# look up => https://bookdown.org/ndphillips/YaRrr/linear-regression-with-lm.html
 ancova_interact_centered <- nlme::gls(model = scale(srl)~scale(rd)*myco, data = collab_data)
 stats::anova(ancova_interact_centered)
-
-
