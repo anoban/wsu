@@ -281,12 +281,26 @@ plot(x = scale(collab_data$rd), y = scale(collab_data$srl), pch = 21, cex = 1, x
 legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
 # plot model predictions for the dumy RD values for each mycorrhizal state
 for (state in sort(unique(collab_data$myco))) {
-    lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
+    lines(x = scale(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
     # mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
 }
 # Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : contrasts can be applied only to factors with 2 or more levels
 # ====>> to avoid this specify stringsAsFactors = TRUE when loading in the trait dataset
 dev.off()
+
+# without interaction between independent variables
+ancova <- nlme::gls(log(srl)~log(rd)+myco, data = collab_data, correlation = corr_matrix)
+plot(x = log(collab_data$rd), y = log(collab_data$srl), pch = 21, cex = 1, xlab = "log(RD)", ylab = "log(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
+legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
+# plot model predictions for the dumy RD values for each mycorrhizal state
+for (state in sort(unique(collab_data$myco))) lines(x = log(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
+
+# with interaction between independent variables
+ancova <- nlme::gls(scale(srl)~scale(rd)*myco, data = collab_data, correlation = corr_matrix)
+plot(x = scale(collab_data$rd), y = scale(collab_data$srl), pch = 21, cex = 1, xlab = "scale(RD)", ylab = "scale(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
+legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
+# plot model predictions for the dumy RD values for each mycorrhizal state
+for (state in sort(unique(collab_data$myco))) lines(x = scale(dummy_rds), y = predict(ancova, newdata = data.frame(rd = dummy_rds, myco = rep(state, 100))), lwd = 2, col = mycstate_colour_lookup_table[state])
 
 # this formula claims there's no interaction between RD and mycorrhizal states => we just specify two independent variables
 linmod <- lm(formula = log(srl)~log(rd)+myco, data = collab_data) # fits a constant slope across all the groups in the categorical variable but allows different intercepts for each group
