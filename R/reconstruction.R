@@ -276,6 +276,7 @@ stats::anova(ancova, type = "marginal")
 
 # plot the results
 png("../plots/phylogenetic_ancova_rd_srl_mystates.png", width = 5000, height = 5000, units = "px", res = 400)
+# if allowing interactions between independent variables, THEY NEED TO BE MEAN CENTERED
 plot(x = scale(collab_data$rd), y = scale(collab_data$srl), pch = 21, cex = 1, xlab = "scale(RD)", ylab = "scale(SRL)", bg = mycstate_colour_lookup_table[collab_data$myco])
 legend("topright", legend = names(mycstate_colour_lookup_table), pt.bg = myco_state_colours, cex = 1, pt.cex = 1, pch = 21)
 # plot model predictions for the dumy RD values for each mycorrhizal state
@@ -301,7 +302,7 @@ ancova_interact <- nlme::gls(model = scale(srl)~scale(rd)*myco, data = collab_da
 stats::anova(ancova_interact)
 summary(ancova_interact)
 
-# if allowing interactions between independent variables, THEY NEED TO BE CENTERED
+
 # look up => https://bookdown.org/ndphillips/YaRrr/linear-regression-with-lm.html
 ancova_interact_centered <- nlme::gls(model = scale(srl)~scale(rd)*myco, data = collab_data)
 stats::anova(ancova_interact_centered)
