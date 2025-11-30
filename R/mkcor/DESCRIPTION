@@ -1,0 +1,16 @@
+Package: mkcor
+Type: Package
+Title: Evolution of categorical characters under the correlated Mk
+        model
+Version: 1.0
+Date: 2024-11-26
+Author: Michael C. Grundler
+Maintainer: Michael C. Grundler <mcgrundler@gmail.com>
+Description: Implements the correlated Mk model for modeling correlated
+  evolution of two categorical characters on a phylogeny.
+Depends: R (>= 3.5.0), ape, stats, utils
+NeedsCompilation: yes
+License: CC0
+Encoding: UTF-8
+RoxygenNote: 7.3.1
+Packaged: 2024-11-26 20:13:30 UTC; mgrundler
