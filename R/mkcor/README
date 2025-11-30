@@ -1,3 +1,6 @@
+### ___A clone of https://github.com/blueraleigh/mkcor___
+---------------------------------
+
 To compile the mkcor R package on Windows (using Rtools):
 
 1) ensure that R is installed
