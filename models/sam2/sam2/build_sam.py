@@ -94,7 +94,11 @@ def build_sam2_video_predictor(
     return model
 
 
-def _load_checkpoint(model, ckpt_path):
+def _load_checkpoint(model, ckpt_path: str) -> None:
+    """
+    load the pretrained model from the specified path and update the model parameters accordingly
+    """
+
     if ckpt_path is not None:
         sd = torch.load(ckpt_path, map_location="cpu", weights_only=True)["model"]
         missing_keys, unexpected_keys = model.load_state_dict(sd)
