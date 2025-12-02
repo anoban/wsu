@@ -1,4 +1,7 @@
-
+library("ape")
+library("phytools")
+library("OUwie")
+library("corHMM")
 
 # make sure the OUwie version you have is recent 2.16 NOT the old ones because they do not have the OUwie::hOUwie() function
 # CRAN CDN delivers 2.10 by default
@@ -16,5 +19,5 @@ data <- data[row_indices, ]
 all(data$binominal == tree$tip.label) # cool
 
 # ouWIE::HOUwie() expects the data to have columns in the following order => species, categorical trait followed by continuous trait
-d <- data[, c("binominal", "myco", "srl")]
-model <- OUwie::hOUwie(phy = tree, data = d, rate.cat = 1, discrete_model = "ER", continuous_model = "OUM", nSim = 25)
+data_sub <- data[, c("binominal", "myco", "srl")]
+model <- OUwie::hOUwie(phy = tree, data = data_sub, rate.cat = 1, discrete_model = "ER", continuous_model = "OUM", nSim = 25)
