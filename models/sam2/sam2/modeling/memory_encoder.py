@@ -10,8 +10,7 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from sam2.modeling.sam2_utils import DropPath, get_clones, LayerNorm2d
+from modeling.sam2_utils import DropPath, LayerNorm2d, get_clones  # type: ignore
 
 
 class MaskDownSampler(nn.Module):
@@ -23,15 +22,7 @@ class MaskDownSampler(nn.Module):
     In the end, we linearly project to embed_dim channels.
     """
 
-    def __init__(
-        self,
-        embed_dim=256,
-        kernel_size=4,
-        stride=4,
-        padding=0,
-        total_stride=16,
-        activation=nn.GELU,
-    ):
+    def __init__(self, embed_dim=256, kernel_size=4, stride=4, padding=0, total_stride=16, activation=nn.GELU):
         super().__init__()
         num_layers = int(math.log2(total_stride) // math.log2(stride))
         assert stride**num_layers == total_stride
@@ -39,15 +30,7 @@ class MaskDownSampler(nn.Module):
         mask_in_chans, mask_out_chans = 1, 1
         for _ in range(num_layers):
             mask_out_chans = mask_in_chans * (stride**2)
-            self.encoder.append(
-                nn.Conv2d(
-                    mask_in_chans,
-                    mask_out_chans,
-                    kernel_size=kernel_size,
-                    stride=stride,
-                    padding=padding,
-                )
-            )
+            self.encoder.append(nn.Conv2d(mask_in_chans, mask_out_chans, kernel_size=kernel_size, stride=stride, padding=padding))
             self.encoder.append(LayerNorm2d(mask_out_chans))
             self.encoder.append(activation())
             mask_in_chans = mask_out_chans
@@ -71,34 +54,14 @@ class CXBlock(nn.Module):
         layer_scale_init_value (float): Init value for Layer Scale. Default: 1e-6.
     """
 
-    def __init__(
-        self,
-        dim,
-        kernel_size=7,
-        padding=3,
-        drop_path=0.0,
-        layer_scale_init_value=1e-6,
-        use_dwconv=True,
-    ):
+    def __init__(self, dim, kernel_size=7, padding=3, drop_path=0.0, layer_scale_init_value=1e-6, use_dwconv=True):
         super().__init__()
-        self.dwconv = nn.Conv2d(
-            dim,
-            dim,
-            kernel_size=kernel_size,
-            padding=padding,
-            groups=dim if use_dwconv else 1,
-        )  # depthwise conv
+        self.dwconv = nn.Conv2d(dim, dim, kernel_size=kernel_size, padding=padding, groups=dim if use_dwconv else 1)  # depthwise conv
         self.norm = LayerNorm2d(dim, eps=1e-6)
-        self.pwconv1 = nn.Linear(
-            dim, 4 * dim
-        )  # pointwise/1x1 convs, implemented with linear layers
+        self.pwconv1 = nn.Linear(dim, 4 * dim)  # pointwise/1x1 convs, implemented with linear layers
         self.act = nn.GELU()
         self.pwconv2 = nn.Linear(4 * dim, dim)
-        self.gamma = (
-            nn.Parameter(layer_scale_init_value * torch.ones((dim)), requires_grad=True)
-            if layer_scale_init_value > 0
-            else None
-        )
+        self.gamma = nn.Parameter(layer_scale_init_value * torch.ones((dim)), requires_grad=True) if layer_scale_init_value > 0 else None
         self.drop_path = DropPath(drop_path) if drop_path > 0.0 else nn.Identity()
 
     def forward(self, x):
@@ -155,12 +118,7 @@ class MemoryEncoder(nn.Module):
         if out_dim != in_dim:
             self.out_proj = nn.Conv2d(in_dim, out_dim, kernel_size=1)
 
-    def forward(
-        self,
-        pix_feat: torch.Tensor,
-        masks: torch.Tensor,
-        skip_mask_sigmoid: bool = False,
-    ) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(self, pix_feat: torch.Tensor, masks: torch.Tensor, skip_mask_sigmoid: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
         ## Process masks
         # sigmoid, so that less domain shift from gt masks which are bool
         if not skip_mask_sigmoid:

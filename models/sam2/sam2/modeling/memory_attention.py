@@ -7,15 +7,12 @@
 from typing import Optional
 
 import torch
-from torch import nn, Tensor
-
-from sam2.modeling.sam.transformer import RoPEAttention
-
-from sam2.modeling.sam2_utils import get_activation_fn, get_clones
+from modeling.sam.transformer import RoPEAttention
+from modeling.sam2_utils import get_activation_fn, get_clones  # type: ignore
+from torch import Tensor, nn
 
 
 class MemoryAttentionLayer(nn.Module):
-
     def __init__(
         self,
         activation: str,
@@ -81,14 +78,8 @@ class MemoryAttentionLayer(nn.Module):
         return tgt
 
     def forward(
-        self,
-        tgt,
-        memory,
-        pos: Optional[Tensor] = None,
-        query_pos: Optional[Tensor] = None,
-        num_k_exclude_rope: int = 0,
+        self, tgt, memory, pos: Optional[Tensor] = None, query_pos: Optional[Tensor] = None, num_k_exclude_rope: int = 0
     ) -> torch.Tensor:
-
         # Self-Attn, Cross-Attn
         tgt = self._forward_sa(tgt, query_pos)
         tgt = self._forward_ca(tgt, memory, query_pos, pos, num_k_exclude_rope)
@@ -127,14 +118,9 @@ class MemoryAttention(nn.Module):
         if isinstance(curr, list):
             assert isinstance(curr_pos, list)
             assert len(curr) == len(curr_pos) == 1
-            curr, curr_pos = (
-                curr[0],
-                curr_pos[0],
-            )
+            curr, curr_pos = (curr[0], curr_pos[0])
 
-        assert (
-            curr.shape[1] == memory.shape[1]
-        ), "Batch size must be the same for curr and memory"
+        assert curr.shape[1] == memory.shape[1], "Batch size must be the same for curr and memory"
 
         output = curr
         if self.pos_enc_at_input and curr_pos is not None:
@@ -152,13 +138,7 @@ class MemoryAttention(nn.Module):
             if isinstance(layer.cross_attn_image, RoPEAttention):
                 kwds = {"num_k_exclude_rope": num_obj_ptr_tokens}
 
-            output = layer(
-                tgt=output,
-                memory=memory,
-                pos=memory_pos,
-                query_pos=curr_pos,
-                **kwds,
-            )
+            output = layer(tgt=output, memory=memory, pos=memory_pos, query_pos=curr_pos, **kwds)
         normed_output = self.norm(output)
 
         if self.batch_first:
