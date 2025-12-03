@@ -9,11 +9,7 @@ import os
 from typing import Optional
 
 import torch
-from hydra import compose
-from hydra.utils import instantiate
-from omegaconf import OmegaConf
-
-from modeling import sam2_base, backbones, sam, memory_attention, memory_encoder
+from modeling import sam2_base, backbones, sam, memory_attention, memory_encoder, position_encoding
 
 # Check if the user is running Python from the parent directory of the sam2 repo
 # (i.e. the directory where this repo is cloned into) -- this is not supported since
@@ -50,21 +46,20 @@ def build_sam2(
             "++model.sam_mask_decoder_extra_args.dynamic_multimask_stability_delta=0.05",
             "++model.sam_mask_decoder_extra_args.dynamic_multimask_stability_thresh=0.98",
         ]
-    # Read config and init model
-    cfg = compose(config_name=config_file, overrides=hydra_overrides_extra)
-    OmegaConf.resolve(cfg)
+
     model = sam2_base.SAM2Base(
  image_encoder=backbones.image_encoder.ImageEncoder(
-  scalp=1, trunk=backbones.hieradet.Hiera(embed_dim=144, num_heads=2, stages=[2, 6, 36, 4], global_att_blocks=[23, 33, 43], window_pos_embed_bkg_spatial_size=[7, 7], window_spec=[8, 4, 16, 8]),
-  neck=backbones.image_encoder.FpnNeck(position_encoding = sam2.modeling.position_encoding.PositionEmbeddingSine(num_pos_feats=256, normalize=True, scale=None, temperature=10000), d_model=256,
+  scalp=1,
+    trunk=backbones.hieradet.Hiera(embed_dim=144, num_heads=2, stages=[2, 6, 36, 4], global_att_blocks=[23, 33, 43], window_pos_embed_bkg_spatial_size=[7, 7], window_spec=[8, 4, 16, 8]),
+  neck=backbones.image_encoder.FpnNeck(position_encoding = position_encoding.PositionEmbeddingSine(num_pos_feats=256, normalize=True, scale=None, temperature=10000), d_model=256,
    backbone_channel_list=[1152, 576, 288, 144], fpn_top_down_levels=[2, 3], fpn_interp_model="nearest"),
-   memory_attention = memory_attention.MemoryAttention(d_model=256, pos_enc_at_input=True, layer=sam2.modeling.memory_attention.MemoryAttentionLayer(activation="relu", dim_feedforward=2048, dropout=0.1, pos_enc_at_attn=False,
+   memory_attention = memory_attention.MemoryAttention(d_model=256, pos_enc_at_input=True, layer=memory_attention.MemoryAttentionLayer(activation="relu", dim_feedforward=2048, dropout=0.1, pos_enc_at_attn=False,
     self_attention=sam.transformer.RoPEAttention(rope_theta=10000.0, feat_sizes=[64, 64], embedding_dim=256, num_heads=1, downsample_rate=1, dropout=0.1),
    d_model=256, pos_enc_at_cross_attn_keys=True, pos_enc_at_cross_attn_queries=False,
    cross_attention=sam.transformer.RoPEAttention(rope_theta=10000.0, feat_sizes=[64, 64], rope_k_repeat=True, embedding_dim=256, num_heads=1, downsample_rate=1, dropout=0.1, kv_in_dim=64), num_layers=4),
- memory_encoder=memory_encoder.MemoryEncoder(out_dim=64, position_encoding=sam2.modeling.position_encoding.PositionEmbeddingSine(num_pos_feats=64, normalize=True, scale=None, temperature=10000),
+ memory_encoder=memory_encoder.MemoryEncoder(out_dim=64, position_encoding=position_encoding.PositionEmbeddingSine(num_pos_feats=64, normalize=True, scale=None, temperature=10000),
  mask_downsampler=memory_encoder.MaskDownSampler(kernel_size=3, stride=2, padding=1),
- fuser=sam2.modeling.memory_encoder.Fuser(layer=sam2.modeling.memory_encoder.CXBlock(dim=256, kernel_size=7, padding=3, layer_scale_init_value=1e-06, use_dwconv=True), num_layers=2)),
+ fuser=memory_encoder.Fuser(layer=memory_encoder.CXBlock(dim=256, kernel_size=7, padding=3, layer_scale_init_value=1e-06, use_dwconv=True), num_layers=2)),
  num_maskmem=7, image_size=1024, sigmoid_scale_for_mem_enc=20.0,  sigmoid_bias_for_mem_enc=-10.0,  use_mask_input_as_output_without_sam=True,  directly_add_no_mem_embed=True,  no_obj_embed_spatial=True,  use_high_res_features_in_sam=True,
  multimask_output_in_sam=True,  iou_prediction_use_sigmoid=True,  use_obj_ptrs_in_encoder=True,  add_tpos_enc_to_obj_ptrs=True,  proj_tpos_enc_in_obj_ptrs=True,  use_signed_tpos_enc_to_obj_ptrs=True,  only_obj_ptrs_in_the_past_for_eval=True,
  pred_obj_scores=True, pred_obj_scores_mlp=True,  fixed_no_obj_ptr=True,   multimask_output_for_tracking=True,  use_multimask_token_for_obj_ptr=True,  multimask_min_pt_num=0,  multimask_max_pt_num=1,  use_mlp_for_obj_ptr_proj=True,  compile_image_encoder=False,
