@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-from typing import List, Optional, Tuple, Type
+from typing import List, Optional, Tuple, Type, override
 
 import torch
 from modeling.sam2_utils import MLP, LayerNorm2d
@@ -22,10 +22,10 @@ class MaskDecoder(nn.Module):
         iou_head_depth: int = 3,
         iou_head_hidden_dim: int = 256,
         use_high_res_features: bool = False,
-        iou_prediction_use_sigmoid=False,
-        dynamic_multimask_via_stability=False,
-        dynamic_multimask_stability_delta=0.05,
-        dynamic_multimask_stability_thresh=0.98,
+        iou_prediction_use_sigmoid: bool = False,
+        dynamic_multimask_via_stability: bool = False,
+        dynamic_multimask_stability_delta: float = 0.05,
+        dynamic_multimask_stability_thresh: float = 0.98,
         pred_obj_scores: bool = False,
         pred_obj_scores_mlp: bool = False,
         use_multimask_token_for_obj_ptr: bool = False,
@@ -46,7 +46,7 @@ class MaskDecoder(nn.Module):
           iou_head_hidden_dim (int): the hidden dimension of the MLP
             used to predict mask quality
         """
-        super().__init__()
+        super().__init__()  # type: ignore
         self.transformer_dim = transformer_dim
         self.transformer = transformer
 
@@ -91,6 +91,7 @@ class MaskDecoder(nn.Module):
         self.dynamic_multimask_stability_delta = dynamic_multimask_stability_delta
         self.dynamic_multimask_stability_thresh = dynamic_multimask_stability_thresh
 
+    @override
     def forward(
         self,
         image_embeddings: torch.Tensor,
