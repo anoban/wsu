@@ -1,4 +1,7 @@
-
+for (model in list.files(path = "./thirdparty/2020_houwie/empirical_fit")){
+    load(file = paste0("./thirdparty/2020_houwie/empirical_fit", "/", model))
+    print()
+}
 
 
 
