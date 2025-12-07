@@ -51,3 +51,4 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
 ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_CIDp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
+avg_models_CD[, c("alpha", "sigma.sq", "theta", "tip_state")] |> split(~tip_state)
