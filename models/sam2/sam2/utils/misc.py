@@ -21,9 +21,7 @@ def get_sdpa_settings():
         use_flash_attn = torch.cuda.get_device_properties(0).major >= 8
         if not use_flash_attn:
             warnings.warn(
-                "Flash Attention is disabled as it requires a GPU with Ampere (8.0) CUDA capability.",
-                category=UserWarning,
-                stacklevel=2,
+                "Flash Attention is disabled as it requires a GPU with Ampere (8.0) CUDA capability.", category=UserWarning, stacklevel=2
             )
         # keep math kernel for PyTorch versions before 2.2 (Flash Attention v2 is only
         # available on PyTorch 2.2+, while Flash Attention v1 cannot handle all cases)
@@ -106,15 +104,7 @@ class AsyncVideoFrameLoader:
     A list of video frames to be load asynchronously without blocking session start.
     """
 
-    def __init__(
-        self,
-        img_paths,
-        image_size,
-        offload_video_to_cpu,
-        img_mean,
-        img_std,
-        compute_device,
-    ):
+    def __init__(self, img_paths, image_size, offload_video_to_cpu, img_mean, img_std, compute_device):
         self.img_paths = img_paths
         self.image_size = image_size
         self.offload_video_to_cpu = offload_video_to_cpu
@@ -152,9 +142,7 @@ class AsyncVideoFrameLoader:
         if img is not None:
             return img
 
-        img, video_height, video_width = _load_img_as_tensor(
-            self.img_paths[index], self.image_size
-        )
+        img, video_height, video_width = _load_img_as_tensor(self.img_paths[index], self.image_size)
         self.video_height = video_height
         self.video_width = video_width
         # normalize by mean and std
@@ -205,9 +193,7 @@ def load_video_frames(
             compute_device=compute_device,
         )
     else:
-        raise NotImplementedError(
-            "Only MP4 video and JPEG folder are supported at this moment"
-        )
+        raise NotImplementedError("Only MP4 video and JPEG folder are supported at this moment")
 
 
 def load_video_frames_from_jpg_images(
@@ -240,11 +226,7 @@ def load_video_frames_from_jpg_images(
             "ffmpeg to start the JPEG file from 00000.jpg."
         )
 
-    frame_names = [
-        p
-        for p in os.listdir(jpg_folder)
-        if os.path.splitext(p)[-1] in [".jpg", ".jpeg", ".JPG", ".JPEG"]
-    ]
+    frame_names = [p for p in os.listdir(jpg_folder) if os.path.splitext(p)[-1] in [".jpg", ".jpeg", ".JPG", ".JPEG"]]
     frame_names.sort(key=lambda p: int(os.path.splitext(p)[0]))
     num_frames = len(frame_names)
     if num_frames == 0:
@@ -254,14 +236,7 @@ def load_video_frames_from_jpg_images(
     img_std = torch.tensor(img_std, dtype=torch.float32)[:, None, None]
 
     if async_loading_frames:
-        lazy_images = AsyncVideoFrameLoader(
-            img_paths,
-            image_size,
-            offload_video_to_cpu,
-            img_mean,
-            img_std,
-            compute_device,
-        )
+        lazy_images = AsyncVideoFrameLoader(img_paths, image_size, offload_video_to_cpu, img_mean, img_std, compute_device)
         return lazy_images, lazy_images.video_height, lazy_images.video_width
 
     images = torch.zeros(num_frames, 3, image_size, image_size, dtype=torch.float32)
