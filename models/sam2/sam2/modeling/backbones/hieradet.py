@@ -161,7 +161,7 @@ class Hiera(nn.Module):
         weights_path: Optional[str] = None,
         return_interm_layers: bool = True,  # return feats from every stage
     ):
-        super().__init__()
+        super().__init__()  # type: ignore
 
         assert len(stages) == len(window_spec)
         self.window_spec = window_spec
@@ -246,7 +246,7 @@ class Hiera(nn.Module):
 
         return outputs
 
-    def get_layer_id(self, layer_name):
+    def get_layer_id(self, layer_name: str):
         # https://github.com/microsoft/unilm/blob/master/beit/optim_factory.py#L33
         num_layers = self.get_num_layers()
 

@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import math
-from typing import Any, Optional, Tuple
+from typing import Any, Optional, Tuple, override
 
 import numpy as np
 import torch
@@ -30,7 +30,7 @@ class PositionEmbeddingSine(nn.Module):
         image_size: int = 1024,
         strides: Tuple[int] = (4, 8, 16, 32),
     ):
-        super().__init__()
+        super().__init__()  # type: ignore
         assert num_pos_feats % 2 == 0, "Expecting even model width"
         self.num_pos_feats = num_pos_feats // 2
         self.temperature = temperature
@@ -64,7 +64,7 @@ class PositionEmbeddingSine(nn.Module):
         pos_y = torch.stack((pos_y[:, 0::2].sin(), pos_y[:, 1::2].cos()), dim=2).flatten(1)
         return pos_x, pos_y
 
-    @torch.no_grad()
+    @torch.no_grad()  # type: ignore
     def encode_boxes(self, x, y, w, h):
         pos_x, pos_y = self._encode_xy(x, y)
         pos = torch.cat((pos_y, pos_x, h[:, None], w[:, None]), dim=1)
@@ -72,7 +72,7 @@ class PositionEmbeddingSine(nn.Module):
 
     encode = encode_boxes  # Backwards compatibility
 
-    @torch.no_grad()
+    @torch.no_grad()  # type: ignore
     def encode_points(self, x, y, labels):
         (bx, nx), (by, ny), (bl, nl) = x.shape, y.shape, labels.shape
         assert bx == by and nx == ny and bx == bl and nx == nl
@@ -81,7 +81,7 @@ class PositionEmbeddingSine(nn.Module):
         pos = torch.cat((pos_y, pos_x, labels[:, :, None]), dim=2)
         return pos
 
-    @torch.no_grad()
+    @torch.no_grad()  # type: ignore
     def _pe(self, B, device, *cache_key):
         H, W = cache_key
         if cache_key in self.cache:
@@ -106,7 +106,8 @@ class PositionEmbeddingSine(nn.Module):
         self.cache[cache_key] = pos[0]
         return pos
 
-    @torch.no_grad()
+    @torch.no_grad()  # type: ignore
+    @override
     def forward(self, x: torch.Tensor):
         B = x.shape[0]
         cache_key = (x.shape[-2], x.shape[-1])
@@ -133,6 +134,7 @@ class PositionEmbeddingRandom(nn.Module):
         # outputs d_1 x ... x d_n x C shape
         return torch.cat([torch.sin(coords), torch.cos(coords)], dim=-1)
 
+    @override
     def forward(self, size: Tuple[int, int]) -> torch.Tensor:
         """Generate positional encoding for a grid of the specified size."""
         h, w = size
