@@ -5,7 +5,6 @@
 # LICENSE file in the root directory of this source tree.
 
 import logging
-import os
 from typing import Optional
 
 import torch
@@ -18,25 +17,8 @@ from modeling.sam.transformer import RoPEAttention
 from modeling.sam2_base import SAM2Base
 from torch import nn
 
-# Check if the user is running Python from the parent directory of the sam2 repo
-# (i.e. the directory where this repo is cloned into) -- this is not supported since
-# it could shadow the sam2 package and cause issues.
-if os.path.isdir(os.path.join(sam2.__path__[0], "sam2")):
-    # If the user has "sam2/sam2" in their path, they are likey importing the repo itself
-    # as "sam2" rather than importing the "sam2" python package (i.e. "sam2/sam2" directory).
-    # This typically happens because the user is running Python from the parent directory
-    # that contains the sam2 repo they cloned.
-    raise RuntimeError(  # that's exactly what we're gonna do lol :)
-        "You're likely running Python from the parent directory of the sam2 repository "
-        "(i.e. the directory where https://github.com/facebookresearch/sam2 is cloned into). "
-        "This is not supported since the `sam2` Python package could be shadowed by the "
-        "repository name (the repository is also named `sam2` and contains the Python package "
-        "in `sam2/sam2`). Please run Python from another directory (e.g. from the repo dir "
-        "rather than its parent dir, or from your home directory) after installing SAM 2."
-    )
 
-
-def build_sam2(checkpoint_path: Optional[str], device: str, mode: str = "eval") -> SAM2Base:
+def build_sam21_hiera_l(checkpoint_path: Optional[str], device: str, mode: str = "eval") -> SAM2Base:
     """
     hardcoded the configs for the Hiera Large flavour to avoid depending on Hydra and Omegaconf.
     This is now a free standing function with 0 external dependencies.
