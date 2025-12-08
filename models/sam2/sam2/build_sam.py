@@ -18,7 +18,7 @@ from modeling.sam2_base import SAM2Base
 from torch import nn
 
 
-def build_sam21_hiera_l(checkpoint_path: Optional[str], device: str, mode: str = "eval") -> SAM2Base:
+def build_sam21_hiera_l(checkpoint_path: Optional[str], device: str, apply_post_processing: bool, mode: str = "eval") -> SAM2Base:
     """
     hardcoded the configs for the Hiera Large flavour to avoid depending on Hydra and Omegaconf.
     This is now a free standing function with 0 external dependencies.
@@ -104,7 +104,9 @@ def build_sam21_hiera_l(checkpoint_path: Optional[str], device: str, mode: str =
             "dynamic_multimask_via_stability": True,
             "dynamic_multimask_stability_delta": 0.05,
             "dynamic_multimask_stability_thresh": 0.98,
-        },
+        }
+        if apply_post_processing  # use these extra kwargs only when post processing is required, for post processing we need a CUDA capable machine and nvcc
+        else None,
     )
 
     _load_checkpoint(model=sam21_hiera_l, checkpoint_path=checkpoint_path)
