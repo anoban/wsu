@@ -53,23 +53,6 @@ class SAM2ImagePredictor:
         # Spatial dim for backbone feature maps
         self._bb_feat_sizes = [(256, 256), (128, 128), (64, 64)]
 
-    @classmethod
-    def from_pretrained(cls, model_id: str, **kwargs) -> "SAM2ImagePredictor":
-        """
-        Load a pretrained model from the Hugging Face hub.
-
-        Arguments:
-          model_id (str): The Hugging Face repository ID.
-          **kwargs: Additional arguments to pass to the model constructor.
-
-        Returns:
-          (SAM2ImagePredictor): The loaded model.
-        """
-        from sam2.build_sam import build_sam2_hf
-
-        sam_model = build_sam2_hf(model_id, **kwargs)
-        return cls(sam_model, **kwargs)
-
     @torch.no_grad()
     def set_image(self, image: Union[np.ndarray, Image]) -> None:
         """
@@ -148,13 +131,13 @@ class SAM2ImagePredictor:
 
     def predict_batch(
         self,
-        point_coords_batch: List[np.ndarray] = None,
-        point_labels_batch: List[np.ndarray] = None,
-        box_batch: List[np.ndarray] = None,
-        mask_input_batch: List[np.ndarray] = None,
+        point_coords_batch: List[np.ndarray],
+        point_labels_batch: List[np.ndarray],
+        box_batch: List[np.ndarray],
+        mask_input_batch: List[np.ndarray],
         multimask_output: bool = True,
         return_logits: bool = False,
-        normalize_coords=True,
+        normalize_coords: bool = True,
     ) -> Tuple[List[np.ndarray], List[np.ndarray], List[np.ndarray]]:
         """This function is very similar to predict(...), however it is used for batched mode, when the model is expected to generate predictions on multiple images.
         It returns a tuple of lists of masks, ious, and low_res_masks_logits.
@@ -195,7 +178,7 @@ class SAM2ImagePredictor:
         mask_input: Optional[np.ndarray] = None,
         multimask_output: bool = True,
         return_logits: bool = False,
-        normalize_coords=True,
+        normalize_coords: bool = True,
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Predict masks for the given input prompts, using the currently set image.
