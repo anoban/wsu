@@ -5,7 +5,7 @@ import numpy as np
 from bs4 import BeautifulSoup
 from numpy.typing import NDArray
 
-__all__ = ("parse_apni_name_list",)
+__all__: list[str] = ["parse_apni_name_list"]
 
 
 def parse_apni_name_list(path_to_html: str | None = None) -> NDArray[np.str_]:
