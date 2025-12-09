@@ -11,7 +11,6 @@ import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
-
 from ultralytics.utils import NOT_MACOS14
 
 
@@ -92,11 +91,7 @@ def segment2box(segment, width: int = 640, height: int = 640):
     inside = (x >= 0) & (y >= 0) & (x <= width) & (y <= height)
     x = x[inside]
     y = y[inside]
-    return (
-        np.array([x.min(), y.min(), x.max(), y.max()], dtype=segment.dtype)
-        if any(x)
-        else np.zeros(4, dtype=segment.dtype)
-    )  # xyxy
+    return np.array([x.min(), y.min(), x.max(), y.max()], dtype=segment.dtype) if any(x) else np.zeros(4, dtype=segment.dtype)  # xyxy
 
 
 def scale_boxes(img1_shape, boxes, img0_shape, ratio_pad=None, padding: bool = True, xywh: bool = False):
@@ -413,9 +408,7 @@ def xywhr2xyxyxyxy(x):
         (np.ndarray | torch.Tensor): Converted corner points with shape (N, 4, 2) or (B, N, 4, 2).
     """
     cos, sin, cat, stack = (
-        (torch.cos, torch.sin, torch.cat, torch.stack)
-        if isinstance(x, torch.Tensor)
-        else (np.cos, np.sin, np.concatenate, np.stack)
+        (torch.cos, torch.sin, torch.cat, torch.stack) if isinstance(x, torch.Tensor) else (np.cos, np.sin, np.concatenate, np.stack)
     )
 
     ctr = x[..., :2]
@@ -480,9 +473,7 @@ def resample_segments(segments, n: int = 1000):
         x = np.linspace(0, len(s) - 1, n - len(s) if len(s) < n else n)
         xp = np.arange(len(s))
         x = np.insert(x, np.searchsorted(x, xp), xp) if len(s) < n else x
-        segments[i] = (
-            np.concatenate([np.interp(x, xp, s[:, i]) for i in range(2)], dtype=np.float32).reshape(2, -1).T
-        )  # segment xy
+        segments[i] = np.concatenate([np.interp(x, xp, s[:, i]) for i in range(2)], dtype=np.float32).reshape(2, -1).T  # segment xy
     return segments
 
 
@@ -653,11 +644,7 @@ def masks2segments(masks, strategy: str = "all"):
         c = cv2.findContours(x, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
         if c:
             if strategy == "all":  # merge and concatenate all segments
-                c = (
-                    np.concatenate(merge_multi_segment([x.reshape(-1, 2) for x in c]))
-                    if len(c) > 1
-                    else c[0].reshape(-1, 2)
-                )
+                c = np.concatenate(merge_multi_segment([x.reshape(-1, 2) for x in c])) if len(c) > 1 else c[0].reshape(-1, 2)
             elif strategy == "largest":  # select largest segment
                 c = np.array(c[np.array([len(x) for x in c]).argmax()]).reshape(-1, 2)
         else:
@@ -692,6 +679,4 @@ def clean_str(s):
 
 def empty_like(x):
     """Create empty torch.Tensor or np.ndarray with same shape as input and float32 dtype."""
-    return (
-        torch.empty_like(x, dtype=torch.float32) if isinstance(x, torch.Tensor) else np.empty_like(x, dtype=np.float32)
-    )
+    return torch.empty_like(x, dtype=torch.float32) if isinstance(x, torch.Tensor) else np.empty_like(x, dtype=np.float32)
