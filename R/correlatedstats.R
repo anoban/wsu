@@ -33,6 +33,11 @@ lapply(models_CIDp, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.
 avg_models_CD <- OUwie::getModelAvgParams(models, type = "AICc", force = FALSE)
 avg_models_CIDp <- OUwie::getModelAvgParams(models_CIDp, type = "AICc", force = FALSE)
 
+# look up to see what the BIC stuff is about
+# https://www.rdocumentation.org/packages/AICcmodavg/versions/2.3-4/topics/bictabCustom
+# AIC vs BIC
+# https://fiveable.me/bayesian-statistics/unit-11/bayesian-information-criterion/study-guide/o3iS2biLgz7mcyuv
+
 # plot the results
 plot_df <- reshape2::melt(avg_models_CD)
 plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
