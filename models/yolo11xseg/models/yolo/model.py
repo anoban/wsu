@@ -5,9 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from .engine.model import Model
-from .models import yolo
-from .nn.tasks import DetectionModel, SegmentationModel
+from detect import DetectionPredictor, DetectionTrainer, DetectionValidator
+from engine.model import Model
+from nn.tasks import DetectionModel, SegmentationModel
+from segment import SegmentationPredictor, SegmentationTrainer, SegmentationValidator
 
 
 class YOLO(Model):
@@ -65,14 +66,14 @@ class YOLO(Model):
         return {
             "detect": {
                 "model": DetectionModel,
-                "trainer": yolo.detect.DetectionTrainer,
-                "validator": yolo.detect.DetectionValidator,
-                "predictor": yolo.detect.DetectionPredictor,
+                "trainer": DetectionTrainer,
+                "validator": DetectionValidator,
+                "predictor": DetectionPredictor,
             },
             "segment": {
                 "model": SegmentationModel,
-                "trainer": yolo.segment.SegmentationTrainer,
-                "validator": yolo.segment.SegmentationValidator,
-                "predictor": yolo.segment.SegmentationPredictor,
+                "trainer": SegmentationTrainer,
+                "validator": SegmentationValidator,
+                "predictor": SegmentationPredictor,
             },
         }
