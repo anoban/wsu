@@ -9,21 +9,10 @@ from typing import Any
 import numpy as np
 import torch
 from PIL import Image
-
 from ultralytics.cfg import TASK2DATA, get_cfg, get_save_dir
 from ultralytics.engine.results import Results
 from ultralytics.nn.tasks import guess_model_task, load_checkpoint, yaml_model_load
-from ultralytics.utils import (
-    ARGV,
-    ASSETS,
-    DEFAULT_CFG_DICT,
-    LOGGER,
-    RANK,
-    SETTINGS,
-    YAML,
-    callbacks,
-    checks,
-)
+from ultralytics.utils import ARGV, ASSETS, DEFAULT_CFG_DICT, LOGGER, RANK, SETTINGS, YAML, callbacks, checks
 
 
 class Model(torch.nn.Module):
@@ -78,12 +67,7 @@ class Model(torch.nn.Module):
         >>> model.export(format="onnx")
     """
 
-    def __init__(
-        self,
-        model: str | Path | Model = "yolo11n.pt",
-        task: str | None = None,
-        verbose: bool = False,
-    ) -> None:
+    def __init__(self, model: str | Path | Model = "yolo11n.pt", task: str | None = None, verbose: bool = False) -> None:
         """Initialize a new instance of the YOLO model class.
 
         This constructor sets up the model based on the provided model path or name. It handles various types of model
@@ -152,10 +136,7 @@ class Model(torch.nn.Module):
         del self.training
 
     def __call__(
-        self,
-        source: str | Path | int | Image.Image | list | tuple | np.ndarray | torch.Tensor = None,
-        stream: bool = False,
-        **kwargs: Any,
+        self, source: str | Path | int | Image.Image | list | tuple | np.ndarray | torch.Tensor = None, stream: bool = False, **kwargs: Any
     ) -> list:
         """Alias for the predict method, enabling the model instance to be callable for predictions.
 
@@ -450,10 +431,7 @@ class Model(torch.nn.Module):
         self.model.fuse()
 
     def embed(
-        self,
-        source: str | Path | int | list | tuple | np.ndarray | torch.Tensor = None,
-        stream: bool = False,
-        **kwargs: Any,
+        self, source: str | Path | int | list | tuple | np.ndarray | torch.Tensor = None, stream: bool = False, **kwargs: Any
     ) -> list:
         """Generate image embeddings based on the provided source.
 
@@ -582,11 +560,7 @@ class Model(torch.nn.Module):
         kwargs["mode"] = "track"
         return self.predict(source=source, stream=stream, **kwargs)
 
-    def val(
-        self,
-        validator=None,
-        **kwargs: Any,
-    ):
+    def val(self, validator=None, **kwargs: Any):
         """Validate the model using a specified dataset and validation configuration.
 
         This method facilitates the model validation process, allowing for customization through various settings. It
@@ -667,10 +641,7 @@ class Model(torch.nn.Module):
             **export_kwargs,
         )
 
-    def export(
-        self,
-        **kwargs: Any,
-    ) -> str:
+    def export(self, **kwargs: Any) -> str:
         """Export the model to a different format suitable for deployment.
 
         This method facilitates the export of the model to various formats (e.g., ONNX, TorchScript) for deployment
@@ -713,11 +684,7 @@ class Model(torch.nn.Module):
         args = {**self.overrides, **custom, **kwargs, "mode": "export"}  # highest priority args on the right
         return Exporter(overrides=args, _callbacks=self.callbacks)(model=self.model)
 
-    def train(
-        self,
-        trainer=None,
-        **kwargs: Any,
-    ):
+    def train(self, trainer=None, **kwargs: Any):
         """Train the model using the specified dataset and training configuration.
 
         This method facilitates model training with a range of customizable settings. It supports training with a custom
@@ -784,13 +751,7 @@ class Model(torch.nn.Module):
             self.metrics = getattr(self.trainer.validator, "metrics", None)  # TODO: no metrics returned by DDP
         return self.metrics
 
-    def tune(
-        self,
-        use_ray=False,
-        iterations=10,
-        *args: Any,
-        **kwargs: Any,
-    ):
+    def tune(self, use_ray=False, iterations=10, *args: Any, **kwargs: Any):
         """Conduct hyperparameter tuning for the model, with an option to use Ray Tune.
 
         This method supports two modes of hyperparameter tuning: using Ray Tune or a custom tuning method. When Ray Tune
