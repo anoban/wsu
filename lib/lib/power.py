@@ -11,7 +11,7 @@ import numpy as np
 from scipy import stats  # type: ignore
 from scipy.optimize import brenth  # type: ignore
 
-__all__ = ["ttest", "TtestDispatcher", "ttest2n", "anova", "rm_anova", "corr", "chisquared"]
+__all__: list[str] = ["ttest", "TtestDispatcher", "ttest2n", "anova", "rm_anova", "corr", "chisquared"]
 
 
 def _validate_only_one_is_none(*args: Any) -> Optional[NoReturn]:
