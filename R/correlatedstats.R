@@ -69,7 +69,7 @@ renames <- setNames(ER_OUM_RD$hOUwie.dat$ObservedTraits, nm=paste0("R", names(ER
 rownames(transition_mat) <- renames
 colnames(transition_mat) <- renames
 
-stderr <- function(df) { lapply(X=df, FUN=function(column) {sd(column) / sqrt(length(column))}) }
+stderr <- function(df) { lapply(X=df, FUN=function(column) {sd(column) / sqrt(length(column))}) |> unlist() }
 
 avg_models_CD |> split(~tip_state)
 avg_models_CD |> split(~tip_state) |> lapply(function(df) { colMeans(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
