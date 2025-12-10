@@ -10,8 +10,8 @@ suppressPackageStartupMessages({
     library("ggplot2")
 })
 
-load("./OU_CD.RData") # CD?? models
-load("./OU_CIDp.RData") # CID+ models
+load("./rdata/OU_CD.RData") # CD models
+load("./rdata/OU_CIDp.RData") # CID+ models
 
 # find out the AIC and AICc of all the models
 # CD models
