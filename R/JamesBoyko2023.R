@@ -1,9 +1,9 @@
 # Boyko, J.D., O’Meara, B.C. and Beaulieu, J.M. (2023) “A novel method for jointly modeling the evolution of discrete and continuous traits,” Evolution, 77(3), pp. 836–851.
 # Available at: https://doi.org/10.1093/evolut/qpad002.
+# try and reproduce the analyses of the above paper to get comfortable with the OUwie stuff
 
 # code repo - https://github.com/tncvasconcelos/seed_dispersal
-# https://github.com/jboyko/2020_houwie
-# try and reproduce the analyses of the above paper to get comfortable with the OUwie stuff
+# code repo - https://github.com/jboyko/2020_houwie
 
 suppressPackageStartupMessages({
     library("ape")
@@ -19,16 +19,15 @@ suppressPackageStartupMessages({
 
 # pick family Ericaceae
 
-# we don't want the other unnecessary columns
-fruits <- read.csv("../R/thirdparty/seed_dispersal/trait_dataa/Ericaceae_trait_dataa.csv")[, c("Species", "Fruit_type")]
-fruits <- fruits[fruits$Fruit_type == "Fleshy" | fruits$Fruit_type == "Dry", ] # drop the rows that do not have actual data for life form
-# Fruit_type is a binary discrete categorical trait with values Fleshy and Dry
-fruits$Fruit_type |> table()
-dim(fruits ) # 444 species
+# # we don't want the other unnecessary columns
+# fruits <- read.csv("../R/thirdparty/seed_dispersal/trait_dataa/Ericaceae_trait_dataa.csv")[, c("Species", "Fruit_type")]
+# fruits <- fruits[fruits$Fruit_type == "Fleshy" | fruits$Fruit_type == "Dry", ] # drop the rows that do not have actual data for life form
+# # Fruit_type is a binary discrete categorical trait with values Fleshy and Dry
+# fruits$Fruit_type |> table()
+# dim(fruits ) # 444 species
 
 # continuous traits
-climate <- read.csv("../R/thirdparty/seed_dispersal/trait_dataa/Ericaceae_niche.csv")
-# looks like this too has the fruit type info embedded
+climate <- read.csv("../R/thirdparty/seed_dispersal/trait_dataa/Ericaceae_niche.csv") # looks like this too has the fruit type info embedded
 climate$Fruit_type |> table() # yup
 
 
@@ -78,7 +77,19 @@ for(i in 1:length(scaled_mean_aridity)){
 dev.off()
 # cool, Fig 5 on the paper is actually of mean aridity BUT IT IS NOT IDENTICAL TO OUR MANUALLY COMPUTED aridity_index????
 
-# rate category mat => gives a layout for the possible discrete state transitions
+# character dependent rate category mat => gives a layout for the possible discrete state transitions
 # for a discrete character state with two states e.g. dry & fleshy
 cd_discrete <- corHMM::getRateCatMat(length(unique(data$Fruit_type)))
+#     R1 R2
+# R1  0  2
+# R2  1  0
 
+# character independent variants
+cid_discrete <- corHMM::getFullMat(list(cd_discrete, cd_discrete), corHMM::getRateCatMat(length(unique(data$Fruit_type))))
+#         (1,R1) (2,R1) (1,R2) (2,R2)
+# (1,R1)      0      2      6      0
+# (2,R1)      1      0      0      6
+# (1,R2)      5      0      0      4
+# (2,R2)      0      5      3      0
+
+cid_discrete <- corHMM::equateStateMatPars(cid_discrete, list(c(1,3), c(2,4)))
