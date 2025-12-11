@@ -43,14 +43,15 @@ species <- intersect(tree$tip.label, climate$species) # 309 species
 indices <- match(species, climate$species)
 data <- climate[indices, ]
 
-# make sure that we only have species for which there's data in the phylogeny
-stopifnot(length(intersect(data$species, tree$tip.label)) == length(indices))
+stopifnot(length(intersect(data$species, tree$tip.label)) == length(indices)) # make sure that we only have species for which there's data in the phylogeny
 
 # drop the unnecessary species from the phylogeny
 species_to_drop_from_tree <- setdiff(tree$tip.label, species) # order of args matters here!!!
 pruned_tree <- ape::drop.tip(phy = tree, tip = species_to_drop_from_tree)
 
-# visualize the pruned phylogeny
+stopifnot(all.equal(data$species, pruned_tree$tip.label)) # make sure the order of species match in data & the phylogeny
+
+# visualize the pruned phylogeny with aridity index
 png(filename = "../plots/Ericaceae_AI.png", width = 15, height = 20, units = "in", res = 600)
 Tmax <- max(ape::branching.times(pruned_tree))
 plot(pruned_tree, show.tip.label = FALSE, x.lim = c(0, Tmax + 0.2 * Tmax))
@@ -66,6 +67,7 @@ for(i in 1:length(scaled_AI)){
 }
 dev.off()
 
+# repeat that for mean aridity
 png(filename = "../plots/Ericaceae_mean_aridity.png", width = 15, height = 20, units = "in", res = 600)
 plot(pruned_tree, show.tip.label = FALSE, x.lim = c(0, Tmax + 0.2 * Tmax))
 scaled_mean_aridity <- (data$mean_aridity - min(data$mean_aridity)) / max(data$mean_aridity - min(data$mean_aridity))
@@ -74,8 +76,7 @@ for(i in 1:length(scaled_mean_aridity)){
     lines(list(x = c(start, start + scaled_mean_aridity[i] * MULTIPLIER), y = c(i, i)), col = cols[ifelse(data$Fruit_type[i] == "Dry", 1, 2)], lwd = 2)
 }
 dev.off()
-
-# cool, the plot on the paper is actually of the mean aridity BUT IT IS NOT IDENTICAL TO OUR MANUALLY COMPUTED aridity_index????
+# cool, Fig 5 on the paper is actually of mean aridity BUT IT IS NOT IDENTICAL TO OUR MANUALLY COMPUTED aridity_index????
 
 # rate category mat => gives a layout for the possible discrete state transitions
 # for a discrete character state with two states e.g. dry & fleshy
