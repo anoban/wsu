@@ -45,7 +45,7 @@ data <- climate[indices, ]
 stopifnot(length(intersect(data$species, tree$tip.label)) == length(indices)) # make sure that we only have species for which there's data in the phylogeny
 
 # drop the unnecessary species from the phylogeny
-species_to_drop_from_tree <- setdiff(tree$tip.label, species) # order of args matters here!!!
+species_to_drop_from_tree <- setdiff(tree$tip.label, species) # order of the args matters here!!!
 pruned_tree <- ape::drop.tip(phy = tree, tip = species_to_drop_from_tree)
 
 stopifnot(all.equal(data$species, pruned_tree$tip.label)) # make sure the order of species match in data & the phylogeny
@@ -84,12 +84,30 @@ cd_discrete <- corHMM::getRateCatMat(length(unique(data$Fruit_type)))
 # R1  0  2
 # R2  1  0
 
+# look up https://github.com/thej022214/corHMM/blob/master/vignettes/corHMMv2.1-vignette.pdf for a detailed walkthrough about
+# discrete state transition rate categories
+
 # character independent variants
-cid_discrete <- corHMM::getFullMat(list(cd_discrete, cd_discrete), corHMM::getRateCatMat(length(unique(data$Fruit_type))))
+# getFullMat combines several index matrices which describe transitions between observed states into output a single index matrix for use in corHMM
+cid_discrete <- corHMM::getFullMat(StateMats = list(cd_discrete, cd_discrete), RateClassMat = corHMM::getRateCatMat(length(unique(data$Fruit_type))))
+# below is what we got
 #         (1,R1) (2,R1) (1,R2) (2,R2)
 # (1,R1)      0      2      6      0
 # (2,R1)      1      0      0      6
 # (1,R2)      5      0      0      4
 # (2,R2)      0      5      3      0
+
+# with another state (hidden discrete character state), there are 4 x 4 transitions possible
+#        (1,R1) (2,R1) (1,R2) (2,R2)
+# (1,R1)    0      5      9     13
+# (2,R1)    2      0     10     14
+# (1,R2)    3      7      0     15
+# (2,R2)    4      8     12      0
+
+# TRANSITION RATE MATRICES ARE READ FROM ROW TO COLUMN
+
+# but what we saw was different from this! this is because corHMM makes a simplyfying assumption that when a change in one discrete character is occurring
+# another in the second discrete character cannot occur simultaneously. i.e (1, R1) can transition to (1, R2) or (2, R1) but not to (2, R2)
+# again look up the corHMM package vignette for a comprehensive explanation
 
 cid_discrete <- corHMM::equateStateMatPars(cid_discrete, list(c(1,3), c(2,4)))
