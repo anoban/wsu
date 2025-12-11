@@ -27,7 +27,7 @@ suppressPackageStartupMessages({
 # dim(fruits ) # 444 species
 
 # continuous traits
-climate <- read.csv("../R/thirdparty/seed_dispersal/trait_dataa/Ericaceae_niche.csv") # looks like this too has the fruit type info embedded
+climate <- read.csv("../R/thirdparty/seed_dispersal/trait_data/Ericaceae_niche.csv") # looks like this too has the fruit type info embedded
 climate$Fruit_type |> table() # yup
 
 
@@ -40,8 +40,14 @@ ape::is.binary(tree) # TRUE :)
 # drop the species in the dataaset if they are not in the phylogenetic tree
 species <- intersect(tree$tip.label, climate$species) # 309 species
 indices <- match(species, climate$species)
-data <- climate[indices, ]
+data <- climate[indices, c("species", "Fruit_type", "mean_aridity", "se_aridity")]
 
+# the standard error column has 43 NAs???
+colSums(is.na(data))
+# update these with the mean of the se_aridity column (????)
+data$se_aridity[is.na(data$se_aridity)] <- mean(data$se_aridity, na.rm = TRUE)
+
+stopifnot(sum(is.na(data)) == 0) # make sure no NAs in the data
 stopifnot(length(intersect(data$species, tree$tip.label)) == length(indices)) # make sure that we only have species for which there's data in the phylogeny
 
 # drop the unnecessary species from the phylogeny
@@ -89,8 +95,10 @@ cd_discrete <- corHMM::getRateCatMat(length(unique(data$Fruit_type)))
 
 # character independent variants
 # getFullMat combines several index matrices which describe transitions between observed states into output a single index matrix for use in corHMM
-cid_discrete <- corHMM::getFullMat(StateMats = list(cd_discrete, cd_discrete), RateClassMat = corHMM::getRateCatMat(length(unique(data$Fruit_type))))
+cid_discrete <- corHMM::getFullMat(StateMats = list(cd_discrete, cd_discrete), # rates for observed states and hidden states
+                                   RateClassMat = corHMM::getRateCatMat(2)) # rate categories = 2
 # below is what we got
+# R1 stands for rate category 1 and R2 for rate category 2
 #         (1,R1) (2,R1) (1,R2) (2,R2)
 # (1,R1)      0      2      6      0
 # (2,R1)      1      0      0      6
@@ -107,7 +115,18 @@ cid_discrete <- corHMM::getFullMat(StateMats = list(cd_discrete, cd_discrete), R
 # TRANSITION RATE MATRICES ARE READ FROM ROW TO COLUMN
 
 # but what we saw was different from this! this is because corHMM makes a simplyfying assumption that when a change in one discrete character is occurring
-# another in the second discrete character cannot occur simultaneously. i.e (1, R1) can transition to (1, R2) or (2, R1) but not to (2, R2)
-# again look up the corHMM package vignette for a comprehensive explanation
+# another in the second discrete character cannot occur simultaneously. i.e (1, R1) can transition directly to (1, R2) or (2, R1) but not to (2, R2)
+# in order for state (1, R1) to transition to (2, R2), it will have to go through either (1, R2) or (2, R1)
+# again, look up the corHMM package vignette for a comprehensive explanation
 
-cid_discrete <- corHMM::equateStateMatPars(cid_discrete, list(c(1,3), c(2,4)))
+# use the equateStateMatPars() function to create a "SYM" flavoured transition rate matrix, in which the ﬁrst argument is the rate matrix being modiﬁed (i.e., rate.mat object)
+# and second argument is list of the parameters to be equated.
+# one thing to note is that you must have the appropriate number of rate categories since a user rate matrix is not duplicated or changed by corHMM()
+
+cid_discrete <- corHMM::equateStateMatPars(cid_discrete, list(c(1, 3), c(2, 4)))
+# it now looks like
+#        (1,R1) (2,R1) (1,R2) (2,R2)
+# (1,R1)      0      2      6      0
+# (2,R1)      1      0      0      6
+# (1,R2)      5      0      0      4
+# (2,R2)      0      5      3      0
