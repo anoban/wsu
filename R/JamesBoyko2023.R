@@ -51,15 +51,33 @@ species_to_drop_from_tree <- setdiff(tree$tip.label, species) # order of args ma
 pruned_tree <- ape::drop.tip(phy = tree, tip = species_to_drop_from_tree)
 
 # visualize the pruned phylogeny
+png(filename = "../plots/Ericaceae_AI.png", width = 15, height = 20, units = "in", res = 600)
 Tmax <- max(ape::branching.times(pruned_tree))
 plot(pruned_tree, show.tip.label = FALSE, x.lim = c(0, Tmax + 0.2 * Tmax))
-start <- Tmax + (0.005 * Tmax)
-data.prop <- (data[,3] - min(data[,3]))/max(data[,3] - min(data[,3]))
-xadd <- Tmax * 0.2
-jitter <- 0.1 * xadd
-cols = c("brown", "purple")
-for(i in 1:length(data.prop)){
-    lines(list(x = c(start, start + (data.prop[i] * xadd)), y = c(i,i)),
-          col = cols[ifelse(data$reg[i] == "Dry", 1, 2)],
-          lwd = 1)
+start <- Tmax + (0.0075 * Tmax) # position to start the AI lines
+# mean annual precipitation divided by annual potential evapotranspiration
+aridity_index <- data$mean_prec / data$mean_pet # MAP / PET
+# rescale the aridity index so the lines don't look too wide
+scaled_AI <- (aridity_index - min(aridity_index)) / max(aridity_index - min(aridity_index))
+cols <- c("#C28559", "#238A71")
+MULTIPLIER <- 2.0
+for(i in 1:length(scaled_AI)){
+    lines(list(x = c(start, start + scaled_AI[i] * MULTIPLIER), y = c(i, i)), col = cols[ifelse(data$Fruit_type[i] == "Dry", 1, 2)], lwd = 2)
 }
+dev.off()
+
+png(filename = "../plots/Ericaceae_mean_aridity.png", width = 15, height = 20, units = "in", res = 600)
+plot(pruned_tree, show.tip.label = FALSE, x.lim = c(0, Tmax + 0.2 * Tmax))
+scaled_mean_aridity <- (data$mean_aridity - min(data$mean_aridity)) / max(data$mean_aridity - min(data$mean_aridity))
+MULTIPLIER <- Tmax * 0.125
+for(i in 1:length(scaled_mean_aridity)){
+    lines(list(x = c(start, start + scaled_mean_aridity[i] * MULTIPLIER), y = c(i, i)), col = cols[ifelse(data$Fruit_type[i] == "Dry", 1, 2)], lwd = 2)
+}
+dev.off()
+
+# cool, the plot on the paper is actually of the mean aridity BUT IT IS NOT IDENTICAL TO OUR MANUALLY COMPUTED aridity_index????
+
+# rate category mat => gives a layout for the possible discrete state transitions
+# for a discrete character state with two states e.g. dry & fleshy
+cd_discrete <- corHMM::getRateCatMat(length(unique(data$Fruit_type)))
+
