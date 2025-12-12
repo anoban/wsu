@@ -47,6 +47,9 @@ colSums(is.na(data))
 # update these with the mean of the se_aridity column (????)
 data$se_aridity[is.na(data$se_aridity)] <- mean(data$se_aridity, na.rm = TRUE)
 
+# see the mean of mean_aridity, grouped by fruit type
+lapply(split(data, ~Fruit_type), FUN = function(df) { c(mean(df$mean_aridity), mean(df$se_aridity)) })
+
 stopifnot(sum(is.na(data)) == 0) # make sure no NAs in the data
 stopifnot(length(intersect(data$species, tree$tip.label)) == length(indices)) # make sure that we only have species for which there's data in the phylogeny
 
