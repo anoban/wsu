@@ -7,27 +7,30 @@
 // adapted from https://github.com/zsef123/Connected_components_PyTorch
 // with license found in the LICENSE_cctorch file in the root directory.
 
+#if !defined(_WIN32) && !defined(_WIN64)
+    #error This CPU only port of PyTorch cc2d CUDA extension is only for Windows based machines!
+#endif
+
 // #include <torch/extension.h>
 // #include <torch/script.h>
 #include <cassert>
-#include <cstdint>
 #include <vector>
 
 // 2d
 constexpr unsigned long long BLOCK_ROWS { 16 };
 constexpr unsigned long long BLOCK_COLS { 16 };
 
-namespace ccomp_cpu { // connected components CPU only version - a bit too ambitious and unnecessary????
+namespace ccomp2d_cpu { // connected components (2D) CPU only version - a bit too ambitious and unnecessary????
 
     template<typename _Ty> inline unsigned char hasBit(_Ty bitmap, unsigned char pos) noexcept { return (bitmap >> pos) & 1; }
 
-    int32_t find(const int32_t* s_buf, int32_t n) {
+    long find(const long* s_buf, long n) noexcept {
         while (s_buf[n] != n) n = s_buf[n];
         return n;
     }
 
-    int32_t find_n_compress(int32_t* s_buf, int32_t n) noexcept {
-        const int32_t id = n;
+    long find_n_compress(long* s_buf, long n) noexcept {
+        const long id = n;
         while (s_buf[n] != n) {
             n         = s_buf[n];
             s_buf[id] = n;
@@ -35,27 +38,27 @@ namespace ccomp_cpu { // connected components CPU only version - a bit too ambit
         return n;
     }
 
-    void union_(int32_t* s_buf, int32_t a, int32_t b) noexcept {
+    void union_(long* s_buf, long a, long b) noexcept {
         bool done;
         do {
             a = find(s_buf, a);
             b = find(s_buf, b);
 
             if (a < b) {
-                int32_t old = atomicMin(s_buf + b, a);
-                done        = (old == b);
-                b           = old;
+                long old = atomicMin(s_buf + b, a);
+                done     = (old == b);
+                b        = old;
             } else if (b < a) {
-                int32_t old = atomicMin(s_buf + a, b);
-                done        = (old == a);
-                a           = old;
+                long old = atomicMin(s_buf + a, b);
+                done     = (old == a);
+                a        = old;
             } else
                 done = true;
 
         } while (!done);
     }
 
-    void init_labeling(int32_t* label, const uint32_t W, const uint32_t H) noexcept {
+    void init_labeling(long* label, const uint32_t W, const uint32_t H) noexcept {
         const uint32_t row = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
         const uint32_t col = (blockIdx.x * blockDim.x + threadIdx.x) * 2;
         const uint32_t idx = row * W + col;
@@ -63,7 +66,7 @@ namespace ccomp_cpu { // connected components CPU only version - a bit too ambit
         if (row < H && col < W) label[idx] = idx;
     }
 
-    void merge(uint8_t* img, int32_t* label, const uint32_t W, const uint32_t H) noexcept {
+    void merge(uint8_t* img, long* label, const uint32_t W, const uint32_t H) noexcept {
         const uint32_t row = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
         const uint32_t col = (blockIdx.x * blockDim.x + threadIdx.x) * 2;
         const uint32_t idx = row * W + col;
@@ -98,7 +101,7 @@ namespace ccomp_cpu { // connected components CPU only version - a bit too ambit
         }
     }
 
-    void compression(int32_t* label, const int32_t W, const int32_t H) noexcept {
+    void compression(long* label, const long W, const long H) noexcept {
         const uint32_t row = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
         const uint32_t col = (blockIdx.x * blockDim.x + threadIdx.x) * 2;
         const uint32_t idx = row * W + col;
@@ -106,14 +109,14 @@ namespace ccomp_cpu { // connected components CPU only version - a bit too ambit
         if (row < H && col < W) find_n_compress(label, idx);
     }
 
-    void final_labeling(const uint8_t* img, int32_t* label, const int32_t W, const int32_t H) noexcept {
+    void final_labeling(const uint8_t* img, long* label, const long W, const long H) noexcept {
         const uint32_t row = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
         const uint32_t col = (blockIdx.x * blockDim.x + threadIdx.x) * 2;
         const uint32_t idx = row * W + col;
 
         if (row >= H || col >= W) return;
 
-        int32_t y = label[idx] + 1;
+        long y = label[idx] + 1;
 
         if (img[idx])
             label[idx] = y;
@@ -142,37 +145,37 @@ namespace ccomp_cpu { // connected components CPU only version - a bit too ambit
         }
     }
 
-    void init_counting(const int32_t* label, int32_t* count_init, const int32_t W, const int32_t H) noexcept {
+    void init_counting(const long* label, long* count_init, const long W, const long H) noexcept {
         const uint32_t row = (blockIdx.y * blockDim.y + threadIdx.y);
         const uint32_t col = (blockIdx.x * blockDim.x + threadIdx.x);
         const uint32_t idx = row * W + col;
 
         if (row >= H || col >= W) return;
 
-        int32_t y = label[idx];
+        long y = label[idx];
         if (y > 0) {
-            int32_t count_idx = y - 1;
+            long count_idx = y - 1;
             atomicAdd(count_init + count_idx, 1);
         }
     }
 
-    void final_counting(const int32_t* label, const int32_t* count_init, int32_t* count_final, const int32_t W, const int32_t H) noexcept {
+    void final_counting(const long* label, const long* count_init, long* count_final, const long W, const long H) noexcept {
         const uint32_t row = (blockIdx.y * blockDim.y + threadIdx.y);
         const uint32_t col = (blockIdx.x * blockDim.x + threadIdx.x);
         const uint32_t idx = row * W + col;
 
         if (row >= H || col >= W) return;
 
-        int32_t y = label[idx];
+        long y = label[idx];
         if (y > 0) {
-            int32_t count_idx = y - 1;
-            count_final[idx]  = count_init[count_idx];
+            long count_idx   = y - 1;
+            count_final[idx] = count_init[count_idx];
         } else {
             count_final[idx] = 0;
         }
     }
 
-} // namespace ccomp_cpu
+} // namespace ccomp2d_cpu
 
 std::vector<torch::Tensor> get_connected_componnets(const torch::Tensor& inputs) {
     assert(inputs.is_cuda(), "inputs must be a CUDA tensor");
@@ -203,17 +206,19 @@ std::vector<torch::Tensor> get_connected_componnets(const torch::Tensor& inputs)
     for (int n = 0; n < N; n++) {
         uint32_t offset = n * H * W;
 
-        cc2d::init_labeling<<<grid, block, 0, stream>>>(labels.data_ptr<int32_t>() + offset, W, H);
-        cc2d::merge<<<grid, block, 0, stream>>>(inputs.data_ptr<uint8_t>() + offset, labels.data_ptr<int32_t>() + offset, W, H);
-        cc2d::compression<<<grid, block, 0, stream>>>(labels.data_ptr<int32_t>() + offset, W, H);
-        cc2d::final_labeling<<<grid, block, 0, stream>>>(inputs.data_ptr<uint8_t>() + offset, labels.data_ptr<int32_t>() + offset, W, H);
+        ccomp2d_cpu::init_labeling<<<grid, block, 0, stream>>>(labels.data_ptr<long>() + offset, W, H);
+        ccomp2d_cpu::merge<<<grid, block, 0, stream>>>(inputs.data_ptr<uint8_t>() + offset, labels.data_ptr<long>() + offset, W, H);
+        ccomp2d_cpu::compression<<<grid, block, 0, stream>>>(labels.data_ptr<long>() + offset, W, H);
+        ccomp2d_cpu::final_labeling<<<grid, block, 0, stream>>>(
+            inputs.data_ptr<uint8_t>() + offset, labels.data_ptr<long>() + offset, W, H
+        );
 
         // get the counting of each pixel
-        cc2d::init_counting<<<grid_count, block_count, 0, stream>>>(
-            labels.data_ptr<int32_t>() + offset, counts_init.data_ptr<int32_t>() + offset, W, H
+        ccomp2d_cpu::init_counting<<<grid_count, block_count, 0, stream>>>(
+            labels.data_ptr<long>() + offset, counts_init.data_ptr<long>() + offset, W, H
         );
-        cc2d::final_counting<<<grid_count, block_count, 0, stream>>>(
-            labels.data_ptr<int32_t>() + offset, counts_init.data_ptr<int32_t>() + offset, counts_final.data_ptr<int32_t>() + offset, W, H
+        ccomp2d_cpu::final_counting<<<grid_count, block_count, 0, stream>>>(
+            labels.data_ptr<long>() + offset, counts_init.data_ptr<long>() + offset, counts_final.data_ptr<long>() + offset, W, H
         );
     }
 
