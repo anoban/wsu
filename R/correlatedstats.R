@@ -23,8 +23,8 @@ models_CIDp <- list(EROUM=ER_OUM_RD_CIDp, EROUMA=ER_OUMA_RD_CIDp, EROUMV=ER_OUMV
                     ARDOUM=ARD_OUM_RD_CIDp, ARDOUMA=ARD_OUMA_RD_CIDp, ARDOUMV=ARD_OUMV_RD_CIDp, ARDOUMVA=ARD_OUMVA_RD_CIDp,
                     SYMOUM=SYM_OUM_RD_CIDp, SYMOUMA=SYM_OUMA_RD_CIDp, SYMOUMV=SYM_OUMV_RD_CIDp, SYMOUMVA=SYM_OUMVA_RD_CIDp)
 
-lapply(models, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame()
-lapply(models_CIDp, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame()
+lapply(models, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
+lapply(models_CIDp, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
 
 # model averages
 # type - one of AIC, BIC, or AICc for use during evaluation of relative model fit.
@@ -45,7 +45,7 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
     stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
-ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_IDKmaybeCD.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_CD.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
 
 plot_df <- reshape2::melt(avg_models_CIDp)
