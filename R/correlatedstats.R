@@ -10,22 +10,24 @@ suppressPackageStartupMessages({
     library("ggplot2")
 })
 
-load("./rdata/OU_CD.RData") # CD models
-load("./rdata/OU_CIDp.RData") # CID+ models
-load("./rdata/OU_CD_.RData")
+load("./rdata/OU_CD.RData") # rate.cat=2, null.model=FALSE
+load("./rdata/OU_CIDp.RData") # rate.cat=2, null.model=TRUE
+load("./rdata/OU_CD_.RData") # rate.cat=1, null.model=FALSE
 
 # find out the AIC and AICc of all the models
-# CD models
+
+# rate.cat=2, null.model=FALSE
 models <- list(EROUM=ER_OUM_RD, EROUMA=ER_OUMA_RD, EROUMV=ER_OUMV_RD, EROUMVA=ER_OUMVA_RD,
                ARDOUM=ARD_OUM_RD, ARDOUMA=ARD_OUMA_RD, ARDOUMV=ARD_OUMV_RD, ARDOUMVA=ARD_OUMVA_RD,
                SYMOUM=SYM_OUM_RD, SYMOUMA=SYM_OUMA_RD, SYMOUMV=SYM_OUMV_RD, SYMOUMVA=SYM_OUMVA_RD)
-# CID+ models
+# rate.cat=2, null.model=TRUE
 models_CIDp <- list(EROUM=ER_OUM_RD_CIDp, EROUMA=ER_OUMA_RD_CIDp, EROUMV=ER_OUMV_RD_CIDp, EROUMVA=ER_OUMVA_RD_CIDp,
                     ARDOUM=ARD_OUM_RD_CIDp, ARDOUMA=ARD_OUMA_RD_CIDp, ARDOUMV=ARD_OUMV_RD_CIDp, ARDOUMVA=ARD_OUMVA_RD_CIDp,
                     SYMOUM=SYM_OUM_RD_CIDp, SYMOUMA=SYM_OUMA_RD_CIDp, SYMOUMV=SYM_OUMV_RD_CIDp, SYMOUMVA=SYM_OUMVA_RD_CIDp)
-
-models_CD <- list(ER_OUM_RD_CD, ER_OUMA_RD_CD, ER_OUMV_RD_CD, ER_OUMVA_RD_CD, ARD_OUM_RD_CD, ARD_OUMA_RD_CD, ARD_OUMV_RD_CD,
-                  ARD_OUMVA_RD_CD, SYM_OUM_RD_CD, SYM_OUMA_RD_CD, SYM_OUMV_RD_CD, SYM_OUMVA_RD_CD)
+# rate.cat=1, null.model=FALSE
+models_CD <- list(EROUM=ER_OUM_RD_CD, EROUMA=ER_OUMA_RD_CD, EROUMV=ER_OUMV_RD_CD, EROUMVA=ER_OUMVA_RD_CD, ARDOUM=ARD_OUM_RD_CD,
+                  ARDOUMA=ARD_OUMA_RD_CD, ARDOUMV=ARD_OUMV_RD_CD, ARDOUMVA=ARD_OUMVA_RD_CD, SYMOUM=SYM_OUM_RD_CD, SYMOUMA=SYM_OUMA_RD_CD,
+                  SYMOUMV=SYM_OUMV_RD_CD, SYMOUMVA=SYM_OUMVA_RD_CD)
 
 lapply(models, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
 lapply(models_CIDp, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
@@ -37,6 +39,7 @@ lapply(models_CD, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.fr
 # force - a boolean indicating whether to force potentially failed model fits to be included in the model averaging.
 avg_models_CD <- OUwie::getModelAvgParams(models, type = "AICc", force = FALSE)
 avg_models_CIDp <- OUwie::getModelAvgParams(models_CIDp, type = "AICc", force = FALSE)
+avg_models_CD_ <- OUwie::getModelAvgParams(models_CD, type = "AICc", force = FALSE)
 
 # look up to see what the BIC stuff is about
 # https://www.rdocumentation.org/packages/AICcmodavg/versions/2.3-4/topics/bictabCustom
@@ -60,6 +63,16 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
 ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_CIDp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
+
+plot_df <- reshape2::melt(avg_models_CD_)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_CD_.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
 
 avg_models_CD[, c("alpha", "sigma.sq", "theta", "tip_state")] |> split(~tip_state)
 
