@@ -12,6 +12,7 @@ suppressPackageStartupMessages({
 
 load("./rdata/OU_CD.RData") # CD models
 load("./rdata/OU_CIDp.RData") # CID+ models
+load("./rdata/OU_CD_.RData")
 
 # find out the AIC and AICc of all the models
 # CD models
@@ -23,8 +24,12 @@ models_CIDp <- list(EROUM=ER_OUM_RD_CIDp, EROUMA=ER_OUMA_RD_CIDp, EROUMV=ER_OUMV
                     ARDOUM=ARD_OUM_RD_CIDp, ARDOUMA=ARD_OUMA_RD_CIDp, ARDOUMV=ARD_OUMV_RD_CIDp, ARDOUMVA=ARD_OUMVA_RD_CIDp,
                     SYMOUM=SYM_OUM_RD_CIDp, SYMOUMA=SYM_OUMA_RD_CIDp, SYMOUMV=SYM_OUMV_RD_CIDp, SYMOUMVA=SYM_OUMVA_RD_CIDp)
 
+models_CD <- list(ER_OUM_RD_CD, ER_OUMA_RD_CD, ER_OUMV_RD_CD, ER_OUMVA_RD_CD, ARD_OUM_RD_CD, ARD_OUMA_RD_CD, ARD_OUMV_RD_CD,
+                  ARD_OUMVA_RD_CD, SYM_OUM_RD_CD, SYM_OUMA_RD_CD, SYM_OUMV_RD_CD, SYM_OUMVA_RD_CD)
+
 lapply(models, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
 lapply(models_CIDp, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
+lapply(models_CD, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
 
 # model averages
 # type - one of AIC, BIC, or AICc for use during evaluation of relative model fit.
