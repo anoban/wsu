@@ -1,7 +1,8 @@
 
-----------------------------------
+--------------------------------
 
 ___A (relatively organized) dumpster for all the code work related to my PhD___
+-------------------------------
 
 - `/R` - all R stuff (including R notebooks)     
 - `/data` - all the datasets (including thirdparty ones)      
@@ -10,5 +11,4 @@ ___A (relatively organized) dumpster for all the code work related to my PhD___
 - `/notebooks` - Jupyter notebooks (Python)
 - `/power` - power analysis codebase for the 3rd chapter     
 
-----------------------------------
 
