@@ -59,10 +59,13 @@ ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_CIDp.png", device = "pn
 avg_models_CD[, c("alpha", "sigma.sq", "theta", "tip_state")] |> split(~tip_state)
 
 
+# OUR BEST FIT WAS THE CD EROUMV MODEL
+
 # follwing gives you the state shift info in the phylogeny
-transition_mat <- ER_OUM_RD$hOUwie.dat$StateMats[[1]]
+transition_mat <- ER_OUMV_RD$hOUwie.dat$StateMats[[1]]
 # how to interpret the columns and rows
-ER_OUM_RD$hOUwie.dat$ObservedTraits
+ER_OUMV_RD$solution.disc # since this is an ER flavoured mode, all the discrete trait state transition rates are identical
+ER_OUMV_RD$solution.cont
 
 # rename the R1 to Rn to actual mycorrhizal states
 renames <- setNames(ER_OUM_RD$hOUwie.dat$ObservedTraits, nm=paste0("R", names(ER_OUM_RD$hOUwie.dat$ObservedTraits)))
