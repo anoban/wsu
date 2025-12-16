@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
     library("ggplot2")
 })
 
-load("./rdata/OU_CD.RData") # rate.cat=2, null.model=FALSE
+load("./rdata/OU_CD.RData") # rate.cat=2, null.model=FALSE - WHAT'S THE POINT OF THIS???
 load("./rdata/OU_CIDp.RData") # rate.cat=2, null.model=TRUE
 load("./rdata/OU_CD_.RData") # rate.cat=1, null.model=FALSE
 
