@@ -3,7 +3,9 @@
 # and will remove files that no longer exist on disk
 
 
-def __get_gitignore_contents(fpath: str, ignore_wildcards: bool = True, ignore_comments: bool = True) -> list[str]:
+def __get_gitignore_contents(
+    fpath: str, ignore_wildcards: bool = True, ignore_comments: bool = True, ignore_directories: bool = True
+) -> list[str]:
     """
     :param path: path to .gitignore file
     :type path: str
@@ -11,6 +13,8 @@ def __get_gitignore_contents(fpath: str, ignore_wildcards: bool = True, ignore_c
     :type ignore_wildcards: bool
     :param ignore_comments: whether to ignore comments
     :type ignore_comments: bool
+    :param ignore_directories: whether to ignore directory paths
+    :type ignore_directories: bool
     :return: lines in the .gitignore
     :rtype: list[str]
     """
