@@ -4,7 +4,7 @@
 
 
 def __get_gitignore_contents(
-    fpath: str, ignore_wildcards: bool = True, ignore_comments: bool = True, ignore_directories: bool = True
+    fpath: str, ignore_wildcards: bool, ignore_comments: bool, ignore_directories: bool, ignore_exceptions: bool
 ) -> list[str]:
     """
     :param path: path to .gitignore file
@@ -15,6 +15,8 @@ def __get_gitignore_contents(
     :type ignore_comments: bool
     :param ignore_directories: whether to ignore directory paths
     :type ignore_directories: bool
+    :param ignore_exceptions: whether to ignore exceptions with preceding exclamation mark e.g. !.vscode/tasks.json
+    :type ignore_exceptions: bool
     :return: lines in the .gitignore
     :rtype: list[str]
     """
