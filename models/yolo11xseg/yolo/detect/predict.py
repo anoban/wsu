@@ -1,8 +1,8 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-from engine.predictor import BasePredictor
-from engine.results import Results
 from utils import nms, ops
+from yolo.engine.predictor import BasePredictor
+from yolo.engine.results import Results
 
 
 class DetectionPredictor(BasePredictor):

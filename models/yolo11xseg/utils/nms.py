@@ -4,10 +4,8 @@ import sys
 import time
 
 import torch
-
-from ultralytics.utils import LOGGER
-from ultralytics.utils.metrics import batch_probiou, box_iou
-from ultralytics.utils.ops import xywh2xyxy
+from utils.metrics import batch_probiou, box_iou
+from utils.ops import xywh2xyxy
 
 
 def non_max_suppression(
@@ -160,7 +158,7 @@ def non_max_suppression(
         if return_idxs:
             keepi[xi] = xk[i].view(-1)
         if (time.time() - t) > time_limit:
-            LOGGER.warning(f"NMS time limit {time_limit:.3f}s exceeded")
+            # LOGGER.warning(f"NMS time limit {time_limit:.3f}s exceeded")
             break  # time limit exceeded
 
     return (output, keepi) if return_idxs else output
@@ -185,12 +183,7 @@ class TorchNMS:
 
     @staticmethod
     def fast_nms(
-        boxes: torch.Tensor,
-        scores: torch.Tensor,
-        iou_threshold: float,
-        use_triu: bool = True,
-        iou_func=box_iou,
-        exit_early: bool = True,
+        boxes: torch.Tensor, scores: torch.Tensor, iou_threshold: float, use_triu: bool = True, iou_func=box_iou, exit_early: bool = True
     ) -> torch.Tensor:
         """Fast-NMS implementation from https://arxiv.org/pdf/1904.02689 using upper triangular matrix operations.
 
@@ -297,11 +290,7 @@ class TorchNMS:
 
     @staticmethod
     def batched_nms(
-        boxes: torch.Tensor,
-        scores: torch.Tensor,
-        idxs: torch.Tensor,
-        iou_threshold: float,
-        use_fast_nms: bool = False,
+        boxes: torch.Tensor, scores: torch.Tensor, idxs: torch.Tensor, iou_threshold: float, use_fast_nms: bool = False
     ) -> torch.Tensor:
         """Batched NMS for class-aware suppression.
 
@@ -331,7 +320,5 @@ class TorchNMS:
         boxes_for_nms = boxes + offsets[:, None]
 
         return (
-            TorchNMS.fast_nms(boxes_for_nms, scores, iou_threshold)
-            if use_fast_nms
-            else TorchNMS.nms(boxes_for_nms, scores, iou_threshold)
+            TorchNMS.fast_nms(boxes_for_nms, scores, iou_threshold) if use_fast_nms else TorchNMS.nms(boxes_for_nms, scores, iou_threshold)
         )

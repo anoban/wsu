@@ -5,10 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, override
 
-from detect import DetectionPredictor, DetectionTrainer, DetectionValidator
-from engine.model import Model
-from nn.tasks import DetectionModel, SegmentationModel
-from segment import SegmentationPredictor, SegmentationTrainer, SegmentationValidator
+from yolo.detect import DetectionPredictor, DetectionTrainer, DetectionValidator
+from yolo.engine.model import Model
+from yolo.nn.tasks import DetectionModel, SegmentationModel
+from yolo.segment import SegmentationPredictor, SegmentationTrainer, SegmentationValidator
 
 
 class YOLO(Model):
