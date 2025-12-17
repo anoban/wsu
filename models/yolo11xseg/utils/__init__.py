@@ -23,11 +23,11 @@ from urllib.parse import unquote
 import cv2
 import numpy as np
 import torch
+from patches import imread, imshow, imwrite, torch_save  # for patches
+from utils.git import GitRepo
+from utils.tqdm import TQDM  # noqa
 
-from ultralytics import __version__
-from ultralytics.utils.git import GitRepo
-from ultralytics.utils.patches import imread, imshow, imwrite, torch_save  # for patches
-from ultralytics.utils.tqdm import TQDM  # noqa
+from . import *  # type: ignore  # noqa: F403
 
 # PyTorch Multi-GPU DDP Constants
 RANK = int(os.getenv("RANK", -1))
@@ -53,18 +53,7 @@ TORCH_VERSION = str(torch.__version__)  # Normalize torch.__version__ (PyTorch>1
 TORCHVISION_VERSION = importlib.metadata.version("torchvision")  # faster than importing torchvision
 IS_VSCODE = os.environ.get("TERM_PROGRAM", False) == "vscode"
 RKNN_CHIPS = frozenset(
-    {
-        "rk3588",
-        "rk3576",
-        "rk3566",
-        "rk3568",
-        "rk3562",
-        "rv1103",
-        "rv1106",
-        "rv1103b",
-        "rv1106b",
-        "rk2118",
-    }
+    {"rk3588", "rk3576", "rk3566", "rk3568", "rk3562", "rv1103", "rv1106", "rv1103b", "rv1106b", "rk2118"}
 )  # Rockchip processors available for export
 HELP_MSG = """
     Examples for running Ultralytics:
@@ -198,9 +187,7 @@ class DataExportMixin:
                 else:
                     return str(v)
 
-            df_str = df.select(
-                [pl.col(c).map_elements(_to_str_simple, return_dtype=pl.String).alias(c) for c in df.columns]
-            )
+            df_str = df.select([pl.col(c).map_elements(_to_str_simple, return_dtype=pl.String).alias(c) for c in df.columns])
             return df_str.write_csv()
 
     def to_json(self, normalize=False, decimals=5):
@@ -858,9 +845,7 @@ def get_user_config_dir(sub_dir="Ultralytics"):
             return alt
         if is_dir_writeable(alt.parent):
             alt.mkdir(parents=True, exist_ok=True)
-            LOGGER.warning(
-                f"user config directory '{p}' is not writable, using '{alt}'. Set YOLO_CONFIG_DIR to override."
-            )
+            LOGGER.warning(f"user config directory '{p}' is not writable, using '{alt}'. Set YOLO_CONFIG_DIR to override.")
             return alt
 
     # Last fallback → CWD
@@ -1342,9 +1327,7 @@ class SettingsManager(JSONDict):
                 raise KeyError(f"No Ultralytics setting '{k}'. {self.help_msg}")
             t = type(self.defaults[k])
             if not isinstance(v, t):
-                raise TypeError(
-                    f"Ultralytics setting '{k}' must be '{t.__name__}' type, not '{type(v).__name__}'. {self.help_msg}"
-                )
+                raise TypeError(f"Ultralytics setting '{k}' must be '{t.__name__}' type, not '{type(v).__name__}'. {self.help_msg}")
         super().update(*args, **kwargs)
 
     def reset(self):
@@ -1390,17 +1373,7 @@ PERSISTENT_CACHE = JSONDict(USER_CONFIG_DIR / "persistent_cache.json")  # initia
 DATASETS_DIR = Path(SETTINGS["datasets_dir"])  # global datasets directory
 WEIGHTS_DIR = Path(SETTINGS["weights_dir"])  # global weights directory
 RUNS_DIR = Path(SETTINGS["runs_dir"])  # global runs directory
-ENVIRONMENT = (
-    "Colab"
-    if IS_COLAB
-    else "Kaggle"
-    if IS_KAGGLE
-    else "Jupyter"
-    if IS_JUPYTER
-    else "Docker"
-    if IS_DOCKER
-    else platform.system()
-)
+ENVIRONMENT = "Colab" if IS_COLAB else "Kaggle" if IS_KAGGLE else "Jupyter" if IS_JUPYTER else "Docker" if IS_DOCKER else platform.system()
 TESTS_RUNNING = is_pytest_running() or is_github_action_running()
 set_sentry()
 

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from ultralytics.utils import LOGGER
-from ultralytics.utils.checks import check_requirements
+from utils import LOGGER
+from utils.checks import check_requirements
 
 
 class GPUInfo:
@@ -133,9 +133,7 @@ class GPUInfo:
 
         LOGGER.info(f"{'-' * len(hdr)}\n")
 
-    def select_idle_gpu(
-        self, count: int = 1, min_memory_fraction: float = 0, min_util_fraction: float = 0
-    ) -> list[int]:
+    def select_idle_gpu(self, count: int = 1, min_memory_fraction: float = 0, min_util_fraction: float = 0) -> list[int]:
         """Select the most idle GPUs based on utilization and free memory.
 
         Args:
@@ -195,9 +193,7 @@ if __name__ == "__main__":
     gpu_info.print_status()
 
     if selected := gpu_info.select_idle_gpu(
-        count=num_gpus_to_select,
-        min_memory_fraction=required_free_mem_fraction,
-        min_util_fraction=required_free_util_fraction,
+        count=num_gpus_to_select, min_memory_fraction=required_free_mem_fraction, min_util_fraction=required_free_util_fraction
     ):
         print(f"\n==> Using selected GPU indices: {selected}")
         devices = [f"cuda:{idx}" for idx in selected]

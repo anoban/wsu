@@ -2,11 +2,9 @@
 
 import torch
 import torch.nn as nn
-
-from . import LOGGER
-from .metrics import bbox_iou, probiou
-from .ops import xywhr2xyxyxyxy
-from .torch_utils import TORCH_1_11
+from utils.metrics import bbox_iou, probiou
+from utils.ops import xywhr2xyxyxyxy
+from utils.torch_utils import TORCH_1_11
 
 
 class TaskAlignedAssigner(nn.Module):
@@ -102,9 +100,7 @@ class TaskAlignedAssigner(nn.Module):
             fg_mask (torch.Tensor): Foreground mask with shape (bs, num_total_anchors).
             target_gt_idx (torch.Tensor): Target ground truth indices with shape (bs, num_total_anchors).
         """
-        mask_pos, align_metric, overlaps = self.get_pos_mask(
-            pd_scores, pd_bboxes, gt_labels, gt_bboxes, anc_points, mask_gt
-        )
+        mask_pos, align_metric, overlaps = self.get_pos_mask(pd_scores, pd_bboxes, gt_labels, gt_bboxes, anc_points, mask_gt)
 
         target_gt_idx, fg_mask, mask_pos = self.select_highest_overlaps(mask_pos, overlaps, self.n_max_boxes)
 
@@ -252,9 +248,7 @@ class TaskAlignedAssigner(nn.Module):
 
         # 10x faster than F.one_hot()
         target_scores = torch.zeros(
-            (target_labels.shape[0], target_labels.shape[1], self.num_classes),
-            dtype=torch.int64,
-            device=target_labels.device,
+            (target_labels.shape[0], target_labels.shape[1], self.num_classes), dtype=torch.int64, device=target_labels.device
         )  # (b, h*w, 80)
         target_scores.scatter_(2, target_labels.unsqueeze(-1), 1)
 

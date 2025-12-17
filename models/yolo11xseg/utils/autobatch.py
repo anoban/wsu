@@ -8,17 +8,12 @@ from copy import deepcopy
 
 import numpy as np
 import torch
-
-from ultralytics.utils import DEFAULT_CFG, LOGGER, colorstr
-from ultralytics.utils.torch_utils import autocast, profile_ops
+from utils import DEFAULT_CFG, LOGGER, colorstr
+from utils.torch_utils import autocast, profile_ops
 
 
 def check_train_batch_size(
-    model: torch.nn.Module,
-    imgsz: int = 640,
-    amp: bool = True,
-    batch: int | float = -1,
-    max_num_obj: int = 1,
+    model: torch.nn.Module, imgsz: int = 640, amp: bool = True, batch: int | float = -1, max_num_obj: int = 1
 ) -> int:
     """Compute optimal YOLO training batch size using the autobatch() function.
 
@@ -37,17 +32,11 @@ def check_train_batch_size(
         Otherwise, a default fraction of 0.6 is used.
     """
     with autocast(enabled=amp):
-        return autobatch(
-            deepcopy(model).train(), imgsz, fraction=batch if 0.0 < batch < 1.0 else 0.6, max_num_obj=max_num_obj
-        )
+        return autobatch(deepcopy(model).train(), imgsz, fraction=batch if 0.0 < batch < 1.0 else 0.6, max_num_obj=max_num_obj)
 
 
 def autobatch(
-    model: torch.nn.Module,
-    imgsz: int = 640,
-    fraction: float = 0.60,
-    batch_size: int = DEFAULT_CFG.batch,
-    max_num_obj: int = 1,
+    model: torch.nn.Module, imgsz: int = 640, fraction: float = 0.60, batch_size: int = DEFAULT_CFG.batch, max_num_obj: int = 1
 ) -> int:
     """Automatically estimate the best YOLO batch size to use a fraction of the available CUDA memory.
 
