@@ -14,10 +14,9 @@ from typing import Any
 
 import numpy as np
 import torch
-
 from ultralytics.data.augment import LetterBox
-from ultralytics.utils import LOGGER, DataExportMixin, SimpleClass, ops
-from ultralytics.utils.plotting import Annotator, colors, save_one_box
+from utils import LOGGER, DataExportMixin, SimpleClass, ops
+from utils.plotting import Annotator, colors, save_one_box
 
 
 class BaseTensor(SimpleClass):
@@ -527,11 +526,7 @@ class Results(SimpleClass, DataExportMixin):
             if im_gpu is None:
                 img = LetterBox(pred_masks.shape[1:])(image=annotator.result())
                 im_gpu = (
-                    torch.as_tensor(img, dtype=torch.float16, device=pred_masks.data.device)
-                    .permute(2, 0, 1)
-                    .flip(0)
-                    .contiguous()
-                    / 255
+                    torch.as_tensor(img, dtype=torch.float16, device=pred_masks.data.device).permute(2, 0, 1).flip(0).contiguous() / 255
                 )
             idx = (
                 pred_boxes.id
@@ -552,16 +547,7 @@ class Results(SimpleClass, DataExportMixin):
                 annotator.box_label(
                     box,
                     label,
-                    color=colors(
-                        c
-                        if color_mode == "class"
-                        else id
-                        if id is not None
-                        else i
-                        if color_mode == "instance"
-                        else None,
-                        True,
-                    ),
+                    color=colors(c if color_mode == "class" else id if id is not None else i if color_mode == "instance" else None, True),
                 )
 
         # Plot Classify results
@@ -753,10 +739,7 @@ class Results(SimpleClass, DataExportMixin):
             return
         for d in self.boxes:
             save_one_box(
-                d.xyxy,
-                self.orig_img.copy(),
-                file=Path(save_dir) / self.names[int(d.cls)] / Path(file_name).with_suffix(".jpg"),
-                BGR=True,
+                d.xyxy, self.orig_img.copy(), file=Path(save_dir) / self.names[int(d.cls)] / Path(file_name).with_suffix(".jpg"), BGR=True
             )
 
     def summary(self, normalize: bool = False, decimals: int = 5) -> list[dict[str, Any]]:
@@ -786,13 +769,7 @@ class Results(SimpleClass, DataExportMixin):
         results = []
         if self.probs is not None:
             class_id = self.probs.top1
-            results.append(
-                {
-                    "name": self.names[class_id],
-                    "class": class_id,
-                    "confidence": round(self.probs.top1conf.item(), decimals),
-                }
-            )
+            results.append({"name": self.names[class_id], "class": class_id, "confidence": round(self.probs.top1conf.item(), decimals)})
             return results
 
         is_obb = self.obb is not None
@@ -1096,10 +1073,7 @@ class Masks(BaseTensor):
             >>> normalized_coords = masks.xyn
             >>> print(normalized_coords[0])  # Normalized coordinates of the first mask
         """
-        return [
-            ops.scale_coords(self.data.shape[1:], x, self.orig_shape, normalize=True)
-            for x in ops.masks2segments(self.data)
-        ]
+        return [ops.scale_coords(self.data.shape[1:], x, self.orig_shape, normalize=True) for x in ops.masks2segments(self.data)]
 
     @property
     @lru_cache(maxsize=1)
@@ -1120,10 +1094,7 @@ class Masks(BaseTensor):
             >>> print(len(xy_coords))  # Number of masks
             >>> print(xy_coords[0].shape)  # Shape of first mask's coordinates
         """
-        return [
-            ops.scale_coords(self.data.shape[1:], x, self.orig_shape, normalize=False)
-            for x in ops.masks2segments(self.data)
-        ]
+        return [ops.scale_coords(self.data.shape[1:], x, self.orig_shape, normalize=False) for x in ops.masks2segments(self.data)]
 
 
 class Keypoints(BaseTensor):

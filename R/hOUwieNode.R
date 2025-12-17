@@ -1,3 +1,7 @@
+#-------------------------
+# https://github.com/jboyko/2020_houwie/blob/master/hOUwieNode.R
+#-------------------------
+
 # set of functions for the hidden rates OU model
 ##### Main exported functions #####
 # exported function with all the bells and whistles
@@ -1767,7 +1771,7 @@ getAllContinuousModelStructures <- function(k, type = "OU"){
 }
 
 # different OU models have different parameter structures. This will evaluate the appropriate one.
-getOUParamStructure <- function(model, algorithm, root.station, get.root.theta, k){
+getOUParamStructure_ <- function(model, algorithm, root.station, get.root.theta, k){
   index.mat <- matrix(0, 2,k)
   if(algorithm == "three.point"){
     Rate.mat <- matrix(1, 3, k)

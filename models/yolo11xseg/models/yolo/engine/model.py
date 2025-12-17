@@ -8,8 +8,8 @@ from typing import Any
 
 import numpy as np
 import torch
+from cfg import TASK2DATA, get_cfg, get_save_dir
 from PIL import Image
-from ultralytics.cfg import TASK2DATA, get_cfg, get_save_dir
 from ultralytics.engine.results import Results
 from ultralytics.nn.tasks import guess_model_task, load_checkpoint, yaml_model_load
 from ultralytics.utils import ARGV, ASSETS, DEFAULT_CFG_DICT, LOGGER, RANK, SETTINGS, YAML, callbacks, checks
