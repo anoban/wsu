@@ -240,3 +240,8 @@ data/chapter2/wfotpl_06_2025.csv
 
 # R crap
 .Rhistory
+
+# zip files
+*.tar.gz
+*.tar
+*.zip
