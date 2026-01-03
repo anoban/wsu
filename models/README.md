@@ -1,7 +1,6 @@
-___Stripping down segmentation models to skeletons___
+___Stripped down segmentation models (ViTs)___
 
 ------------------------------------------
-	1. YOLO11 (CNN)
-	2. SAM (Segment Anything Model) (ViT)
-    3. SAM 2.1 (ViT)
+	1. SAM (Segment Anything Model)   
+	2. SAM 2.1   
 --------------------------------
