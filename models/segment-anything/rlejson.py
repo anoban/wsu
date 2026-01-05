@@ -2,5 +2,18 @@
 # we do not want to upload huge JSON files, do we???
 
 
-def runlength_encode():
-    pass
+class StrippedLabelmeAnnotation:
+    def __init__(self, fpath: str) -> None:
+        pass
+
+    def shape(self) -> tuple[int, int]:
+        pass
+
+    def extract_shape_and_corrds():
+        pass
+
+    def runlength_encode():
+        pass
+
+    def to_coco_rle():
+        pass
