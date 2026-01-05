@@ -1,6 +1,6 @@
 import torch
 from segment_anything.modeling.sam import Sam
-from torch.nn.modules.loss import _Loss
+from torch.nn.modules.loss import _Loss  # pyright: ignore[reportPrivateUsage]
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
