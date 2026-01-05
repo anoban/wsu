@@ -1,17 +1,12 @@
-# helper classes and functions for finetuning SAM on our custom dataset
-
-
 import os
 from typing import Optional, override
 
 import numpy as np
 import torch
-import torchvision.transforms.v2 as transforms_v2  # type: ignore
+import torchvision.transforms.v2 as transforms_v2  # pyright: ignore[reportMissingTypeStubs]
 from numpy.typing import NDArray
 from PIL import Image
-from segment_anything.modeling.sam import Sam
-from torch.optim import Optimizer
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 
 
 class RootImagesDataset(Dataset[torch.Tensor]):
@@ -110,25 +105,3 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         :rtype: tuple[Tensor, Tensor]
         """
         pass
-
-
-def custom_dataset_finetune(
-    model: Sam, dtloader: DataLoader[torch.Tensor], optimizer: Optimizer, loss_fn, lrate: float, n_epochs: int, log_intrvl: int
-) -> None:
-    """
-    :param model: Description
-    :type model: Sam
-    :param dtloader: Description
-    :type dtloader: DataLoader[torch.Tensor]
-    :param optimizer: Description
-    :type optimizer: Optimizer
-    :param loss_fn: Description
-    :param lrate: Description
-    :type lrate: float
-    :param n_epochs: Description
-    :type n_epochs: int
-    :param log_intrvl: Description
-    :type log_intrvl: int
-    """
-
-    pass
