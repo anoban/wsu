@@ -222,6 +222,7 @@ data/chapter2/wfotpl_06_2025.csv
 *.tiff
 *.svg
 *.pdf
+models/images/MaxSee/*.*
 
 # videos
 *.mp4
