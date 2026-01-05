@@ -3,7 +3,7 @@
 # and it has the whole image file embedded in it???
 
 
-class StrippedLabelmeAnnotation:
+class CocoRLEAnnotation:
     def __init__(self, fpath: str) -> None:
         pass
 
