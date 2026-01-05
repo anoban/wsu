@@ -9,7 +9,9 @@ import torch
 import torchvision.transforms.v2 as transforms_v2  # type: ignore
 from numpy.typing import NDArray
 from PIL import Image
-from torch.utils.data import Dataset
+from segment_anything.modeling.sam import Sam
+from torch.optim import Optimizer
+from torch.utils.data import DataLoader, Dataset
 
 
 class RootImagesDataset(Dataset[torch.Tensor]):
@@ -39,7 +41,6 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         """
 
         imgs: list[NDArray[np.uint8]] = []
-
         for fn in fnames:
             try:
                 with open(file=fn, mode="rb") as fp:
@@ -49,14 +50,13 @@ class RootImagesDataset(Dataset[torch.Tensor]):
                     imgs.append(np.array(obj, dtype=np.uint8))
             except (PermissionError, FileNotFoundError) as excpt:
                 raise RuntimeError(f"Filed to read file {fn}") from excpt
-
-        return torch.Tensor(np.array([img for img in imgs]))
+        return torch.Tensor(
+            np.array([img for img in imgs])
+        )  # PyTorch recommends converting the list of numpy arrays into an array of arrays before contructing a tensor for performance reasons
 
     @staticmethod
-    def _read_anns_into_tensor(fnames: list[str]) -> torch.Tensor:
+    def _read_annotations_into_tensor(fnames: list[str]) -> torch.Tensor:
         """
-        Docstring for _read_anns_into_tensor
-
         :param fnames: Description
         :type fnames: list[str]
         :return: Description
@@ -112,5 +112,23 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         pass
 
 
-def custom_dataset_finetune():
+def custom_dataset_finetune(
+    model: Sam, dtloader: DataLoader[torch.Tensor], optimizer: Optimizer, loss_fn, lrate: float, n_epochs: int, log_intrvl: int
+) -> None:
+    """
+    :param model: Description
+    :type model: Sam
+    :param dtloader: Description
+    :type dtloader: DataLoader[torch.Tensor]
+    :param optimizer: Description
+    :type optimizer: Optimizer
+    :param loss_fn: Description
+    :param lrate: Description
+    :type lrate: float
+    :param n_epochs: Description
+    :type n_epochs: int
+    :param log_intrvl: Description
+    :type log_intrvl: int
+    """
+
     pass
