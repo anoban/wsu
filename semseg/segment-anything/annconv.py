@@ -2,7 +2,7 @@
 # we do not want to upload huge JSON files, do we??? and it has the whole image file embedded in it???
 
 import json
-from typing import Any
+from typing import Any, Optional
 
 from pycocotools import mask as rlemask
 from skimage.draw import polygon2mask  # pyright: ignore[reportUnknownVariableType]
@@ -58,17 +58,17 @@ class RLEAnnotation:
 
     def to_coco_rle(self) -> dict[str, Any]:
         """
-        :return: Description
+        :return: return a SA-1B style RLE'd convert of the original labelme annotations
         :rtype: dict[str, Any]
 
         lebelme stores segmentation annotations as polygons, defined by the (x, y) coordinates of the annotation points;
-        {
+        >>> {
         'label': 'root',
         'points': [[248.51063829787222, 960.0000000000001],
-         [284.68085106382955, 923.8297872340427],
-         ...................
-         [276.17021276595733, 979.1489361702128],
-         [259.14893617021266, 987.6595744680851]],
+        ([284.68085106382955, 923.8297872340427],)
+        ...................
+        ([276.17021276595733, 979.1489361702128],)
+        [259.14893617021266, 987.6595744680851]],
         'group_id': 1,
         'description': '',
         'shape_type': 'polygon',
@@ -76,7 +76,7 @@ class RLEAnnotation:
         }
 
         COCO RLE stores (as in the SA-1B dataset) them in the following way;
-        {
+        >>> {
         'bbox': [694.0, 1379.0, 77.0, 128.0],
         'area': 9653,
         'segmentation': {'size': [1875, 1500],
@@ -93,7 +93,7 @@ class RLEAnnotation:
         then this 2D binary mask can be RLE'd by pycoctools.mask.encode() to create the comprssed and compact run length encoding of the polygon!
 
         mask.deocde() expects a dict in the following format:
-        {
+        >>> {
         'size': [W, H],
         'counts': '<RLE string>'
         }
@@ -128,5 +128,9 @@ class RLEAnnotation:
         # since this "annotations" section does not have an explicit "segmentation" section, to deocde the RLE, we'd have to create a small dict, in real time
         # e.g. pycocotools.mask.decode({"size": [seg["image"]["width"], seg["image"]["height"]], "counts": seg["annotations"][0]["counts"]})
 
-    def save_as_rle(self, fpath: str) -> None:
-        pass
+    def save_as_rle(self, fpath: Optional[str]) -> None:
+        try:
+            with open(file=fpath, mode="wt") as fp:  # pyright: ignore[reportCallIssue, reportArgumentType, reportUnknownVariableType]
+                json.dump(obj=self.to_coco_rle(), fp=fp)  # pyright: ignore[reportUnknownArgumentType]
+        except (FileNotFoundError, PermissionError) as excpt:
+            raise RuntimeError("") from excpt
