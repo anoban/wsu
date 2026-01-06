@@ -24,7 +24,7 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         :return: transformed image or annotation batches
         :rtype: Tensor
         """
-        return _transforms(_batch)
+        return _transforms(_batch)  # feels like overcomplicating?????
 
     @staticmethod
     def _read_images_into_tensor(fnames: list[str]) -> torch.Tensor:
