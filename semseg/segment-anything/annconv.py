@@ -2,8 +2,9 @@
 # we do not want to upload huge JSON files, do we??? and it has the whole image file embedded in it???
 
 import json
-from typing import Any, Optional
+from typing import Any
 
+import numpy as np
 from pycocotools import mask as rlemask
 from skimage.draw import polygon2mask  # pyright: ignore[reportUnknownVariableType]
 
@@ -34,7 +35,9 @@ class RLEAnnotation:
             raise TypeError(f"Annotation JSON file must contain all of the following keys: {(*RLEAnnotation.LABELME_ESSENTIAL_JSON_KEYS,)}")
 
         # at this point, key subscripts should not raise an exception!!!
-        self._fname = _raw_ann["imagePath"]
+        self._fname = _raw_ann[
+            "imagePath"
+        ]  # this is not the name of the annotation file BUT the name of the image file the annotation is for!!!!
         self._height = _raw_ann["imageHeight"]
         self._width = _raw_ann["imageWidth"]
         self._nmasks = len(_raw_ann["shapes"])  # a single annotation file can contain multiple masks
@@ -95,11 +98,20 @@ class RLEAnnotation:
         mask.deocde() expects a dict in the following format:
         >>> {
         'size': [W, H],
-        'counts': '<RLE string>'
+        'counts': '<RLE'd string>'
+        }
+
+        mask.encode() also returns a dict with the similar structure:
+        >>> {
+        'size': [W, H],
+        'counts': '<RLE'd bytes array>'
         }
 
         if we are really hard pressed to minimize the sizes of annotation files, we could avoid repeatedly storing the image dimensions in the "size" key and
-        construct that in real time, using the object attributes.
+        construct that in real time, using the object attributes. if that was the case, the "annotations" section will not have an explicit "segmentation" section,
+        hence, to deocde the RLE, we'd have to create a small dict, in real time
+        e.g. pycocotools.mask.decode({"size": [seg["image"]["width"], seg["image"]["height"]], "counts": seg["annotations"][0]["counts"]})
+        choosing not to do this!!!
 
         SA-1B annotation has 2 keys - "image" and "annotations"
         "image" is a dict with the following keys - 'image_id', 'width', 'height', 'file_name'
@@ -107,30 +119,52 @@ class RLEAnnotation:
 
         """
 
+        # return {
+        #    "image": {
+        #        "width": self._width,
+        #        "height": self._height,
+        #        "file_name": self._fname.replace(r".json", ""),  # file_name will only store the stem of the name without the extension
+        #    },
+        #    "annotations": [
+        #        {
+        #            "label": polygon["label"],  # e.g. root or hyphae
+        #            "id": polygon["group_id"],  # preserving the "group_id" attr of labelme annotation in the "id" attr of SA-1B annotation
+        #            "counts": rlemask.encode(  # the argument order for image_shape in skimage.draw.polygon2mask() is (W, H)
+        #                np.asfortranarray(polygon2mask(image_shape=(self._width, self._height), polygon=polygon["points"]))
+        #            ),
+        #        }
+        #        for polygon in self._polygons
+        #    ],
+        # }
+
+        # looping instead of a dict crealtion inside of a list comprehension because the "counts" attribute of mask.encode()'s result is a bytes array
+        # not a string object and json.dumps() cannot serialize a bytes object
+        _anns: list[dict[str, Any]] = []
+        for polygon in self._polygons:
+            # the argument order for image_shape in skimage.draw.polygon2mask() is (W, H)
+            _results = rlemask.encode(np.asfortranarray(polygon2mask(image_shape=(self._width, self._height), polygon=polygon["points"])))
+            # passing a vanilla numpy array to mask.encode() raises an exception - ValueError: ndarray is not Fortran contiguous
+            # see https://github.com/cocodataset/cocoapi/issues/91 for the solution
+            _anns.append(
+                {
+                    "label": polygon["label"],  # e.g. root or hyphae
+                    "id": polygon["group_id"],  # preserving the "group_id" attr of labelme annotation in the "id" attr of SA-1B annotation
+                    "segmentation": {"size": _results["size"], "counts": _results["counts"].decode("utf-8")},  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+                }
+            )
+
         return {
             "image": {
                 "width": self._width,
                 "height": self._height,
-                "file_name": self._fname.replace(r".json", ""),  # file_name will only store the stem of the name without the extension
+                "file_name": self._fname.replace(r".png", ""),  # file_name will only store the stem of the name without the extension
             },
-            "annotations": [
-                {
-                    "label": polygon["label"],  # e.g. root or hyphae
-                    "id": polygon["group_id"],  # preserving the "group_id" attr of labelme annotation in the "id" attr of SA-1B annotation
-                    "counts": rlemask.encode(  # the argument order for image_shape in skimage.draw.polygon2mask() is (W, H)
-                        polygon2mask(image_shape=(self._width, self._height), polygon=polygon["points"])
-                    ),
-                }
-                for polygon in self._polygons
-            ],
+            "annotations": _anns,
         }
 
-        # since this "annotations" section does not have an explicit "segmentation" section, to deocde the RLE, we'd have to create a small dict, in real time
-        # e.g. pycocotools.mask.decode({"size": [seg["image"]["width"], seg["image"]["height"]], "counts": seg["annotations"][0]["counts"]})
-
-    def save_as_rle(self, fpath: Optional[str]) -> None:
+    def save_as_rle(self, fpath: str) -> None:
         try:
             with open(file=fpath, mode="wt") as fp:  # pyright: ignore[reportCallIssue, reportArgumentType, reportUnknownVariableType]
                 json.dump(obj=self.to_coco_rle(), fp=fp)  # pyright: ignore[reportUnknownArgumentType]
         except (FileNotFoundError, PermissionError) as excpt:
-            raise RuntimeError("") from excpt
+            raise RuntimeError(r"Failed to serialize the RLE'd annotation file!") from excpt
