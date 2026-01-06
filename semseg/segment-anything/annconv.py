@@ -158,6 +158,7 @@ class RLEAnnotation:
                 "width": self._width,
                 "height": self._height,
                 "file_name": self._fname.replace(r".png", ""),  # file_name will only store the stem of the name without the extension
+                # we take it for granted that the source images of the annotation files are PNG files!!!!
             },
             "annotations": _anns,
         }

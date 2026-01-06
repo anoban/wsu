@@ -9,18 +9,18 @@ def custom_dataset_finetune(
     model: Sam, dtloader: DataLoader[torch.Tensor], optimizer: Optimizer, loss_fn: _Loss, lrate: float, n_epochs: int, log_intrvl: int
 ) -> None:
     """
-    :param model: Description
+    :param model: pretrained Sam model object
     :type model: Sam
-    :param dtloader: Description
+    :param dtloader: data loader (images and annotations)
     :type dtloader: DataLoader[torch.Tensor]
-    :param optimizer: Description
+    :param optimizer: optimizer
     :type optimizer: Optimizer
-    :param loss_fn: Description
+    :param loss_fn: loss function to estimate the prediction accuracy
     :param lrate: Description
-    :type lrate: float
-    :param n_epochs: Description
+    :type lrate: learning rate
+    :param n_epochs: number of iterations to repeat the training
     :type n_epochs: int
-    :param log_intrvl: Description
+    :param log_intrvl: how often you want the model's performance to be logged to the stdout
     :type log_intrvl: int
     """
 
