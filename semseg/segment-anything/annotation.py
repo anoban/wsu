@@ -4,7 +4,10 @@
 import json
 from typing import Any
 
+import cv2
 import numpy as np
+from matplotlib.axes import Axes
+from numpy.typing import NDArray
 from pycocotools import mask as rlemask
 from skimage.draw import polygon2mask  # pyright: ignore[reportUnknownVariableType]
 
@@ -169,3 +172,36 @@ class RLEAnnotation:
                 json.dump(obj=self.to_coco_rle(), fp=fp)  # pyright: ignore[reportUnknownArgumentType]
         except (FileNotFoundError, PermissionError) as excpt:
             raise RuntimeError(r"Failed to serialize the RLE'd annotation file!") from excpt
+
+    def plot(self, ax: Axes, masks: NDArray[np.integer], alpha: float = 0.35, borders: bool = True) -> Axes:
+        """
+        overlay the annotations on an image (or an empty axes)
+
+        :param self: Description
+        :param ax: Description
+        :type ax: Axes
+        :param masks: Description
+        :type masks: NDArray[np.integer]
+        :param alpha: Description
+        :type alpha: float
+        :param borders: Description
+        :type borders: bool
+        :return: Description
+        :rtype: Axes
+        """
+
+        rgba = np.ones((self._height, self._width, 4))  # a 3D array representing the annotations in RGBA channel
+        for mask in masks:
+            rgba[:, :, 3] = 0  # set all the alpha channel values to 0
+            rgba[mask.astype(np.bool), :] = np.array(  # use the boolean mask to cherry pick the elements where the mask applies
+                [*np.random.random(3), alpha]
+            )  # and update the colour (RGB) values with the specified alpha value
+            ax.imshow(rgba)  # type: ignore
+
+        if borders:  # this block of code is adapted from https://github.com/facebookresearch/sam2/blob/main/notebooks/automatic_mask_generator_example.ipynb
+            contours, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # type: ignore
+            # try to smooth contours
+            contours = [cv2.approxPolyDP(contour, epsilon=0.01, closed=True) for contour in contours]  # type: ignore
+            cv2.drawContours(image=rgba, contours=contours, contourIdx=-1, color=(0, 0, 1, alpha), thickness=1)
+
+        return ax
