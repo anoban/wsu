@@ -143,51 +143,34 @@ class RLEAnnotation:
 
         """
 
-        # return {
-        #    "image": {
-        #        "width": self._width,
-        #        "height": self._height,
-        #        "file_name": self._fname.replace(r".json", ""),  # file_name will only store the stem of the name without the extension
-        #    },
-        #    "annotations": [
-        #        {
-        #            "label": polygon["label"],  # e.g. root or hyphae
-        #            "id": polygon["group_id"],  # preserving the "group_id" attr of labelme annotation in the "id" attr of SA-1B annotation
-        #            "counts": rlemask.encode(  # the argument order for image_shape in skimage.draw.polygon2mask() is (W, H)
-        #                np.asfortranarray(polygon2mask(image_shape=(self._width, self._height), polygon=polygon["points"]))
-        #            ),
-        #        }
-        #        for polygon in self._polygons
-        #    ],
-        # }
-
-        # looping instead of a dict crealtion inside of a list comprehension because the "counts" attribute of mask.encode()'s result is a bytes array
-        # not a string object and json.dumps() cannot serialize a bytes object
-        _anns: list[dict[str, Any]] = []
-        for polygon in self._polygons:
-            # the argument order for image_shape in skimage.draw.polygon2mask() is (W, H)
-            _results = rlemask.encode(np.asfortranarray(polygon2mask(image_shape=(self._width, self._height), polygon=polygon["points"])))
-            # passing a vanilla numpy array to mask.encode() raises an exception - ValueError: ndarray is not Fortran contiguous
-            # see https://github.com/cocodataset/cocoapi/issues/91 for the solution
-            _anns.append(
-                {
-                    "label": polygon["label"],  # e.g. root or hyphae
-                    "id": polygon["group_id"],  # preserving the "group_id" attr of labelme annotation in the "id" attr of SA-1B annotation
-                    "segmentation": {"size": _results["size"], "counts": _results["counts"].decode("utf-8")},  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
-                }
-            )
+        if not self._masks:  # instead of creating masks just for serializing, update the _masks attribute too
+            self._masks = RLEAnnotation._polygons_to_masks(_polygons=self._polygons, _h=self._height, _w=self._width)
 
         return {
             "image": {
                 "width": self._width,
                 "height": self._height,
                 "file_name": self._fname.replace(r".png", ""),  # file_name will only store the stem of the name without the extension
-                # we take it for granted that the source images of the annotation files are PNG files!!!!
             },
-            "annotations": _anns,
+            "annotations": [
+                {
+                    "label": polygon["label"],  # e.g. root or hyphae
+                    "id": polygon["group_id"],  # preserving the "group_id" attr of labelme annotation in the "id" attr of SA-1B annotation
+                    "segmentation":  # the argument order for image_shape in skimage.draw.polygon2mask() is (W, H)
+                    {"size": [self._width, self._height], "counts": rlemask.encode(np.asfortranarray(mask))["counts"].decode("utf-8")},  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+                }  # rlemask.encode()["counts"] returns a bytearray object which is not serializeable by json, hence the utf8 string conversion
+                for (mask, polygon) in zip(self._masks, self._polygons)
+            ],
         }
 
     def save_as_rle(self, fpath: str) -> None:
+        """
+
+        :param self: Description
+        :param fpath: Description
+        :type fpath: str
+        """
+
         try:
             with open(file=fpath, mode="wt") as fp:  # pyright: ignore[reportCallIssue, reportArgumentType, reportUnknownVariableType]
                 json.dump(obj=self.to_coco_rle(), fp=fp)  # pyright: ignore[reportUnknownArgumentType]

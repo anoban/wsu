@@ -15,7 +15,7 @@ library("nlme")
 # HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF COLLABORATION AXIS TRAITS (E.G. SRL) AND CONSERVATION AXIS TRAITS (E.G. RTD) ARE INDEPENDENT
 #--------------------------------------------------------------------------------------------------------------------------------------
 
-rtd_srl <- read.csv("../data/chapter2/FREDv3subset/RTD_SRL_species_means.csv", row.names = "binominal")
+rtd_srl <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", row.names = "binominal")
 # contains crude species averages of RTD and SRL for the 203 species - did not do root order based trait normalizations :(
 # F00727 - SRL, F00709 - RTD
 tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylogenetic tree of the 203 species in the above subset

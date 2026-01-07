@@ -7,6 +7,7 @@ import torchvision.transforms.v2 as transforms_v2  # pyright: ignore[reportMissi
 from numpy.typing import NDArray
 from PIL import Image
 from torch.utils.data import Dataset
+import annotation
 
 
 class RootImagesDataset(Dataset[torch.Tensor]):
