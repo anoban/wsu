@@ -4,6 +4,8 @@ from torch.nn.modules.loss import _Loss  # pyright: ignore[reportPrivateUsage]
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
+# for a discourse on object overlap in segmentation annotations, have a look at https://github.com/ultralytics/ultralytics/issues/3213
+
 
 def custom_dataset_finetune(
     model: Sam, dtloader: DataLoader[torch.Tensor], optimizer: Optimizer, loss_fn: _Loss, lrate: float, n_epochs: int, log_intrvl: int
