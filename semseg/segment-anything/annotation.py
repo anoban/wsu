@@ -2,7 +2,7 @@
 # we do not want to upload huge JSON files, do we??? and it has the whole image file embedded in it???
 
 import json
-from typing import Any
+from typing import Any, Optional
 
 import cv2
 import numpy as np
@@ -21,16 +21,33 @@ class RLEAnnotation:
     # we don't actually need a few keys: "version", "flags" & "imageData", for our use case
     LABELME_ESSENTIAL_JSON_KEYS = ("shapes", "imagePath", "imageHeight", "imageWidth")
 
-    def __init__(self, fpath: str) -> None:
+    @staticmethod
+    def _polygons_to_masks(_polygons: list[list[float]] | NDArray[np.floating], _h: int, _w: int) -> NDArray[np.bool]:
         """
+        :param _polygons: Description
+        :type _polygons: list[list[float]] | NDArray[np.floating]
+        :param _h: Description
+        :type _h: int
+        :param _w: Description
+        :type _w: int
+        :return: Description
+        :rtype: NDArray[numpy.bool[builtins.bool]]
+        """
+        return np.array([polygon2mask(image_shape=(_w, _h), polygon=polygon) for polygon in _polygons])
+
+    def __init__(self, fpath: str, pretransform_polygons_to_mask: bool = True) -> None:
+        """
+        :param self: Description
         :param fpath: Description
         :type fpath: str
+        :param pretransform_polygons_to_mask: Description
+        :type pretransform_polygons_to_mask: bool
         """
 
         assert fpath.endswith(r".json"), "only .json files are accepted as annotations!"
         try:
             with open(fpath, mode="rt") as fp:
-                _raw_ann = json.load(fp)
+                _raw_ann: dict[str, Any] = json.load(fp)
         except (FileNotFoundError, PermissionError) as excpt:
             raise RuntimeError(f"Failed to create an RLEAnnotation object from {fpath}") from excpt
 
@@ -38,15 +55,19 @@ class RLEAnnotation:
             raise TypeError(f"Annotation JSON file must contain all of the following keys: {(*RLEAnnotation.LABELME_ESSENTIAL_JSON_KEYS,)}")
 
         # at this point, key subscripts should not raise an exception!!!
-        self._fname = _raw_ann[
+        self._fname: str = _raw_ann[
             "imagePath"
         ]  # this is not the name of the annotation file BUT the name of the image file the annotation is for!!!!
-        self._height = _raw_ann["imageHeight"]
-        self._width = _raw_ann["imageWidth"]
-        self._nmasks = len(_raw_ann["shapes"])  # a single annotation file can contain multiple masks
-        self._polygons = _raw_ann["shapes"]  # segmentation polygons
+        self._height: int = _raw_ann["imageHeight"]
+        self._width: int = _raw_ann["imageWidth"]
+        self._nmasks: int = len(_raw_ann["shapes"])  # a single annotation file can contain multiple masks
+        self._polygons: NDArray[np.floating] = np.array(_raw_ann["shapes"])  # segmentation polygons
         # ["shapes"] returns a list of annotations, where each annotation is a dict with keys 'label', 'points', 'group_id', 'description', 'shape_type', 'flags'
-        # "points" is a list of annotation coordinates (x, y) => list[[float, float]]
+        # "points" is a list of annotation coordinates (x, y) => list[[float, float],...]
+        self._masks: Optional[NDArray[np.bool]] = (
+            # if desired, convert and store all the polygons as masks - in a single 3D array of shape (W, H, NPOLYGONS)
+            RLEAnnotation._polygons_to_masks(self._polygons, _h=self._height, _w=self._width) if pretransform_polygons_to_mask else None
+        )
 
     def shape(self) -> tuple[int, int]:
         """
@@ -173,11 +194,10 @@ class RLEAnnotation:
         except (FileNotFoundError, PermissionError) as excpt:
             raise RuntimeError(r"Failed to serialize the RLE'd annotation file!") from excpt
 
-    def plot(self, ax: Axes, masks: NDArray[np.integer], alpha: float = 0.35, borders: bool = True) -> Axes:
+    def plot(self, ax: Axes, alpha: float = 0.35, borders: bool = True) -> Axes:
         """
         overlay the annotations on an image (or an empty axes)
 
-        :param self: Description
         :param ax: Description
         :type ax: Axes
         :param masks: Description
@@ -191,17 +211,20 @@ class RLEAnnotation:
         """
 
         rgba = np.ones((self._height, self._width, 4))  # a 3D array representing the annotations in RGBA channel
-        for mask in masks:
+
+        if not self._masks:  # instead of creating masks just for plotting, update the _masks attribute too
+            self._masks = RLEAnnotation._polygons_to_masks(_polygons=self._polygons, _h=self._height, _w=self._width)
+
+        for mask in self._masks:
             rgba[:, :, 3] = 0  # set all the alpha channel values to 0
-            rgba[mask.astype(np.bool), :] = np.array(  # use the boolean mask to cherry pick the elements where the mask applies
-                [*np.random.random(3), alpha]
-            )  # and update the colour (RGB) values with the specified alpha value
+            # use the boolean mask to cherry pick the elements where the mask applies and update that with random RGB values with a fixed alpha
+            rgba[mask, :] = np.array([*np.random.random(3), alpha])
             ax.imshow(rgba)  # type: ignore
 
         if borders:  # this block of code is adapted from https://github.com/facebookresearch/sam2/blob/main/notebooks/automatic_mask_generator_example.ipynb
             contours, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # type: ignore
             # try to smooth contours
             contours = [cv2.approxPolyDP(contour, epsilon=0.01, closed=True) for contour in contours]  # type: ignore
-            cv2.drawContours(image=rgba, contours=contours, contourIdx=-1, color=(0, 0, 1, alpha), thickness=1)
+            cv2.drawContours(image=rgba, contours=contours, contourIdx=-1, color=(0, 0, 1, alpha), thickness=1)  # pyright: ignore[reportUnknownArgumentType]
 
         return ax
