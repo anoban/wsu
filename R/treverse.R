@@ -1,3 +1,10 @@
+library("ape")
+library("maps")
+library("phytools")
+library("nlme")
+library("U.PhyloMaker")
+
+
 #-------------------------------------------------------------------------------------------------------------------
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
 #-------------------------------------------------------------------------------------------------------------------

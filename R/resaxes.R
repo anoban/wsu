@@ -17,15 +17,25 @@ library("U.PhyloMaker")
 # HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF COLLABORATION AXIS TRAITS (E.G. SRL) AND CONSERVATION AXIS TRAITS (E.G. RTD) ARE INDEPENDENT
 #--------------------------------------------------------------------------------------------------------------------------------------
 
-rtd_srl <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", row.names = "binominal")
-# contains crude species averages of RTD and SRL for the 203 species - did not do root order based trait normalizations :(
-# F00727 - SRL, F00709 - RTD
+
+# this is species averages of first order records for the below mentioned 4 root traits from the RES
+res_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_ord1_cont_RES_traits.csv", row.names = "binominal")
+# F00679 	Root diameter (mm)
+# F00727 	Specific root length (SRL) (m/g)
+# F00261 	Root N content 	(mg/g)
+# F00709 	Root tissue density (RTD) (g/cm3)
+
 tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylogenetic tree of the 203 species in the above subset
+
+# update the row names to match the names in the tree (i.e with underscores between generic name and specific epithet)
+rownames(res_traits) <- gsub(pattern = " ", replacement = "_", x = tree$tip.label)
+
+
 
 tip_labels <- tree$tip.label # tip.labels have underscores in-between genus names and specific epithets
 # phytools:: functions expect the passed trait values to be a named vector, with names matching that of the phylogenetic tree's tip labels
-named_rtd_vec <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00709, tip_labels)
-named_srl_vec_hypo_1 <- setNames(rtd_srl[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
+named_rtd_vec <- setNames(res_traits[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00709, tip_labels)
+named_srl_vec_hypo_1 <- setNames(res_traits[gsub(pattern = "_", replacement = " ", x = tip_labels), ]$F00727, tip_labels)
 
 # ancestral state reconstruction of root tissue density (conservation axis)
 png("../plots/asr_rtd.png", width = 8000, height = 8000, units = "px", res = 300)
@@ -55,7 +65,7 @@ crude_lm <- lm(log(named_srl_vec_hypo_1)~log(named_rtd_vec)) # response ~ predic
 crude_lm |> summary()
 
 par(mar = c(5, 5, 1, 1))
-png("../plots/rtd_srl.png", width = 5000, height = 5000, units = "px", res = 500)
+png("../plots/res_traits.png", width = 5000, height = 5000, units = "px", res = 500)
 plot(x = log(named_rtd_vec), y = log(named_srl_vec_hypo_1), xlab = "log(RTD)", ylab = "log(SRL)")#, log = "xy")
 # log = "xy" TRANSFORMS THE DATA BUT PLOTS THEM ON A REGULAR AXIS
 # plot(x, y, log = "xy") and plot(log(x), log(y)) WILL NOT GIVE INDENTICAL RESULTS!!!!!
@@ -115,7 +125,7 @@ dev.off()
 # METHOD 2 - Phylogenetic Generalized Least Squares (PGLS)
 #-----------------------------------------------------------
 
-# column order in rtd_srl is F00727 F00709
+# column order in res_traits is F00727 F00709
 corr_matrix <- ape::corBrownian(phy = tree) # the form argument is used to specify the order of our data
 # since we have vectors with data in the same order as the tree here, it's not necessary
 pgls <- nlme::gls(log(named_srl_vec_hypo_1)~log(named_rtd_vec), correlation = corr_matrix)
