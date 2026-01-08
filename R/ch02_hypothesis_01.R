@@ -10,6 +10,8 @@ library("ape")
 library("maps")
 library("phytools")
 library("nlme")
+library("U.PhyloMaker")
+
 
 #--------------------------------------------------------------------------------------------------------------------------------------
 # HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF COLLABORATION AXIS TRAITS (E.G. SRL) AND CONSERVATION AXIS TRAITS (E.G. RTD) ARE INDEPENDENT
@@ -130,3 +132,7 @@ pgls |> coef() # coefficients of the PGLS model
 pic_lm |> coef() # coefficients of the PIC OLS model
 # the difference between the coefficients of these two models is negligible
 abs(coef(pgls)[2] - coef(pic_lm)[1])
+
+
+
+

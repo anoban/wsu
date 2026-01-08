@@ -51,7 +51,9 @@ eucface.power <- function(file.out, effect.size, n.tree, n.leaf, const.ranef.rin
 
     if (n.tree > 1 & n.leaf > 1) {
         if (any(c(!is.null(ranef.ring.sd), !is.null(const.ranef.ring))) & any(c(!is.null(ranef.tree.sd), !is.null(const.ranef.tree)))) {
+            # includes co2 treatment
             mod.alt <- tryCatch.converg(lmer(response ~ trt + (1 | ring / tree), REML = F, control = list(maxIter = 1000)))
+            # null model
             mod.nul <- tryCatch.converg(lmer(response ~ 1 + (1 | ring / tree), REML = F, control = list(maxIter = 1000)))
 
             ring.sd <- attr(VarCorr(mod.alt$value)[["ring"]], "stddev")[["(Intercept)"]]
