@@ -25,7 +25,14 @@ res_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_ord1_cont_RES_
 # F00261 	Root N content 	(mg/g)
 # F00709 	Root tissue density (RTD) (g/cm3)
 
-tree <- ape::read.tree("../data/chapter2/uphylomaker/fredv3subset.tre") # phylogenetic tree of the 203 species in the above subset
+# construct the phylogenetic tree for the species in the RES trait dataset
+genus_family_relations <- read.csv("../data/chapter2/uphylomaker/plant_genus_list.csv", sep = ",") # data from the UPhyloMaker library
+# a dataset with columns species,genus,family,species.relative,genus.relative, for the species of interest WHERE everything beside the first two columns can be NA
+species_of_interest <- data.frame(list("species" = rownames(res_traits), "genus"=res_traits$F01286, "family"=NA, "species.relative"=NA, "genus.relative"=NA))
+megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB_extended_WP.tre")
+phylogeny <- U.PhyloMaker::phylo.maker(sp.list = species_of_interest, tree = megatree, gen.list = genus_family_relations) # this took forfuckingever ~ 3 minutes
+ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/FRED_subset_ord1_cont_RES_traits.tre")
+
 
 # update the row names to match the names in the tree (i.e with underscores between generic name and specific epithet)
 rownames(res_traits) <- gsub(pattern = " ", replacement = "_", x = tree$tip.label)
