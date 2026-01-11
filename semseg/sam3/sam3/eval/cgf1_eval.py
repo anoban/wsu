@@ -126,17 +126,11 @@ class COCOCustom(COCO):
         # MODIFICATION: faster and cached subset check
         if not hasattr(self, "img_id_set"):
             self.img_id_set = set(self.getImgIds())
-        assert set(annsImgIds).issubset(
-            self.img_id_set
-        ), "Results do not correspond to current coco set"
+        assert set(annsImgIds).issubset(self.img_id_set), "Results do not correspond to current coco set"
         # END MODIFICATION
         if "caption" in anns[0]:
-            imgIds = set([img["id"] for img in res.dataset["images"]]) & set(
-                [ann["image_id"] for ann in anns]
-            )
-            res.dataset["images"] = [
-                img for img in res.dataset["images"] if img["id"] in imgIds
-            ]
+            imgIds = set([img["id"] for img in res.dataset["images"]]) & set([ann["image_id"] for ann in anns])
+            res.dataset["images"] = [img for img in res.dataset["images"] if img["id"] in imgIds]
             for id, ann in enumerate(anns):
                 ann["id"] = id + 1
         elif "bbox" in anns[0] and not anns[0]["bbox"] == []:
@@ -144,7 +138,7 @@ class COCOCustom(COCO):
             for id, ann in enumerate(anns):
                 bb = ann["bbox"]
                 x1, x2, y1, y2 = [bb[0], bb[0] + bb[2], bb[1], bb[1] + bb[3]]
-                if not "segmentation" in ann:
+                if "segmentation" not in ann:
                     ann["segmentation"] = [[x1, y1, x1, y2, x2, y2, x2, y1]]
                 ann["area"] = bb[2] * bb[3]
                 ann["id"] = id + 1
@@ -154,7 +148,7 @@ class COCOCustom(COCO):
             for id, ann in enumerate(anns):
                 # now only support compressed RLE format as segmentation results
                 ann["area"] = maskUtils.area(ann["segmentation"])
-                if not "bbox" in ann:
+                if "bbox" not in ann:
                     ann["bbox"] = maskUtils.toBbox(ann["segmentation"])
                 ann["id"] = id + 1
                 ann["iscrowd"] = 0
@@ -191,13 +185,7 @@ class CGF1Eval(COCOeval):
      - In open vocabulary settings, we have different noun-phrases for each image. What we call an "image_id" here is actually an (image, noun-phrase) pair. So in every "image_id" there is only one category, implied by the noun-phrase. Thus we can ignore the usual coco "category" field of the predictions
     """
 
-    def __init__(
-        self,
-        coco_gt=None,
-        coco_dt=None,
-        iouType="segm",
-        threshold=0.5,
-    ):
+    def __init__(self, coco_gt=None, coco_dt=None, iouType="segm", threshold=0.5):
         """
         Args:
             coco_gt (COCO): ground truth COCO API
@@ -256,14 +244,7 @@ class CGF1Eval(COCOeval):
         if len(gt) == 0 and len(dt) == 0:
             # This is a "true negative" case, where there are no GTs and no predictions
             # The box-level metrics are ill-defined, so we don't add them to this dict
-            return {
-                "image_id": imgId,
-                "IL_TP": 0,
-                "IL_TN": 1,
-                "IL_FP": 0,
-                "IL_FN": 0,
-                "num_dt": len(dt),
-            }
+            return {"image_id": imgId, "IL_TP": 0, "IL_TN": 1, "IL_FP": 0, "IL_FN": 0, "num_dt": len(dt)}
 
         if len(gt) > 0 and len(dt) == 0:
             # This is a "false negative" case, where there are GTs but no predictions
@@ -301,9 +282,9 @@ class CGF1Eval(COCOeval):
             TP = (match_scores >= thresh).sum()
             FP = len(dt) - TP
             FN = len(gt) - TP
-            assert (
-                FP >= 0 and FN >= 0
-            ), f"FP: {FP}, FN: {FN}, TP: {TP}, match_scores: {match_scores}, len(dt): {len(dt)}, len(gt): {len(gt)}, ious: {ious}"
+            assert FP >= 0 and FN >= 0, (
+                f"FP: {FP}, FN: {FN}, TP: {TP}, match_scores: {match_scores}, len(dt): {len(dt)}, len(gt): {len(gt)}, ious: {ious}"
+            )
             TPs.append(TP)
             FPs.append(FP)
             FNs.append(FN)
@@ -395,8 +376,7 @@ class CGF1Eval(COCOeval):
                     valid_F1_count += 1
 
         assert len(setImgIds - evaledImgIds) == 0, (
-            f"{len(setImgIds - evaledImgIds)} images not evaluated. "
-            f"Here are the IDs of the first 3: {list(setImgIds - evaledImgIds)[:3]}"
+            f"{len(setImgIds - evaledImgIds)} images not evaluated. Here are the IDs of the first 3: {list(setImgIds - evaledImgIds)[:3]}"
         )
 
         # compute precision recall and F1
@@ -406,26 +386,14 @@ class CGF1Eval(COCOeval):
         recall = TPs / (TPs + FNs + 1e-4)
         assert np.all(recall <= 1)
         F1 = 2 * precision * recall / (precision + recall + 1e-4)
-        positive_micro_F1 = (
-            2
-            * positive_micro_precision
-            * recall
-            / (positive_micro_precision + recall + 1e-4)
-        )
+        positive_micro_F1 = 2 * positive_micro_precision * recall / (positive_micro_precision + recall + 1e-4)
 
         IL_rec = IL_TPs / (IL_TPs + IL_FNs + 1e-6)
         IL_prec = IL_TPs / (IL_TPs + IL_FPs + 1e-6)
         IL_F1 = 2 * IL_prec * IL_rec / (IL_prec + IL_rec + 1e-6)
         IL_FPR = IL_FPs / (IL_FPs + IL_TNs + 1e-6)
         IL_MCC = float(IL_TPs * IL_TNs - IL_FPs * IL_FNs) / (
-            (
-                float(IL_TPs + IL_FPs)
-                * float(IL_TPs + IL_FNs)
-                * float(IL_TNs + IL_FPs)
-                * float(IL_TNs + IL_FNs)
-            )
-            ** 0.5
-            + 1e-6
+            (float(IL_TPs + IL_FPs) * float(IL_TPs + IL_FNs) * float(IL_TNs + IL_FPs) * float(IL_TNs + IL_FNs)) ** 0.5 + 1e-6
         )
 
         self.eval = {
@@ -459,11 +427,7 @@ class CGF1Eval(COCOeval):
             p = self.params
             iStr = " {:<18} @[ IoU={:<9}] = {:0.3f}"
             titleStr = "Average " + metric
-            iouStr = (
-                "{:0.2f}:{:0.2f}".format(p.iouThrs[0], p.iouThrs[-1])
-                if iouThr is None
-                else "{:0.2f}".format(iouThr)
-            )
+            iouStr = "{:0.2f}:{:0.2f}".format(p.iouThrs[0], p.iouThrs[-1]) if iouThr is None else "{:0.2f}".format(iouThr)
 
             s = self.eval[metric]
             # IoU
@@ -492,9 +456,7 @@ class CGF1Eval(COCOeval):
                 if metric.image_level:
                     stats.append(_summarize_single(metric=metric.name))
                 else:
-                    stats.append(
-                        _summarize(iouThr=metric.iou_threshold, metric=metric.name)
-                    )
+                    stats.append(_summarize(iouThr=metric.iou_threshold, metric=metric.name))
             return np.asarray(stats)
 
         summarize = _summarizeDets
@@ -520,19 +482,10 @@ def _evaluate(self):
         computeIoU = self.computeIoU
     else:
         raise RuntimeError(f"Unsupported iou {p.iouType}")
-    self.ious = {
-        (imgId, catId): computeIoU(imgId, catId)
-        for imgId in p.imgIds
-        for catId in catIds
-    }
+    self.ious = {(imgId, catId): computeIoU(imgId, catId) for imgId in p.imgIds for catId in catIds}
 
     maxDet = p.maxDets[-1]
-    evalImgs = [
-        self.evaluateImg(imgId, catId, areaRng, maxDet)
-        for catId in catIds
-        for areaRng in p.areaRng
-        for imgId in p.imgIds
-    ]
+    evalImgs = [self.evaluateImg(imgId, catId, areaRng, maxDet) for catId in catIds for areaRng in p.areaRng for imgId in p.imgIds]
     # this is NOT in the pycocotools code, but could be done outside
     evalImgs = np.asarray(evalImgs).reshape(len(catIds), len(p.areaRng), len(p.imgIds))
     return p.imgIds, evalImgs
@@ -544,12 +497,7 @@ class CGF1Evaluator:
     This supports the oracle setting (when several ground-truths are available per image)
     """
 
-    def __init__(
-        self,
-        gt_path: Union[str, List[str]],
-        iou_type="segm",
-        verbose=False,
-    ):
+    def __init__(self, gt_path: Union[str, List[str]], iou_type="segm", verbose=False):
         """
         Args:
             gt_path (str or list of str): path(s) to ground truth COCO json file(s)
@@ -565,29 +513,16 @@ class CGF1Evaluator:
 
         self.coco_evals = []
         for i, coco_gt in enumerate(self.coco_gts):
-            self.coco_evals.append(
-                CGF1Eval(
-                    coco_gt=coco_gt,
-                    iouType=iou_type,
-                )
-            )
+            self.coco_evals.append(CGF1Eval(coco_gt=coco_gt, iouType=iou_type))
             self.coco_evals[i].useCats = False
 
         exclude_img_ids = set()
         # exclude_img_ids are the ids that are not exhaustively annotated in any of the other gts
         for coco_gt in self.coco_gts[1:]:
-            exclude_img_ids = exclude_img_ids.union(
-                {
-                    img["id"]
-                    for img in coco_gt.dataset["images"]
-                    if not img["is_instance_exhaustive"]
-                }
-            )
+            exclude_img_ids = exclude_img_ids.union({img["id"] for img in coco_gt.dataset["images"] if not img["is_instance_exhaustive"]})
         # we only eval on instance exhaustive queries
         self.eval_img_ids = [
-            img["id"]
-            for img in self.coco_gts[0].dataset["images"]
-            if (img["is_instance_exhaustive"] and img["id"] not in exclude_img_ids)
+            img["id"] for img in self.coco_gts[0].dataset["images"] if (img["is_instance_exhaustive"] and img["id"] not in exclude_img_ids)
         ]
 
     def evaluate(self, pred_file: str):
@@ -599,9 +534,7 @@ class CGF1Evaluator:
 
         """
         assert len(self.coco_gts) > 0, "No ground truth provided for evaluation."
-        assert len(self.coco_gts) == len(
-            self.coco_evals
-        ), "Mismatch in number of ground truths and evaluators."
+        assert len(self.coco_gts) == len(self.coco_evals), "Mismatch in number of ground truths and evaluators."
 
         if self.verbose:
             print(f"Loading predictions from {pred_file}")
@@ -624,9 +557,7 @@ class CGF1Evaluator:
                 # suppress pycocotools prints
                 with open(os.devnull, "w") as devnull:
                     with contextlib.redirect_stdout(devnull):
-                        coco_dt = (
-                            cur_coco_gt.loadRes(results) if results else COCOCustom()
-                        )
+                        coco_dt = cur_coco_gt.loadRes(results) if results else COCOCustom()
 
                 coco_eval.cocoDt = coco_dt
                 coco_eval.params.imgIds = [img_id]
@@ -639,14 +570,12 @@ class CGF1Evaluator:
         # After this point, we have selected the best scoring per image among several ground truths
         # we can now accumulate and summarize, using only the first coco_eval
 
-        self.coco_evals[0].evalImgs = list(
-            np.concatenate(all_eval_imgs, axis=2).flatten()
-        )
+        self.coco_evals[0].evalImgs = list(np.concatenate(all_eval_imgs, axis=2).flatten())
         self.coco_evals[0].params.imgIds = self.eval_img_ids
         self.coco_evals[0]._paramsEval = copy.deepcopy(self.coco_evals[0].params)
 
         if self.verbose:
-            print(f"Accumulating results")
+            print("Accumulating results")
         self.coco_evals[0].accumulate()
         print("cgF1 metric, IoU type={}".format(self.iou_type))
         self.coco_evals[0].summarize()
@@ -668,17 +597,11 @@ class CGF1Evaluator:
         if len(scorings) == 1:
             return scorings[0]
 
-        assert (
-            scorings[0].ndim == 3
-        ), f"Expecting results in [numCats, numAreas, numImgs] format, got {scorings[0].shape}"
-        assert (
-            scorings[0].shape[0] == 1
-        ), f"Expecting a single category, got {scorings[0].shape[0]}"
+        assert scorings[0].ndim == 3, f"Expecting results in [numCats, numAreas, numImgs] format, got {scorings[0].shape}"
+        assert scorings[0].shape[0] == 1, f"Expecting a single category, got {scorings[0].shape[0]}"
 
         for scoring in scorings:
-            assert (
-                scoring.shape == scorings[0].shape
-            ), f"Shape mismatch: {scoring.shape}, {scorings[0].shape}"
+            assert scoring.shape == scorings[0].shape, f"Shape mismatch: {scoring.shape}, {scorings[0].shape}"
 
         selected_imgs = []
         for img_id in range(scorings[0].shape[-1]):
