@@ -1,5 +1,6 @@
+#---------------
 # REFERENCES
-#-------------
+#---------------
 
 # https://jhudatascience.org/AnVIL_Phylogenetic-Techniques/ancestral-state-reconstruction.html
 # http://www.phytools.org/eqg/Exercise_5.2/
@@ -16,7 +17,6 @@ library("corHMM")
 #--------------------------------------------------------------------------------------------------------------------------------------
 # HYPOTHESIS 01 - EVOLUTIONARY HISTORY OF COLLABORATION AXIS TRAITS (E.G. SRL) AND CONSERVATION AXIS TRAITS (E.G. RTD) ARE INDEPENDENT
 #--------------------------------------------------------------------------------------------------------------------------------------
-
 
 # this is species averages of first order records for the below mentioned 4 root traits from the RES
 res_avgd_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_ord1_sp_avrgd_cont_RES_traits.csv", row.names = "binominal")
@@ -49,6 +49,7 @@ res_avgd_traits <- res_avgd_traits[matched_row_indices, ]
 stopifnot(all(tree$tip.label==rownames(res_avgd_traits)))
 
 # fit a linear regression (Ordinary Least Squares) model for the species averaged first order RES traits without accounting for phylogenetic relationships
+png(filename = "../plots/linearreg_log_species_avg_trait_values.png", width = 10, height = 10, units = "in", res = 1000)
 par(mar = c(5, 5, 1, 1), mfrow=c(2, 2))
 for (collab in c("RD", "SRL")) {
     for (conserv in c("RN", "RTD")) {
@@ -65,6 +66,7 @@ for (collab in c("RD", "SRL")) {
         # we do not want log(log(predictions))
     }
 }
+dev.off()
 
 #---------------------------------------------------------
 # Phylogenetically Independent Contrasts (PIC)
@@ -83,6 +85,7 @@ pic_data <- data.frame(list("RD"=ape::pic(log(res_avgd_traits$RD), phy = tree), 
 # when we fit PIC scores to lm, we need to make sure that our regression line does not have an intercept (Revell and Harmon, 2022)
 # this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny, so is the direction of the subtraction of the PICs
 # so the model shoud go through the origin (0, 0)
+png(filename = "../plots/linearreg_pic_species_avg_log_traitvals.png", width = 10, height = 10, units = "in", res = 1000)
 par(mar = c(5, 5, 1, 1), mfrow=c(2, 2))
 for (collab in c("RD", "SRL")) {
     for (conserv in c("RN", "RTD")) {
@@ -96,7 +99,7 @@ for (collab in c("RD", "SRL")) {
         mtext(paste0("y = ", round(coef(picmod), 2), " x"), side = 3, col = "red", line = -2)
     }
 }
-
+dev.off()
 
 # repeat this with ape::pic.ortho() which allows the dataset to have
 res_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_ord1_cont_RES_traits.csv")#, row.names = "binominal") => may contains multiple records for species
@@ -116,19 +119,20 @@ pic_ortho_data <- list("RD"=ape::pic.ortho(split(x = log(res_traits$RD), f = res
 
 # when we fit PIC scores to lm, we need to make sure that our regression line does not have an intercept (Revell and Harmon, 2022)
 # this is because the position of right and left nodes is arbitrary for all nodes in our phylogeny, so is the direction of the subtraction of the PICs
-# so the model shoud go through the origin (0, 0)
+# so the model should go through the origin (0, 0)
+png(filename = "../plots/linearreg_pic_ortho_log_traitvals.png", width = 10, height = 10, units = "in", res = 1000)
 par(mar = c(5, 5, 1, 1), mfrow=c(2, 2))
 for (collab in c("RD", "SRL")) {
     for (conserv in c("RN", "RTD")) {
-        picmod <- lm(unlist(pic_ortho_data[collab])~unlist(pic_ortho_data[conserv])+0)
+        picorthomod <- lm(unlist(pic_ortho_data[collab])~unlist(pic_ortho_data[conserv])+0)
         plot(x = unlist(pic_ortho_data[conserv]), y = unlist(pic_ortho_data[collab]), xlab = paste0("PIC(log(", conserv, "))"), ylab = paste0("PIC(log(", collab, "))"))
         abline(h = 0, lty = "dotted")
         abline(v = 0, lty = "dotted")
-        abline(picmod, lwd = 1, col = "red")
-        mtext(paste0("y = ", round(coef(picmod), 2), " x"), side = 3, col = "red", line = -2)
+        abline(picorthomod, lwd = 1, col = "red")
+        mtext(paste0("y = ", round(coef(picorthomod), 2), " x"), side = 3, col = "red", line = -2)
     }
 }
-
+dev.off()
 
 #------------------------
 # Phylomorphospace
@@ -153,35 +157,19 @@ dev.off()
 correlation_matrix <- ape::corBrownian(phy = tree) # the form argument is used to specify the order of our data
 # since we have vectors with data in the same order as the tree here, it's not necessary
 
-# hate having to use this POS language
-
-# using the species averaged first order root trait dataset
+png(filename = "../plots/pgls_species_avg_log_traitvals.png", width = 10, height = 10, units = "in", res = 1000)
 par(mar = c(5, 5, 1, 1), mfrow=c(2, 2))
-# predictor - conservation axis, response - collaboration axis
+for (collab in c("RD", "SRL")) {
+    for (conserv in c("RN", "RTD")) {
+        collab_trait <- log(res_avgd_traits[, collab])
+        conserv_trait <- log(res_avgd_traits[, conserv])
+        pgls <- nlme::gls(collab_trait~conserv_trait, correlation = correlation_matrix) # doing the above inline in the formula arg of nlme::gls raises an exception saying invalid type list for variable ......????
+        plot(x = conserv_trait, y = collab_trait, xlab = paste0("log(", conserv, ")"), ylab = paste0("log(", collab, ")"))
+        abline(pgls, lwd = 1, col = "red")
+        mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
+    }
+}
+dev.off()
 
-# RD ~ RN
-pgls <- nlme::gls(log(RD)~log(RN), data = res_avgd_traits, correlation = correlation_matrix)
-plot(x = log(res_avgd_traits[, "RN"]), y = log(res_avgd_traits[, "RD"]), xlab = "log(RN)", ylab = "log(RD)")
-abline(pgls, lwd = 1, col = "red")
-mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
-
-# RD ~ RTD
-pgls <- nlme::gls(log(RD)~log(RTD), data = res_avgd_traits, correlation = correlation_matrix)
-plot(x = log(res_avgd_traits[, "RTD"]), y = log(res_avgd_traits[, "RD"]), xlab = "log(RTD)", ylab = "log(RD)")
-abline(pgls, lwd = 1, col = "red")
-mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
-
-# SRL ~ RN
-pgls <- nlme::gls(log(SRL)~log(RN), data = res_avgd_traits, correlation = correlation_matrix)
-plot(x = log(res_avgd_traits[, "RN"]), y = log(res_avgd_traits[, "SRL"]), xlab = "log(RN)", ylab = "log(SRL)")
-abline(pgls, lwd = 1, col = "red")
-mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
-
-# SRL ~ RTD
-pgls <- nlme::gls(log(SRL)~log(RTD), data = res_avgd_traits, correlation = correlation_matrix)
-plot(x = log(res_avgd_traits[, "RTD"]), y = log(res_avgd_traits[, "SRL"]), xlab = "log(RTD)", ylab = "log(SRL)")
-abline(pgls, lwd = 1, col = "red")
-mtext(paste0("y = ", round(coef(pgls)[2], 2), " x + ", round(coef(pgls)[1], 2)), side = 3, col = "red", line = -2)
-
-
+# dataframe[colname] returns a named list (with rownames)!!!
 

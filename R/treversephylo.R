@@ -31,7 +31,7 @@ collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FR
 #-----------------------------------------------------------
 
 # read in the previously serialized phylogenetic tree
-collab_phylo <- ape::read.tree(file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre")
+collab_phylo <- ape::read.tree(file = "../data/chapter2/uphylomaker/")
 
 # plot and save the phylogenetic tree
 htree <- max(phytools::nodeHeights(collab_phylo))
