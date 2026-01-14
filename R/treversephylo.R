@@ -4,17 +4,17 @@ library("phytools")
 library("nlme")
 library("U.PhyloMaker")
 
-
-#-------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 # HYPOTHESES 02 - CORRELATION BETWEEN THE EVOLUTIONARY HISTORY OF MYCORRHIZAL STATES AND COLLABORATION AXIS TRAITS
-#-------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 
 # F00679 - RD, F00727 - SRL, F00645 - mycorrhizal state
 collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FRED_subset_collab_states_n_species_avg_traits.csv", sep = ",", row.names = "binominal", stringsAsFactors = TRUE)
 # this contains crude species avaraged records for RD and SRL (did not consider root order differences)
 
+#------------------------------------------------------------
 # FIRST TIME PHYLOGENETIC TREE CREATION AND SERIALIZATION
-#---------------------------------------------------------
+#------------------------------------------------------------
 
 # we'll need a new phylogeny as this is a superset of the previous phylogeny
 # megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB_extended_WP.tre")
@@ -27,8 +27,9 @@ collab_states_n_species_avg_traits <- read.csv("../data/chapter2/FREDv3subset/FR
 # serialize the phylogeny
 # ape::write.tree(phy = phylogeny$phylo, file = "../data/chapter2/uphylomaker/fredv3subset_collab_trait_n_states.tre") # cool
 
+#--------------------------------------------------------------
 # DOWNSTREAM ANALYSES USING THE SERIALIZED PHYLOGENETIC TREE
-#-----------------------------------------------------------
+#--------------------------------------------------------------
 
 # read in the previously serialized phylogenetic tree
 collab_phylo <- ape::read.tree(file = "../data/chapter2/uphylomaker/")
@@ -97,8 +98,10 @@ text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
-
+#--------------------------------------------------------------------------------
 # TRY OVERLAYING THE MYCORRHIZAL STATE PHYLOGENY ON THE RD & SRL PHYLOGENIES
+#--------------------------------------------------------------------------------
+
 png("../plots/asr_collab_myco_states_n_rd.png", width = 12000, height = 12000, units = "px", res = 400)
 map <- phytools::contMap(tree = rooted_dichotomous_phylogeny, x = named_rd_vec, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
 plot(map, type = "fan")
@@ -121,9 +124,9 @@ text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
 
-
+#------------------------------------
 # PHYLOGENETIC GENERALIZED ANCOVA
-#---------------------------------
+#------------------------------------
 
 # since the second hypothesis looks at correlations between a categorical trait and two continuous traits, PIC followed by OLS regression won't help
 # we opt for phylogenetic generalized ANCOVA as recommended by Revell, L.J. and Harmon, L.J. (2022) Phylogenetic comparative methods in R. Princeton Oxford: Princeton University Press. (page 71)
@@ -188,7 +191,4 @@ ancova_interact_centered <- nlme::gls(model = scale(srl)~scale(rd)*myco, data = 
 stats::anova(ancova_interact_centered)
 
 
-# ALL THESE TESTS LOOK FOR CORRELATIONS BETWEEN TWO OR MORE TRAITS AFTER ACCOUNTING FOR PHYLOGENETIC RELATIONSHIPS
-# WHAT THEY DO IS TO CANCEL THE EFFECTS OF PHYLOGENETIC RELATIONSHIPS BEFORE FITTING A LINEAR MODEL BETWEEN THE SAID TRAITS
-# WHAT WE WANT IS A METHOD TO TEST FOR CORRELATED EVOLUTION - RADIALLY TRAVERSING THE PHYLOGENY FOR PAIRED CONSISTENT CHANGES IN TRAITS
-#---------------------------------------------------------------------------------------------------------------------------------------
+
