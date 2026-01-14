@@ -1,4 +1,4 @@
-___Stripped down segmentation models (ViTs)___
+___Stripped down segmentation models___
 
 ------------------------------------------
 	1. SAM (Segment Anything Model)   
