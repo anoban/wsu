@@ -78,3 +78,5 @@ states <- setNames(FINALIZED_MYCORRHIZAL_STATES$state, nm = FINALIZED_MYCORRHIZA
 discER <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ER")
 discARD <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ARD")
 discSYM <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "SYM")
+
+# we can also pass tailored regime rate matrices like OUwie::hOUwie
