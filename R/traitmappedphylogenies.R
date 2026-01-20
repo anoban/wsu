@@ -16,9 +16,14 @@ FIRST_ORDER_COLLAB_SP_AVERAGED_SRL_N_RD$binominal <- gsub(pattern = ' ', replace
 FIRST_ORDER_COLLAB_SP_AVERAGED_SRL_N_RD <- FIRST_ORDER_COLLAB_SP_AVERAGED_SRL_N_RD[match(x = PHYLOGENY$tip.label, FIRST_ORDER_COLLAB_SP_AVERAGED_SRL_N_RD$binominal), ]
 stopifnot(all(FIRST_ORDER_COLLAB_SP_AVERAGED_SRL_N_RD$binominal == PHYLOGENY$tip.label))
 
-FINALIZED_MYCORRHIZAL_STATES <- read.csv("../data/chapter2/FREDv3subset/finalized_states_395_species.csv")
-stopifnot(length(FINALIZED_MYCORRHIZAL_STATES$binominal) == 395)
 
+
+FINALIZED_MYCORRHIZAL_STATES <- read.csv("../data/chapter2/FREDv3subset/finalized_states_395_species.csv")
+FINALIZED_MYCORRHIZAL_STATES$state <- gsub(pattern = '/', replacement = '', x = FINALIZED_MYCORRHIZAL_STATES$state) # let's remove the forward slashes because it caused errors with OUwie
+FINALIZED_MYCORRHIZAL_STATES$binominal <- gsub(pattern = ' ', replacement = '_', FINALIZED_MYCORRHIZAL_STATES$binominal) # replace the spaces with underscores to match the tip labels in the phylogeny
+FINALIZED_MYCORRHIZAL_STATES <- FINALIZED_MYCORRHIZAL_STATES[match(x = PHYLOGENY$tip.label, FINALIZED_MYCORRHIZAL_STATES$binominal), ]
+stopifnot(length(FINALIZED_MYCORRHIZAL_STATES$binominal) == 395)
+stopifnot(all(FINALIZED_MYCORRHIZAL_STATES$binominal == PHYLOGENY$tip.label))
 
 #---------------------------------------------------------
 # Ancestral State Estimation (ACE) for continuous traits
@@ -62,3 +67,14 @@ tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), ce
 text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
 text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
 dev.off()
+
+# for the ACE of discrete traits we first need to choose a evolutionary model, similar to what we did with OUwie
+unique(FINALIZED_MYCORRHIZAL_STATES$state) # got 6 unique states - "AMNM"  "AM"    "ErM"   "NM"    "AMEcM" "EcM"
+states <- setNames(FINALIZED_MYCORRHIZAL_STATES$state, nm = FINALIZED_MYCORRHIZAL_STATES$binominal)
+
+# for a detailed walkthrough about the model arg, browse the documentation of ape::ace which is very similar (nearly identical) to the way OUwie handles regime rate matrices
+# also check https://blog.phytools.org/2015/05/about-how-acemarginaltrue-does-not.html out
+
+discER <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ER")
+discARD <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ARD")
+discSYM <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "SYM")
