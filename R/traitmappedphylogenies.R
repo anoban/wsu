@@ -2,6 +2,7 @@
 
 library("ape")
 library("phytools")
+library("corHMM")
 
 PHYLOGENY <- ape::read.tree("../data/chapter2/uphylomaker/FRED_subset_collab_395sp.tre") # 395 species
 stopifnot(length(PHYLOGENY$tip.label) == 395)
@@ -80,3 +81,17 @@ discARD <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ARD")
 discSYM <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "SYM")
 
 # we can also pass tailored regime rate matrices like OUwie::hOUwie
+
+data.frame(model = c("ER", "ARD", "SYM"),
+           AIC = c(stats::AIC(discER), stats::AIC(discARD), stats::AIC(discSYM)),
+           lnLik = c(stats::logLik(discER), stats::logLik(discARD), stats::logLik(discSYM))
+           )
+
+# https://michael-franke.github.io/intro-data-analysis/Chap-03-06-model-comparison-AIC.html
+# our model evaluation suggests ER to be the best fit here???? (lowest AIC)
+
+# for the ACE of discrete traits we have 2 options:
+# 1) rerooting method
+# 2) corHMM
+
+marginalACE_corHMM <- corHMM::corHMM(phy = PHYLOGENY, data = FINALIZED_MYCORRHIZAL_STATES, model = "ER", node.states = "marginal", rate.cat = 1)
