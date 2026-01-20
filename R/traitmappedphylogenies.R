@@ -51,3 +51,14 @@ text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, TSCALE_LENGTH
 text(x = 250, y = -35, labels = "Time (Million years)", cex = 2, col = "black")
 dev.off()
 
+# RD and mycorrhizal states
+png("../plots/FRED_collab_395sp_RD_n_states_mapped_phylogeny.png", width = 12000, height = 12000, units = "px", res = 400)
+mappedRDSTATES <- phytools::contMap(tree = PHYLOGENY, x = RD, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
+plot(map, type = "fan")
+ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_colours, cex = 0.1)
+ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_colours, cex = 0.1)
+legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_colours, cex = 3, pt.cex = 5, pch = 21)
+tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
+text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
+dev.off()
