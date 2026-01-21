@@ -72,8 +72,10 @@ avg_models_CD_RD[, c("alpha", "sigma.sq", "theta", "tip_state")] |> split(~tip_s
 # there's already a function named stderr in base R ???
 stderr_ <- function(df) { lapply(X=df, FUN=function(column) {sd(column) / sqrt(length(column))}) |> unlist() }
 
-avg_models_CD_RD |> split(~tip_state)
-avg_models_CD_RD |> split(~tip_state) |> lapply(function(df) { colMeans(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
+avg_models_CD_RD |> split(~tip_state) |> lapply(function(df) { colMeans(df[, c("rates", "alpha", "sigma.sq", "theta")]) }) |> as.data.frame()
+avg_models_CID_RD |> split(~tip_state) |> lapply(function(df) { colMeans(df[, c("rates", "alpha", "sigma.sq", "theta")]) }) |> as.data.frame()
+
+
 avg_models_CD_RD |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
 
 
