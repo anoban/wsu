@@ -41,33 +41,22 @@ TSCALE_LENGTH <- max(phytools::nodeHeights(PHYLOGENY))
 
 # for root diameter (first order roots)
 mappedRD <- phytools::contMap(tree = PHYLOGENY, x = RD, plot = FALSE)
-png("../plots/FRED_collab_395sp_RD_mapped_phylogeny.png", width = 8000, height = 8000, units = "px", res = 200)
-plot(mappedRD, ftype = "i", fsize = 1.4, type = "fan", lwd = 3, part = 0.99, leg.txt = "RD in cm")
+png("../plots/FRED_collab_395sp_RD_mapped_phylogeny.png", width = 12000, height = 12000, units = "px", res = 400)
+plot(mappedRD, ftype = "i", fsize = 1.2, type = "fan", lwd = 3, part = 0.99, leg.txt = "RD in cm")
 tscale_axis <- axis(1, pos = -2, at = TSCALE_LENGTH - seq(0, TSCALE_LENGTH, length.out = 10), cex.axis = 1.75, labels = FALSE, col = "black", lwd = 2)
 text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, TSCALE_LENGTH, length.out = 10)), sprintf, fmt = "%.2f"), cex = 2, col = "black")
-text(x = 250, y = -35, labels = "Time (Million years)", cex = 2, col = "black")
+text(x = 250, y = -28, labels = "Time (Million years)", cex = 2, col = "black")
 dev.off()
 
 # for specific root length (first order roots)
 mappedSRL <- phytools::contMap(tree = PHYLOGENY, x = SRL, plot = FALSE)
-png("../plots/FRED_collab_395sp_SRL_mapped_phylogeny.png", width = 8000, height = 8000, units = "px", res = 200)
-plot(mappedSRL, ftype = "i", fsize = 1.4, type = "fan", lwd = 3, part = 0.99, leg.txt = "SRL in m/g")
+png("../plots/FRED_collab_395sp_SRL_mapped_phylogeny.png", width = 12000, height = 12000, units = "px", res = 400)
+plot(mappedSRL, ftype = "i", fsize = 1.2, type = "fan", lwd = 3, part = 0.99, leg.txt = "SRL in m/g")
 tscale_axis <- axis(1, pos = -2, at = TSCALE_LENGTH - seq(0, TSCALE_LENGTH, length.out = 10), cex.axis = 1.75, labels = FALSE, col = "black", lwd = 2)
 text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, TSCALE_LENGTH, length.out = 10)), sprintf, fmt = "%.2f"), cex = 2, col = "black")
-text(x = 250, y = -35, labels = "Time (Million years)", cex = 2, col = "black")
+text(x = 250, y = -28, labels = "Time (Million years)", cex = 2, col = "black")
 dev.off()
 
-# RD and mycorrhizal states
-png("../plots/FRED_collab_395sp_RD_n_states_mapped_phylogeny.png", width = 12000, height = 12000, units = "px", res = 400)
-mappedRDSTATES <- phytools::contMap(tree = PHYLOGENY, x = RD, res = 400, ftype = "i", fsize = 1.4, type = "fan", lwd = 0.8, part = 0.99)
-plot(map, type = "fan")
-ape::nodelabels(node = er_mystates$marginal.anc |> row.names() |> as.numeric(), pie = er_mystates$marginal.anc, piecol = myco_state_colours, cex = 0.1)
-ape::tiplabels(pie = to.matrix(named_mycorrhizal_state_vec, sort(unique(named_mycorrhizal_state_vec))), piecol = myco_state_colours, cex = 0.1)
-legend("topright", legend = sort(unique(named_mycorrhizal_state_vec)), pt.bg = myco_state_colours, cex = 3, pt.cex = 5, pch = 21)
-tscale_axis <- axis(1, pos = -2, at = htree - seq(0, htree, length.out = 10), cex.axis = 1., labels = FALSE, col = "black")
-text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, htree, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "black")
-text(x = 250, y = -30, labels = "Time (Million years)", cex = 1.5, col = "black")
-dev.off()
 
 # for the ACE of discrete traits we first need to choose a evolutionary model, similar to what we did with OUwie
 unique(FINALIZED_MYCORRHIZAL_STATES$state) # got 6 unique states - "AMNM"  "AM"    "ErM"   "NM"    "AMEcM" "EcM"
@@ -75,6 +64,8 @@ states <- setNames(FINALIZED_MYCORRHIZAL_STATES$state, nm = FINALIZED_MYCORRHIZA
 
 # for a detailed walkthrough about the model arg, browse the documentation of ape::ace which is very similar (nearly identical) to the way OUwie handles regime rate matrices
 # also check https://blog.phytools.org/2015/05/about-how-acemarginaltrue-does-not.html out
+
+if (file.exists("./rdata/fitMk.RData")) load("./rdata/fitMk.RData")
 
 discER <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ER")
 discARD <- phytools::fitMk(tree = PHYLOGENY, x = states, model = "ARD")
@@ -86,6 +77,13 @@ data.frame(model = c("ER", "ARD", "SYM"),
            AIC = c(stats::AIC(discER), stats::AIC(discARD), stats::AIC(discSYM)),
            lnLik = c(stats::logLik(discER), stats::logLik(discARD), stats::logLik(discSYM))
            )
+#   model      AIC     lnLik
+# 1    ER 286.6082 -142.3041
+# 2   ARD 320.8487 -130.4244
+# 3   SYM 300.4172 -135.2086
+
+# save(discER, discSYM, discARD, file = "./rdata/fitMk.RData")
+
 
 # https://michael-franke.github.io/intro-data-analysis/Chap-03-06-model-comparison-AIC.html
 # our model evaluation suggests ER to be the best fit here???? (lowest AIC)
@@ -94,4 +92,36 @@ data.frame(model = c("ER", "ARD", "SYM"),
 # 1) rerooting method
 # 2) corHMM
 
-marginalACE_corHMM <- corHMM::corHMM(phy = PHYLOGENY, data = FINALIZED_MYCORRHIZAL_STATES, model = "ER", node.states = "marginal", rate.cat = 1)
+marginalACE_corHMM <- corHMM::corHMM(phy = PHYLOGENY, data = FINALIZED_MYCORRHIZAL_STATES[, c("binominal", "state")], model = "ER", node.states = "marginal", rate.cat = 1)
+rrStates <- phytools::rerootingMethod(tree = PHYLOGENY, x = states, model = "ER")
+# A WARNING ABOUT THE phytools::rerootingMethod FUNCTION =>
+# This function is redundant with 'phytools::ancr' in situations in which it should be used (symmetric Q matrices) & invalid for non-symmetric Q matrices (e.g., model='ARD').
+
+#-----------------------------------------------------------
+# PLOT THE ACE OF MYCORRHIZAL STATES ON THE PHYLOGENY
+#-----------------------------------------------------------
+
+STATE_COLOURS <- c("blue", "red", "green", "orange", "yellow", "magenta")
+
+png("../plots/FRED_collab_395sp_corHMM_marginal_states_mapped_phylogeny.png", width = 12000, height = 12000, units = "px", res = 400)
+plot <- phytools::plotTree(tree = PHYLOGENY, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99, offset = 2) # space the species names a bit far from the tips with `offset`
+tscale_axis <- axis(1, pos = -2, at = TSCALE_LENGTH - seq(0, TSCALE_LENGTH, length.out = 10), cex.axis = 1., labels = FALSE, col = "red")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, TSCALE_LENGTH, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "red")
+text(x = 250, y = -20, labels = "Time (Million years)", cex = 1.5, col = "red")
+ape::nodelabels(pie = marginalACE_corHMM$states, piecol = STATE_COLOURS, cex = 0.1) # internal nodes
+ape::tiplabels(pie = to.matrix(FINALIZED_MYCORRHIZAL_STATES$state, sort(unique(FINALIZED_MYCORRHIZAL_STATES$state))), piecol = STATE_COLOURS, cex = 0.1) # nodes at the tips
+legend("topright", legend = c("AM", "AM/EcM", "AM/NM", "EcM", "ErM", "NM"), # same order as => sort(unique(FINALIZED_MYCORRHIZAL_STATES$state)),
+       pt.bg = STATE_COLOURS, cex = 3, pt.cex = 5, pch = 21, ncol = 2)
+dev.off()
+
+
+png("../plots/FRED_collab_395sp_rerooting_marginal_states_mapped_phylogeny.png", width = 12000, height = 12000, units = "px", res = 400)
+plot <- phytools::plotTree(tree = PHYLOGENY, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, part = 0.99, offset = 2) # space the species names a bit far from the tips with `offset`
+tscale_axis <- axis(1, pos = -2, at = TSCALE_LENGTH - seq(0, TSCALE_LENGTH, length.out = 10), cex.axis = 1., labels = FALSE, col = "red")
+text(x = tscale_axis, y = rep(-10, 10), labels = lapply(rev(seq(0, TSCALE_LENGTH, length.out = 10)), sprintf, fmt = "%.2f"), cex = 1, col = "red")
+text(x = 250, y = -20, labels = "Time (Million years)", cex = 1.5, col = "red")
+ape::nodelabels(pie = rrStates$marginal.anc, piecol = STATE_COLOURS, cex = 0.1)
+ape::tiplabels(pie = to.matrix(FINALIZED_MYCORRHIZAL_STATES$state, sort(unique(FINALIZED_MYCORRHIZAL_STATES$state))), piecol = STATE_COLOURS, cex = 0.1) # nodes at the tips
+legend("topright", legend = c("AM", "AM/EcM", "AM/NM", "EcM", "ErM", "NM"), # same order as => sort(unique(FINALIZED_MYCORRHIZAL_STATES$state)),
+       pt.bg = STATE_COLOURS, cex = 3, pt.cex = 5, pch = 21, ncol = 2)
+dev.off()
