@@ -43,3 +43,7 @@ dev.off()
 # CATEGORICAL TRAITS
 phytools::rerootingMethod(tree = COLLAB_395SP_TREE, x = STATES, model = "ER")
 phytools::ancr()
+
+
+# ACE of mycorrhizal states using corHMM (MARGINAL ACE)
+corHMM::corHMM(phy = COLLAB_395SP_TREE, data = data[, c("binominal", "myco")], model = "ER", node.states = "marginal", rate.cat = 1)
