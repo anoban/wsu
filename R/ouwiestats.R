@@ -86,20 +86,20 @@ avg_models_CD_RD |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("r
 
 
 load("./rdata/OU_SRL_CD.RData")
-load("./rdata/OU_SRL_CIDp.RData")
+load("./rdata/OU_SRL_CID.RData")
 
 models_CD_SRL <- list(EROUM=ER_OUM_SRL_CD, EROUMA=ER_OUMA_SRL_CD, EROUMV=ER_OUMV_SRL_CD, EROUMVA=ER_OUMVA_SRL_CD, ARDOUM=ARD_OUM_SRL_CD,
                      ARDOUMA=ARD_OUMA_SRL_CD, ARDOUMV=ARD_OUMV_SRL_CD, ARDOUMVA=ARD_OUMVA_SRL_CD, SYMOUM=SYM_OUM_SRL_CD, SYMOUMA=SYM_OUMA_SRL_CD,
                      SYMOUMV=SYM_OUMV_SRL_CD, SYMOUMVA=SYM_OUMVA_SRL_CD)
 
-models_CIDp_SRL <- list(EROUM=ER_OUM_SRL_CIDp, EROUMA=ER_OUMA_SRL_CIDp, EROUMV=ER_OUMV_SRL_CIDp, EROUMVA=ER_OUMVA_SRL_CIDp, ARDOUM=ARD_OUM_SRL_CIDp,
-                        ARDOUMA=ARD_OUMA_SRL_CIDp, ARDOUMV=ARD_OUMV_SRL_CIDp, ARDOUMVA=ARD_OUMVA_SRL_CIDp, SYMOUM=SYM_OUM_SRL_CIDp, SYMOUMA=SYM_OUMA_SRL_CIDp,
-                        SYM_OUMV=SYM_OUMV_SRL_CIDp, SYMOUMVA=SYM_OUMVA_SRL_CIDp)
+models_CID_SRL <- list(EROUM=ER_OUM_SRL_CID, EROUMA=ER_OUMA_SRL_CID, EROUMV=ER_OUMV_SRL_CID, EROUMVA=ER_OUMVA_SRL_CID, ARDOUM=ARD_OUM_SRL_CID,
+                        ARDOUMA=ARD_OUMA_SRL_CID, ARDOUMV=ARD_OUMV_SRL_CID, ARDOUMVA=ARD_OUMVA_SRL_CID, SYMOUM=SYM_OUM_SRL_CID, SYMOUMA=SYM_OUMA_SRL_CID,
+                        SYM_OUMV=SYM_OUMV_SRL_CID, SYMOUMVA=SYM_OUMVA_SRL_CID)
 
-lapply(models_CIDp_SRL, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
+lapply(models_CID_SRL, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
 lapply(models_CD_SRL, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
 
-avg_models_CIDp_SRL <- OUwie::getModelAvgParams(models_CIDp_SRL, type = "AICc", force = FALSE)
+avg_models_CID_SRL <- OUwie::getModelAvgParams(models_CID_SRL, type = "AICc", force = FALSE)
 avg_models_CD_SRL <- OUwie::getModelAvgParams(models_CD_SRL, type = "AICc", force = FALSE)
 
 plot_df <- reshape2::melt(avg_models_CD_SRL)
@@ -110,13 +110,13 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
 ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_SRL_CD.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
-plot_df <- reshape2::melt(avg_models_CIDp_SRL)
+plot_df <- reshape2::melt(avg_models_CID_SRL)
 plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     geom_point(size = 5, shape = 21) +
     stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
     stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
-ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_SRL_CIDp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_SRL_CID.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
 
 
@@ -125,6 +125,11 @@ ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_SRL_CIDp.png", device =
 #-----------------------------------------------------------
 # AFTER STATE CHANGES (AM/NM TO NM AND REMOVING ErM)
 #-----------------------------------------------------------
+
+
+#------------------
+# ROOT DIAMETER
+#------------------
 
 
 load("./rdata/OU_RD_CID_4states.RData")
@@ -173,3 +178,53 @@ avg_models_CID_RD_4states |> split(~tip_state) |> lapply(function(df) { colMeans
 
 avg_models_CD_RD_4states |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
 avg_models_CID_RD_4states |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
+
+
+#--------------------------
+# SPECIFIC ROOT LENGTH
+#--------------------------
+
+load("./rdata/OU_SRL_CID_4states.RData")
+load("./rdata/OU_SRL_CD_4states.RData")
+
+
+models_CD_SRL_4states <- list(EROUM=ER_OUM_SRL_CD, EROUMA=ER_OUMA_SRL_CD, EROUMV=ER_OUMV_SRL_CD, EROUMVA=ER_OUMVA_SRL_CD, ARDOUM=ARD_OUM_SRL_CD,
+                              ARDOUMA=ARD_OUMA_SRL_CD, ARDOUMV=ARD_OUMV_SRL_CD, ARDOUMVA=ARD_OUMVA_SRL_CD, SYMOUM=SYM_OUM_SRL_CD, SYMOUMA=SYM_OUMA_SRL_CD,
+                              SYMOUMV=SYM_OUMV_SRL_CD, SYMOUMVA=SYM_OUMVA_SRL_CD)
+
+models_CID_SRL_4states <- list(EROUM=ER_OUM_SRL_CID, EROUMA=ER_OUMA_SRL_CID, EROUMV=ER_OUMV_SRL_CID, EROUMVA=ER_OUMVA_SRL_CID, ARDOUM=ARD_OUM_SRL_CID,
+                               ARDOUMA=ARD_OUMA_SRL_CID, ARDOUMV=ARD_OUMV_SRL_CID, ARDOUMVA=ARD_OUMVA_SRL_CID, SYMOUM=SYM_OUM_SRL_CID, SYMOUMA=SYM_OUMA_SRL_CID,
+                               SYM_OUMV=SYM_OUMV_SRL_CID, SYMOUMVA=SYM_OUMVA_SRL_CID)
+
+lapply(models_CID_SRL_4states, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
+lapply(models_CD_SRL_4states, function(mod){c(mod$loglik, mod$AIC, mod$AICc)}) |> as.data.frame(row.names = c("lnLik", "AIC", "AICc"))
+
+avg_models_CD_SRL_4states <- OUwie::getModelAvgParams(models_CD_SRL_4states, type = "AICc", force = FALSE)
+avg_models_CID_SRL_4states <- OUwie::getModelAvgParams(models_CID_SRL_4states, type = "AICc", force = FALSE)
+
+plot_df <- reshape2::melt(avg_models_CID_SRL_4states)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CID_4states.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
+
+plot_df <- reshape2::melt(avg_models_CD_SRL_4states)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CD_4states.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
+
+stderr_ <- function(df) { lapply(X=df, FUN=function(column) {sd(column) / sqrt(length(column))}) |> unlist() }
+
+avg_models_CD_SRL_4states |> split(~tip_state) |> lapply(function(df) { colMeans(df[, c("rates", "alpha", "sigma.sq", "theta")]) }) |> as.data.frame()
+avg_models_CID_SRL_4states |> split(~tip_state) |> lapply(function(df) { colMeans(df[, c("rates", "alpha", "sigma.sq", "theta")]) }) |> as.data.frame()
+
+
+avg_models_CD_SRL_4states |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
+avg_models_CID_SRL_4states |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
