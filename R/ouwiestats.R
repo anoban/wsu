@@ -208,7 +208,7 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
     stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
-ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CID_4states.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_SRL_CID_4states.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
 
 plot_df <- reshape2::melt(avg_models_CD_SRL_4states)
@@ -217,7 +217,7 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
     stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
-ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CD_4states.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_SRL_CD_4states.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
 
 stderr_ <- function(df) { lapply(X=df, FUN=function(column) {sd(column) / sqrt(length(column))}) |> unlist() }
