@@ -4,7 +4,7 @@ suppressPackageStartupMessages({
     library("nlme")
     library("corHMM")
     library("geiger")
-    library("mkcor")
+    # library("mkcor")
     library("OUwie")
     library("reshape2")
     library("ggplot2")
