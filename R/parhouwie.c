@@ -22,26 +22,21 @@ static const wchar_t* const LIBRARY_LOADING__AND_SANITATION = L"suppressPackageS
 
 // template string for leading in the phylogeny data and the trait data
 static const wchar_t* const DATA_LOADING_TEMPLATE =
-    L"phylogeny <- ape::multi2di(ape::read.tree(file = \"../../data/chapter2/uphylomaker/%s\"))"
-    "trait_data <- read.csv(\"../../data/chapter2/FREDv3subset/%s\", stringsAsFactors = TRUE)";
+    L"phylogeny <- ape::multi2di(ape::read.tree(file = \"../../data/chapter2/uphylomaker/%s\"))" // assume that the directories won't need changing
+    "trait_data <- read.csv(\"../../data/chapter2/FREDv3subset/%s\", stringsAsFactors = TRUE)"; // same here
 
-//-----------------------------------------------------------------------------
-// DISCRETE MODELS
-//-----------------------------------------------------------------------------
-#define ER    "ER"  // all rates are identical
-#define SYM   "SYM" // symmetrically identical rates
-#define ARD   "ARD" // all rates are allowed to be different (asymmetrically)
-//-----------------------------------------------------------------------------
+typedef enum DISCRETE_MODELS { ER, SYM, ARD } DISCRETE_MODELS; // DISCRETE MODELS
 
-//-----------------------------------------------------------------------------
-// CONTINUOUS MODELS
-//-----------------------------------------------------------------------------
-#define OUM   "OUM"   //
-#define OUMA  "OUMA"  //
-#define OUMV  "OUMV"  //
-#define OUMVA "OUMVA" //
+#define ER  L"ER"  // all rates are identical
+#define SYM L"SYM" // symmetrically identical rates
+#define ARD L"ARD" // all rates are allowed to be different (asymmetrically)
 
-//-----------------------------------------------------------------------------
+typedef enum CONTINUOUS_MODELS { OUM, OUMA, OUMV, OUMVA } CONTINUOUS_MODELS; // CONTINUOUS MODELS
+
+#define OUM   L"OUM"   //
+#define OUMA  L"OUMA"  //
+#define OUMV  L"OUMV"  //
+#define OUMVA L"OUMVA" //
 
 static inline bool __stdcall houwie() {
     // template string for fitting an hOUwie model, with customizable parameters
