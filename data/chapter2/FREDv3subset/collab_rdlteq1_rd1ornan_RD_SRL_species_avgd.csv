@@ -1,4 +1,4 @@
-binominal,F00056,F00679,F00727,F00004,F01286,F01287,F01289,F01290
+binominal,root_order,RD,SRL,references,genus,species,family,order
 Abelia biflora,1.0,0.5292,30.94705706,"<ArrowStringArray>
 ['Wang R, Wang Q, Zhao N, Xu Z, Zhu X, Jiao C, Yu G, He N. 2018. Different phylogenetic and environmental controls of first-order root morphological and nutrient traits: Evidence of multidimensional root traits. Special Focus on Functional Traits Along A Transect 32(1): 29-39.']
 Length: 1, dtype: str",Abelia,biflora,Caprifoliaceae,Dipsacales
