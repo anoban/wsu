@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// each process only takes up about ~9% of the CPU, so this could absolutely benefit from paralellization
+
 // this is a constant string for loading in the necessary libraries and checking their versions
 static const wchar_t* const LIBRARY_LOADING__AND_SANITATION = L"suppressPackageStartupMessages({"
                                                               "    library(\"ape\")"
