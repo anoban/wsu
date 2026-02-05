@@ -82,24 +82,18 @@ enum class CONTINUOUS_MODELS : unsigned char {
     OUMVA [[deprecated("OUwie currently recommends not using the variable alpha models for continuous trait evolution")]]
 };
 
-static wchar_t DUMMY_COMMANDLINE[512] {
-    // LR"("C:\R-4.5.2\bin\R.exe" -e 'write.csv(installed.packages()[, c("Package", "Version")], file = paste0("./packages_", sample(1:100, 1), ".csv"))')"
-    LR"("C:\Program Files\Python313\python.exe" -c )"
-    L"\"\nimport random\n"
-    L"import codecs\n"
-    L"import this\n"
-    L"with open(file=r\"./zen.txt\", mode=\"wt\") as fp:\n"
-    L"    fp.write(codecs.encode(this.s, \"rot13\"))\n\""
+static wchar_t DUMMY_R_COMMANDLINE[512] {
+    // the readline() at the end will keep the console window open until a user input is provided
+    L"C:/R-4.5.2/bin/Rscript.exe --no-save -e 'write.csv(installed.packages()[, c('Package', 'Version')], file = paste0('./packages_', sample(1:100, 1), '.csv'));readline();'"
 };
 
-// it'll help diagnose issues when we can capture and read the stdout of the launched child processes
-static inline std::string capture_stdout(_In_ const HANDLE64 childproc, _In_ const unsigned long long& capture_buffsize = 0xFFFF) noexcept {
-    //
-}
-
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
-    static const wchar_t* const         R_INTERPRETER_PATH { LR"(C:\R-4.5.2\bin\R.exe)" }; // the install directory of the R.exe binary
-    static constexpr unsigned long long INTERPRETER_CMDLINE_BUFFSIZE { (1024 * 64) };      // being a bit too generous here
+    static const wchar_t* const         R_INTERPRETER_PATH { L"C:/R-4.5.2/bin/Rscript.exe" }; // the install directory of the R.exe binary
+    static constexpr unsigned long long INTERPRETER_CMDLINE_BUFFSIZE { (1024 * 64) };         // being a bit too generous here
+
+    static constexpr unsigned long long CHILDPROC_STDOUT_PIPE_BUFFSIZE { 0xFFFFF };
+    std::string                         childproc_stdout_buffer;
+    childproc_stdout_buffer.reserve(CHILDPROC_STDOUT_PIPE_BUFFSIZE);
 
     SYSTEM_INFO   sysinf { 0 };
     unsigned long bfsize {};
@@ -113,26 +107,35 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     // e.g. R.exe -e "write.csv(installed.packages(), file=\"name.csv\")"
     // ::swprintf_s(interpreter_invocation_cmdline, INTERPRETER_CMDLINE_BUFFSIZE, R_INTERPRETER_PATH " -e \"\"");
 
-    ::_putws(DUMMY_COMMANDLINE);
+    ::_putws(DUMMY_R_COMMANDLINE);
 
     PROCESS_INFORMATION childprocinfo {};
-    HANDLE64            childproc_stdout {}, childproc_stdin {};
+    HANDLE64            childproc_stdout_write_end {} /* child's end */, childproc_stdout_read_end {} /* parent's end */;
     SECURITY_ATTRIBUTES childsecattrs { .nLength = sizeof(SECURITY_ATTRIBUTES), .lpSecurityDescriptor = nullptr, .bInheritHandle = true };
-    STARTUPINFOW        childstarupinfo = { .cb          = sizeof(STARTUPINFOW),
-                                            .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES,
-                                            .wShowWindow = SW_SHOW,
-                                            .hStdInput   = childproc_stdin,
-                                            .hStdOutput  = childproc_stdout,
-                                            .hStdError   = childproc_stdout };
+    STARTUPINFOW        childstarupinfo = {
+               .cb          = sizeof(STARTUPINFOW),
+               .lpTitle     = L"ChildProc",
+               .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
+               .wShowWindow = SW_SHOW,
+               .hStdOutput  = childproc_stdout_write_end, // we are only interested in the stdouts of the child process
+               .hStdError   = childproc_stdout_write_end,
+    };
+
+    // if (!::CreatePipe(&childproc_stdout_write_end, &childproc_stdout_read_end, &childsecattrs, CHILDPROC_STDOUT_PIPE_BUFFSIZE))
+    //     ::fwprintf_s(stderr, L"%s error in call to CreatePipe!\n", ::error_code_to_string(::GetLastError()));
+    // else
+    //     // since we launch the child process after creating the pipe, make sure that the read end of the child process' stdout that the parent process has isn't inherited by the child process upon launch
+    //     if (!::SetHandleInformation(childproc_stdout_read_end, HANDLE_FLAG_INHERIT, false))
+    //         ::fwprintf_s(stderr, L"%s error in call to SetHandleInformation!\n", ::error_code_to_string(::GetLastError()));
 
     // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
     // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
     if (!::CreateProcessW(
-            LR"(C:\Program Files\Python313\python.exe)",
-            DUMMY_COMMANDLINE,
+            R_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY I.E. nullptr
+            DUMMY_R_COMMANDLINE,
             nullptr,
             nullptr,
-            FALSE,
+            TRUE,
             HIGH_PRIORITY_CLASS | CREATE_NEW_CONSOLE,
             // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getpriorityclass
             // look up the above for process priorities and scheduling
@@ -144,6 +147,20 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
         ::fwprintf_s(stderr, L"%s error in call to CreateProcessW!\n", ::error_code_to_string(::GetLastError()));
         return EXIT_FAILURE;
     }
+
+    // unsigned long readbytes_pipe {};
+    // long          read_status { true };
+    // for (;;) {
+    //     read_status = ::ReadFile(
+    //         childproc_stdout_read_end,
+    //         childproc_stdout_buffer.data() + readbytes_pipe, // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    //         CHILDPROC_STDOUT_PIPE_BUFFSIZE,
+    //         &readbytes_pipe,
+    //         nullptr
+    //     );
+    //     if (!readbytes_pipe || !read_status) break;
+    // }
+    // ::WaitForSingleObject(childprocinfo.hProcess, INFINITE);
 
     switch (::WaitForSingleObject(childprocinfo.hProcess, INFINITE)) { // wait for the child process to finish
         case WAIT_ABANDONED :
@@ -157,6 +174,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
     unsigned long childproc_exitcode = 0xFF;
 
+    ::wprintf_s(L"%S\n", childproc_stdout_buffer.c_str());
     ::GetExitCodeProcess(childprocinfo.hProcess, &childproc_exitcode);
     ::wprintf_s(L"Exit code of the child process is %lu\n", childproc_exitcode);
 
