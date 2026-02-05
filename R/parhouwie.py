@@ -1,3 +1,5 @@
+import subprocess
+
 R_FULL_PATH = r"C:/R-4.5.2/bin/R.exe"
 RSCRIPT_FULL_PATH = r"C:/R-4.5.2/bin/Rscript.exe"
 
@@ -79,7 +81,7 @@ def generate_houwie_rscript(
 
     """
 
-    PSEUDO_R_SCRIPT_TEMPLATE = r"""
+    _R_SCRIPT_TEMPLATE = r"""
     suppressPackageStartupMessages({{
         library("ape")
         library("corHMM")
@@ -106,7 +108,7 @@ def generate_houwie_rscript(
     # the trait data is expected to have the following three columns (in the specified order) - binominal names, discrete trait and continuous trait
     # the binominal names must be identical to the tip labels of the phylogeny
 
-    return PSEUDO_R_SCRIPT_TEMPLATE.format(
+    return _R_SCRIPT_TEMPLATE.format(
         phylogeny,
         traitdata,
         rate_cat,
@@ -114,5 +116,17 @@ def generate_houwie_rscript(
         continuous_model,
         nsims,
         "TRUE" if null_model else "FALSE",
-        savedir + __name_houwie_for_saving(discrete_model=discrete_model, continuous_model=continuous_model, null_model=null_model),
+        savedir
+        + __name_houwie_for_saving(
+            discrete_model=discrete_model,
+            continuous_model=continuous_model,
+            null_model=null_model,
+            continuous_trait=conttrait,
+            discrete_trait=disctrait,
+            extra_suffix=suffix,
+        ),
     )
+
+
+if __name__ == r"__main__":
+    subprocess.Popen()
