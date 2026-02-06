@@ -7,12 +7,14 @@
 #include <errhandlingapi.h>
 #include <libloaderapi.h>
 #include <processthreadsapi.h>
+#include <synchapi.h>
 #include <sysinfoapi.h>
 #include <WinDef.h>
 #include <WinBase.h>
 #include <WinUser.h>
 // clang-format on
 
+#include <array>
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -123,25 +125,26 @@ namespace houwie {
         return buffer;
     }
 
-    [[nodiscard]] static inline std::wstring __stdcall generate_rscript( // NOLINT(readability-redundant-inline-specifier)
-        _In_ const wchar_t* const       phylogeny,
-        _In_ const wchar_t* const       traitdata,
+    [[clang::always_inline]] static inline void __stdcall generate_rscript( // NOLINT(readability-redundant-inline-specifier)
+        _Inout_ std::wstring& buffer,
+        _In_ const wchar_t* const      phylogeny,
+        _In_ const wchar_t* const      traitdata,
         _In_ const DISCRETE_MODELS&    discrete_model,
         _In_ const CONTINUOUS_MODELS&  continuous_model,
-        _In_ const wchar_t* const       savedir,
-        _In_ const wchar_t* const       conttrait,
-        _In_ const wchar_t* const       disctrait,
-        _In_ const wchar_t* const       suffix,
+        _In_ const wchar_t* const      savedir,
+        _In_ const wchar_t* const      conttrait,
+        _In_ const wchar_t* const      disctrait,
+        _In_ const wchar_t* const      suffix,
         _In_ const bool&               null_model,
         _In_ const unsigned long long& nsims = 30
     ) noexcept {
         static constexpr unsigned long long BUFFSIZE { 0xFFF };
-        std::wstring                        buffer {};
-        buffer.resize(BUFFSIZE);
+        if (buffer.size() < BUFFSIZE) buffer.resize(BUFFSIZE);
+        ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t));
 
         ::swprintf_s(
             buffer.data(),
-            BUFFSIZE,
+            buffer.size(),
             // who gives a damn when warnings are emiited during package loading during automation
             // also using ; instead of new lines to delineate expressions (expressions separated by \n s did not work)
             // and when passed as expressions, all the double quotes get stripped away for some reason?????, using single quotes for string literals
@@ -163,7 +166,6 @@ namespace houwie {
             null_model ? L"TRUE" : L"FALSE",
             __path_to_serialize(discrete_model, continuous_model, savedir, conttrait, disctrait, null_model, suffix)
         );
-        return buffer;
     }
 } // namespace houwie
 
@@ -179,56 +181,13 @@ namespace houwie {
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
     static const wchar_t* const         R_INTERPRETER_PATH { L"C:/R-4.5.2/bin/R.exe" }; // the install directory of the R.exe binary
     static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x2FFF };                    // being a bit too generous here
-    SYSTEM_INFO                         sysinf { 0 };
+    static constexpr unsigned long long TOTAL_PROCESSES { 24 };                         // 4 x 3 x 2
 
-    ::GetSystemInfo(&sysinf);
-    ::wprintf_s(L"Number of processors: %lu\n", sysinf.dwNumberOfProcessors); // this machine has 18 cores, which is quite suprising
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
-
-    PROCESS_INFORMATION childprocinfo {};
-
-    STARTUPINFOW childstarupinfo = { .cb          = sizeof(STARTUPINFOW),
-                                     .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                     .wShowWindow = SW_SHOW };
-
-    const std::wstring script    = houwie::generate_rscript(
-        LR"(./ouwie_64sp_example.tre)",
-        LR"(./ouwie_64sp_trait_example.csv)",
-        houwie::DISCRETE_MODELS::ER,
-        houwie::CONTINUOUS_MODELS::OUMA,
-        LR"(./rdata/)",
-        L"X",
-        L"REGIME",
-        L"s",
-        false,
-        100
-    );
-
-    std::wstring cmdline {};
-    cmdline.resize(CMDLINE_BUFFSIZE);
-    // the double quotation marks enclosing the expression (-e) argument are absolutely critical
-    ::swprintf_s(cmdline.data(), CMDLINE_BUFFSIZE, L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, script.c_str());
-    ::_putws(cmdline.c_str());
-
-    // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
-    // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
-    if (!::CreateProcessW(
-            R_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY i.e. nullptr
-            cmdline.data(),
-            nullptr,
-            nullptr,
-            TRUE,
-            HIGH_PRIORITY_CLASS | CREATE_NEW_CONSOLE,
-            // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getpriorityclass
-            // look up the above for process priorities and scheduling
-            nullptr,
-            nullptr,
-            &childstarupinfo,
-            &childprocinfo
-        )) {
-        ::fwprintf_s(stderr, L"%s error in call to CreateProcessW!\n", utils::error_code_to_string(::GetLastError()));
-        return EXIT_FAILURE;
-    }
+    // SYSTEM_INFO sysinf {};
+    // ::GetSystemInfo(&sysinf);
+    // sysinf.dwNumberOfProcessors - this machine has 18 cores, which is quite suprising
+    static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 9 }; // half the number of cores
 
     switch (::WaitForSingleObject(childprocinfo.hProcess, INFINITE)) { // wait for the child process to finish
         case WAIT_ABANDONED :
@@ -243,33 +202,83 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     unsigned long childproc_exitcode = 0xFF;
 
     ::GetExitCodeProcess(childprocinfo.hProcess, &childproc_exitcode);
-    ::wprintf_s(L"Exit code of the child process is %lu\n", childproc_exitcode);
+
+    // since this is not used to close handles, we can just resuse the same struct, who cares
+    STARTUPINFOW                                     childstarupinfo = { .cb = sizeof(STARTUPINFOW),
+                                                                         .dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
+                                                                         .wShowWindow = SW_SHOW };
+    std::array<PROCESS_INFORMATION, TOTAL_PROCESSES> procinfos {}; // for all the lauched processes
+    // unfortunately for ::WaitForMultipleObjects, we need an array of active process handles, cannot index into the above struct to access the process handles
+    std::array<HANDLE64, MAX_PARALLEL_PROCESSES>     active_process_handles {};
 
     // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
     ::CloseHandle(childprocinfo.hProcess); // close the child process
     ::CloseHandle(childprocinfo.hThread);  // close the child thread
 
-    /*
+    unsigned long long active_processes {}, nth_process {};
+    std::wstring       script {}, cmdline {}; // NOLINT(readability-isolate-declaration)
+    cmdline.resize(CMDLINE_BUFFSIZE);
+
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
-                const std::wstring script = houwie::generate_rscript(
-                    LR"(../data/chapter2/uphylomaker/FRED_subset_collab_1005sp.tre)",
-                    LR"(../data/chapter2/FREDv3subset/collab_rdlteq1_rd1ornan_log_RD_SRL_species_avgd.csv)",
+
+                houwie::generate_rscript(
+                    script,
+                    LR"(./ouwie_64sp_example.tre)",
+                    LR"(./ouwie_64sp_trait_example.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
                     static_cast<houwie::CONTINUOUS_MODELS>(cmod),
                     LR"(./rdata/)",
-                    L"SRL",
-                    L"STATES",
-                    L"1005sp",
+                    L"X",
+                    L"REGIME",
+                    L"trial",
                     nm,
-                    100
+                    10
                 );
-                ::_putws(script.c_str());
+
+                ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
+                // the double quotation marks enclosing the expression (-e) argument are absolutely critical
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, script.c_str());
+                // ::_putws(cmdline.c_str());
+
+                // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
+                // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
+                if (!::CreateProcessW(
+                        R_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY i.e. nullptr
+                        cmdline.data(),
+                        nullptr,
+                        nullptr,
+                        TRUE,
+                        HIGH_PRIORITY_CLASS | CREATE_NEW_CONSOLE,
+                        // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getpriorityclass
+                        // look up the above for process priorities and scheduling
+                        nullptr,
+                        nullptr,
+                        &childstarupinfo,
+                        procinfos.data() + nth_process // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                    )) {
+                    //
+
+                    //
+                    ::fwprintf_s(stderr, L"%s error in call to CreateProcessW!\n", utils::error_code_to_string(::GetLastError()));
+                    continue;
+                }
+
+                // if the lauch succeeded,
+                nth_process++;
+                active_processes++;
+                // record the process handle
+
+                // if we are at capacity, halt the launch of new processes and wait for one to finish before laucning a new one
+                if (active_processes == MAX_PARALLEL_PROCESSES) {
+                    // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
+                    ::WaitForMultipleObjects();
+                    active_processes--;
+                }
             }
         }
     }
-    */
 
     return EXIT_SUCCESS;
 }
