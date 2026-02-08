@@ -28,48 +28,12 @@
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
 static const wchar_t* const         R_INTERPRETER_PATH { L"C:/R-4.5.2/bin/R.exe" }; // the install directory of the R.exe binary
 static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x2FFF };                    // being a bit too generous here
-static constexpr unsigned long long TOTAL_PROCESSES { 24 };             // 4 continuous models x 3 discrete models x 2 rate categories
-static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };         // length of the error message buffer in number of wchar_t s
-static constexpr unsigned long long MAX_RSAVE_NAME_LENGTH { MAX_PATH }; // 260
+static constexpr unsigned long long TOTAL_PROCESSES { 24 };               // 4 continuous models x 3 discrete models x 2 rate categories
+static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };           // length of the error message buffer in number of wchar_t s
+static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH }; // 260
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
-
-namespace utils {
-
-    // get the string representation of a _WIN32 error code
-    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
-    [[nodiscard]] static inline const wchar_t* __stdcall error_code_to_string(_In_ const unsigned long& errcode) noexcept {
-        static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
-        // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
-        ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
-
-        unsigned long nbyteswritten = ::FormatMessageW(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, errmsgbuffer, ERROR_MSG_BUFFSIZE, nullptr
-        );
-
-        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
-            HINSTANCE handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
-            if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
-                ::fputws(L"Failed to load Ntdsbmsg.dll", stderr);
-                return errmsgbuffer; // must be an ampty buffer here
-            }
-
-            nbyteswritten = ::FormatMessageW(
-                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS,
-                handle_ntdsbmsg,
-                errcode,
-                0,
-                errmsgbuffer,
-                ERROR_MSG_BUFFSIZE,
-                nullptr
-            );
-            ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process
-        }
-        return errmsgbuffer;
-    }
-
-} // namespace utils
 
 namespace houwie {
 
@@ -118,12 +82,12 @@ namespace houwie {
         _In_ const bool&              nullmodel,
         _In_ const wchar_t* const     suffix
     ) noexcept {
-        static wchar_t buffer[MAX_RSAVE_NAME_LENGTH] {};
+        static wchar_t buffer[MAX_SAVERDS_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer));
         // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
         ::swprintf_s(
             buffer,
-            MAX_RSAVE_NAME_LENGTH,
+            MAX_SAVERDS_NAME_LENGTH,
             L"%s%s_%s_%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
             savedir,
             __discmod_to_wstr(discrete_model),
@@ -179,6 +143,42 @@ namespace houwie {
     }
 } // namespace houwie
 
+namespace utils {
+
+    // get the string representation of a _WIN32 error code
+    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
+    [[nodiscard]] static inline const wchar_t* __stdcall error_code_to_string(_In_ const unsigned long& errcode) noexcept {
+        static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
+        // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
+        ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
+
+        unsigned long nbyteswritten = ::FormatMessageW(
+            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, errmsgbuffer, ERROR_MSG_BUFFSIZE, nullptr
+        );
+
+        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
+            HINSTANCE handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
+            if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
+                ::fputws(L"Failed to load Ntdsbmsg.dll", stderr);
+                return errmsgbuffer; // must be an ampty buffer here
+            }
+
+            nbyteswritten = ::FormatMessageW(
+                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS,
+                handle_ntdsbmsg,
+                errcode,
+                0,
+                errmsgbuffer,
+                ERROR_MSG_BUFFSIZE,
+                nullptr
+            );
+            ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process
+        }
+        return errmsgbuffer;
+    }
+
+} // namespace utils
+
 // typically, each R process (inside Jupyter) only takes up about ~9% of the CPU, so this could absolutely benefit from paralellization
 // wait 5 seconds between launching new processes, so we don't run into (possible???) file I/O issues inside the R instances
 
@@ -231,17 +231,17 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
 
                 houwie::generate_rscript(
-                    rscript,
-                    LR"(./ouwie_64sp_example.tre)",
-                    LR"(./ouwie_64sp_trait_example.csv)",
+                    rscript, // the launch directory of this programme will have all the needed files
+                    LR"(./FRED_subset_collab_1005sp.tre)",
+                    LR"(./genus_state_rec_logged_species_avgd_SRL_1005sp.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
                     static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                    LR"(./rdata/)",
-                    L"X",
-                    L"REGIME",
-                    L"trial",
+                    LR"(../rdata/parallel/)",
+                    L"logSRL",
+                    L"state",
+                    L"1005sp",
                     nm,
-                    10
+                    30
                 );
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
@@ -265,11 +265,15 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         &childstarupinfo,
                         procinfos.data() + nth_process // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                     )) {
-                    //
-
-                    //
-                    ::fwprintf_s(stderr, L"%s error in call to CreateProcessW!\n", utils::error_code_to_string(::GetLastError()));
-                    continue;
+                    ::fwprintf_s( // log where the launch failed
+                        stderr,
+                        L"Failed to launch %s-%s-%s fit, %s error in call to CreateProcessW!\n",
+                        houwie::__discmod_to_wstr(static_cast<houwie::DISCRETE_MODELS>(dmod)),
+                        houwie::__contmod_to_wstr(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
+                        nm ? L"CID" : L"CD",
+                        utils::error_code_to_string(::GetLastError())
+                    );
+                    continue; // move on to the next launch
                 }
 
                 // if the lauch succeeded,
@@ -286,6 +290,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
             }
         }
     }
+
+    ::wprintf_s(L"%llu out of %llu launches succeeded!", nth_process, TOTAL_PROCESSES);
 
     return EXIT_SUCCESS;
 }
