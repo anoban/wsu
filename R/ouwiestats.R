@@ -1,14 +1,11 @@
-suppressPackageStartupMessages({
-    library("ape")
-    library("phytools")
-    library("nlme")
-    library("corHMM")
-    library("geiger")
-    # library("mkcor")
-    library("OUwie")
-    library("reshape2")
-    library("ggplot2")
-})
+library("ape")
+library("phytools")
+library("corHMM")
+# library("mkcor")
+library("OUwie")
+library("reshape2")
+library("ggplot2")
+
 
 
 #--------------------
@@ -228,3 +225,50 @@ avg_models_CID_SRL_4states |> split(~tip_state) |> lapply(function(df) { colMean
 
 avg_models_CD_SRL_4states |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
 avg_models_CID_SRL_4states |> split(~tip_state) |> lapply(function(df) { stderr_(df[, c("rates", "alpha", "sigma.sq", "theta")]) })
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------------
+# (RD <= 1.000 mm and root order == NA) or (RD <= 1.000 mm and root order == 1) subset
+#-----------------------------------------------------------------------------------------
+
+
+#--------------------
+# ROOT DIAMETER
+#--------------------
+
+
+load("./rdata/OU_RD_CD_1005sp.RData")
+load("./rdata/OU_RD_CID_1005sp.RData")
+
+
+models_CD_RD_1005sp <- list(EROUM=ER_OUM_RD_CD, EROUMA=ER_OUMA_RD_CD, EROUMV=ER_OUMV_RD_CD, EROUMVA=ER_OUMVA_RD_CD, ARDOUM=ARD_OUM_RD_CD,
+                              ARDOUMA=ARD_OUMA_RD_CD, ARDOUMV=ARD_OUMV_RD_CD, ARDOUMVA=ARD_OUMVA_RD_CD, SYMOUM=SYM_OUM_RD_CD, SYMOUMA=SYM_OUMA_RD_CD,
+                              SYMOUMV=SYM_OUMV_RD_CD, SYMOUMVA=SYM_OUMVA_RD_CD)
+
+models_CID_RD_1005sp <- list(EROUM=ER_OUM_RD_CID, EROUMA=ER_OUMA_RD_CID, EROUMV=ER_OUMV_RD_CID, EROUMVA=ER_OUMVA_RD_CID, ARDOUM=ARD_OUM_RD_CID,
+                               ARDOUMA=ARD_OUMA_RD_CID, ARDOUMV=ARD_OUMV_RD_CID, ARDOUMVA=ARD_OUMVA_RD_CID, SYMOUM=SYM_OUM_RD_CID, SYMOUMA=SYM_OUMA_RD_CID,
+                               SYM_OUMV=SYM_OUMV_RD_CID, SYMOUMVA=SYM_OUMVA_RD_CID)
+
+
+avg_models_CD_RD_1005sp <- OUwie::getModelAvgParams(models_CD_RD_1005sp, type = "AICc", force = FALSE)
+avg_models_CID_RD_1005sp <- OUwie::getModelAvgParams(models_CID_RD_1005sp, type = "AICc", force = FALSE)
+
+plot_df <- reshape2::melt(avg_models_CD_RD_1005sp)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CD_1005sp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
+plot_df <- reshape2::melt(avg_models_CID_RD_1005sp)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CID_1005sp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
