@@ -179,23 +179,26 @@ namespace utils {
         return errmsgbuffer;
     }
 
-    static inline void handle_parallel_waits(
+    static inline bool handle_parallel_wait_signals( // NOLINT(readability-redundant-inline-specifier)
         _In_ const unsigned long& retval, _Inout_ unsigned long long& nactiveprocs, _Inout_ std::vector<HANDLE64>& active_proc_handles
     ) noexcept {
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so retval is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
-
+        unsigned long pop_offset {};
         if ((retval < nactiveprocs) && (retval >= WAIT_OBJECT_0)) { // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
-            //
+            pop_offset = retval - WAIT_OBJECT_0;
+            active_proc_handles.erase(active_proc_handles.begin() + pop_offset); // remove the signalled handle
+            nactiveprocs--;                                                      // no matter what, we have one less active process now
         } else if ((retval >= WAIT_ABANDONED_0) && (retval < WAIT_TIMEOUT)) { // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
-            //
+            pop_offset = retval - WAIT_ABANDONED_0;
+            active_proc_handles.erase(active_proc_handles.begin() + pop_offset);
         } else if (retval == WAIT_TIMEOUT) { // cannot (should not) happen as we specified the time limit to be INFINITE
             //
+            ::fputws(L"WaitForMultipleObjects signalled WAIT_TIMEOUT", stderr);
         } else if (retval == WAIT_FAILED) {
             //
+            ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_string(::GetLastError()));
         }
-
-        nactiveprocs--; // no matter what, we have one less active process now
     }
 
 } // namespace utils
@@ -309,7 +312,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         INFINITE
                     );
                     // make sure that the return value is valid
-                    utils::handle_parallel_waits(multobjreturn, nactive_processes, active_process_handles);
+                    utils::handle_parallel_wait_signals(multobjreturn, nactive_processes, active_process_handles);
                     // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
                     // close the signalled process' handles
                 }
