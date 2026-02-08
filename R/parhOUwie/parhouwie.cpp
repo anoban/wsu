@@ -1,3 +1,7 @@
+#if !defined(_WIN32) && !defined(_WIN64) && (!defined(_MSC_VER) || !defined(_MSC_FULL_VER))
+    #error This is a Windows only implementation, not meant to be used on other platforms!.
+#endif
+
 // clang .\parhouwie.c -Wall -Wextra -static -march=native -DNDEBUG -O3 -std=c++20
 // launch the R interpretor in parallel for the hOUwie model fits
 
@@ -20,6 +24,15 @@
 #include <cstdlib>
 #include <string>
 
+#define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
+    "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
+static const wchar_t* const         R_INTERPRETER_PATH { L"C:/R-4.5.2/bin/R.exe" }; // the install directory of the R.exe binary
+static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x2FFF };                    // being a bit too generous here
+static constexpr unsigned long long TOTAL_PROCESSES { 24 };             // 4 continuous models x 3 discrete models x 2 rate categories
+static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };         // length of the error message buffer in number of wchar_t s
+static constexpr unsigned long long MAX_RSAVE_NAME_LENGTH { MAX_PATH }; // 260
+static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
+
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
 namespace utils {
@@ -27,8 +40,7 @@ namespace utils {
     // get the string representation of a _WIN32 error code
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
     [[nodiscard]] static inline const wchar_t* __stdcall error_code_to_string(_In_ const unsigned long& errcode) noexcept {
-        static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 }; // length of the error message buffer in number of wchar_t s
-        static wchar_t                      errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
+        static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
         ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
 
@@ -61,9 +73,6 @@ namespace utils {
 
 namespace houwie {
 
-#define __HOUWIE_VARIABLE_ALPHA_WARNING                                                                          \
-    "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-
     enum class DISCRETE_MODELS : unsigned char {
         ER,  // all rates are identical
         SYM, // symmetrically identical rates
@@ -72,9 +81,9 @@ namespace houwie {
 
     enum class CONTINUOUS_MODELS : unsigned char {
         OUM,
-        OUMA [[deprecated(__HOUWIE_VARIABLE_ALPHA_WARNING)]],
+        OUMA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]],
         OUMV,
-        OUMVA [[deprecated(__HOUWIE_VARIABLE_ALPHA_WARNING)]]
+        OUMVA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]]
     };
 
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
@@ -109,13 +118,12 @@ namespace houwie {
         _In_ const bool&              nullmodel,
         _In_ const wchar_t* const     suffix
     ) noexcept {
-        static constexpr unsigned long long MAX_MODEL_NAME_LENGTH { MAX_PATH }; // 260
-        static wchar_t                      buffer[MAX_MODEL_NAME_LENGTH] {};
+        static wchar_t buffer[MAX_RSAVE_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer));
         // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
         ::swprintf_s(
             buffer,
-            MAX_MODEL_NAME_LENGTH,
+            MAX_RSAVE_NAME_LENGTH,
             L"%s%s_%s_%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
             savedir,
             __discmod_to_wstr(discrete_model),
@@ -141,8 +149,7 @@ namespace houwie {
         _In_ const bool&               null_model,
         _In_ const unsigned long long& nsims = 30
     ) noexcept {
-        static constexpr unsigned long long BUFFSIZE { 0xFFF };
-        if (buffer.size() < BUFFSIZE) buffer.resize(BUFFSIZE);
+        if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
         ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t));
 
         ::swprintf_s(
@@ -179,13 +186,9 @@ namespace houwie {
 // figure out why the quotes get stripped away and how to preserve them when they are loaded into the R interpreter
 // TURNS OUT THAT THE EXPRESSION ARGUMENT (-e) MUST BE ENCLOSED IN DOUBLE QUOTES NOT SINGLE QUOTES!!
 
-// R also seems to skip the assertion like expressions e.g. stopifnot() and the likes when non-interactively invoked with expressions (using -e)
+// R also seems to skip the assertion like expressions e.g. stopifnot() and the likes when non-interactively invoked with expressions (using -e)?????
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
-    static const wchar_t* const         R_INTERPRETER_PATH { L"C:/R-4.5.2/bin/R.exe" }; // the install directory of the R.exe binary
-    static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x2FFF };                    // being a bit too generous here
-    static constexpr unsigned long long TOTAL_PROCESSES { 24 };                         // 4 x 3 x 2
-
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
     // SYSTEM_INFO sysinf {};
     // ::GetSystemInfo(&sysinf);
@@ -219,7 +222,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     ::CloseHandle(childprocinfo.hThread);  // close the child thread
 
     unsigned long long active_processes {}, nth_process {};
-    std::wstring       script {}, cmdline {}; // NOLINT(readability-isolate-declaration)
+    std::wstring       rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
+    rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
 
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
@@ -227,7 +231,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
 
                 houwie::generate_rscript(
-                    script,
+                    rscript,
                     LR"(./ouwie_64sp_example.tre)",
                     LR"(./ouwie_64sp_trait_example.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
@@ -242,7 +246,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
-                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, script.c_str());
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, rscript.c_str());
                 // ::_putws(cmdline.c_str());
 
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
