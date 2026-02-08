@@ -61,6 +61,9 @@ namespace utils {
 
 namespace houwie {
 
+#define __HOUWIE_VARIABLE_ALPHA_WARNING                                                                          \
+    "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
+
     enum class DISCRETE_MODELS : unsigned char {
         ER,  // all rates are identical
         SYM, // symmetrically identical rates
@@ -69,9 +72,9 @@ namespace houwie {
 
     enum class CONTINUOUS_MODELS : unsigned char {
         OUM,
-        OUMA [[deprecated("OUwie currently recommends not using the variable alpha models for continuous trait evolution")]],
+        OUMA [[deprecated(__HOUWIE_VARIABLE_ALPHA_WARNING)]],
         OUMV,
-        OUMVA [[deprecated("OUwie currently recommends not using the variable alpha models for continuous trait evolution")]]
+        OUMVA [[deprecated(__HOUWIE_VARIABLE_ALPHA_WARNING)]]
     };
 
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
@@ -79,9 +82,9 @@ namespace houwie {
         _In_ const DISCRETE_MODELS& model
     ) noexcept {
         switch (model) {
-            case DISCRETE_MODELS::ER  : return L"ER"; break;
-            case DISCRETE_MODELS::SYM : return L"SYM"; break;
-            case DISCRETE_MODELS::ARD : return L"ARD"; break;
+            case DISCRETE_MODELS::ER  : return L"ER";
+            case DISCRETE_MODELS::SYM : return L"SYM";
+            case DISCRETE_MODELS::ARD : return L"ARD";
         }
     }
 
@@ -90,10 +93,10 @@ namespace houwie {
         _In_ const CONTINUOUS_MODELS& model
     ) noexcept {
         switch (model) {
-            case CONTINUOUS_MODELS::OUM   : return L"OUM"; break;
-            case CONTINUOUS_MODELS::OUMA  : return L"OUMA"; break;
-            case CONTINUOUS_MODELS::OUMV  : return L"OUMV"; break;
-            case CONTINUOUS_MODELS::OUMVA : return L"OUMVA"; break;
+            case CONTINUOUS_MODELS::OUM   : return L"OUM";
+            case CONTINUOUS_MODELS::OUMA  : return L"OUMA";
+            case CONTINUOUS_MODELS::OUMV  : return L"OUMV";
+            case CONTINUOUS_MODELS::OUMVA : return L"OUMVA";
         }
     }
 
@@ -113,7 +116,7 @@ namespace houwie {
         ::swprintf_s(
             buffer,
             MAX_MODEL_NAME_LENGTH,
-            L"%s%s_%s_%s_%s_%s_%s.Rds",
+            L"%s%s_%s_%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
             savedir,
             __discmod_to_wstr(discrete_model),
             __contmod_to_wstr(continuous_model),
