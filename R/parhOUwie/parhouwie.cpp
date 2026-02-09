@@ -263,7 +263,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 // THIS TWO STRUCTS ARE INTENTIONALLY FRESHLY CREATED IN EVERY ITERATION!!!!
                 STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                 .wShowWindow = SW_SHOW }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
+                                                 .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
 
                 houwie::generate_rscript(
@@ -283,7 +283,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
                 ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, rscript.c_str());
-                ::_putws(cmdline.c_str());
+                // ::_putws(cmdline.c_str());
 
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
