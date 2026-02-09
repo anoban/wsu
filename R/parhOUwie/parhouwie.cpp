@@ -22,6 +22,7 @@
 #include <WinUser.h>
 // clang-format on
 
+#include <algorithm>
 #include <array>
 #include <cstdio>
 #include <cstdlib>
@@ -37,11 +38,15 @@ static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };           // len
 static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH }; // 260
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
 static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 9 }; // half the number of cores
+static HINSTANCE                    handle_ntdsbmsg {};           // handle to Ntdsbmsg.dll
+
+extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
+    if (handle_ntdsbmsg) ::FreeLibrary(handle_ntdsbmsg);
+}
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
 namespace houwie {
-
     enum class DISCRETE_MODELS : unsigned char {
         ER,  // all rates are identical
         SYM, // symmetrically identical rates
@@ -146,6 +151,7 @@ namespace houwie {
             __path_to_serialize(discrete_model, continuous_model, savedir, conttrait, disctrait, null_model, suffix)
         );
     }
+
 } // namespace houwie
 
 namespace utils {
@@ -162,10 +168,11 @@ namespace utils {
         );
 
         if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
-            HINSTANCE handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
+            // if the library hasn't already been loaded by previous calls to this function
+            if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
             if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
                 ::fputws(L"Failed to load Ntdsbmsg.dll", stderr);
-                return errmsgbuffer; // must be an ampty buffer here
+                return errmsgbuffer; // must be an empty buffer here
             }
 
             nbyteswritten = ::FormatMessageW(
@@ -177,7 +184,7 @@ namespace utils {
                 ERROR_MSG_BUFFSIZE,
                 nullptr
             );
-            ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process
+            // ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process - atexit() will handle this for us
         }
         return errmsgbuffer;
     }
@@ -224,6 +231,7 @@ namespace utils {
 // R also seems to skip the assertion like expressions e.g. stopifnot() and the likes when non-interactively invoked with expressions (using -e)?????
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
+    ::atexit(::__release_ntdbsdll);
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
     // SYSTEM_INFO sysinf {};
     // ::GetSystemInfo(&sysinf);
@@ -239,19 +247,16 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     cmdline.resize(CMDLINE_BUFFSIZE);
     bool is_loop_broken_prematurely {};
 
-    constexpr SECURITY_DESCRIPTOR CHILDPROC_SECURITY_DESCRIPTOR {};
-    constexpr SECURITY_ATTRIBUTES CHILDPROC_SECURITY_ATTRIBUTES { .nLength = sizeof(SECURITY_ATTRIBUTES) };
-
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
 
                 // since this is not used to close handles, we can just resuse the same struct, who cares
-                // THIS IS INTENTIONALLY KEPT INSIDE THE LOOP!!!!
+                // THIS TWO STRUCTS ARE INTENTIONALLY FRESHLY CREATED IN EVERY ITERATION!!!!
                 STARTUPINFOW        starupinfo = { .cb          = sizeof(STARTUPINFOW),
                                                    .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                   .wShowWindow = SW_SHOW };
-                PROCESS_INFORMATION procinfo {}; // THIS TOO!!!!
+                                                   .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
+                PROCESS_INFORMATION procinfo {};
 
                 houwie::generate_rscript(
                     rscript, // the launch directory of this programme will have all the needed files
@@ -330,17 +335,30 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     }
 
     if (is_loop_broken_prematurely) {
-        ::fwprintf_s(stderr, L"Process launch terminated prematurely, currently %llu active processes running!\n", nsucceeded_launches);
+        ::fwprintf_s(
+            stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
+        );
         wfmo_result = ::WaitForMultipleObjects(
             active_process_handles.size(),
             active_process_handles.data(),
             true, // return only when all the processs are signalled
             INFINITE
         );
-        // handle the outcome
+
+        // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
+        if (wfmo_result < WAIT_OBJECT_0 + active_process_handles.size())
+            ::fputws(L"All the processes launched before the premature loop break have signalled successfully!", stderr);
+        else if (wfmo_result < WAIT_ABANDONED_0 + active_process_handles.size())
+            ::fputws(
+                L"All the processes launched before the premature loop break have signalled with at least one abandoned mutex!", stderr
+            );
     }
 
-    ::wprintf_s(L"%llu out of %llu launches succeeded!", nsucceeded_launches, TOTAL_PROCESSES);
+    // close all the leftover process handles and thread handles
+    std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
+    std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
+
+    ::wprintf_s(L"Done, %llu out of %llu launches succeeded!\n", nsucceeded_launches, TOTAL_PROCESSES);
 
     return EXIT_SUCCESS;
 }
