@@ -2,8 +2,7 @@
     #error This is a Windows only implementation, not meant to be used on other platforms!.
 #endif
 
-// clang .\parhouwie.c -Wall -Wextra -static -march=native -DNDEBUG -O3 -std=c++20
-// launch the R interpretor in parallel for the hOUwie model fits
+// clang .\parhouwie.cpp -Wall -Wextra -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
 
 // clang-format off
 #define _AMD64_ // architecture
@@ -22,6 +21,7 @@
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -179,26 +179,37 @@ namespace utils {
         return errmsgbuffer;
     }
 
-    static inline bool handle_parallel_wait_signals( // NOLINT(readability-redundant-inline-specifier)
-        _In_ const unsigned long& retval, _Inout_ unsigned long long& nactiveprocs, _Inout_ std::vector<HANDLE64>& active_proc_handles
+    static inline std::optional<HANDLE64> handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
+        _In_ const unsigned long& retval,  _Inout_ std::vector<HANDLE64>& active_proc_handles
     ) noexcept {
+        // if we already have more processes running than capacity, abort
+        if (active_proc_handles.size() > MAX_PARALLEL_PROCESSES) {
+            //
+        }
+
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so retval is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
-        unsigned long pop_offset {};
-        if ((retval < nactiveprocs) && (retval >= WAIT_OBJECT_0)) { // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
+        unsigned long pop_offset { 0xFF };
+        if ((retval < active_proc_handles.size()) &&
+            (retval >= WAIT_OBJECT_0)) // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
             pop_offset = retval - WAIT_OBJECT_0;
-            active_proc_handles.erase(active_proc_handles.begin() + pop_offset); // remove the signalled handle
-            nactiveprocs--;                                                      // no matter what, we have one less active process now
-        } else if ((retval >= WAIT_ABANDONED_0) && (retval < WAIT_TIMEOUT)) { // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
+        else if ((retval >= WAIT_ABANDONED_0) && (retval < WAIT_TIMEOUT)) { // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
             pop_offset = retval - WAIT_ABANDONED_0;
-            active_proc_handles.erase(active_proc_handles.begin() + pop_offset);
-        } else if (retval == WAIT_TIMEOUT) { // cannot (should not) happen as we specified the time limit to be INFINITE
-            //
+            ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED", stderr);
+        } else if (retval == WAIT_TIMEOUT) // cannot (should not) happen as we specified the time limit to be INFINITE
             ::fputws(L"WaitForMultipleObjects signalled WAIT_TIMEOUT", stderr);
-        } else if (retval == WAIT_FAILED) {
-            //
+        else if (retval == WAIT_FAILED)
             ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_string(::GetLastError()));
+
+        if (pop_offset != 0xFF) { // no matter what, we have one less active process now
+            HANDLE64 to_be_closed =
+                (*(active_proc_handles.data() + pop_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
+            active_proc_handles.erase(active_proc_handles.begin() + pop_offset); // remove the signalled handle
+            // active_proc_handles.shrink_to_fit();
+            return to_be_closed;
         }
+
+        return std::nullopt; // WAIT_TIMEOUT or WAIT_FAILED
     }
 
 } // namespace utils
@@ -218,30 +229,21 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     // ::GetSystemInfo(&sysinf);
     // sysinf.dwNumberOfProcessors - this machine has 18 cores, which is quite suprising
 
-    switch (::WaitForSingleObject(childprocinfo.hProcess, INFINITE)) { // wait for the child process to finish
-        case WAIT_ABANDONED :
-            ::fputws(L"Mutex object was not released by the child thread before the caller thread terminated.\n", stderr);
-            break;
-        case WAIT_TIMEOUT  : ::fputws(L"The time-out interval has elapsed, and the object's state is nonsignaled.\n", stderr); break;
-        case WAIT_FAILED   : ::fwprintf_s(stderr, L"Error %lu: Wait failed.\n", ::GetLastError()); break;
-        case WAIT_OBJECT_0 : ::_putws(L"Wait success!"); break; // The state of the specified object is signaled, wait success
-        default            : break;
-    }
-
     // since this is not used to close handles, we can just resuse the same struct, who cares
     STARTUPINFOW                                     childstarupinfo = { .cb = sizeof(STARTUPINFOW),
                                                                          .dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
                                                                          .wShowWindow = SW_SHOW };
     std::array<PROCESS_INFORMATION, TOTAL_PROCESSES> procinfos {}; // for all the lauched processes
     // unfortunately for ::WaitForMultipleObjects, we need an array of active process handles, cannot index into the above struct to access the process handles
-    std::vector<HANDLE64>                            active_process_handles {};
-    active_process_handles.reserve(TOTAL_PROCESSES * 2); // x 2 just because
-    unsigned long multobjreturn {}; // the offset of the signalled handle in active_process_handles will be this value - WAIT_OBJECT_0
+    std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
+    active_process_handles.reserve(TOTAL_PROCESSES * 2);                       // x 2 just because
+    unsigned long wfmo_result {}; // the offset of the signalled handle in active_process_handles will be this value - WAIT_OBJECT_0
 
-    unsigned long long nactive_processes {}, nsucceeded_launches {}; // NOLINT(readability-isolate-declaration)
-    std::wstring       rscript {}, cmdline {};                       // NOLINT(readability-isolate-declaration)
+    unsigned long long nsucceeded_launches {};
+    std::wstring       rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
+    std::optional<HANDLE64> to_close {};
 
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
@@ -249,22 +251,40 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
                 houwie::generate_rscript(
                     rscript, // the launch directory of this programme will have all the needed files
-                    LR"(./FRED_subset_collab_1005sp.tre)",
-                    LR"(./genus_state_rec_logged_species_avgd_SRL_1005sp.csv)",
+                    LR"(./ouwie_64sp_example.tre)",
+                    LR"(./ouwie_64sp_trait_example.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
                     static_cast<houwie::CONTINUOUS_MODELS>(cmod),
                     LR"(../rdata/parallel/)",
-                    L"logSRL",
-                    L"state",
-                    L"1005sp",
+                    L"x",
+                    L"regime",
+                    L"test",
                     nm,
-                    30
+                    10
                 );
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
                 ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, rscript.c_str());
                 // ::_putws(cmdline.c_str());
+
+                if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
+                    // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
+                    // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
+                    // INFINITE milliseconds is about 1193 hours, so we can just use that
+                    // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
+                    wfmo_result = ::WaitForMultipleObjects( // make sure that the return value is valid
+                        active_process_handles.size(),
+                        active_process_handles.data(),
+                        false, // return when at least one process is signalled
+                        INFINITE
+                    );
+
+                    to_close = utils::handle_parallel_waits(wfmo_result, active_process_handles);
+                    // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
+
+                    if (to_close.has_value()) ::CloseHandle(to_close.value()); // close the signalled process' handle
+                }
 
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
                 // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
@@ -296,26 +316,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
                 // if the lauch succeeded,
                 nsucceeded_launches++;
-                nactive_processes++;
-                // record the process handle
+                // update active process and thread handles
                 active_process_handles.push_back(procinfos[nsucceeded_launches].hProcess);
-
-                // if we are at capacity, halt the launch of new processes and wait for one to finish before laucning a new one
-                if (nactive_processes == MAX_PARALLEL_PROCESSES) {
-                    // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-                    // INFINITE milliseconds is about 1193 hours, so we can just use that
-                    // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
-                    multobjreturn = ::WaitForMultipleObjects(
-                        nactive_processes,
-                        active_process_handles.data(),
-                        false, // return when at least one process is signalled
-                        INFINITE
-                    );
-                    // make sure that the return value is valid
-                    utils::handle_parallel_wait_signals(multobjreturn, nactive_processes, active_process_handles);
-                    // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
-                    // close the signalled process' handles
-                }
+                active_thread_handles.push_back(procinfos[nsucceeded_launches].hThread);
+                ::memset(&childstarupinfo, 0, sizeof(STARTUPINFOW)); // clean it up for reuse
             }
         }
     }
