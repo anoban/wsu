@@ -3,6 +3,11 @@
 #endif
 
 // clang .\parhouwie.cpp -Wall -Wextra -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
+// cl .\parhouwie.cpp /Wall /std:c++20 /O2 /MT /EHsc
+
+#if defined(_MSC_FULL_VER) && !defined(__llvm__) // MSVC specific warnings
+    #pragma warning(disable : 4710 4711 4820)
+#endif
 
 // clang-format off
 #define _AMD64_ // architecture
@@ -18,10 +23,8 @@
 // clang-format on
 
 #include <array>
-#include <cassert>
 #include <cstdio>
 #include <cstdlib>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -130,12 +133,12 @@ namespace houwie {
             L"phylogeny <- ape::read.tree('%s');"
             L"data <- read.csv('%s');"
             L"stopifnot(all(phylogeny$tip.label == data$binominal));"
-            L"model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = %1u, discrete_model = '%s', continuous_model = '%s', nSim = %u, null.model = %s);"
+            L"model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = %1u, discrete_model = '%s', continuous_model = '%s', nSim = %llu, null.model = %s);"
             L"saveRDS(object = model, file = '%s');",
             phylogeny,
             traitdata,
             // if null_model is true, then it's a CID model with 2 rate categories, else it's a CD model with just 1 rate category
-            null_model ? 2 : 1,
+            null_model ? 2U : 1U,
             __discmod_to_wstr(discrete_model),
             __contmod_to_wstr(continuous_model),
             nsims,
@@ -179,19 +182,13 @@ namespace utils {
         return errmsgbuffer;
     }
 
-    static inline std::optional<HANDLE64> handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _In_ const unsigned long& retval,  _Inout_ std::vector<HANDLE64>& active_proc_handles
+    static inline bool handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
+        _In_ const unsigned long& retval,  _Inout_ std::vector<HANDLE64>& active_proc_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles
     ) noexcept {
-        // if we already have more processes running than capacity, abort
-        if (active_proc_handles.size() > MAX_PARALLEL_PROCESSES) {
-            //
-        }
-
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so retval is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
         unsigned long pop_offset { 0xFF };
-        if ((retval < active_proc_handles.size()) &&
-            (retval >= WAIT_OBJECT_0)) // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
+        if (retval < active_proc_handles.size()) // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
             pop_offset = retval - WAIT_OBJECT_0;
         else if ((retval >= WAIT_ABANDONED_0) && (retval < WAIT_TIMEOUT)) { // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
             pop_offset = retval - WAIT_ABANDONED_0;
@@ -202,14 +199,17 @@ namespace utils {
             ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_string(::GetLastError()));
 
         if (pop_offset != 0xFF) { // no matter what, we have one less active process now
-            HANDLE64 to_be_closed =
-                (*(active_proc_handles.data() + pop_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
+            // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close the process and thread handles of the signalled process
+            ::CloseHandle(*(active_proc_handles.data() + pop_offset));
+            ::CloseHandle(*(active_thread_handles.data() + pop_offset));
+            // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
             active_proc_handles.erase(active_proc_handles.begin() + pop_offset); // remove the signalled handle
+            active_thread_handles.erase(active_thread_handles.begin() + pop_offset);
             // active_proc_handles.shrink_to_fit();
-            return to_be_closed;
+            return true;
         }
 
-        return std::nullopt; // WAIT_TIMEOUT or WAIT_FAILED
+        return false; // WAIT_TIMEOUT or WAIT_FAILED
     }
 
 } // namespace utils
@@ -229,25 +229,29 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     // ::GetSystemInfo(&sysinf);
     // sysinf.dwNumberOfProcessors - this machine has 18 cores, which is quite suprising
 
-    // since this is not used to close handles, we can just resuse the same struct, who cares
-    STARTUPINFOW                                     childstarupinfo = { .cb = sizeof(STARTUPINFOW),
-                                                                         .dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                                         .wShowWindow = SW_SHOW };
-    std::array<PROCESS_INFORMATION, TOTAL_PROCESSES> procinfos {}; // for all the lauched processes
     // unfortunately for ::WaitForMultipleObjects, we need an array of active process handles, cannot index into the above struct to access the process handles
     std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
-    active_process_handles.reserve(TOTAL_PROCESSES * 2);                       // x 2 just because
-    unsigned long wfmo_result {}; // the offset of the signalled handle in active_process_handles will be this value - WAIT_OBJECT_0
+    unsigned long         wfmo_result {}; // the offset of the signalled handle in active_process_handles will be this value - WAIT_OBJECT_0
 
     unsigned long long nsucceeded_launches {};
     std::wstring       rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
-    std::optional<HANDLE64> to_close {};
+    bool is_loop_broken_prematurely {};
+
+    constexpr SECURITY_DESCRIPTOR CHILDPROC_SECURITY_DESCRIPTOR {};
+    constexpr SECURITY_ATTRIBUTES CHILDPROC_SECURITY_ATTRIBUTES { .nLength = sizeof(SECURITY_ATTRIBUTES) };
 
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
+
+                // since this is not used to close handles, we can just resuse the same struct, who cares
+                // THIS IS INTENTIONALLY KEPT INSIDE THE LOOP!!!!
+                STARTUPINFOW        starupinfo = { .cb          = sizeof(STARTUPINFOW),
+                                                   .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
+                                                   .wShowWindow = SW_SHOW };
+                PROCESS_INFORMATION procinfo {}; // THIS TOO!!!!
 
                 houwie::generate_rscript(
                     rscript, // the launch directory of this programme will have all the needed files
@@ -280,10 +284,11 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         INFINITE
                     );
 
-                    to_close = utils::handle_parallel_waits(wfmo_result, active_process_handles);
-                    // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
-
-                    if (to_close.has_value()) ::CloseHandle(to_close.value()); // close the signalled process' handle
+                    // if we are at capacity and wait failed, break out the loop and focus on the already active processes
+                    if (!utils::handle_parallel_waits(wfmo_result, active_process_handles, active_thread_handles)) {
+                        is_loop_broken_prematurely = true;
+                        break; // no more new process launches
+                    }
                 }
 
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
@@ -299,8 +304,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         // look up the above for process priorities and scheduling
                         nullptr,
                         nullptr,
-                        &childstarupinfo,
-                        procinfos.data() + nsucceeded_launches // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                        &starupinfo,
+                        &procinfo // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                         // the procinfos array might contain invalid or empty or uninitialized structs where launches failed!!!!!!
                     )) {
                     ::fwprintf_s( // log where the launch failed
@@ -317,11 +322,22 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 // if the lauch succeeded,
                 nsucceeded_launches++;
                 // update active process and thread handles
-                active_process_handles.push_back(procinfos[nsucceeded_launches].hProcess);
-                active_thread_handles.push_back(procinfos[nsucceeded_launches].hThread);
-                ::memset(&childstarupinfo, 0, sizeof(STARTUPINFOW)); // clean it up for reuse
+                active_process_handles.push_back(procinfo.hProcess);
+                active_thread_handles.push_back(procinfo.hThread);
+                // ::memset(&childstarupinfo, 0, sizeof(STARTUPINFOW)); // clean it up for reuse
             }
         }
+    }
+
+    if (is_loop_broken_prematurely) {
+        ::fwprintf_s(stderr, L"Process launch terminated prematurely, currently %llu active processes running!\n", nsucceeded_launches);
+        wfmo_result = ::WaitForMultipleObjects(
+            active_process_handles.size(),
+            active_process_handles.data(),
+            true, // return only when all the processs are signalled
+            INFINITE
+        );
+        // handle the outcome
     }
 
     ::wprintf_s(L"%llu out of %llu launches succeeded!", nsucceeded_launches, TOTAL_PROCESSES);
