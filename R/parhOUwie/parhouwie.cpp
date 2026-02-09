@@ -239,7 +239,7 @@ namespace utils {
 // R also seems to skip the assertion like expressions e.g. stopifnot() and the likes when non-interactively invoked with expressions (using -e)?????
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
-    ::atexit(::__release_ntdbsdll); // tr release the Ntdsbmsg.DLL at the parent process exit
+    ::atexit(::__release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
 
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
     // SYSTEM_INFO sysinf {};
@@ -263,27 +263,27 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 // THIS TWO STRUCTS ARE INTENTIONALLY FRESHLY CREATED IN EVERY ITERATION!!!!
                 STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                 .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
+                                                 .wShowWindow = SW_SHOW }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
 
                 houwie::generate_rscript(
                     rscript, // the launch directory of this programme will have all the needed files
-                    LR"(./ouwie_64sp_example.tre)",
-                    LR"(./ouwie_64sp_trait_example.csv)",
+                    LR"(./FRED_subset_collab_1005sp.tre)",
+                    LR"(./genus_state_rec_logged_species_avgd_RD_1005sp.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
                     static_cast<houwie::CONTINUOUS_MODELS>(cmod),
                     LR"(../rdata/parallel/)",
-                    L"x",
-                    L"regime",
-                    L"test",
+                    L"RD",
+                    L"MYCO",
+                    L"1005SP",
                     nm,
-                    10
+                    30
                 );
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
                 ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, rscript.c_str());
-                // ::_putws(cmdline.c_str());
+                ::_putws(cmdline.c_str());
 
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
@@ -357,9 +357,9 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
     // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
     if (wfmo_result < WAIT_OBJECT_0 + active_process_handles.size())
-        ::fputws(L"All the processes have signalled successfully!", stderr);
+        ::fputws(L"All the processes have signalled successfully!\n", stderr);
     else if (wfmo_result < WAIT_ABANDONED_0 + active_process_handles.size())
-        ::fputws(L"All the processes have signalled with at least one abandoned mutex!", stderr);
+        ::fputws(L"All the processes have signalled with at least one abandoned mutex!\n", stderr);
 
     // close all the leftover process handles and thread handles
     std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
