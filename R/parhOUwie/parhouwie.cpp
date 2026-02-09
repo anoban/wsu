@@ -38,7 +38,7 @@ static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };           // len
 static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH }; // 260
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
 static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 9 }; // half the number of cores
-static HINSTANCE                    handle_ntdsbmsg {};           // handle to Ntdsbmsg.dll
+static HINSTANCE                    handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
 
 extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
     if (handle_ntdsbmsg) ::FreeLibrary(handle_ntdsbmsg);
@@ -54,10 +54,14 @@ namespace houwie {
     };
 
     enum class CONTINUOUS_MODELS : unsigned char {
-        OUM,
-        OUMA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]],
-        OUMV,
-        OUMVA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]]
+        OUM, // only the continuous trait optimum varies depending on the discrete state regimes
+        OUMA [[deprecated(
+            HOUWIE_VARIABLE_ALPHA_WARNING
+        )]],  // the continuous trait optimum and the pull towards the optimum vary depending on the discrete state regimes
+        OUMV, // the continuous trait optimum and the rate of continuous trait evolution vary depending on the discrete state regimes
+        OUMVA [[deprecated(
+            HOUWIE_VARIABLE_ALPHA_WARNING
+        )]] // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
     };
 
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
@@ -93,7 +97,7 @@ namespace houwie {
         _In_ const wchar_t* const     suffix
     ) noexcept {
         static wchar_t buffer[MAX_SAVERDS_NAME_LENGTH] {};
-        ::memset(buffer, 0, sizeof(buffer));
+        ::memset(buffer, 0, sizeof(buffer)); // we don't want buffer contents from previous writes intefereing with new writes
         // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
         ::swprintf_s(
             buffer,
@@ -124,14 +128,14 @@ namespace houwie {
         _In_ const unsigned long long& nsims = 30
     ) noexcept {
         if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
-        ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t));
+        ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t)); // clean up the buffer before every new write
 
         ::swprintf_s(
             buffer.data(),
             buffer.size(),
-            // who gives a damn when warnings are emiited during package loading during automation
-            // also using ; instead of new lines to delineate expressions (expressions separated by \n s did not work)
-            // and when passed as expressions, all the double quotes get stripped away for some reason?????, using single quotes for string literals
+            // who gives a damn when warnings are emiited during package loading in automation
+            // also using ; instead of new lines to delineate expressions (expressions separated by \n s did not work for some reason???)
+            // and when passed as expressions, all the double quotes get stripped away for some reason?????, using single quotes instead for string literals
             L"library('ape');"
             L"library('corHMM');"
             L"library('OUwie');"
@@ -158,7 +162,9 @@ namespace utils {
 
     // get the string representation of a _WIN32 error code
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
-    [[nodiscard]] static inline const wchar_t* __stdcall error_code_to_string(_In_ const unsigned long& errcode) noexcept {
+    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall error_code_to_wstring(
+        _In_ const unsigned long& errcode
+    ) noexcept {
         static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
         ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
@@ -189,21 +195,23 @@ namespace utils {
         return errmsgbuffer;
     }
 
-    static inline bool handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
+    [[nodiscard, clang::always_inline]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
         _In_ const unsigned long& retval,  _Inout_ std::vector<HANDLE64>& active_proc_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles
     ) noexcept {
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so retval is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
         unsigned long pop_offset { 0xFF };
-        if (retval < active_proc_handles.size()) // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
-            pop_offset = retval - WAIT_OBJECT_0;
-        else if ((retval >= WAIT_ABANDONED_0) && (retval < WAIT_TIMEOUT)) { // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
+
+        // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
+        if (retval < active_proc_handles.size()) pop_offset = retval - WAIT_OBJECT_0;
+        // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1) indiacate an abandoned mutex
+        else if ((retval >= WAIT_ABANDONED_0) && (retval < WAIT_TIMEOUT)) {
             pop_offset = retval - WAIT_ABANDONED_0;
             ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED", stderr);
         } else if (retval == WAIT_TIMEOUT) // cannot (should not) happen as we specified the time limit to be INFINITE
             ::fputws(L"WaitForMultipleObjects signalled WAIT_TIMEOUT", stderr);
         else if (retval == WAIT_FAILED)
-            ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_string(::GetLastError()));
+            ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_wstring(::GetLastError()));
 
         if (pop_offset != 0xFF) { // no matter what, we have one less active process now
             // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close the process and thread handles of the signalled process
@@ -231,13 +239,14 @@ namespace utils {
 // R also seems to skip the assertion like expressions e.g. stopifnot() and the likes when non-interactively invoked with expressions (using -e)?????
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
-    ::atexit(::__release_ntdbsdll);
+    ::atexit(::__release_ntdbsdll); // tr release the Ntdsbmsg.DLL at the parent process exit
+
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
     // SYSTEM_INFO sysinf {};
     // ::GetSystemInfo(&sysinf);
     // sysinf.dwNumberOfProcessors - this machine has 18 cores, which is quite suprising
 
-    // unfortunately for ::WaitForMultipleObjects, we need an array of active process handles, cannot index into the above struct to access the process handles
+    // for ::WaitForMultipleObjects, we need an array of active process handles
     std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
     unsigned long         wfmo_result {}; // the offset of the signalled handle in active_process_handles will be this value - WAIT_OBJECT_0
 
@@ -251,11 +260,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
 
-                // since this is not used to close handles, we can just resuse the same struct, who cares
                 // THIS TWO STRUCTS ARE INTENTIONALLY FRESHLY CREATED IN EVERY ITERATION!!!!
-                STARTUPINFOW        starupinfo = { .cb          = sizeof(STARTUPINFOW),
-                                                   .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                   .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
+                STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
+                                                 .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
+                                                 .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
 
                 houwie::generate_rscript(
@@ -277,16 +285,15 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, rscript.c_str());
                 // ::_putws(cmdline.c_str());
 
+                // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
-                    // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                     // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-                    // INFINITE milliseconds is about 1193 hours, so we can just use that
                     // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
                     wfmo_result = ::WaitForMultipleObjects( // make sure that the return value is valid
                         active_process_handles.size(),
                         active_process_handles.data(),
                         false, // return when at least one process is signalled
-                        INFINITE
+                        INFINITE // INFINITE milliseconds is about 1193 hours, so we can just use that
                     );
 
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
@@ -296,10 +303,14 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                     }
                 }
 
+                //------------------------------------------------------------------------
+                // EVERYTHING BELOW WILL ONLY BE EXECUTED WHEN WE ARE BELOW CAPACITY
+                //------------------------------------------------------------------------
+
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
                 // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
                 if (!::CreateProcessW(
-                        R_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY i.e. nullptr
+                        R_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                         cmdline.data(),
                         nullptr,
                         nullptr,
@@ -310,8 +321,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         nullptr,
                         nullptr,
                         &starupinfo,
-                        &procinfo // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-                        // the procinfos array might contain invalid or empty or uninitialized structs where launches failed!!!!!!
+                        &procinfo
                     )) {
                     ::fwprintf_s( // log where the launch failed
                         stderr,
@@ -319,7 +329,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         houwie::__discmod_to_wstr(static_cast<houwie::DISCRETE_MODELS>(dmod)),
                         houwie::__contmod_to_wstr(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
                         nm ? L"CID" : L"CD",
-                        utils::error_code_to_string(::GetLastError())
+                        utils::error_code_to_wstring(::GetLastError())
                     );
                     continue; // move on to the next launch
                 }
@@ -329,30 +339,27 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 // update active process and thread handles
                 active_process_handles.push_back(procinfo.hProcess);
                 active_thread_handles.push_back(procinfo.hThread);
-                // ::memset(&childstarupinfo, 0, sizeof(STARTUPINFOW)); // clean it up for reuse
             }
         }
     }
 
-    if (is_loop_broken_prematurely) {
+    //--------------------------------------
+    // ONCE WE HAVE EXITED THE LOOP
+    //--------------------------------------
+
+    if (is_loop_broken_prematurely)
         ::fwprintf_s(
             stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
         );
-        wfmo_result = ::WaitForMultipleObjects(
-            active_process_handles.size(),
-            active_process_handles.data(),
-            true, // return only when all the processs are signalled
-            INFINITE
-        );
 
-        // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-        if (wfmo_result < WAIT_OBJECT_0 + active_process_handles.size())
-            ::fputws(L"All the processes launched before the premature loop break have signalled successfully!", stderr);
-        else if (wfmo_result < WAIT_ABANDONED_0 + active_process_handles.size())
-            ::fputws(
-                L"All the processes launched before the premature loop break have signalled with at least one abandoned mutex!", stderr
-            );
-    }
+    // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
+    wfmo_result = ::WaitForMultipleObjects(active_process_handles.size(), active_process_handles.data(), true, INFINITE);
+
+    // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
+    if (wfmo_result < WAIT_OBJECT_0 + active_process_handles.size())
+        ::fputws(L"All the processes have signalled successfully!", stderr);
+    else if (wfmo_result < WAIT_ABANDONED_0 + active_process_handles.size())
+        ::fputws(L"All the processes have signalled with at least one abandoned mutex!", stderr);
 
     // close all the leftover process handles and thread handles
     std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);

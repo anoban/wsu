@@ -237,7 +237,7 @@ avg_models_CID_SRL_4states |> split(~tip_state) |> lapply(function(df) { stderr_
 
 
 #-------------------------------------------
-# ROOT DIAMETER (NON LOG TRANSFORMED)
+# ROOT DIAMETER (NOT LOG TRANSFORMED)
 #-------------------------------------------
 
 
@@ -253,6 +253,8 @@ models_CID_RD_1005sp <- list(EROUM=ER_OUM_RD_CID, EROUMA=ER_OUMA_RD_CID, EROUMV=
                                ARDOUMA=ARD_OUMA_RD_CID, ARDOUMV=ARD_OUMV_RD_CID, ARDOUMVA=ARD_OUMVA_RD_CID, SYMOUM=SYM_OUM_RD_CID, SYMOUMA=SYM_OUMA_RD_CID,
                                SYM_OUMV=SYM_OUMV_RD_CID, SYMOUMVA=SYM_OUMVA_RD_CID)
 
+OUwie::getModelTable(model.list = models_CD_RD_1005sp, type = "AICc")
+OUwie::getModelTable(model.list = models_CID_RD_1005sp, type = "AICc")
 
 avg_models_CD_RD_1005sp <- OUwie::getModelAvgParams(models_CD_RD_1005sp, type = "AICc", force = FALSE)
 avg_models_CID_RD_1005sp <- OUwie::getModelAvgParams(models_CID_RD_1005sp, type = "AICc", force = FALSE)
@@ -272,3 +274,6 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
     stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
     theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
 ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CID_1005sp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
+
+# looks like the best model out of all these are
