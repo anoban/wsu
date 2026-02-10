@@ -34,21 +34,136 @@
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static const wchar_t* const         R_INTERPRETER_PATH { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
-static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x2FFF };                       // being a bit too generous here
-static constexpr unsigned long long TOTAL_PROCESSES { 24 };               // 4 continuous models x 3 discrete models x 2 rate categories
-static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };           // length of the error message buffer in number of wchar_t s
-static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH }; // 260
-static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
-// pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
-static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 12 };
-static HINSTANCE                    handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
+static const wchar_t* const R_INTERPRETER_PATH { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
-extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
-    if (handle_ntdsbmsg) ::FreeLibrary(handle_ntdsbmsg);
-}
+// pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
+static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 0xC };
+static constexpr unsigned long long TOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
+
+static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
+static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH };
+static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0x4F0 };
+static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit too generous here
+static_assert(RSCRIPT_BUFFSIZE < CMDLINE_BUFFSIZE);
+
+static HINSTANCE handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
+
+namespace utils {
+
+    extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
+        if (handle_ntdsbmsg) ::FreeLibrary(handle_ntdsbmsg);
+    }
+
+    // get the string representation of a _WIN32 error code
+    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
+    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
+        _In_ const unsigned long& errcode
+    ) noexcept {
+        static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
+        // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
+        ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
+
+        unsigned long nbyteswritten = ::FormatMessageW(
+            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, errmsgbuffer, ERROR_MSG_BUFFSIZE, nullptr
+        );
+
+        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
+            // if the library hasn't already been loaded by previous calls to this function
+            if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
+            if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
+                ::fputws(L"Failed to load Ntdsbmsg.dll", stderr);
+                return errmsgbuffer; // must be an empty buffer here
+            }
+
+            nbyteswritten = ::FormatMessageW(
+                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS,
+                handle_ntdsbmsg,
+                errcode,
+                0,
+                errmsgbuffer,
+                ERROR_MSG_BUFFSIZE,
+                nullptr
+            );
+            // ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process - atexit() will handle this for us
+        }
+        return errmsgbuffer;
+    }
+
+    [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
+        _Inout_ std::vector<HANDLE64>& active_process_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles, _In_ const bool& all, _In_ const unsigned long& duration
+    ) noexcept {
+        // made the function more customizeable
+        // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
+        // so the returned value is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
+        unsigned long pop_offset { 0xFF };
+        bool          wait_all_status {};
+        // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
+        // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
+        const unsigned long waitstatus =        ::WaitForMultipleObjects( // make sure that the return value is valid
+                        active_process_handles.size(),
+                        active_process_handles.data(),
+                        all, // return when at least one process is signalled
+                        duration // INFINITE milliseconds is about 1193 hours, so we can just use that
+                    );
+
+        switch (waitstatus) { // regardless of the `all` argument
+            case WAIT_FAILED :
+                ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", __error_code_to_wstring(::GetLastError()));
+                if (all) goto CLOSE_ALL_ACTIVE_HANDLES;
+                return false;
+
+            case WAIT_TIMEOUT :
+                ::fputws(L"WaitForMultipleObjects signalled WAIT_TIMEOUT\n", stderr);
+                if (all) goto CLOSE_ALL_ACTIVE_HANDLES;
+                return false;
+
+            default : break;
+        }
+
+        if (!all) {
+            // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
+            if (waitstatus < active_process_handles.size()) pop_offset = waitstatus - WAIT_OBJECT_0;
+            // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1) indiacate an abandoned mutex
+            else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < WAIT_TIMEOUT)) {
+                pop_offset = waitstatus - WAIT_ABANDONED_0;
+                ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED", stderr);
+            }
+            // no matter what happened (process completion or abandoned mutex), we have one less active process now
+            if (pop_offset != 0xFF) {
+                // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close the process and thread handles of the signalled process
+                ::CloseHandle(*(active_process_handles.data() + pop_offset));
+                ::CloseHandle(*(active_thread_handles.data() + pop_offset));
+                // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
+                active_process_handles.erase(active_process_handles.begin() + pop_offset); // remove the signalled process
+                active_thread_handles.erase(active_thread_handles.begin() + pop_offset);   // remove the signalled thread handle
+                // active_proc_handles.shrink_to_fit();
+                return true;
+            } else
+                return false; // WAIT_TIMEOUT or WAIT_FAILED
+        } else {              // when bWaitAll is TRUE,
+            // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
+            if (waitstatus < WAIT_OBJECT_0 + active_process_handles.size()) {
+                ::fputws(L"All the processes have signalled successfully!\n", stderr);
+                wait_all_status = true;
+            } else if (waitstatus < WAIT_ABANDONED_0 + active_process_handles.size()) {
+                ::fputws(L"All the processes have signalled with at least one abandoned mutex!\n", stderr);
+                wait_all_status = true;
+            }
+            // close all the leftover process handles and thread handles
+            std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
+            std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
+            return wait_all_status;
+        }
+
+CLOSE_ALL_ACTIVE_HANDLES: // close all the leftover process handles and thread handles
+        std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
+        std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
+        return false;
+    }
+
+} // namespace utils
 
 namespace houwie {
     enum class DISCRETE_MODELS : unsigned char {
@@ -143,6 +258,7 @@ namespace houwie {
             L"library('ape');"
             L"library('corHMM');"
             L"library('OUwie');"
+            L"set.seed(1, kind = 'Mersenne-Twister');" // make sure reruns don't give us inconsistent results
             L"phylogeny <- ape::read.tree('%s');"
             L"data <- read.csv('%s');"
             L"stopifnot(all(phylogeny$tip.label == data$binominal));"
@@ -162,108 +278,13 @@ namespace houwie {
 
 } // namespace houwie
 
-namespace utils {
-
-    // get the string representation of a _WIN32 error code
-    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
-    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall error_code_to_wstring(
-        _In_ const unsigned long& errcode
-    ) noexcept {
-        static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
-        // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
-        ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
-
-        unsigned long nbyteswritten = ::FormatMessageW(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, errmsgbuffer, ERROR_MSG_BUFFSIZE, nullptr
-        );
-
-        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
-            // if the library hasn't already been loaded by previous calls to this function
-            if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
-            if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
-                ::fputws(L"Failed to load Ntdsbmsg.dll", stderr);
-                return errmsgbuffer; // must be an empty buffer here
-            }
-
-            nbyteswritten = ::FormatMessageW(
-                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS,
-                handle_ntdsbmsg,
-                errcode,
-                0,
-                errmsgbuffer,
-                ERROR_MSG_BUFFSIZE,
-                nullptr
-            );
-            // ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process - atexit() will handle this for us
-        }
-        return errmsgbuffer;
-    }
-
-    [[nodiscard, clang::always_inline]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& active_process_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles, _In_ const bool& wait_all
-    ) noexcept {
-        // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
-        // so retval is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
-        unsigned long pop_offset { 0xFF };
-        bool          wait_all_status {};
-        // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-        // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
-        const unsigned long waitstatus =        ::WaitForMultipleObjects( // make sure that the return value is valid
-                        active_process_handles.size(),
-                        active_process_handles.data(),
-                        wait_all, // return when at least one process is signalled
-                        INFINITE // INFINITE milliseconds is about 1193 hours, so we can just use that
-                    );
-
-        if (!wait_all) {
-            // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
-            if (waitstatus < active_process_handles.size()) pop_offset = waitstatus - WAIT_OBJECT_0;
-            // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1) indiacate an abandoned mutex
-            else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < WAIT_TIMEOUT)) {
-                pop_offset = waitstatus - WAIT_ABANDONED_0;
-                ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED", stderr);
-            } else if (waitstatus == WAIT_TIMEOUT) // cannot (should not) happen as we specified the time limit to be INFINITE
-                ::fputws(L"WaitForMultipleObjects signalled WAIT_TIMEOUT", stderr);
-            else if (waitstatus == WAIT_FAILED)
-                ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_wstring(::GetLastError()));
-
-            if (pop_offset !=
-                0xFF) { // no matter what happened (process completion or abandoned mutex), we have one less active process now
-                // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close the process and thread handles of the signalled process
-                ::CloseHandle(*(active_process_handles.data() + pop_offset));
-                ::CloseHandle(*(active_thread_handles.data() + pop_offset));
-                // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
-                active_process_handles.erase(active_process_handles.begin() + pop_offset); // remove the signalled process
-                active_thread_handles.erase(active_thread_handles.begin() + pop_offset);   // remove the signalled thread handle
-                // active_proc_handles.shrink_to_fit();
-                return true;
-            } else
-                return false; // WAIT_TIMEOUT or WAIT_FAILED
-        } else {              // when bWaitAll is TRUE,
-            // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-            if (waitstatus < WAIT_OBJECT_0 + active_process_handles.size()) {
-                ::fputws(L"All the processes have signalled successfully!\n", stderr);
-                wait_all_status = true;
-            } else if (waitstatus < WAIT_ABANDONED_0 + active_process_handles.size()) {
-                ::fputws(L"All the processes have signalled with at least one abandoned mutex!\n", stderr);
-                wait_all_status = true;
-            }
-            // close all the leftover process handles and thread handles
-            std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
-            std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
-            return wait_all_status;
-        }
-    }
-
-} // namespace utils
-
 // typically, each R process (inside Jupyter) only takes up about ~9% of the CPU, so this could absolutely benefit from paralellization
 // the issue is that when the R interpreter gets called, the expression gets passed with all the quotes stripped away - leads to syntax errors
 // figure out why the quotes get stripped away and how to preserve them when they are loaded into the R interpreter
 // TURNS OUT THAT THE EXPRESSION ARGUMENT (-e) MUST BE ENCLOSED IN DOUBLE QUOTES NOT SINGLE QUOTES!!
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
-    ::atexit(::__release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
+    ::atexit(utils::__release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
 
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
     // SYSTEM_INFO sysinf {};
@@ -281,6 +302,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     bool is_loop_broken_prematurely {};
 
     // timing runtime
+    // https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps
     LARGE_INTEGER start {}, stop {}, freq {};
     ::QueryPerformanceFrequency(&freq); // number of ticks per second
     ::QueryPerformanceCounter(&start);
@@ -349,7 +371,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                         houwie::__discmod_to_wstr(static_cast<houwie::DISCRETE_MODELS>(dmod)),
                         houwie::__contmod_to_wstr(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
                         nm ? L"CID" : L"CD",
-                        utils::error_code_to_wstring(::GetLastError())
+                        utils::__error_code_to_wstring(::GetLastError())
                     );
                     continue; // move on to the next launch
                 }
