@@ -276,4 +276,35 @@ plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
 ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_RD_CID_1005sp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
 
 
+#-------------------------------------------
+# ROOT DIAMETER (LOG TRANSFORMED)
+#-------------------------------------------
+
 # looks like the best model out of all these are
+logged_RD_state_fits <- list.files("./rdata/parallel/")
+logged_RD_state_fits_names <- logged_RD_state_fits |> gsub(pattern = "_1005SP.Rds", replacement = '') |> gsub(pattern = "_MYCO", replacement = '')
+models_log_RD_1005sp <- lapply(FUN = readRDS, paste0("./rdata/parallel/", logged_RD_state_fits))
+models_CD_log_RD_1005sp <- setNames(models_log_RD_1005sp[grep("CD", logged_RD_state_fits)], logged_RD_state_fits_names[grep("CD", logged_RD_state_fits)])
+models_CID_log_RD_1005sp <- setNames(models_log_RD_1005sp[grep("CID", logged_RD_state_fits)], logged_RD_state_fits_names[grep("CID", logged_RD_state_fits)])
+
+OUwie::getModelTable(models_CD_log_RD_1005sp, type = "AICc")
+OUwie::getModelTable(models_CID_log_RD_1005sp, type = "AICc")
+
+avg_models_CD_logRD_1005sp <- OUwie::getModelAvgParams(models_CD_log_RD_1005sp, type = "AICc", force = FALSE)
+avg_models_CID_logRD_1005sp <- OUwie::getModelAvgParams(models_CID_log_RD_1005sp, type = "AICc", force = FALSE)
+
+plot_df <- reshape2::melt(avg_models_CD_logRD_1005sp)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_logRD_CD_1005sp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
+
+plot_df <- reshape2::melt(avg_models_CID_logRD_1005sp)
+plot <- ggplot(plot_df, aes(x = tip_state, y = value, color = tip_state)) +
+    geom_point(size = 5, shape = 21) +
+    stat_summary(fun = mean, geom = "point", aes(group = 1, size = 2)) +
+    stat_summary(fun.data = "mean_se", geom = "errorbar", aes(group = 1), width = 0.15, color = "black") +
+    theme_classic(base_size = 22) + facet_wrap(~variable, scales = "free")
+ggplot2::ggsave(plot = plot, filename = "../plots/hOUwie_logRD_CID_1005sp.png", device = "png", width = 22, height = 12, units = "in", dpi = 750)
