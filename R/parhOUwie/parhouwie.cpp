@@ -3,10 +3,10 @@
 #endif
 
 // clang .\parhouwie.cpp -Wall -Wextra -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
-// cl .\parhouwie.cpp /Wall /std:c++20 /O2 /MT /EHsc
+// cl .\parhouwie.cpp /Wall /std:c++20 /O2 /MT /EHsc /DNDEBUG /D_NDEBUG
 
 #if defined(_MSC_FULL_VER) && !defined(__llvm__) // MSVC specific warnings
-    #pragma warning(disable : 4710 4711 4820)
+    #pragma warning(disable : 4267 4710 4711 4800 4820)
 #endif
 
 // clang-format off
@@ -213,13 +213,13 @@ namespace utils {
         else if (retval == WAIT_FAILED)
             ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_wstring(::GetLastError()));
 
-        if (pop_offset != 0xFF) { // no matter what, we have one less active process now
+        if (pop_offset != 0xFF) { // no matter what happened (process completion or abandoned mutex), we have one less active process now
             // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close the process and thread handles of the signalled process
             ::CloseHandle(*(active_proc_handles.data() + pop_offset));
             ::CloseHandle(*(active_thread_handles.data() + pop_offset));
             // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
-            active_proc_handles.erase(active_proc_handles.begin() + pop_offset); // remove the signalled handle
-            active_thread_handles.erase(active_thread_handles.begin() + pop_offset);
+            active_proc_handles.erase(active_proc_handles.begin() + pop_offset); // remove the signalled process 
+            active_thread_handles.erase(active_thread_handles.begin() + pop_offset); // remove the signalled thread handle
             // active_proc_handles.shrink_to_fit();
             return true;
         }
@@ -230,13 +230,9 @@ namespace utils {
 } // namespace utils
 
 // typically, each R process (inside Jupyter) only takes up about ~9% of the CPU, so this could absolutely benefit from paralellization
-// wait 5 seconds between launching new processes, so we don't run into (possible???) file I/O issues inside the R instances
-
 // the issue is that when the R interpreter gets called, the expression gets passed with all the quotes stripped away - leads to syntax errors
 // figure out why the quotes get stripped away and how to preserve them when they are loaded into the R interpreter
 // TURNS OUT THAT THE EXPRESSION ARGUMENT (-e) MUST BE ENCLOSED IN DOUBLE QUOTES NOT SINGLE QUOTES!!
-
-// R also seems to skip the assertion like expressions e.g. stopifnot() and the likes when non-interactively invoked with expressions (using -e)?????
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
     ::atexit(::__release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
@@ -260,7 +256,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
             for (unsigned nm = 0; nm < 2; ++nm) {   // null model (0, 1) i.e true or false
 
-                // THIS TWO STRUCTS ARE INTENTIONALLY FRESHLY CREATED IN EVERY ITERATION!!!!
+                // THESE TWO STRUCTS ARE INTENTIONALLY PLACED HERE TO BE FRESHLY CREATED IN EVERY ITERATION!!!!
                 STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
                                                  .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
