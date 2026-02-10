@@ -37,7 +37,7 @@ static constexpr unsigned long long TOTAL_PROCESSES { 24 };               // 4 c
 static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };           // length of the error message buffer in number of wchar_t s
 static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH }; // 260
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
-static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 9 }; // half the number of cores
+static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 10 }; // a decent number with enough CPU space for other essential processes
 static HINSTANCE                    handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
 
 extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
