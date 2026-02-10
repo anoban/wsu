@@ -16,6 +16,7 @@
 #include <errhandlingapi.h>
 #include <libloaderapi.h>
 #include <processthreadsapi.h>
+#include <profileapi.h>
 #include <synchapi.h>
 #include <sysinfoapi.h>
 #include <WinDef.h>
@@ -25,6 +26,7 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -39,7 +41,7 @@ static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 512 };           // len
 static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH }; // 260
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0xFFF };
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
-static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 14 };
+static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 12 };
 static HINSTANCE                    handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
 
 extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
@@ -198,11 +200,12 @@ namespace utils {
     }
 
     [[nodiscard, clang::always_inline]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& active_process_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles, _In_ const bool& wait_all = false
+        _Inout_ std::vector<HANDLE64>& active_process_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles, _In_ const bool& wait_all
     ) noexcept {
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so retval is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
         unsigned long pop_offset { 0xFF };
+        bool          wait_all_status {};
         // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
         // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
         const unsigned long waitstatus =        ::WaitForMultipleObjects( // make sure that the return value is valid
@@ -236,16 +239,19 @@ namespace utils {
                 return true;
             } else
                 return false; // WAIT_TIMEOUT or WAIT_FAILED
-        } else {
+        } else {              // when bWaitAll is TRUE,
             // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-            if (waitstatus < WAIT_OBJECT_0 + active_process_handles.size())
+            if (waitstatus < WAIT_OBJECT_0 + active_process_handles.size()) {
                 ::fputws(L"All the processes have signalled successfully!\n", stderr);
-            else if (waitstatus < WAIT_ABANDONED_0 + active_process_handles.size())
+                wait_all_status = true;
+            } else if (waitstatus < WAIT_ABANDONED_0 + active_process_handles.size()) {
                 ::fputws(L"All the processes have signalled with at least one abandoned mutex!\n", stderr);
-
-CLOSE_ALL_HANDLES: // close all the leftover process handles and thread handles
+                wait_all_status = true;
+            }
+            // close all the leftover process handles and thread handles
             std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
             std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
+            return wait_all_status;
         }
     }
 
@@ -273,6 +279,11 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
     bool is_loop_broken_prematurely {};
+
+    // timing runtime
+    LARGE_INTEGER start {}, stop {}, freq {};
+    ::QueryPerformanceFrequency(&freq); // number of ticks per second
+    ::QueryPerformanceCounter(&start);
 
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
         for (unsigned cmod = 0; cmod < 4; ++cmod) { // continuous models
@@ -363,6 +374,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
     wfmo_result = ::WaitForMultipleObjects(active_process_handles.size(), active_process_handles.data(), true, INFINITE);
+
+    ::QueryPerformanceCounter(&stop);
 
     // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
     if (wfmo_result < WAIT_OBJECT_0 + active_process_handles.size())
