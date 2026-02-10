@@ -339,7 +339,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
-                    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles)) {
+                    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, false, INFINITE)) {
                         is_loop_broken_prematurely = true;
                         break; // no more new process launches
                     }
