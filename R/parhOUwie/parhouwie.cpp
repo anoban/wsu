@@ -409,7 +409,12 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
     std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
 
-    ::wprintf_s(L"Done, %llu out of %llu launches succeeded!\n", nsucceeded_launches, TOTAL_PROCESSES);
+    ::wprintf_s(
+        L"Done, %llu out of %llu launches completed within %.3lf hours!\n",
+        nsucceeded_launches,
+        TOTAL_PROCESSES,
+        (stop.QuadPart - start.QuadPart) / (freq.QuadPart / 3600.00) // NOLINT(cppcoreguidelines-narrowing-conversions)
+    );
 
     return EXIT_SUCCESS;
 }
