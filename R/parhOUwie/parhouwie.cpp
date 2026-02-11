@@ -90,14 +90,15 @@ namespace utils {
         return errmsgbuffer;
     }
 
+    // will only return true when the wait is signalled success
     [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
         _Inout_ std::vector<HANDLE64>& active_process_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles, _In_ const bool& all, _In_ const unsigned long& duration
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so the returned value is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
-        unsigned long pop_offset { 0xFF };
-        bool          wait_all_status {};
+        unsigned long handle_offset { 0xFF };
+        bool          exitval {};
         // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
         // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
         const unsigned long waitstatus =        ::WaitForMultipleObjects( // make sure that the return value is valid
@@ -107,59 +108,58 @@ namespace utils {
                         duration // INFINITE milliseconds is about 1193 hours, so we can just use that
                     );
 
-        switch (waitstatus) { // regardless of the `all` argument
+        // WAIT_FAILED or WAIT_TIMEOUT
+        switch (waitstatus) {
             case WAIT_FAILED :
                 ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", __error_code_to_wstring(::GetLastError()));
-                if (all) goto CLOSE_ALL_ACTIVE_HANDLES;
-                return false;
+                if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT; // if the wait was for all processes, close all the handles and return false
+                return false;                                // else just return false
 
             case WAIT_TIMEOUT :
                 ::fputws(L"WaitForMultipleObjects signalled WAIT_TIMEOUT\n", stderr);
-                if (all) goto CLOSE_ALL_ACTIVE_HANDLES;
+                if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
                 return false;
 
             default : break;
         }
 
-        if (!all) {
-            // range WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1) indicates success
-            if (waitstatus < active_process_handles.size()) pop_offset = waitstatus - WAIT_OBJECT_0;
-            // range WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1) indiacate an abandoned mutex
-            else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < WAIT_TIMEOUT)) {
-                pop_offset = waitstatus - WAIT_ABANDONED_0;
-                ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED", stderr);
-            }
-            // no matter what happened (process completion or abandoned mutex), we have one less active process now
-            if (pop_offset != 0xFF) {
-                // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close the process and thread handles of the signalled process
-                ::CloseHandle(*(active_process_handles.data() + pop_offset));
-                ::CloseHandle(*(active_thread_handles.data() + pop_offset));
-                // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) - close that handle
-                active_process_handles.erase(active_process_handles.begin() + pop_offset); // remove the signalled process
-                active_thread_handles.erase(active_thread_handles.begin() + pop_offset);   // remove the signalled thread handle
-                // active_proc_handles.shrink_to_fit();
-                return true;
-            } else
-                return false; // WAIT_TIMEOUT or WAIT_FAILED
-        } else {              // when bWaitAll is TRUE,
-            // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-            if (waitstatus < WAIT_OBJECT_0 + active_process_handles.size()) {
-                ::fputws(L"All the processes have signalled successfully!\n", stderr);
-                wait_all_status = true;
-            } else if (waitstatus < WAIT_ABANDONED_0 + active_process_handles.size()) {
-                ::fputws(L"All the processes have signalled with at least one abandoned mutex!\n", stderr);
-                wait_all_status = true;
-            }
-            // close all the leftover process handles and thread handles
-            std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
-            std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
-            return wait_all_status;
+        // WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)
+        if (waitstatus >= WAIT_OBJECT_0 && waitstatus < (WAIT_OBJECT_0 + active_process_handles.size())) {
+            exitval = true;
+            if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
+            // bWaitAll == FALSE
+            handle_offset = waitstatus - WAIT_OBJECT_0;
+            goto CLOSE_SELECTED_HANDLE_AND_EXIT;
         }
 
-CLOSE_ALL_ACTIVE_HANDLES: // close all the leftover process handles and thread handles
+        // WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
+        else if (waitstatus >= WAIT_ABANDONED_0 && waitstatus < (WAIT_ABANDONED_0 + active_process_handles.size())) {
+            if (all) {
+                ::fputws(
+                    L"WaitForMultipleObjects signalled WAIT_ABANDONED with bWaitAll set to TRUE, 1 or more probable abandoned mutexes!\n",
+                    stderr
+                );
+                goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
+            }
+            // bWaitAll == FALSE
+            ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED\n", stderr);
+            handle_offset = waitstatus - WAIT_ABANDONED_0;
+            goto CLOSE_SELECTED_HANDLE_AND_EXIT;
+        }
+
+CLOSE_ACTIVE_HANDLES_AND_EXIT: // close all the leftover process handles and thread handles
         std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
+        active_process_handles.clear();
         std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
-        return false;
+        active_thread_handles.clear();
+        return exitval;
+
+CLOSE_SELECTED_HANDLE_AND_EXIT:
+        ::CloseHandle(*(active_process_handles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        active_process_handles.erase(active_process_handles.begin() + handle_offset); // remove the signalled process
+        ::CloseHandle(*(active_thread_handles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        active_thread_handles.erase(active_thread_handles.begin() + handle_offset); // remove the signalled thread handle
+        return exitval;
     }
 
 } // namespace utils
@@ -292,7 +292,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
     // for ::WaitForMultipleObjects, we need an array of active process handles
     std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
-    unsigned long         wfmo_result {}; // the offset of the signalled handle in active_process_handles will be this value - WAIT_OBJECT_0
+    long                  exitcode { EXIT_SUCCESS };
 
     unsigned long long nsucceeded_launches {};
     std::wstring       rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
@@ -302,8 +302,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
     // timing runtime
     // https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps
-    LARGE_INTEGER start {}, stop {}, freq {};
-    ::QueryPerformanceFrequency(&freq); // number of ticks per second
+    LARGE_INTEGER start {}, stop {}, freq {}; // NOLINT(readability-isolate-declaration)
+    ::QueryPerformanceFrequency(&freq);       // number of ticks per second
     ::QueryPerformanceCounter(&start);
 
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
@@ -322,10 +322,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                     LR"(./genus_state_rec_logged_species_avgd_RD_1005sp.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
                     static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                    LR"(../rdata/parallel/)",
-                    L"RD",
-                    L"MYCO",
-                    L"1005SP",
+                    LR"(../rdata/parallel/LOG_SRL_1005SP/)",
+                    L"SRL",
+                    L"STATES",
+                    L"",
                     nm,
                     30
                 );
@@ -339,6 +339,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
                     if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, false, INFINITE)) {
+                        // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
                         is_loop_broken_prematurely = true;
                         break; // no more new process launches
                     }
@@ -394,19 +395,9 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
         );
 
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
-    wfmo_result = ::WaitForMultipleObjects(active_process_handles.size(), active_process_handles.data(), true, INFINITE);
+    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, true, INFINITE)) exitcode = EXIT_FAILURE;
 
     ::QueryPerformanceCounter(&stop);
-
-    // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
-    if (wfmo_result < WAIT_OBJECT_0 + active_process_handles.size())
-        ::fputws(L"All the processes have signalled successfully!\n", stderr);
-    else if (wfmo_result < WAIT_ABANDONED_0 + active_process_handles.size())
-        ::fputws(L"All the processes have signalled with at least one abandoned mutex!\n", stderr);
-
-    // close all the leftover process handles and thread handles
-    std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
-    std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
 
     ::wprintf_s(
         L"Done, %llu out of %llu launches completed within %.3lf hours!\n",
@@ -415,7 +406,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
         (stop.QuadPart - start.QuadPart) / (freq.QuadPart / 3600.00) // NOLINT(cppcoreguidelines-narrowing-conversions)
     );
 
-    return EXIT_SUCCESS;
+    return exitcode;
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
