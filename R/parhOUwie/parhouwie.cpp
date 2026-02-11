@@ -31,10 +31,9 @@
 #include <string>
 #include <vector>
 
-
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static const wchar_t* const R_INTERPRETER_PATH { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t R_INTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
 static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 0xC };
