@@ -403,7 +403,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
         L"Done, %llu out of %llu launches completed within %.3lf hours!\n",
         nsucceeded_launches,
         TOTAL_PROCESSES,
-        (stop.QuadPart - start.QuadPart) / (freq.QuadPart / 3600.00) // NOLINT(cppcoreguidelines-narrowing-conversions)
+        (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00) // NOLINT(cppcoreguidelines-narrowing-conversions)
     );
 
     return exitcode;
