@@ -326,7 +326,6 @@ Quercus_variabilis,EcM,4.384073327019456
 Quercus_wutaishanica,EcM,4.012031738872642
 Rhamnus_davurica,AM,5.19709489569434
 Rhaphiolepis_indica,AM,4.463491407656154
-Rhododendron_hypoglaucum,ErM,5.096447499700531
 Rhodoleia_championii,AM,3.8406558890797298
 Rosa_acicularis,AM,4.022385435031041
 Rosa_xanthina,AM,5.22768711832685
@@ -385,8 +384,6 @@ Ulmus_davidiana,AM,4.76263893805587
 Ulmus_laciniata,AM,4.89896666181845
 Ulmus_macrocarpa,AM,4.177724226979262
 Ulmus_pumila,AM,4.741008005401787
-Vaccinium_corymbosum,ErM,6.73351651788659
-Vaccinium_mandarinorum,ErM,4.6701148746284735
 Veratrum_nigrum,AM,4.838767172507941
 Veronica_spuria,NMAM,5.424579170311993
 Vitis_amurensis,AM,4.644499902046494
@@ -495,7 +492,6 @@ Bromus_madritensis,AM,5.832048641385611
 Calamagrostis_canadensis,AM,5.517452896464707
 Calamovilfa_longifolia,NMAM,3.4965075614664802
 Caldcluvia_rosifolia,AM,3.9510243683276944
-Calluna_vulgaris,ErM,2.611930551632364
 Calpurnia_aurea,AM,2.830267833826459
 Campanula_rotundifolia,AM,6.285440420788243
 Carex_doisutepensis,NMAM,3.1376657694426577
@@ -580,7 +576,6 @@ Digitaria_setigera,AM,3.586015818654697
 Doellingeria_umbellata,AM,4.744941478302148
 Dovyalis_abyssinica,AM,2.3758355547336385
 Draba_nemorosa,NM,5.604183683891964
-Dracophyllum_longifolium,ErM,4.871479538812571
 Dysoxylum_spectabile,AM,2.0624450465768707
 Echinacea_serotina,AM,3.5553480614894135
 Eclipta_prostrata,NMAM,3.4210000089583352
@@ -596,8 +591,6 @@ Elymus_riparius,AM,5.299063020678885
 Elymus_virginicus,AM,5.642148918759129
 Ephedra_fragilis,AM,1.2210552998275395
 Eragrostis_trichodes,NMAM,4.290459441148391
-Erica_arborea,ErM,2.649813790196861
-Erica_scoparia,ErM,3.00616006713636
 Erigeron_canadensis,AM,4.77912349311153
 Erigeron_glabellus,AM,3.9811057282116824
 Erigeron_pumilus,AM,4.437386082817152
@@ -717,7 +710,6 @@ Leiospermum_racemosum,AM,3.7256934272366524
 Leontopodium_nanum,AM,-0.9673735221034713
 Lepidium_densiflorum,NM,4.559569288282495
 Lepidothamnus_intermedius,AM,3.068052935133617
-Leptecophylla_juniperina,ErM,4.853591544486569
 Leptospermum_scoparium,EcMAM,4.570324634660773
 Lespedeza_capitata,AM,4.290459441148391
 Lespedeza_davidii,AM,5.209486152841421
@@ -732,7 +724,6 @@ Lithocarpus_clementianus,EcM,3.385169620584958
 Lithocarpus_confertus,EcM,3.01950739220476
 Lithocarpus_lampadarius,EcM,2.9859786108603728
 Lithocarpus_rigidus,EcM,2.732385026117004
-Lobelia_siphilitica,OM,6.215416816801312
 Lolium_multiflorum,AM,5.645446897643238
 Lolium_perenne,AM,5.380603529331644
 Lolium_rigidum,AM,5.541041358744827
@@ -877,7 +868,6 @@ Ratibida_pinnata,AM,4.02535169073515
 Raukaua_simplex,AM,3.459466289786131
 Rhamnus_alaternus,AM,2.7821448194524847
 Rhamnus_lycioides,AM,3.222429909620088
-Rhododendron_ponticum,ErM,2.854882490144274
 Rhopalostylis_sapida,AM,3.1034160946192193
 Rhus_chinensis,AM,1.6789639750827108
 Rhus_typhina,AM,4.3294166844015844
@@ -982,7 +972,6 @@ Tsuga_canadensis,EcM,2.9601050959108397
 Ulex_parviflorus,AM,2.2180232141147225
 Ulmus_minor,AM,2.9924656414161306
 Ulmus_rubra,AM,4.370712874773608
-Vaccinium_bracteatum,ErM,6.311553304478671
 Vepris_nobilis,AM,1.8484548129046001
 Verbascum_thapsus,AM,4.0943445622221
 Verbena_hastata,AM,4.5217885770490405
