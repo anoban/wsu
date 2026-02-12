@@ -44,3 +44,13 @@ text(x = tscale_axis, y = rep(-16, 10), labels = lapply(rev(seq(0, htree, length
 text(x = 250, y = -35, labels = "Time (Million years)", cex = 1.5, col = "red")
 dev.off()
 
+#------------------------------------------------------------------------------------------
+# THE NEW 994 SPECIES PHYLOGENY AFTER STATE CHANGES IN THE 1005 SPECIES PHYLOGENY
+#------------------------------------------------------------------------------------------
+
+megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB.extended.TPL.tre")
+taxonomy_data <- read.csv("../data/chapter2/FREDv3subset/collab_rdlteq1_rd1ornan_log_RD_SRL_994species_avgd.csv")[, c("binominal", "genus", "species", "family", "order")]
+phylogeny <- U.PhyloMaker::phylo.maker(sp.list = taxonomy_data[, c("binominal", "genus")], tree = megatree,
+                                       gen.list = taxonomy_data[!duplicated(taxonomy_data[, c("genus", "family")]), c("genus", "family")])
+ape::write.tree(phylogeny$phylo, file = "../data/chapter2/uphylomaker/FRED_subset_collab_4states_994sp.tre")
+
