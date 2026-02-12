@@ -203,8 +203,6 @@ namespace houwie {
         _In_ const DISCRETE_MODELS&   dmodel,
         _In_ const CONTINUOUS_MODELS& cmodel,
         _In_ const wchar_t* const     savedir, // assumed ends with a forward slash, expected to be in the format "C:/Users/Documents/"
-        _In_ const wchar_t* const     ctrait,
-        _In_ const wchar_t* const     dtrait,
         _In_ const bool&              nullmodel,
         _In_ const wchar_t* const     suffix
     ) noexcept {
@@ -214,12 +212,10 @@ namespace houwie {
         ::swprintf_s(
             buffer,
             SAVERDS_NAME_LENGTH,
-            L"%s%s_%s_%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
+            L"%s%s%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
             savedir,
             _discrete_model(dmodel),
             _continuous_model(cmodel),
-            ctrait,
-            dtrait,
             nullmodel ? L"CID" : L"CD",
             suffix
         );
@@ -233,8 +229,6 @@ namespace houwie {
         _In_ const DISCRETE_MODELS&    dmodel,
         _In_ const CONTINUOUS_MODELS&  cmodel,
         _In_ const wchar_t* const      savedir,
-        _In_ const wchar_t* const      ctrait,
-        _In_ const wchar_t* const      dtrait,
         _In_ const wchar_t* const      suffix,
         _In_ const bool&               nullmodel,
         _In_ const unsigned long long& nsims = 30
@@ -265,7 +259,7 @@ namespace houwie {
             _continuous_model(cmodel),
             nsims,
             nullmodel ? L"TRUE" : L"FALSE",
-            _rdspath(dmodel, cmodel, savedir, ctrait, dtrait, nullmodel, suffix)
+            _rdspath(dmodel, cmodel, savedir, nullmodel, suffix)
         );
     }
 
@@ -312,13 +306,11 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
                 houwie::generate_rscript(
                     rscript, // the launch directory of this programme will have all the needed files
-                    LR"(./FRED_subset_collab_1005sp.tre)",
-                    LR"(./genus_state_rec_logged_species_avgd_RD_1005sp.csv)",
+                    LR"(./4states_994sp.tre)",
+                    LR"(./gen_rec_4state_logged_994species_avgd_RD.csv)",
                     static_cast<houwie::DISCRETE_MODELS>(dmod),
                     static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                    LR"(../rdata/parallel/LOG_SRL_1005SP/)",
-                    L"SRL",
-                    L"STATES",
+                    LR"(../rdata/parallel/LOG_RD_994SP/)",
                     L"",
                     nm,
                     30
