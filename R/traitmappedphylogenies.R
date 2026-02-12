@@ -125,3 +125,18 @@ ape::tiplabels(pie = to.matrix(FINALIZED_MYCORRHIZAL_STATES$state, sort(unique(F
 legend("topright", legend = c("AM", "AM/EcM", "AM/NM", "EcM", "ErM", "NM"), # same order as => sort(unique(FINALIZED_MYCORRHIZAL_STATES$state)),
        pt.bg = STATE_COLOURS, cex = 3, pt.cex = 5, pch = 21, ncol = 2)
 dev.off()
+
+
+
+#---------------------------------------------------------------------------------------------------
+# PHYLOGENY OF THE 1005 SPECIES FRED V3 SUBSET
+#---------------------------------------------------------------------------------------------------
+
+state_colors <- c("red", "blue", "yellow", "orange", "green", "purple", "white")
+phylogeny <- ape::read.tree("../data/chapter2/uphylomaker/FRED_subset_collab_1005sp.tre")
+states <- read.csv("./parhOUwie/genus_state_rec_logged_species_avgd_RD_1005sp.csv")[, c("binominal", "state")]
+png("../plots/1005_species_states_mapped_phylogeny.png", width = 22000, height = 22000, units = "px", res = 400)
+plot <- phytools::plotTree(tree = phylogeny, ftype = "i", fsize = 1.2, type = "fan", lwd = 1, offset = 2)
+ape::tiplabels(pie = to.matrix(states$state, sort(unique(states$state))), piecol = state_colors, cex = 0.1) # nodes at the tips
+legend("topright", legend = sort(unique(states$state)), pt.bg = state_colors, cex = 3, pt.cex = 5, pch = 21, ncol = 2)
+dev.off()
