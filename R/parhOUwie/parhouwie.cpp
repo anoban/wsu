@@ -124,7 +124,7 @@ namespace utils {
         }
 
         // WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)
-        if (waitstatus >= WAIT_OBJECT_0 && waitstatus < (WAIT_OBJECT_0 + active_process_handles.size())) {
+        if ((waitstatus >= WAIT_OBJECT_0) && (waitstatus < (WAIT_OBJECT_0 + active_process_handles.size()))) {
             exitval = true;
             if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
             // bWaitAll == FALSE
@@ -133,7 +133,7 @@ namespace utils {
         }
 
         // WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
-        else if (waitstatus >= WAIT_ABANDONED_0 && waitstatus < (WAIT_ABANDONED_0 + active_process_handles.size())) {
+        else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < (WAIT_ABANDONED_0 + active_process_handles.size()))) {
             if (all) {
                 ::fputws(
                     L"WaitForMultipleObjects signalled WAIT_ABANDONED with bWaitAll set to TRUE, 1 or more probable abandoned mutexes!\n",
