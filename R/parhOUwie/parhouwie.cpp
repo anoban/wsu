@@ -33,14 +33,14 @@
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t R_INTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
-static constexpr unsigned long long MAX_PARALLEL_PROCESSES { 0xC };
-static constexpr unsigned long long TOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
+static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
+static constexpr unsigned long long NTOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
 
-static constexpr unsigned long long ERROR_MSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
-static constexpr unsigned long long MAX_SAVERDS_NAME_LENGTH { MAX_PATH };
+static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
+static constexpr unsigned long long SAVERDS_NAME_LENGTH { MAX_PATH };
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0x4F0 };
 static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit too generous here
 static_assert(RSCRIPT_BUFFSIZE < CMDLINE_BUFFSIZE);
@@ -60,39 +60,33 @@ namespace utils {
     [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
         _In_ const unsigned long& errcode
     ) noexcept {
-        static wchar_t errmsgbuffer[ERROR_MSG_BUFFSIZE] = { 0 }; // needs to be in static memory
+        static wchar_t buffer[ERRORMSG_BUFFSIZE] { 0 }; // needs to be in static memory for returning
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
-        ::memset(errmsgbuffer, 0, sizeof(errmsgbuffer));
+        ::memset(buffer, 0, sizeof(buffer));
 
         unsigned long nbyteswritten = ::FormatMessageW(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, errmsgbuffer, ERROR_MSG_BUFFSIZE, nullptr
+            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, buffer, ERRORMSG_BUFFSIZE, nullptr
         );
 
         if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
             // if the library hasn't already been loaded by previous calls to this function
-            if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.dll");
+            if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.DLL");
             if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
-                ::fputws(L"Failed to load Ntdsbmsg.dll", stderr);
-                return errmsgbuffer; // must be an empty buffer here
+                ::fputws(L"Failed to load Ntdsbmsg.DLL", stderr);
+                return buffer; // must be an empty buffer here
             }
 
             nbyteswritten = ::FormatMessageW(
-                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS,
-                handle_ntdsbmsg,
-                errcode,
-                0,
-                errmsgbuffer,
-                ERROR_MSG_BUFFSIZE,
-                nullptr
+                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, handle_ntdsbmsg, errcode, 0, buffer, ERRORMSG_BUFFSIZE, nullptr
             );
             // ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process - atexit() will handle this for us
         }
-        return errmsgbuffer;
+        return buffer;
     }
 
     // will only return true when the wait is signalled success
     [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& active_process_handles, _Inout_ std::vector<HANDLE64>& active_thread_handles, _In_ const bool& all, _In_ const unsigned long& duration
+        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _In_ const bool& all, _In_ const unsigned long& duration
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
@@ -102,8 +96,8 @@ namespace utils {
         // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
         // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
         const unsigned long waitstatus =        ::WaitForMultipleObjects( // make sure that the return value is valid
-                        active_process_handles.size(),
-                        active_process_handles.data(),
+                        phandles.size(),
+                        phandles.data(),
                         all, // return when at least one process is signalled
                         duration // INFINITE milliseconds is about 1193 hours, so we can just use that
                     );
@@ -124,7 +118,7 @@ namespace utils {
         }
 
         // WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)
-        if ((waitstatus >= WAIT_OBJECT_0) && (waitstatus < (WAIT_OBJECT_0 + active_process_handles.size()))) {
+        if ((waitstatus >= WAIT_OBJECT_0) && (waitstatus < (WAIT_OBJECT_0 + phandles.size()))) {
             exitval = true;
             if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
             // bWaitAll == FALSE
@@ -133,7 +127,7 @@ namespace utils {
         }
 
         // WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
-        else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < (WAIT_ABANDONED_0 + active_process_handles.size()))) {
+        else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < (WAIT_ABANDONED_0 + phandles.size()))) {
             if (all) {
                 ::fputws(
                     L"WaitForMultipleObjects signalled WAIT_ABANDONED with bWaitAll set to TRUE, 1 or more probable abandoned mutexes!\n",
@@ -148,17 +142,17 @@ namespace utils {
         }
 
 CLOSE_ACTIVE_HANDLES_AND_EXIT: // close all the leftover process handles and thread handles
-        std::for_each(active_process_handles.begin(), active_process_handles.end(), ::CloseHandle);
-        active_process_handles.clear();
-        std::for_each(active_thread_handles.begin(), active_thread_handles.end(), ::CloseHandle);
-        active_thread_handles.clear();
+        std::for_each(phandles.begin(), phandles.end(), ::CloseHandle);
+        phandles.clear();
+        std::for_each(thandles.begin(), thandles.end(), ::CloseHandle);
+        thandles.clear();
         return exitval;
 
 CLOSE_SELECTED_HANDLE_AND_EXIT:
-        ::CloseHandle(*(active_process_handles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-        active_process_handles.erase(active_process_handles.begin() + handle_offset); // remove the signalled process
-        ::CloseHandle(*(active_thread_handles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-        active_thread_handles.erase(active_thread_handles.begin() + handle_offset); // remove the signalled thread handle
+        ::CloseHandle(*(phandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        phandles.erase(phandles.begin() + handle_offset);  // remove the signalled process
+        ::CloseHandle(*(thandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        thandles.erase(thandles.begin() + handle_offset);  // remove the signalled thread handle
         return exitval;
     }
 
@@ -183,7 +177,7 @@ namespace houwie {
     };
 
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall __discmod_to_wstr(
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _discrete_model(
         _In_ const DISCRETE_MODELS& model
     ) noexcept {
         switch (model) {
@@ -194,7 +188,7 @@ namespace houwie {
     }
 
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall __contmod_to_wstr(
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _continuous_model(
         _In_ const CONTINUOUS_MODELS& model
     ) noexcept {
         switch (model) {
@@ -205,27 +199,27 @@ namespace houwie {
         }
     }
 
-    [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall __path_to_serialize( // NOLINT(readability-redundant-inline-specifier)
-        _In_ const DISCRETE_MODELS&   discrete_model,
-        _In_ const CONTINUOUS_MODELS& continuous_model,
+    [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath( // NOLINT(readability-redundant-inline-specifier)
+        _In_ const DISCRETE_MODELS&   dmodel,
+        _In_ const CONTINUOUS_MODELS& cmodel,
         _In_ const wchar_t* const     savedir, // assumed ends with a forward slash, expected to be in the format "C:/Users/Documents/"
-        _In_ const wchar_t* const     conttrait,
-        _In_ const wchar_t* const     disctrait,
+        _In_ const wchar_t* const     ctrait,
+        _In_ const wchar_t* const     dtrait,
         _In_ const bool&              nullmodel,
         _In_ const wchar_t* const     suffix
     ) noexcept {
-        static wchar_t buffer[MAX_SAVERDS_NAME_LENGTH] {};
+        static wchar_t buffer[SAVERDS_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer)); // we don't want buffer contents from previous writes intefereing with new writes
         // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
         ::swprintf_s(
             buffer,
-            MAX_SAVERDS_NAME_LENGTH,
+            SAVERDS_NAME_LENGTH,
             L"%s%s_%s_%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
             savedir,
-            __discmod_to_wstr(discrete_model),
-            __contmod_to_wstr(continuous_model),
-            conttrait,
-            disctrait,
+            _discrete_model(dmodel),
+            _continuous_model(cmodel),
+            ctrait,
+            dtrait,
             nullmodel ? L"CID" : L"CD",
             suffix
         );
@@ -236,13 +230,13 @@ namespace houwie {
         _Inout_ std::wstring& buffer,
         _In_ const wchar_t* const      phylogeny,
         _In_ const wchar_t* const      traitdata,
-        _In_ const DISCRETE_MODELS&    discrete_model,
-        _In_ const CONTINUOUS_MODELS&  continuous_model,
+        _In_ const DISCRETE_MODELS&    dmodel,
+        _In_ const CONTINUOUS_MODELS&  cmodel,
         _In_ const wchar_t* const      savedir,
-        _In_ const wchar_t* const      conttrait,
-        _In_ const wchar_t* const      disctrait,
+        _In_ const wchar_t* const      ctrait,
+        _In_ const wchar_t* const      dtrait,
         _In_ const wchar_t* const      suffix,
-        _In_ const bool&               null_model,
+        _In_ const bool&               nullmodel,
         _In_ const unsigned long long& nsims = 30
     ) noexcept {
         if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
@@ -266,12 +260,12 @@ namespace houwie {
             phylogeny,
             traitdata,
             // if null_model is true, then it's a CID model with 2 rate categories, else it's a CD model with just 1 rate category
-            null_model ? 2U : 1U,
-            __discmod_to_wstr(discrete_model),
-            __contmod_to_wstr(continuous_model),
+            nullmodel ? 2U : 1U,
+            _discrete_model(dmodel),
+            _continuous_model(cmodel),
             nsims,
-            null_model ? L"TRUE" : L"FALSE",
-            __path_to_serialize(discrete_model, continuous_model, savedir, conttrait, disctrait, null_model, suffix)
+            nullmodel ? L"TRUE" : L"FALSE",
+            _rdspath(dmodel, cmodel, savedir, ctrait, dtrait, nullmodel, suffix)
         );
     }
 
@@ -298,7 +292,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     std::wstring       rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
-    bool is_loop_broken_prematurely {};
+    bool is_broken_prematurely {};
 
     // timing runtime
     // https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps
@@ -332,15 +326,15 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
-                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", R_INTERPRETER_PATH, rscript.c_str());
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
                 // ::_putws(cmdline.c_str());
 
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
-                if (active_process_handles.size() >= MAX_PARALLEL_PROCESSES) {
+                if (active_process_handles.size() >= NPARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
                     if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, false, INFINITE)) {
                         // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
-                        is_loop_broken_prematurely = true;
+                        is_broken_prematurely = true;
                         break; // no more new process launches
                     }
                 }
@@ -352,7 +346,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
                 // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
                 if (!::CreateProcessW(
-                        R_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                        RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                         cmdline.data(),
                         nullptr,
                         nullptr,
@@ -368,8 +362,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                     ::fwprintf_s( // log where the launch failed
                         stderr,
                         L"Failed to launch %s-%s-%s fit, %s error in call to CreateProcessW!\n",
-                        houwie::__discmod_to_wstr(static_cast<houwie::DISCRETE_MODELS>(dmod)),
-                        houwie::__contmod_to_wstr(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
+                        houwie::_discrete_model(static_cast<houwie::DISCRETE_MODELS>(dmod)),
+                        houwie::_continuous_model(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
                         nm ? L"CID" : L"CD",
                         utils::__error_code_to_wstring(::GetLastError())
                     );
@@ -389,7 +383,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     // ONCE WE HAVE EXITED THE LOOP
     //--------------------------------------
 
-    if (is_loop_broken_prematurely)
+    if (is_broken_prematurely)
         ::fwprintf_s(
             stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
         );
@@ -400,10 +394,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     ::QueryPerformanceCounter(&stop);
 
     ::wprintf_s(
-        L"Done, %llu out of %llu launches completed within %.3lf hours!\n",
+        L"Done, %llu out of %llu launches completed within %.3Lf hours!\n",
         nsucceeded_launches,
-        TOTAL_PROCESSES,
-        (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00) // NOLINT(cppcoreguidelines-narrowing-conversions)
+        NTOTAL_PROCESSES,
+        (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00L) // NOLINT(cppcoreguidelines-narrowing-conversions)
     );
 
     return exitcode;
