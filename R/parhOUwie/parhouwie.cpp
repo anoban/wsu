@@ -1,6 +1,7 @@
-// this thing has been a lifesaver
-#if !defined(_WIN32) && !defined(_WIN64) && (!defined(_MSC_VER) || !defined(_MSC_FULL_VER))
-    #error This is a Windows only implementation, not meant to be used on other platforms!.
+// this thing has been a lifesaver :)
+
+#if !(defined(_WIN32) || defined(_WIN64)) && !(defined(_MSC_VER) || defined(_MSC_FULL_VER))
+    #error This is a Windows only implementation that liberally uses the Win32 API, not meant to be used on other platforms!.
 #endif
 
 // clang .\parhouwie.cpp -Wall -Wextra -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
@@ -17,6 +18,7 @@
 #include <libloaderapi.h>
 #include <processthreadsapi.h>
 #include <profileapi.h>
+#include <Shlwapi.h>
 #include <synchapi.h>
 #include <sysinfoapi.h>
 #include <WinDef.h>
@@ -36,7 +38,7 @@
 static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
-static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
+static constexpr unsigned long long NPARALLEL_PROCESSES { 0xE };
 static constexpr unsigned long long NTOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
 
 static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
@@ -206,23 +208,28 @@ namespace houwie {
         _In_ const bool&              nullmodel,
         _In_ const wchar_t* const     suffix
     ) noexcept {
+        if (!::PathFileExistsW(savedir)) {
+            ::fwprintf_s(stderr, L"Error %s in PathFileExistsW\n", utils::__error_code_to_wstring(::GetLastError()));
+            return nullptr;
+        }
+
         static wchar_t buffer[SAVERDS_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer)); // we don't want buffer contents from previous writes intefereing with new writes
         // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
         ::swprintf_s(
             buffer,
             SAVERDS_NAME_LENGTH,
-            L"%s%s%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
+            suffix ? L"%s%s%s_%s_%s.Rds" : L"%s%s%s_%s%s.Rds", // we expect the directory path to end with a forward slash
             savedir,
             _discrete_model(dmodel),
             _continuous_model(cmodel),
             nullmodel ? L"CID" : L"CD",
-            suffix
+            suffix ? suffix : L""
         );
         return buffer;
     }
 
-    [[clang::always_inline]] static inline void __stdcall generate_rscript( // NOLINT(readability-redundant-inline-specifier)
+    [[clang::always_inline]] static inline bool __stdcall generate_rscript( // NOLINT(readability-redundant-inline-specifier)
         _Inout_ std::wstring& buffer,
         _In_ const wchar_t* const      phylogeny,
         _In_ const wchar_t* const      traitdata,
@@ -235,6 +242,8 @@ namespace houwie {
     ) noexcept {
         if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
         ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t)); // clean up the buffer before every new write
+        const wchar_t* const rdspath = _rdspath(dmodel, cmodel, savedir, nullmodel, suffix);
+        if (!rdspath) return false;
 
         ::swprintf_s(
             buffer.data(),
@@ -259,8 +268,10 @@ namespace houwie {
             _continuous_model(cmodel),
             nsims,
             nullmodel ? L"TRUE" : L"FALSE",
-            _rdspath(dmodel, cmodel, savedir, nullmodel, suffix)
+            rdspath
         );
+
+        return true;
     }
 
 } // namespace houwie
@@ -270,7 +281,7 @@ namespace houwie {
 // figure out why the quotes get stripped away and how to preserve them when they are loaded into the R interpreter
 // TURNS OUT THAT THE EXPRESSION ARGUMENT (-e) MUST BE ENCLOSED IN DOUBLE QUOTES NOT SINGLE QUOTES!!
 
-int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[]) {
+int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]) {
     ::atexit(utils::__release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
 
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
@@ -304,17 +315,18 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
                                                  .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
 
-                houwie::generate_rscript(
-                    rscript, // the launch directory of this programme will have all the needed files
-                    LR"(./4states_994sp.tre)",
-                    LR"(./gen_rec_4state_logged_994species_avgd_RD.csv)",
-                    static_cast<houwie::DISCRETE_MODELS>(dmod),
-                    static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                    LR"(../rdata/parallel/LOG_RD_994SP/)",
-                    L"",
-                    nm,
-                    30
-                );
+                if (!houwie::generate_rscript(
+                        rscript, // the launch directory of this programme will have all the needed files
+                        LR"(./4states_994sp.tre)",
+                        LR"(./gen_rec_4state_logged_994species_avgd_RD.csv)",
+                        static_cast<houwie::DISCRETE_MODELS>(dmod),
+                        static_cast<houwie::CONTINUOUS_MODELS>(cmod),
+                        LR"(../rdata/parallel/LOG_RD_994SP_4/)",
+                        nullptr,
+                        nm,
+                        30
+                    ))
+                    ::exit(EXIT_FAILURE);
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
@@ -375,11 +387,12 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* argv[])
     // ONCE WE HAVE EXITED THE LOOP
     //--------------------------------------
 
-    if (is_broken_prematurely)
+    if (is_broken_prematurely) {
+        exitcode = EXIT_FAILURE;
         ::fwprintf_s(
             stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
         );
-
+    }
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
     if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, true, INFINITE)) exitcode = EXIT_FAILURE;
 
