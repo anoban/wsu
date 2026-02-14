@@ -33,12 +33,14 @@
 #include <string>
 #include <vector>
 
+#pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
+
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
 static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
-static constexpr unsigned long long NPARALLEL_PROCESSES { 0xE };
+static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
 static constexpr unsigned long long NTOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
 
 static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
@@ -66,8 +68,16 @@ namespace utils {
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
         ::memset(buffer, 0, sizeof(buffer));
 
+        // https://devblogs.microsoft.com/oldnewthing/20191025-00/?p=103025
+        // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
         unsigned long nbyteswritten = ::FormatMessageW(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errcode, 0, buffer, ERRORMSG_BUFFSIZE, nullptr
+            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK,
+            nullptr,
+            errcode,
+            0,
+            buffer,
+            ERRORMSG_BUFFSIZE,
+            nullptr
         );
 
         if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
@@ -79,7 +89,13 @@ namespace utils {
             }
 
             nbyteswritten = ::FormatMessageW(
-                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, handle_ntdsbmsg, errcode, 0, buffer, ERRORMSG_BUFFSIZE, nullptr
+                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK,
+                handle_ntdsbmsg,
+                errcode,
+                0,
+                buffer,
+                ERRORMSG_BUFFSIZE,
+                nullptr
             );
             // ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process - atexit() will handle this for us
         }
@@ -208,11 +224,6 @@ namespace houwie {
         _In_ const bool&              nullmodel,
         _In_ const wchar_t* const     suffix
     ) noexcept {
-        if (!::PathFileExistsW(savedir)) {
-            ::fwprintf_s(stderr, L"Error %s in PathFileExistsW\n", utils::__error_code_to_wstring(::GetLastError()));
-            return nullptr;
-        }
-
         static wchar_t buffer[SAVERDS_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer)); // we don't want buffer contents from previous writes intefereing with new writes
         // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
@@ -240,6 +251,28 @@ namespace houwie {
         _In_ const bool&               nullmodel,
         _In_ const unsigned long long& nsims = 30
     ) noexcept {
+        // make sure that all the paths are valid, using separate conditional for detailed error reporting
+        if (!::PathFileExistsW(savedir)) {
+            ::fwprintf_s(
+                stderr, L"Invalid argument savedir in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError())
+            );
+            return false;
+        }
+
+        if (!::PathFileExistsW(phylogeny)) {
+            ::fwprintf_s(
+                stderr, L"Invalid argument phylogeny in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError())
+            );
+            return false;
+        }
+
+        if (!::PathFileExistsW(traitdata)) {
+            ::fwprintf_s(
+                stderr, L"Invalid argument traitdata in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError())
+            );
+            return false;
+        }
+
         if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
         ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t)); // clean up the buffer before every new write
         const wchar_t* const rdspath = _rdspath(dmodel, cmodel, savedir, nullmodel, suffix);
@@ -318,10 +351,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./4states_994sp.tre)",
-                        LR"(./gen_rec_4state_logged_994species_avgd_RD.csv)",
+                        LR"(./gen_rec_4state_logged_994species_avgd_SRL.csv)",
                         static_cast<houwie::DISCRETE_MODELS>(dmod),
                         static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                        LR"(../rdata/parallel/LOG_RD_994SP_4/)",
+                        LR"(../rdata/parallel/LOG_SRL_994SP_4/)",
                         nullptr,
                         nm,
                         30
