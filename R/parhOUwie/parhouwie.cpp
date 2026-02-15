@@ -351,10 +351,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./4states_994sp.tre)",
-                        LR"(./gen_rec_4state_logged_994species_avgd_SRL.csv)",
+                        LR"(./gen_rec_5state_logged_994species_avgd_SRL.csv)",
                         static_cast<houwie::DISCRETE_MODELS>(dmod),
                         static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                        LR"(../rdata/parallel/LOG_SRL_994SP_4/)",
+                        LR"(../rdata/parallel/LOG_SRL_994SP_5/)",
                         nullptr,
                         nm,
                         30
@@ -398,7 +398,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                     )) {
                     ::fwprintf_s( // log where the launch failed
                         stderr,
-                        L"Failed to launch %s-%s-%s fit, %s error in call to CreateProcessW!\n",
+                        L"Failed to launch %s-%s-%s fit, Error in call to ::CreateProcessW: %s\n",
                         houwie::_discrete_model(static_cast<houwie::DISCRETE_MODELS>(dmod)),
                         houwie::_continuous_model(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
                         nm ? L"CID" : L"CD",
@@ -426,6 +426,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
             stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
         );
     }
+
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
     if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, true, INFINITE)) exitcode = EXIT_FAILURE;
 
