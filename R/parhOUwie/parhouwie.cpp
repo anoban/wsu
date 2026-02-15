@@ -39,7 +39,7 @@
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
 static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
-// pick a decent number with enough CPU space for other essential processes - uni laptop has 18 cores
+// pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
 static constexpr unsigned long long NTOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
 
