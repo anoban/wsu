@@ -351,10 +351,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./4states_994sp.tre)",
-                        LR"(./gen_rec_5state_logged_994species_avgd_SRL.csv)",
+                        LR"(./gen_rec_5state_logged_994species_avgd_RD.csv)",
                         static_cast<houwie::DISCRETE_MODELS>(dmod),
                         static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                        LR"(../rdata/parallel/LOG_SRL_994SP_5/)",
+                        LR"(../rdata/parallel/LOG_RD_994SP_5/)",
                         nullptr,
                         nm,
                         30
