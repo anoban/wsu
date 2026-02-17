@@ -1,7 +1,7 @@
 library("ape")
 library("corHMM")
 
-
+# changes in discrete and continuous characters along every edge in the phylogeny
 paired_dc_changes <- function(phylogeny, rdextant, srlextant, discextant, rdinternodes, srlinternodes, discprobinternodes, discstates) {
     # the phylogeny object that the continuous and discrete trait models were fitted with
     # rdextant - a named vector of RD values for the extant taxa in the phylogeny
