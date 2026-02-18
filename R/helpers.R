@@ -1,6 +1,31 @@
 library("ape")
 library("corHMM")
 
+readallRds <- function(dirpath, cd, regstrip, rmunderscores = TRUE) {
+    # dirpath = path to the directory containing the .Rds files
+    # cd = character dependent or independent models, these are expected to contain "CD" or "CID" in their names
+    # regstrip = the regex pattern to strip out of the file names when naming objects, can be a plain string as well
+    # rmunderscores - strip all the underscores in the object name
+    
+    fnames <- list.files(dirpath) # all the files in the specified dir
+    if(cd) fnames <- fnames[grep(pattern = "CD", fnames)]
+    else fnames <- fnames[grep(pattern = "CID", fnames)] # cherry pick CD or CID models, assuming their names contain "CD" or "CID"
+    # print(fnames)
+    
+    paths <- paste0(dirpath, fnames) # relative paths for all the Rds files
+    stopifnot(length(fnames)==length(paths))
+    
+    mnames <- gsub(x = gsub(pattern = regstrip, replacement = '', x = fnames), pattern = ifelse(rmunderscores, '_', ''), replacement = '') # remove the unnecessary parts of the file names to create the model names
+    # also remove all the underscores
+    stopifnot(length(fnames)==length(mnames))
+
+    models <- lapply(X = paths, FUN = readRDS) # read the needed Rds files into a list of objects
+    stopifnot(length(models)==length(mnames))
+    
+    names(models) <- mnames # set their names
+    models
+}
+
 # changes in discrete and continuous characters along every edge in the phylogeny
 paired_dc_changes <- function(phylogeny, rdextant, srlextant, discextant, rdinternodes, srlinternodes, discprobinternodes, discstates) {
     # the phylogeny object that the continuous and discrete trait models were fitted with
