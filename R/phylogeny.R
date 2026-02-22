@@ -49,8 +49,10 @@ dev.off()
 #------------------------------------------------------------------------------------------
 
 megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB.extended.TPL.tre")
-taxonomy_data <- read.csv("../data/chapter2/FREDv3subset/collab_rdlteq1_rd1ornan_log_RD_SRL_994species_avgd.csv")[, c("binominal", "genus", "species", "family", "order")]
-phylogeny <- U.PhyloMaker::phylo.maker(sp.list = taxonomy_data[, c("binominal", "genus")], tree = megatree,
-                                       gen.list = taxonomy_data[!duplicated(taxonomy_data[, c("genus", "family")]), c("genus", "family")])
+taxonomy_data <- read.csv("../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states.csv")
+phylogeny <- U.PhyloMaker::phylo.maker(sp.list = taxonomy_data[, c("binominal", "F01286")], tree = megatree,
+                                       gen.list = taxonomy_data[!duplicated(taxonomy_data[, c("F01286", "F01289")]), c("F01286", "F01289")])
 ape::write.tree(phylogeny$phylo, file = "../data/chapter2/uphylomaker/FRED_subset_collab_4states_994sp.tre")
 
+
+#
