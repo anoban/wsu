@@ -217,6 +217,24 @@ namespace houwie {
         }
     }
 
+    struct status final {
+            long long         excode {}; // process exit code
+            DISCRETE_MODELS   mod_disc {};
+            CONTINUOUS_MODELS mod_cont {};
+            bool              is_cd {};
+
+            inline void __stdcall to_ostream(_In_ _iobuf* const ostream) const noexcept { // NOLINT(readability-redundant-inline-specifier)
+                //
+                ::fwprintf_s(ostream, L"", excode);
+            }
+
+            // NOLINTNEXTLINE(google-explicit-constructor,readability-redundant-inline-specifier) - this is INTENTIONAL
+            inline __stdcall operator bool() const noexcept { return excode == EXIT_SUCCESS; }
+
+        private:
+            unsigned char __padd[5] {};
+    };
+
     [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath( // NOLINT(readability-redundant-inline-specifier)
         _In_ const DISCRETE_MODELS&   dmodel,
         _In_ const CONTINUOUS_MODELS& cmodel,
@@ -326,8 +344,9 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
     long                  exitcode { EXIT_SUCCESS };
 
-    unsigned long long nsucceeded_launches {};
-    std::wstring       rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
+    unsigned long long          nsucceeded_launches {};
+    std::wstring                rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
+    std::vector<houwie::status> exit_statuses {};       // exit statuses of the launched processes
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
     bool is_broken_prematurely {};
