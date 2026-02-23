@@ -140,3 +140,17 @@ plot <- phytools::plotTree(tree = phylogeny, ftype = "i", fsize = 1.2, type = "f
 ape::tiplabels(pie = to.matrix(states$state, sort(unique(states$state))), piecol = state_colors, cex = 0.1) # nodes at the tips
 legend("topright", legend = sort(unique(states$state)), pt.bg = state_colors, cex = 3, pt.cex = 5, pch = 21, ncol = 2)
 dev.off()
+
+#------------------------------------------------------------------------
+# PHYLOGENY OF THE 995 SPECIES 5 MYCORRHIZAL STATE FRED V3 SUBSET
+#------------------------------------------------------------------------
+
+state_colors <- c("red", "blue", "yellow", "orange", "green")
+phylogeny <- ape::read.tree("../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre")
+states <- read.csv("../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states.csv")[, c("binominal", "state")]
+
+png("../plots/995_species_5states_mapped_phylogeny.png", width = 22000, height = 22000, units = "px", res = 400)
+plot <- phytools::plotTree(tree = phylogeny, ftype = "i", fsize = 1.0, type = "fan", lwd = 1, offset = 2)
+ape::tiplabels(pie = to.matrix(states$state, sort(unique(states$state))), piecol = state_colors, cex = 0.05) # nodes at the tips
+legend("topright", legend = sort(unique(states$state)), pt.bg = state_colors, cex = 3, pt.cex = 5, pch = 21, ncol = 1)
+dev.off()
