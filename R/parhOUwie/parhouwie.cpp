@@ -232,7 +232,7 @@ namespace houwie {
             inline __stdcall operator bool() const noexcept { return excode == EXIT_SUCCESS; }
 
         private:
-            unsigned char __padd[5] {};
+            [[maybe_unused]] unsigned char __padd[5] {};
     };
 
     [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath( // NOLINT(readability-redundant-inline-specifier)
@@ -303,11 +303,10 @@ namespace houwie {
             // also using ; instead of new lines to delineate expressions (expressions separated by \n s did not work for some reason???)
             // and when passed as expressions, all the double quotes get stripped away for some reason?????, using single quotes instead for string literals
             L"library('ape');"
-            L"library('corHMM');"
             L"library('OUwie');"
             L"set.seed(1, kind = 'Mersenne-Twister');" // make sure reruns don't give us inconsistent results
             L"phylogeny <- ape::read.tree('%s');"
-            L"data <- read.csv('%s');"
+            L"data <- read.csv('%s')[, c('binominal', 'state', 'F00679'];"
             L"stopifnot(all(phylogeny$tip.label == data$binominal));"
             L"model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = %1u, discrete_model = '%s', continuous_model = '%s', nSim = %llu, null.model = %s);"
             L"saveRDS(object = model, file = '%s');",
@@ -369,14 +368,14 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
 
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
-                        LR"(./4states_994sp.tre)",
-                        LR"(./gen_rec_5state_logged_994species_avgd_RD.csv)",
+                        LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
+                        LR"(./../../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv)",
                         static_cast<houwie::DISCRETE_MODELS>(dmod),
                         static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                        LR"(../rdata/parallel/LOG_RD_994SP_5/)",
+                        LR"(./../rdata/parallel/LOG_RD_995SP_5/)",
                         nullptr,
                         nm,
-                        30
+                        100
                     ))
                     ::exit(EXIT_FAILURE);
 
