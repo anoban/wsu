@@ -183,6 +183,12 @@ rtrait <- function(tree,R,nstates) {
 #trait: trait vector 
 delta <- function(trait, tree,lambda0,se,sim,thin,burn) {
   
+  # lambda0 - rate parameter of the proposal 
+  # se      - standard deviation of the proposal
+  # sim     - number of iterations
+  # thin    - nth iterate to keep
+  # burn    - iterates to burned-in
+  
   ar <- ace(trait,tree,type="discret",method="ML",model="ARD")$lik.anc
   
   # deletes the complex part whenever it pops up
