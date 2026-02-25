@@ -64,15 +64,15 @@ paired_dc_changes <- function(phylogeny, rdextant, srlextant, discextant, rdinte
 
     for (i in 1:nrow(phylogeny$edge)) {
         # PHYLOGENY$edge[i, ] returns a tuple of node numbers defining a branch (from, to)
-        from <- phylogeny$edge[i, ][1] # ancestor
-        to <- phylogeny$edge[i, ][2] # descendant
+        ancestor <- phylogeny$edge[i, ][1] # ancestor
+        descendant <- phylogeny$edge[i, ][2] # descendant
 
         # corresponding discrete state shift
-        transitions[[i]] <- paste0(allnodes[from, "disc"], "_to_", allnodes[to, "disc"])
+        transitions[[i]] <- paste0(allnodes[ancestor, "disc"], "_to_", allnodes[descendant, "disc"])
 
         # corresponding continuous trait change
-        changes_srl[i] <- (allnodes[from, "srl"] - allnodes[to, "srl"]) # SRL of ancestor - SRL of the descendant
-        changes_rd[i] <- (allnodes[from, "rd"] - allnodes[to, "rd"]) # RD of ancestor - RD of the descendant
+        changes_srl[i] <- (allnodes[ancestor, "srl"] - allnodes[descendant, "srl"]) # SRL of ancestor - SRL of the descendant
+        changes_rd[i] <- (allnodes[ancestor, "rd"] - allnodes[descendant, "rd"]) # RD of ancestor - RD of the descendant
 
     }
 
