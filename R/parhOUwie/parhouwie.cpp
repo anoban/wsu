@@ -33,11 +33,16 @@
 #include <string>
 #include <vector>
 
+// NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
+
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+[[maybe_unused]] static constexpr wchar_t PYTHON_INTERPRETER_PATH[] {
+    LR"(C:/Program Files/Python314/python.exe)"
+}; // no need for full path as python.exe is already in path
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
@@ -50,8 +55,6 @@ static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit t
 static_assert(RSCRIPT_BUFFSIZE < CMDLINE_BUFFSIZE);
 
 static HINSTANCE handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
-
-// NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
 namespace utils {
 
@@ -104,12 +107,13 @@ namespace utils {
 
     // will only return true when the wait is signalled success
     [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _In_ const bool& all, _In_ const unsigned long& duration
+        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _Inout_ std::vector<unsigned long>& excodes, _In_ const bool& all, _In_ const unsigned long& duration
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so the returned value is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
         unsigned long handle_offset { 0xFF };
+        unsigned long exitcode { 0xAABBCC };
         bool          exitval {};
         // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
         // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
@@ -159,14 +163,22 @@ namespace utils {
             goto CLOSE_SELECTED_HANDLE_AND_EXIT;
         }
 
-CLOSE_ACTIVE_HANDLES_AND_EXIT: // close all the leftover process handles and thread handles
-        std::for_each(phandles.begin(), phandles.end(), ::CloseHandle);
+CLOSE_ACTIVE_HANDLES_AND_EXIT:                                // close all the leftover process handles and thread handles
+        for (unsigned long i = 0; i < phandles.size(); ++i) { // taking it for granted that phandles.size()==thandles.size()
+            ::GetExitCodeProcess(phandles.at(i), &exitcode);
+            excodes.push_back(exitcode);
+            ::CloseHandle(phandles.at(i));
+            ::CloseHandle(thandles.at(i));
+        }
+
         phandles.clear();
-        std::for_each(thandles.begin(), thandles.end(), ::CloseHandle);
         thandles.clear();
         return exitval;
 
 CLOSE_SELECTED_HANDLE_AND_EXIT:
+        // capture the exit code
+        ::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode);
+        excodes.push_back(exitcode);
         ::CloseHandle(*(phandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         phandles.erase(phandles.begin() + handle_offset);  // remove the signalled process
         ::CloseHandle(*(thandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -216,24 +228,6 @@ namespace houwie {
             case CONTINUOUS_MODELS::OUMVA : return L"OUMVA";
         }
     }
-
-    struct status final {
-            long long         excode {}; // process exit code
-            DISCRETE_MODELS   mod_disc {};
-            CONTINUOUS_MODELS mod_cont {};
-            bool              is_cd {};
-
-            inline void __stdcall to_ostream(_In_ _iobuf* const ostream) const noexcept { // NOLINT(readability-redundant-inline-specifier)
-                //
-                ::fwprintf_s(ostream, L"", excode);
-            }
-
-            // NOLINTNEXTLINE(google-explicit-constructor,readability-redundant-inline-specifier) - this is INTENTIONAL
-            inline __stdcall operator bool() const noexcept { return excode == EXIT_SUCCESS; }
-
-        private:
-            [[maybe_unused]] unsigned char __padd[5] {};
-    };
 
     [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath( // NOLINT(readability-redundant-inline-specifier)
         _In_ const DISCRETE_MODELS&   dmodel,
@@ -343,9 +337,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
     long                  exitcode { EXIT_SUCCESS };
 
-    unsigned long long          nsucceeded_launches {};
-    std::wstring                rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
-    std::vector<houwie::status> exit_statuses {};       // exit statuses of the launched processes
+    unsigned long long         nsucceeded_launches {};
+    std::wstring               rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
+    std::vector<unsigned long> exitcodes {};           // exit statuses of the launched processes
+    exitcodes.reserve(NTOTAL_PROCESSES);
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
     bool is_broken_prematurely {};
@@ -365,7 +360,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
                                                  .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
-
+                /*
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
@@ -378,16 +373,17 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                         100
                     ))
                     ::exit(EXIT_FAILURE);
-
+            */
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
-                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
-                // ::_putws(cmdline.c_str());
+                // ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --version", PYTHON_INTERPRETER_PATH);
+                ::_putws(cmdline.c_str());
 
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= NPARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
-                    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, false, INFINITE)) {
+                    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, false, INFINITE)) {
                         // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
                         is_broken_prematurely = true;
                         break; // no more new process launches
@@ -401,7 +397,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
                 // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
                 if (!::CreateProcessW(
-                        RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                        PYTHON_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                         cmdline.data(),
                         nullptr,
                         nullptr,
@@ -446,7 +442,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     }
 
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
-    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, true, INFINITE)) exitcode = EXIT_FAILURE;
+    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, true, INFINITE)) exitcode = EXIT_FAILURE;
 
     ::QueryPerformanceCounter(&stop);
 
@@ -456,6 +452,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
         NTOTAL_PROCESSES,
         (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00L) // NOLINT(cppcoreguidelines-narrowing-conversions)
     );
+
+    for (std::vector<unsigned long>::const_iterator it = exitcodes.cbegin(); it != exitcodes.cend(); it++) ::wprintf_s(L"%lu, ", *it);
 
     return exitcode;
 }
