@@ -39,28 +39,16 @@
 #include <array>
 #include <cstdio>
 #include <cstdlib>
-#include <string>
 #include <vector>
+
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
-#define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
-    "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+namespace parallel {
 
-// pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
-static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
-static constexpr unsigned long long NTOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
-
-static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
-static constexpr unsigned long long SAVERDS_NAME_LENGTH { MAX_PATH };
-static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0x4F0 };
-static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit too generous here
-static_assert(RSCRIPT_BUFFSIZE < CMDLINE_BUFFSIZE);
-
-namespace utils {
+    static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
 
     // get the string representation of a _WIN32 error code
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
@@ -191,7 +179,7 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         return exitval;
     }
 
-} // namespace utils
+} // namespace parallel
 
 // NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
