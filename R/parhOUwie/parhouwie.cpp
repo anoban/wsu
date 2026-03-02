@@ -1,4 +1,5 @@
 // this thing has been a lifesaver :)
+#define __DRYRUN__ 1
 
 #if !(defined(_WIN32) || defined(_WIN64)) && !(defined(_MSC_VER) || defined(_MSC_FULL_VER))
     #error This is a Windows only implementation that liberally uses the Win32 API, not meant to be used on other platforms!.
@@ -8,7 +9,16 @@
 // cl .\parhouwie.cpp /Wall /std:c++20 /O2 /MT /EHsc /DNDEBUG /D_NDEBUG
 
 #if defined(_MSC_FULL_VER) && !defined(__llvm__) // MSVC specific warnings
-    #pragma warning(disable : 4267 4710 4711 4800 4820)
+    #pragma warning(disable : 4267 4710 4711 4774 4800 4820)
+#endif
+
+#ifdef __llvm__
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmicrosoft-string-literal-from-predefined"
+    #pragma clang diagnostic ignored "-Wunused-function"
+    #pragma clang diagnostic ignored "-Wmissing-designated-field-initializers"
+
 #endif
 
 // clang-format off
@@ -39,10 +49,7 @@
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
     "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
-[[maybe_unused]] static constexpr wchar_t PYTHON_INTERPRETER_PATH[] {
-    LR"(C:/Program Files/Python314/python.exe)"
-}; // no need for full path as python.exe is already in path
+static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
@@ -140,7 +147,8 @@ namespace utils {
         }
 
         // WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)
-        if ((waitstatus >= WAIT_OBJECT_0) && (waitstatus < (WAIT_OBJECT_0 + phandles.size()))) {
+        if (// (waitstatus >= WAIT_OBJECT_0) && // will always be true because the return value of ::WaitForMultipleObjects() is unsigned
+             waitstatus < (WAIT_OBJECT_0 + phandles.size())) {
             exitval = true;
             if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
             // bWaitAll == FALSE
@@ -163,10 +171,12 @@ namespace utils {
             goto CLOSE_SELECTED_HANDLE_AND_EXIT;
         }
 
-CLOSE_ACTIVE_HANDLES_AND_EXIT:                                // close all the leftover process handles and thread handles
-        for (unsigned long i = 0; i < phandles.size(); ++i) { // taking it for granted that phandles.size()==thandles.size()
-            ::GetExitCodeProcess(phandles.at(i), &exitcode);
-            excodes.push_back(exitcode);
+CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all the leftover process handles and thread handles
+        for (unsigned long i = 0; i < phandles.size(); ++i) {     // taking it for granted that phandles.size()==thandles.size()
+            if (!::GetExitCodeProcess(phandles.at(i), &exitcode)) // 0 is failed
+                ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
+            else
+                excodes.push_back(exitcode);
             ::CloseHandle(phandles.at(i));
             ::CloseHandle(thandles.at(i));
         }
@@ -177,8 +187,10 @@ CLOSE_ACTIVE_HANDLES_AND_EXIT:                                // close all the l
 
 CLOSE_SELECTED_HANDLE_AND_EXIT:
         // capture the exit code
-        ::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode);
-        excodes.push_back(exitcode);
+        if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode))
+            ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
+        else
+            excodes.push_back(exitcode);
         ::CloseHandle(*(phandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         phandles.erase(phandles.begin() + handle_offset);  // remove the signalled process
         ::CloseHandle(*(thandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -215,6 +227,7 @@ namespace houwie {
             case DISCRETE_MODELS::SYM : return L"SYM";
             case DISCRETE_MODELS::ARD : return L"ARD";
         }
+        // MSVC bitches about "not all control paths return a value"
     }
 
     // NOLINTNEXTLINE(readability-redundant-inline-specifier)
@@ -227,6 +240,7 @@ namespace houwie {
             case CONTINUOUS_MODELS::OUMV  : return L"OUMV";
             case CONTINUOUS_MODELS::OUMVA : return L"OUMVA";
         }
+        // MSVC bitches about "not all control paths return a value"
     }
 
     [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath( // NOLINT(readability-redundant-inline-specifier)
@@ -360,7 +374,9 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
                                                  .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
-                /*
+
+#ifndef __DRYRUN__
+
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
@@ -373,11 +389,12 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                         100
                     ))
                     ::exit(EXIT_FAILURE);
-            */
+
+#endif
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
                 // ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
-                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --version", PYTHON_INTERPRETER_PATH);
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
                 ::_putws(cmdline.c_str());
 
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
@@ -397,7 +414,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
                 // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
                 if (!::CreateProcessW(
-                        PYTHON_INTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                        RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                         cmdline.data(),
                         nullptr,
                         nullptr,
@@ -459,3 +476,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
+
+#ifdef __llvm__
+    #pragma clang diagnostic pop
+#endif
