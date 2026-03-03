@@ -41,7 +41,6 @@
 #include <cstdlib>
 #include <vector>
 
-
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
@@ -71,7 +70,9 @@ namespace parallel {
             nullptr
         );
 
-        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
+        if (
+            !nbyteswritten
+        ) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
             // if the library hasn't already been loaded by previous calls to this function
             if (!hntdsbmsg) hntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.DLL");
             if (!hntdsbmsg) { // will be NULL if the DLL failed to load
@@ -128,8 +129,9 @@ namespace parallel {
         }
 
         // WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)
-        if (// (waitstatus >= WAIT_OBJECT_0) && // will always be true because the return value of ::WaitForMultipleObjects() is unsigned
-             waitstatus < (WAIT_OBJECT_0 + phandles.size())) {
+        if ( // (waitstatus >= WAIT_OBJECT_0) && // will always be true because the return value of ::WaitForMultipleObjects() is unsigned
+            waitstatus < (WAIT_OBJECT_0 + phandles.size())
+        ) {
             exitval = true;
             if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
             // bWaitAll == FALSE
@@ -177,6 +179,109 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         ::CloseHandle(*(thandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         thandles.erase(thandles.begin() + handle_offset);  // remove the signalled thread handle
         return exitval;
+    }
+
+    template<unsigned long _program_length, unsigned long _cmdline_length> static inline void launch(
+        _In_ const wchar_t (&programme)[_program_length],
+        _In_ const wchar_t        (&cmdline)[_cmdline_length],
+        _In_ const unsigned long& _nparprocs,
+        _In_ const unsigned long& _nmaxparprocs,
+        _In_ const bool&          _showcmd
+    ) noexcept {
+        // for ::WaitForMultipleObjects, we need an array of active process handles
+        std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
+        long                  exitcode { EXIT_SUCCESS };
+
+        unsigned long long         nsucceeded_launches {};
+        std::vector<unsigned long> exitcodes {}; // exit statuses of the launched processes
+        exitcodes.reserve(_nparprocs);
+        bool is_broken_prematurely {};
+
+        // timing runtime
+        // https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps
+        LARGE_INTEGER start {}, stop {}, freq {}; // NOLINT(readability-isolate-declaration)
+        ::QueryPerformanceFrequency(&freq);       // number of ticks per second
+        ::QueryPerformanceCounter(&start);
+
+        for (unsigned long i = 0; i < _nparprocs; ++i) {
+            // THESE TWO STRUCTS ARE INTENTIONALLY PLACED HERE TO BE FRESHLY CREATED IN EVERY ITERATION!!!!
+            STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
+                                             .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
+                                             .wShowWindow = static_cast<unsigned short>(_showcmd ? SW_SHOW : SW_HIDE) };
+            PROCESS_INFORMATION procinfo {};
+
+            ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
+            ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
+            ::_putws(cmdline.c_str());
+
+            // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
+            if (active_process_handles.size() >= _nmaxparprocs) {
+                // if we are at capacity and wait failed, break out the loop and focus on the already active processes
+                if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, false, INFINITE)) {
+                    // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
+                    is_broken_prematurely = true;
+                    break; // no more new process launches
+                }
+            }
+
+            //------------------------------------------------------------------------
+            // EVERYTHING BELOW WILL ONLY BE EXECUTED WHEN WE ARE BELOW CAPACITY
+            //------------------------------------------------------------------------
+
+            // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
+            // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
+            if (!::CreateProcessW(
+                    RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                    cmdline,
+                    nullptr,
+                    nullptr,
+                    TRUE,
+                    HIGH_PRIORITY_CLASS | CREATE_NEW_CONSOLE,
+                    // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getpriorityclass
+                    // look up the above for process priorities and scheduling
+                    nullptr,
+                    nullptr,
+                    &starupinfo,
+                    &procinfo
+                )) {
+                ::fwprintf_s( // log where the launch failed
+                        stderr,
+                        L""
+                    );
+                continue; // move on to the next launch
+            }
+
+            // if the lauch succeeded,
+            nsucceeded_launches++;
+            // update active process and thread handles
+            active_process_handles.push_back(procinfo.hProcess);
+            active_thread_handles.push_back(procinfo.hThread);
+        }
+
+        //--------------------------------------
+        // ONCE WE HAVE EXITED THE LOOP
+        //--------------------------------------
+
+        if (is_broken_prematurely) {
+            exitcode = EXIT_FAILURE;
+            ::fwprintf_s(
+                stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
+            );
+        }
+
+        // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
+        if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, true, INFINITE)) exitcode = EXIT_FAILURE;
+
+        ::QueryPerformanceCounter(&stop);
+
+        ::wprintf_s(
+            L"Done, %llu out of %llu launches completed within %.3Lf hours!\n",
+            nsucceeded_launches,
+            _nmaxparprocs,
+            (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00L) // NOLINT(cppcoreguidelines-narrowing-conversions)
+        );
+
+        for (std::vector<unsigned long>::const_iterator it = exitcodes.cbegin(); it != exitcodes.cend(); it++) ::wprintf_s(L"%lu, ", *it);
     }
 
 } // namespace parallel
