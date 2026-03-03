@@ -11,9 +11,8 @@
     #pragma warning(disable : 4267 4710 4711 4774 4800 4820)
 #endif
 
-#ifdef __llvm__ // only for LLVM
+#if defined(__llvm__) && defined(_MSC_FULL_VER) // only for LLVM
 
-    #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wmicrosoft-string-literal-from-predefined"
     #pragma clang diagnostic ignored "-Wunused-function"
     #pragma clang diagnostic ignored "-Wmissing-designated-field-initializers"
@@ -302,7 +301,3 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
 } // namespace parallel
 
 // NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays,readability-redundant-inline-specifier)
-
-#ifdef __llvm__
-    #pragma clang diagnostic pop
-#endif
