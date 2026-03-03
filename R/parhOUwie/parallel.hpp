@@ -42,7 +42,7 @@
 #include <string>
 #include <vector>
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
+// NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays,readability-redundant-inline-specifier)
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
@@ -51,7 +51,6 @@ namespace parallel {
     static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
 
     // get the string representation of a _WIN32 error code
-    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
     [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
         _In_ const unsigned long& errcode, _Inout_ HANDLE64 hntdsbmsg
     ) noexcept {
@@ -96,8 +95,13 @@ namespace parallel {
     }
 
     // will only return true when the wait is signalled success
-    [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _Inout_ std::vector<unsigned long>& excodes, _In_ const bool& all, _In_ const unsigned long& duration, _In_ HANDLE64 hntdsbmsg
+    [[nodiscard]] static inline bool __stdcall handle_parallel_waits(
+        _Inout_ std::vector<HANDLE64>& phandles,
+        _Inout_ std::vector<HANDLE64>& thandles,
+        _Inout_ std::vector<unsigned long>& excodes,
+        _In_ const bool&                    all,
+        _In_ const unsigned long&           duration,
+        _In_ HANDLE64                       hntdsbmsg
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
@@ -234,7 +238,7 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
             // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
             // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
             if (!::CreateProcessW(
-                    RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                    _programme, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                     _cmdline,
                     nullptr,
                     nullptr,
@@ -297,7 +301,7 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
     }
 } // namespace parallel
 
-// NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
+// NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays,readability-redundant-inline-specifier)
 
 #ifdef __llvm__
     #pragma clang diagnostic pop
