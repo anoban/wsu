@@ -187,20 +187,23 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         return exitval;
     }
 
-    template<unsigned long _program_length, unsigned long _cmdline_length> static inline void launch(
-        _In_ const wchar_t (&_programme)[_program_length],
-        _In_ const wchar_t        (&_cmdline)[_cmdline_length],
-        _In_ const unsigned long& _nparprocs,
+    static inline bool __cdecl plaunch(
+        _In_ const wchar_t* const _programme,
+        _In_ const wchar_t* const _argv,
+        _In_ const unsigned long& _nprocstotal,
         _In_ const unsigned long& _nmaxparprocs,
         _In_ const bool&          _showcmd
     ) noexcept {
+        static constexpr unsigned long long CMDLINE_MAX { 0xFFF };
         // for ::WaitForMultipleObjects, we need an array of active process handles
-        std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
-        long                  exitcode { EXIT_SUCCESS };
+        std::vector<HANDLE64>               active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
+        long                                exitcode { EXIT_SUCCESS };
+        static std::wstring                 commandline {};
+        if (commandline.size() < CMDLINE_MAX) commandline.resize(CMDLINE_MAX);
 
         unsigned long long         nsucceeded_launches {};
         std::vector<unsigned long> exitcodes {}; // exit statuses of the launched processes
-        exitcodes.reserve(_nparprocs);
+        exitcodes.reserve(_nprocstotal);
         bool is_broken_prematurely {};
 
         // timing runtime
@@ -209,16 +212,16 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         ::QueryPerformanceFrequency(&freq);       // number of ticks per second
         ::QueryPerformanceCounter(&start);
 
-        for (unsigned long i = 0; i < _nparprocs; ++i) {
+        for (unsigned long i = 0; i < _nprocstotal; ++i) {
             // THESE TWO STRUCTS ARE INTENTIONALLY PLACED HERE TO BE FRESHLY CREATED IN EVERY ITERATION!!!!
             STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
                                              .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
                                              .wShowWindow = static_cast<unsigned short>(_showcmd ? SW_SHOW : SW_HIDE) };
             PROCESS_INFORMATION procinfo {};
 
-            ::memset(_cmdline.data(), 0, _cmdline.size() * sizeof(wchar_t));
-            ::swprintf_s(_cmdline.data(), _cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
-            ::_putws(_cmdline.c_str());
+            ::memset(commandline.data(), 0, commandline.size() * sizeof(wchar_t));
+            ::swprintf_s(commandline.data(), commandline.size(), L"%s %s", _programme, _argv);
+            // ::_putws(commandline.c_str());
 
             // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
             if (active_process_handles.size() >= _nmaxparprocs) {
@@ -238,7 +241,8 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
             // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
             if (!::CreateProcessW(
                     _programme, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
-                    _cmdline,
+                    commandline
+                        .data(), // .c_str() returns const wchar_t* which we cannot use here, could just cast it too as the buffer itself is mutable
                     nullptr,
                     nullptr,
                     TRUE,
