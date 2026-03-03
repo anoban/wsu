@@ -39,6 +39,7 @@
 #include <array>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 #include <vector>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
@@ -96,7 +97,7 @@ namespace parallel {
 
     // will only return true when the wait is signalled success
     [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _Inout_ std::vector<unsigned long>& excodes, _In_ const bool& all, _In_ const unsigned long& duration
+        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _Inout_ std::vector<unsigned long>& excodes, _In_ const bool& all, _In_ const unsigned long& duration, _In_ HANDLE64 hntdsbmsg
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
@@ -116,7 +117,9 @@ namespace parallel {
         // WAIT_FAILED or WAIT_TIMEOUT
         switch (waitstatus) {
             case WAIT_FAILED :
-                ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", __error_code_to_wstring(::GetLastError()));
+                ::fwprintf_s(
+                    stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", __error_code_to_wstring(::GetLastError(), hntdsbmsg)
+                );
                 if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT; // if the wait was for all processes, close all the handles and return false
                 return false;                                // else just return false
 
@@ -157,7 +160,7 @@ namespace parallel {
 CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all the leftover process handles and thread handles
         for (unsigned long i = 0; i < phandles.size(); ++i) {     // taking it for granted that phandles.size()==thandles.size()
             if (!::GetExitCodeProcess(phandles.at(i), &exitcode)) // 0 is failed
-                ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
+                ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError(), hntdsbmsg));
             else
                 excodes.push_back(exitcode);
             ::CloseHandle(phandles.at(i));
@@ -171,7 +174,7 @@ CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all t
 CLOSE_SELECTED_HANDLE_AND_EXIT:
         // capture the exit code
         if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode))
-            ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
+            ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError(), hntdsbmsg));
         else
             excodes.push_back(exitcode);
         ::CloseHandle(*(phandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -182,8 +185,8 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
     }
 
     template<unsigned long _program_length, unsigned long _cmdline_length> static inline void launch(
-        _In_ const wchar_t (&programme)[_program_length],
-        _In_ const wchar_t        (&cmdline)[_cmdline_length],
+        _In_ const wchar_t (&_programme)[_program_length],
+        _In_ const wchar_t        (&_cmdline)[_cmdline_length],
         _In_ const unsigned long& _nparprocs,
         _In_ const unsigned long& _nmaxparprocs,
         _In_ const bool&          _showcmd
@@ -210,9 +213,9 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
                                              .wShowWindow = static_cast<unsigned short>(_showcmd ? SW_SHOW : SW_HIDE) };
             PROCESS_INFORMATION procinfo {};
 
-            ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
-            ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
-            ::_putws(cmdline.c_str());
+            ::memset(_cmdline.data(), 0, _cmdline.size() * sizeof(wchar_t));
+            ::swprintf_s(_cmdline.data(), _cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
+            ::_putws(_cmdline.c_str());
 
             // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
             if (active_process_handles.size() >= _nmaxparprocs) {
@@ -232,7 +235,7 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
             // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
             if (!::CreateProcessW(
                     RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
-                    cmdline,
+                    _cmdline,
                     nullptr,
                     nullptr,
                     TRUE,
@@ -284,6 +287,14 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         for (std::vector<unsigned long>::const_iterator it = exitcodes.cbegin(); it != exitcodes.cend(); it++) ::wprintf_s(L"%lu, ", *it);
     }
 
+    static inline void launch(
+        _In_ const std::vector<std::wstring> _programmes,
+        _In_ const std::vector<std::wstring> _cmdlines,
+        _In_ const unsigned long&            _nmaxparprocs,
+        _In_ const bool&                     _showcmd
+    ) noexcept {
+        //
+    }
 } // namespace parallel
 
 // NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
