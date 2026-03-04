@@ -51,7 +51,7 @@ namespace parallel {
 
     // get the string representation of a _WIN32 error code
     [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
-        _In_ const unsigned long& errcode, _Inout_ HANDLE64 hntdsbmsg
+        _In_ const unsigned long& errcode, _Inout_ HINSTANCE& hntdsbmsg
     ) noexcept {
         static wchar_t buffer[ERRORMSG_BUFFSIZE] { 0 }; // needs to be in static memory for returning
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
@@ -100,7 +100,7 @@ namespace parallel {
         _Inout_ std::vector<unsigned long>& excodes,
         _In_ const bool&                    all,
         _In_ const unsigned long&           duration,
-        _In_ HANDLE64                       hntdsbmsg
+        _In_ HINSTANCE&                     hntdsbmsg
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
@@ -176,7 +176,7 @@ CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all t
 
 CLOSE_SELECTED_HANDLE_AND_EXIT:
         // capture the exit code
-        if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode))
+        if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode)) // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError(), hntdsbmsg));
         else
             excodes.push_back(exitcode);
@@ -192,7 +192,8 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         _In_ const wchar_t* const _argv,
         _In_ const unsigned long& _nprocstotal,
         _In_ const unsigned long& _nmaxparprocs,
-        _In_ const bool&          _showcmd
+        _In_ const bool&          _showcmd,
+        _Inout_ HINSTANCE&        _hntdsbms
     ) noexcept {
         static constexpr unsigned long long CMDLINE_MAX { 0xFFF };
         // for ::WaitForMultipleObjects, we need an array of active process handles
@@ -226,7 +227,7 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
             // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
             if (active_process_handles.size() >= _nmaxparprocs) {
                 // if we are at capacity and wait failed, break out the loop and focus on the already active processes
-                if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, false, INFINITE)) {
+                if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, false, INFINITE, _hntdsbms)) {
                     // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
                     is_broken_prematurely = true;
                     break; // no more new process launches
@@ -280,7 +281,8 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         }
 
         // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
-        if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, true, INFINITE)) exitcode = EXIT_FAILURE;
+        if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, true, INFINITE, _hntdsbms))
+            exitcode = EXIT_FAILURE;
 
         ::QueryPerformanceCounter(&stop);
 
@@ -294,13 +296,129 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         for (std::vector<unsigned long>::const_iterator it = exitcodes.cbegin(); it != exitcodes.cend(); it++) ::wprintf_s(L"%lu, ", *it);
     }
 
-    static inline void launch(
-        _In_ const std::vector<std::wstring> _programmes,
-        _In_ const std::vector<std::wstring> _cmdlines,
-        _In_ const unsigned long&            _nmaxparprocs,
-        _In_ const bool&                     _showcmd
+    static inline bool plaunch(
+        _In_ const std::vector<std::wstring>& _programmes,
+        _In_ const std::vector<std::wstring>& _cmdlines,
+        _In_ const unsigned long&             _nmaxparprocs,
+        _In_ const bool&                      _showcmd,
+        _Inout_ HINSTANCE&                    _hntdsbms
     ) noexcept {
-        //
+        static constexpr unsigned long long CMDLINE_MAX { 0xFFF };
+        // for ::WaitForMultipleObjects, we need an array of active process handles
+
+        // the other overload should've been used in that case
+        if (((_programmes.size() != 1 && _cmdlines.size() != 1) && _programmes.size() == _cmdlines.size()) ||
+            (_programmes.size() == 1 && _cmdlines.size() > 1)) {
+            ::fwprintf_s(
+                stderr,
+                L"Invalid relationship between the programme names and commandline arguments inside function %s, size of the programme names vector is %llu and the size of the commandline arguments vector is %llu!\n",
+                __FUNCTIONW__,
+                _programmes.size(),
+                _cmdlines.size()
+            );
+            return false;
+        }
+
+        std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
+        long                  exitcode { EXIT_SUCCESS };
+        static std::wstring   commandline {};
+        if (commandline.size() < CMDLINE_MAX) commandline.resize(CMDLINE_MAX);
+
+        unsigned long long         nsucceeded_launches {};
+        std::vector<unsigned long> exitcodes {}; // exit statuses of the launched processes
+
+        exitcodes.reserve(
+            _cmdlines.size()
+        ); // in any case, for this particular overload, _cmdlines vector will have number of arguments matching the number of needed invocations
+        bool is_broken_prematurely {};
+
+        // timing runtime
+        // https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps
+        LARGE_INTEGER start {}, stop {}, freq {}; // NOLINT(readability-isolate-declaration)
+        ::QueryPerformanceFrequency(&freq);       // number of ticks per second
+        ::QueryPerformanceCounter(&start);
+
+        for (unsigned long i = 0; i < _cmdlines.size(); ++i) {
+            // THESE TWO STRUCTS ARE INTENTIONALLY PLACED HERE TO BE FRESHLY CREATED IN EVERY ITERATION!!!!
+            STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
+                                             .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
+                                             .wShowWindow = static_cast<unsigned short>(_showcmd ? SW_SHOW : SW_HIDE) };
+            PROCESS_INFORMATION procinfo {};
+
+            ::memset(commandline.data(), 0, commandline.size() * sizeof(wchar_t));
+            ::swprintf_s(commandline.data(), commandline.size(), L"%s %s", _programme, _argv);
+            // ::_putws(commandline.c_str());
+
+            // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
+            if (active_process_handles.size() >= _nmaxparprocs) {
+                // if we are at capacity and wait failed, break out the loop and focus on the already active processes
+                if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, false, INFINITE, _hntdsbms)) {
+                    // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
+                    is_broken_prematurely = true;
+                    break; // no more new process launches
+                }
+            }
+
+            //------------------------------------------------------------------------
+            // EVERYTHING BELOW WILL ONLY BE EXECUTED WHEN WE ARE BELOW CAPACITY
+            //------------------------------------------------------------------------
+
+            // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
+            // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
+            if (!::CreateProcessW(
+                    _programme, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                    commandline
+                        .data(), // .c_str() returns const wchar_t* which we cannot use here, could just cast it too as the buffer itself is mutable
+                    nullptr,
+                    nullptr,
+                    TRUE,
+                    HIGH_PRIORITY_CLASS | CREATE_NEW_CONSOLE,
+                    // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getpriorityclass
+                    // look up the above for process priorities and scheduling
+                    nullptr,
+                    nullptr,
+                    &starupinfo,
+                    &procinfo
+                )) {
+                ::fwprintf_s( // log where the launch failed
+                        stderr,
+                        L""
+                    );
+                continue; // move on to the next launch
+            }
+
+            // if the lauch succeeded,
+            nsucceeded_launches++;
+            // update active process and thread handles
+            active_process_handles.push_back(procinfo.hProcess);
+            active_thread_handles.push_back(procinfo.hThread);
+        }
+
+        //--------------------------------------
+        // ONCE WE HAVE EXITED THE LOOP
+        //--------------------------------------
+
+        if (is_broken_prematurely) {
+            exitcode = EXIT_FAILURE;
+            ::fwprintf_s(
+                stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
+            );
+        }
+
+        // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
+        if (!handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, true, INFINITE, _hntdsbms))
+            exitcode = EXIT_FAILURE;
+
+        ::QueryPerformanceCounter(&stop);
+
+        ::wprintf_s(
+            L"Done, %llu out of %llu launches completed within %.3Lf hours!\n",
+            nsucceeded_launches,
+            _nmaxparprocs,
+            (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00L) // NOLINT(cppcoreguidelines-narrowing-conversions)
+        );
+
+        for (std::vector<unsigned long>::const_iterator it = exitcodes.cbegin(); it != exitcodes.cend(); it++) ::wprintf_s(L"%lu, ", *it);
     }
 } // namespace parallel
 
