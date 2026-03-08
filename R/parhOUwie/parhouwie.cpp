@@ -1,5 +1,4 @@
 // this thing has been a lifesaver :)
-#define __DRYRUN__ 1
 
 #if !(defined(_WIN32) || defined(_WIN64)) && !(defined(_MSC_VER) || defined(_MSC_FULL_VER))
     #error This is a Windows only implementation that liberally uses the Win32 API, not meant to be used on other platforms!.
@@ -90,7 +89,9 @@ namespace utils {
             nullptr
         );
 
-        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
+        if (
+            !nbyteswritten
+        ) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
             // if the library hasn't already been loaded by previous calls to this function
             if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.DLL");
             if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
@@ -147,8 +148,9 @@ namespace utils {
         }
 
         // WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)
-        if (// (waitstatus >= WAIT_OBJECT_0) && // will always be true because the return value of ::WaitForMultipleObjects() is unsigned
-             waitstatus < (WAIT_OBJECT_0 + phandles.size())) {
+        if ( // (waitstatus >= WAIT_OBJECT_0) && // will always be true because the return value of ::WaitForMultipleObjects() is unsigned
+            waitstatus < (WAIT_OBJECT_0 + phandles.size())
+        ) {
             exitval = true;
             if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
             // bWaitAll == FALSE
@@ -375,8 +377,6 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                                                  .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
                 PROCESS_INFORMATION procinfo {};
 
-#ifndef __DRYRUN__
-
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
@@ -390,7 +390,6 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                     ))
                     ::exit(EXIT_FAILURE);
 
-#endif
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
                 // ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
