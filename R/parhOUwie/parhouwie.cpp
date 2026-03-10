@@ -42,8 +42,6 @@
 #include <string>
 #include <vector>
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
-
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
@@ -69,7 +67,7 @@ namespace utils {
     }
 
     // get the string representation of a _WIN32 error code
-    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
+
     [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
         _In_ const unsigned long& errcode
     ) noexcept {
@@ -114,8 +112,12 @@ namespace utils {
     }
 
     // will only return true when the wait is signalled success
-    [[nodiscard]] static inline bool __stdcall handle_parallel_waits( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _Inout_ std::vector<unsigned long>& excodes, _In_ const bool& all, _In_ const unsigned long& duration
+    [[nodiscard]] static inline bool __stdcall handle_parallel_waits(
+        _Inout_ std::vector<HANDLE64>& phandles,
+        _Inout_ std::vector<HANDLE64>& thandles,
+        _Inout_ std::vector<unsigned long>& excodes,
+        _In_ const bool&                    all,
+        _In_ const unsigned long&           duration
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
@@ -193,10 +195,10 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
             ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
         else
             excodes.push_back(exitcode);
-        ::CloseHandle(*(phandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-        phandles.erase(phandles.begin() + handle_offset);  // remove the signalled process
-        ::CloseHandle(*(thandles.data() + handle_offset)); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-        thandles.erase(thandles.begin() + handle_offset);  // remove the signalled thread handle
+        ::CloseHandle(*(phandles.data() + handle_offset));
+        phandles.erase(phandles.begin() + handle_offset); // remove the signalled process
+        ::CloseHandle(*(thandles.data() + handle_offset));
+        thandles.erase(thandles.begin() + handle_offset); // remove the signalled thread handle
         return exitval;
     }
 
@@ -220,7 +222,6 @@ namespace houwie {
         )]] // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
     };
 
-    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
     [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _discrete_model(
         _In_ const DISCRETE_MODELS& model
     ) noexcept {
@@ -232,7 +233,6 @@ namespace houwie {
         // MSVC bitches about "not all control paths return a value"
     }
 
-    // NOLINTNEXTLINE(readability-redundant-inline-specifier)
     [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _continuous_model(
         _In_ const CONTINUOUS_MODELS& model
     ) noexcept {
@@ -245,7 +245,7 @@ namespace houwie {
         // MSVC bitches about "not all control paths return a value"
     }
 
-    [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath( // NOLINT(readability-redundant-inline-specifier)
+    [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath(
         _In_ const DISCRETE_MODELS&   dmodel,
         _In_ const CONTINUOUS_MODELS& cmodel,
         _In_ const wchar_t* const     savedir, // assumed ends with a forward slash, expected to be in the format "C:/Users/Documents/"
@@ -268,8 +268,8 @@ namespace houwie {
         return buffer;
     }
 
-    [[clang::always_inline]] static inline bool __stdcall generate_rscript( // NOLINT(readability-redundant-inline-specifier)
-        _Inout_ std::wstring& buffer,
+    [[clang::always_inline]] static inline bool __stdcall generate_rscript(
+        _Inout_ std::wstring&          buffer,
         _In_ const wchar_t* const      phylogeny,
         _In_ const wchar_t* const      traitdata,
         _In_ const DISCRETE_MODELS&    dmodel,
@@ -350,12 +350,12 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     // sysinf.dwNumberOfProcessors - this machine has 18 cores, (don't know how many P cores and E cores, through?????)
 
     // for ::WaitForMultipleObjects, we need an array of active process handles
-    std::vector<HANDLE64> active_process_handles {}, active_thread_handles {}; // NOLINT(readability-isolate-declaration)
+    std::vector<HANDLE64> active_process_handles {}, active_thread_handles {};
     long                  exitcode { EXIT_SUCCESS };
 
     unsigned long long         nsucceeded_launches {};
-    std::wstring               rscript {}, cmdline {}; // NOLINT(readability-isolate-declaration)
-    std::vector<unsigned long> exitcodes {};           // exit statuses of the launched processes
+    std::wstring               rscript {}, cmdline {};
+    std::vector<unsigned long> exitcodes {}; // exit statuses of the launched processes
     exitcodes.reserve(NTOTAL_PROCESSES);
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
@@ -363,8 +363,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
 
     // timing runtime
     // https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps
-    LARGE_INTEGER start {}, stop {}, freq {}; // NOLINT(readability-isolate-declaration)
-    ::QueryPerformanceFrequency(&freq);       // number of ticks per second
+    LARGE_INTEGER start {}, stop {}, freq {};
+    ::QueryPerformanceFrequency(&freq); // number of ticks per second
     ::QueryPerformanceCounter(&start);
 
     for (unsigned dmod = 0; dmod < 3; ++dmod) {     // discrete models
@@ -473,8 +473,6 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
 
     return exitcode;
 }
-
-// NOLINTEND(cppcoreguidelines-pro-type-vararg,modernize-avoid-c-arrays)
 
 #ifdef __llvm__
     #pragma clang diagnostic pop
