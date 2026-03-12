@@ -8,7 +8,6 @@ library("ape")
 megatree <- ape::read.tree("../data/chapter2/uphylomaker/GBOTB.extended.TPL.tre")
 taxonomy_data <- read.csv("../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states.csv")
 
-# taxonomy_data$binominal <- gsub(taxonomy_data$binominal, pattern = ' ', replacement = '_')
 species_list <- data.frame(species = taxonomy_data$binominal, genus = taxonomy_data$F01286, family = taxonomy_data$F01289, species.relative = NA, genus.relative = NA)
 genus_list <- data.frame(genus = taxonomy_data$F01286, family = taxonomy_data$F01289)
 genus_list <- genus_list[!duplicated(genus_list), ] # drop the duplicates
@@ -21,3 +20,4 @@ phylogeny <- ape::read.tree("../data/chapter2/uphylomaker/collab_fineroots_log_9
 taxonomy_data <- taxonomy_data[match(phylogeny$tip.label, taxonomy_data$binominal), ]
 stopifnot(taxonomy_data$binominal == phylogeny$tip.label)
 write.csv(x = taxonomy_data, file = "../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv", row.names = FALSE)
+
