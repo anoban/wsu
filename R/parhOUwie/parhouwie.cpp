@@ -35,8 +35,6 @@
 #include <WinUser.h>
 // clang-format on
 
-#include <algorithm>
-#include <array>
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -52,8 +50,6 @@ static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // 
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
 static constexpr unsigned long long NTOTAL_PROCESSES { 0x18 }; // 4 continuous models x 3 discrete models x 2 rate categories
 
-static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE }; // length of the error message buffer in number of wchar_t s
-static constexpr unsigned long long SAVERDS_NAME_LENGTH { MAX_PATH };
 static constexpr unsigned long long RSCRIPT_BUFFSIZE { 0x4F0 };
 static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit too generous here
 static_assert(RSCRIPT_BUFFSIZE < CMDLINE_BUFFSIZE);
@@ -71,7 +67,8 @@ namespace utils {
     [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
         _In_ const unsigned long& errcode
     ) noexcept {
-        static wchar_t buffer[ERRORMSG_BUFFSIZE] { 0 }; // needs to be in static memory for returning
+        static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE };     // length of the error message buffer in number of wchar_t s
+        static wchar_t                      buffer[ERRORMSG_BUFFSIZE] { 0 }; // needs to be in static memory for returning
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
         ::memset(buffer, 0, sizeof(buffer));
 
@@ -115,15 +112,13 @@ namespace utils {
     [[nodiscard]] static inline bool __stdcall handle_parallel_waits(
         _Inout_ std::vector<HANDLE64>& phandles,
         _Inout_ std::vector<HANDLE64>& thandles,
-        _Inout_ std::vector<unsigned long>& excodes,
-        _In_ const bool&                    all,
-        _In_ const unsigned long&           duration
+        _In_ const bool&               all,
+        _In_ const unsigned long&      duration
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
         // so the returned value is practically equal to the offset of the signalled handle WHEN WAIT SUCCEEDS
         unsigned long handle_offset { 0xFF };
-        unsigned long exitcode { 0xAABBCC };
         bool          exitval {};
         // https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects
         // https://learn.microsoft.com/en-us/windows/win32/sync/waiting-for-multiple-objects
@@ -175,12 +170,12 @@ namespace utils {
             goto CLOSE_SELECTED_HANDLE_AND_EXIT;
         }
 
-CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all the leftover process handles and thread handles
-        for (unsigned long i = 0; i < phandles.size(); ++i) {     // taking it for granted that phandles.size()==thandles.size()
-            if (!::GetExitCodeProcess(phandles.at(i), &exitcode)) // 0 is failed
-                ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
-            else
-                excodes.push_back(exitcode);
+CLOSE_ACTIVE_HANDLES_AND_EXIT:                                // close all the leftover process handles and thread handles
+        for (unsigned long i = 0; i < phandles.size(); ++i) { // taking it for granted that phandles.size()==thandles.size()
+            // if (!::GetExitCodeProcess(phandles.at(i), &exitcode)) // 0 is failed
+            //     ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
+            // else
+            //     excodes.push_back(exitcode);
             ::CloseHandle(phandles.at(i));
             ::CloseHandle(thandles.at(i));
         }
@@ -191,10 +186,10 @@ CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all t
 
 CLOSE_SELECTED_HANDLE_AND_EXIT:
         // capture the exit code
-        if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode))
-            ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
-        else
-            excodes.push_back(exitcode);
+        // if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode))
+        //     ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", __error_code_to_wstring(::GetLastError()));
+        // else
+        //     excodes.push_back(exitcode);
         ::CloseHandle(*(phandles.data() + handle_offset));
         phandles.erase(phandles.begin() + handle_offset); // remove the signalled process
         ::CloseHandle(*(thandles.data() + handle_offset));
@@ -222,7 +217,7 @@ namespace houwie {
         )]] // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
     };
 
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _discrete_model(
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _dmod_tostr(
         _In_ const DISCRETE_MODELS& model
     ) noexcept {
         switch (model) {
@@ -233,7 +228,7 @@ namespace houwie {
         // MSVC bitches about "not all control paths return a value"
     }
 
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _continuous_model(
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _cmod_tostr(
         _In_ const CONTINUOUS_MODELS& model
     ) noexcept {
         switch (model) {
@@ -248,23 +243,38 @@ namespace houwie {
     [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath(
         _In_ const DISCRETE_MODELS&   dmodel,
         _In_ const CONTINUOUS_MODELS& cmodel,
-        _In_ const wchar_t* const     savedir, // assumed ends with a forward slash, expected to be in the format "C:/Users/Documents/"
+        _In_ const wchar_t* const     contrait, // e.g. F00727
+        _In_ const wchar_t* const     savedir,  // assumed ends with a forward slash, e.g. "C:/Users/Documents/"
         _In_ const bool&              nullmodel,
-        _In_ const wchar_t* const     suffix
+        _In_ const wchar_t* const     suffix // e.g. _1006sp
     ) noexcept {
-        static wchar_t buffer[SAVERDS_NAME_LENGTH] {};
+        static constexpr unsigned long long SAVERDS_NAME_LENGTH { MAX_PATH };
+        static wchar_t                      buffer[SAVERDS_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer)); // we don't want buffer contents from previous writes intefereing with new writes
-        // e.g. ARD_OUMV_RD_MYCO_CD_395sp.Rds
-        ::swprintf_s(
-            buffer,
-            SAVERDS_NAME_LENGTH,
-            suffix ? L"%s%s%s_%s_%s.Rds" : L"%s%s%s_%s%s.Rds", // we expect the directory path to end with a forward slash
-            savedir,
-            _discrete_model(dmodel),
-            _continuous_model(cmodel),
-            nullmodel ? L"CID" : L"CD",
-            suffix ? suffix : L""
-        );
+        if (suffix)                          // e.g. C:/Users/Documents/ARDOUMV_F00679_CD_395sp.Rds
+            ::swprintf_s(
+                buffer,
+                SAVERDS_NAME_LENGTH,
+                L"%s%s%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
+                savedir,
+                _dmod_tostr(dmodel),
+                _cmod_tostr(cmodel),
+                contrait,
+                nullmodel ? L"CID" : L"CD",
+                suffix
+            );
+        else // e.g. C:/Users/Documents/ARDOUMV_F00679_CD.Rds
+            ::swprintf_s(
+                buffer,
+                SAVERDS_NAME_LENGTH,
+                L"%s%s%s_%s_%s.Rds",
+                savedir,
+                _dmod_tostr(dmodel),
+                _cmod_tostr(cmodel),
+                contrait,
+                nullmodel ? L"CID" : L"CD"
+            );
+
         return buffer;
     }
 
@@ -272,12 +282,13 @@ namespace houwie {
         _Inout_ std::wstring&          buffer,
         _In_ const wchar_t* const      phylogeny,
         _In_ const wchar_t* const      traitdata,
+        _In_ const wchar_t* const      contrait,
         _In_ const DISCRETE_MODELS&    dmodel,
         _In_ const CONTINUOUS_MODELS&  cmodel,
         _In_ const wchar_t* const      savedir,
         _In_ const wchar_t* const      suffix,
         _In_ const bool&               nullmodel,
-        _In_ const unsigned long long& nsims = 30
+        _In_ const unsigned long long& nsims
     ) noexcept {
         // make sure that all the paths are valid, using separate conditional for detailed error reporting
         if (!::PathFileExistsW(savedir)) {
@@ -303,7 +314,7 @@ namespace houwie {
 
         if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
         ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t)); // clean up the buffer before every new write
-        const wchar_t* const rdspath = _rdspath(dmodel, cmodel, savedir, nullmodel, suffix);
+        const wchar_t* const rdspath = _rdspath(dmodel, cmodel, contrait, savedir, nullmodel, suffix);
         if (!rdspath) return false;
 
         ::swprintf_s(
@@ -314,18 +325,19 @@ namespace houwie {
             // and when passed as expressions, all the double quotes get stripped away for some reason?????, using single quotes instead for string literals
             L"library('ape');"
             L"library('OUwie');"
-            L"set.seed(1, kind = 'Mersenne-Twister');" // make sure reruns don't give us inconsistent results
+            L"set.seed(1, kind = 'Mersenne-Twister');" // make sure reruns don't give us inconsistent results, don't know how useful this is
             L"phylogeny <- ape::read.tree('%s');"
-            L"data <- read.csv('%s')[, c('binominal', 'state', 'F00679'];"
+            L"data <- read.csv('%s')[, c('binominal', 'state', '%s'];"
             L"stopifnot(all(phylogeny$tip.label == data$binominal));"
             L"model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = %1u, discrete_model = '%s', continuous_model = '%s', nSim = %llu, null.model = %s);"
             L"saveRDS(object = model, file = '%s');",
             phylogeny,
             traitdata,
+            contrait,
             // if null_model is true, then it's a CID model with 2 rate categories, else it's a CD model with just 1 rate category
             nullmodel ? 2U : 1U,
-            _discrete_model(dmodel),
-            _continuous_model(cmodel),
+            _dmod_tostr(dmodel),
+            _cmod_tostr(cmodel),
             nsims,
             nullmodel ? L"TRUE" : L"FALSE",
             rdspath
@@ -353,10 +365,9 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     std::vector<HANDLE64> active_process_handles {}, active_thread_handles {};
     long                  exitcode { EXIT_SUCCESS };
 
-    unsigned long long         nsucceeded_launches {};
-    std::wstring               rscript {}, cmdline {};
-    std::vector<unsigned long> exitcodes {}; // exit statuses of the launched processes
-    exitcodes.reserve(NTOTAL_PROCESSES);
+    unsigned long long nsucceeded_launches {};
+    std::wstring       rscript {}, cmdline {};
+
     rscript.resize(RSCRIPT_BUFFSIZE);
     cmdline.resize(CMDLINE_BUFFSIZE);
     bool is_broken_prematurely {};
@@ -399,7 +410,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= NPARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
-                    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, false, INFINITE)) {
+                    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, false, INFINITE)) {
                         // can happen when WAIT_FAILED, WAIT_ABANDONED_0 or WAIT_TIMEOUT
                         is_broken_prematurely = true;
                         break; // no more new process launches
@@ -429,8 +440,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                     ::fwprintf_s( // log where the launch failed
                         stderr,
                         L"Failed to launch %s-%s-%s fit, Error in call to ::CreateProcessW: %s\n",
-                        houwie::_discrete_model(static_cast<houwie::DISCRETE_MODELS>(dmod)),
-                        houwie::_continuous_model(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
+                        houwie::_dmod_tostr(static_cast<houwie::DISCRETE_MODELS>(dmod)),
+                        houwie::_cmod_tostr(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
                         nm ? L"CID" : L"CD",
                         utils::__error_code_to_wstring(::GetLastError())
                     );
@@ -458,7 +469,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     }
 
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
-    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, exitcodes, true, INFINITE)) exitcode = EXIT_FAILURE;
+    if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, true, INFINITE)) exitcode = EXIT_FAILURE;
 
     ::QueryPerformanceCounter(&stop);
 
@@ -468,8 +479,6 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
         NTOTAL_PROCESSES,
         (stop.QuadPart - start.QuadPart) / (freq.QuadPart * 3600.00L) // NOLINT(cppcoreguidelines-narrowing-conversions)
     );
-
-    for (std::vector<unsigned long>::const_iterator it = exitcodes.cbegin(); it != exitcodes.cend(); it++) ::wprintf_s(L"%lu, ", *it);
 
     return exitcode;
 }
