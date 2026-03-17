@@ -151,6 +151,7 @@ phylogeny <- ape::read.tree("../data/chapter2/uphylomaker/collab_fineroots_log_9
 tscale_max <- max(phytools::nodeHeights(phylogeny))
 states <- read.csv("../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states.csv")[, c("binominal", "state")]
 
+# par(bg = NA)
 png("../plots/995_species_5states_mapped_phylogeny.png", width = 22000, height = 22000, units = "px", res = 400)
 plot <- phytools::plotTree(tree = phylogeny, ftype = "i", fsize = 1.0, type = "fan", lwd = 1, offset = 2, part = 0.998)
 tscale_ticks <- seq(0, tscale_max, length.out = 20)
@@ -160,3 +161,4 @@ text(x = tscale_max + 20, y = -2.5, labels = "Time (Million years)", cex = 1.00,
 ape::tiplabels(pie = to.matrix(states$state, sort(unique(states$state))), piecol = state_colors, cex = 0.05) # nodes at the tips
 legend("topright", legend = sort(unique(states$state)), pt.bg = state_colors, cex = 3, pt.cex = 5, pch = 21, ncol = 1)
 dev.off()
+
