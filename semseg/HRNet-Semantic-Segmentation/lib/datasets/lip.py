@@ -8,32 +8,32 @@ import os
 
 import cv2
 import numpy as np
-
 import torch
-from torch.nn import functional as F
 from PIL import Image
+from torch.nn import functional as F
 
 from .base_dataset import BaseDataset
 
 
 class LIP(BaseDataset):
-    def __init__(self,
-                 root,
-                 list_path,
-                 num_samples=None,
-                 num_classes=20,
-                 multi_scale=True,
-                 flip=True,
-                 ignore_label=-1,
-                 base_size=473,
-                 crop_size=(473, 473),
-                 downsample_rate=1,
-                 scale_factor=11,
-                 mean=[0.485, 0.456, 0.406],
-                 std=[0.229, 0.224, 0.225]):
+    def __init__(
+        self,
+        root,
+        list_path,
+        num_samples=None,
+        num_classes=20,
+        multi_scale=True,
+        flip=True,
+        ignore_label=-1,
+        base_size=473,
+        crop_size=(473, 473),
+        downsample_rate=1,
+        scale_factor=11,
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225],
+    ):
 
-        super(LIP, self).__init__(ignore_label, base_size,
-                                  crop_size, downsample_rate, scale_factor, mean, std)
+        super(LIP, self).__init__(ignore_label, base_size, crop_size, downsample_rate, scale_factor, mean, std)
 
         self.root = root
         self.num_classes = num_classes
@@ -42,7 +42,7 @@ class LIP(BaseDataset):
 
         self.multi_scale = multi_scale
         self.flip = flip
-        self.img_list = [line.strip().split() for line in open(root+list_path)]
+        self.img_list = [line.strip().split() for line in open(root + list_path)]
 
         self.files = self.read_files()
         if num_samples:
@@ -51,20 +51,16 @@ class LIP(BaseDataset):
     def read_files(self):
         files = []
         for item in self.img_list:
-            if 'train' in self.list_path:
+            if "train" in self.list_path:
                 image_path, label_path, _ = item
                 name = os.path.splitext(os.path.basename(label_path))[0]
-                sample = {"img": image_path,
-                          "label": label_path,
-                          "name": name, }
-            elif 'val' in self.list_path:
+                sample = {"img": image_path, "label": label_path, "name": name}
+            elif "val" in self.list_path:
                 image_path, label_path = item
                 name = os.path.splitext(os.path.basename(label_path))[0]
-                sample = {"img": image_path,
-                          "label": label_path,
-                          "name": name, }
+                sample = {"img": image_path, "label": label_path, "name": name}
             else:
-                raise NotImplementedError('Unknown subset.')
+                raise NotImplementedError("Unknown subset.")
             files.append(sample)
         return files
 
@@ -76,20 +72,14 @@ class LIP(BaseDataset):
     def __getitem__(self, index):
         item = self.files[index]
         name = item["name"]
-        image_path = os.path.join(self.root, item['img'])
-        label_path = os.path.join(self.root, item['label'])
-        image = cv2.imread(
-            image_path,
-            cv2.IMREAD_COLOR
-        )
-        label = np.array(
-            Image.open(label_path).convert('P')
-        )
+        image_path = os.path.join(self.root, item["img"])
+        label_path = os.path.join(self.root, item["label"])
+        image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+        label = np.array(Image.open(label_path).convert("P"))
 
         size = label.shape
-        if 'testval' in self.list_path:
-            image = cv2.resize(image, self.crop_size,
-                               interpolation=cv2.INTER_LINEAR)
+        if "testval" in self.list_path:
+            image = cv2.resize(image, self.crop_size, interpolation=cv2.INTER_LINEAR)
             image = self.input_transform(image)
             image = image.transpose((2, 0, 1))
 
@@ -110,8 +100,7 @@ class LIP(BaseDataset):
                     label[left_pos[0], left_pos[1]] = right_idx[i]
 
         image, label = self.resize_image(image, label, self.crop_size)
-        image, label = self.gen_sample(image, label,
-                                       self.multi_scale, False)
+        image, label = self.gen_sample(image, label, self.multi_scale, False)
 
         return image.copy(), label.copy(), np.array(size), name
 
@@ -121,22 +110,16 @@ class LIP(BaseDataset):
         if config.MODEL.NUM_OUTPUTS > 1:
             pred = pred[config.TEST.OUTPUT_INDEX]
 
-        pred = F.interpolate(
-            input=pred, size=size[-2:],
-            mode='bilinear', align_corners=config.MODEL.ALIGN_CORNERS
-        )
+        pred = F.interpolate(input=pred, size=size[-2:], mode="bilinear", align_corners=config.MODEL.ALIGN_CORNERS)
 
         if flip:
             flip_img = image.numpy()[:, :, :, ::-1]
             flip_output = model(torch.from_numpy(flip_img.copy()))
 
             if config.MODEL.NUM_OUTPUTS > 1:
-                flip_output = flip_output[config.TEST.OUTPUT_INDEX]            
+                flip_output = flip_output[config.TEST.OUTPUT_INDEX]
 
-            flip_output = F.interpolate(
-                input=flip_output, size=size[-2:],
-                mode='bilinear', align_corners=config.MODEL.ALIGN_CORNERS
-            )
+            flip_output = F.interpolate(input=flip_output, size=size[-2:], mode="bilinear", align_corners=config.MODEL.ALIGN_CORNERS)
 
             flip_output = flip_output.cpu()
             flip_pred = flip_output.cpu().numpy().copy()
@@ -146,8 +129,7 @@ class LIP(BaseDataset):
             flip_pred[:, 17, :, :] = flip_output[:, 16, :, :]
             flip_pred[:, 18, :, :] = flip_output[:, 19, :, :]
             flip_pred[:, 19, :, :] = flip_output[:, 18, :, :]
-            flip_pred = torch.from_numpy(
-                flip_pred[:, :, :, ::-1].copy()).cuda()
+            flip_pred = torch.from_numpy(flip_pred[:, :, :, ::-1].copy()).cuda()
             pred += flip_pred
             pred = pred * 0.5
         return pred.exp()
