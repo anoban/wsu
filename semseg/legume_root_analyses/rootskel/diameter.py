@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from numpy.typing import NDArray
+from PIL import Image
 
 from .params import PIXEL_SIZE_CENTIMETERS
 
@@ -13,6 +14,25 @@ blur = cv2.medianBlur(image, 5)
 ret3, binary_image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE)
 skeleton_image = cv2.ximgproc.thinning(image)
+
+
+def open_and_transform_image(fpath: str) -> NDArray[np.integer | np.floating]:
+    """
+    Read in the image file and apply the necessary transforms
+    Opting for inplace transformation of arrays, hoping we could squeeze out a bit more performance
+    """
+
+    with open(file=fpath, mode="rb") as fp:
+        _image = Image.open(fp)
+        if _image.mode != "RGB":
+            raise TypeError(f"Only images with RGB colour channels are supported, got {_image.mode}!")
+        _image = np.array(_image)
+
+    _image = cv2.cvtColor(
+        src=_image, code=cv2.COLOR_RGB2GRAY
+    )  # input has three colour channels while the result only has one, cannot coerce the result into the input inplace
+    cv2.bitwise_not(src=_image, dst=_image)  # inplace modification works here because the input and the result have the same shape
+    cv2.medianBlur(src=_image, ksize=5, dst=_image)
 
 
 num_components, labels, stats, centroids = cv2.connectedComponentsWithStats(skeleton_image)
@@ -41,7 +61,7 @@ average_diameter = diameter_sum / TRL
 print("Average Diameter (cm):", average_diameter)
 
 
-def __average_diameter(skeletonized_image: NDArray[np.floating | np.integer]) -> float:
+def average_diameter(skeletonized_image: NDArray[np.floating | np.integer]) -> float:
     """ """
 
     for y in range(skeleton_image.shape[0]):
