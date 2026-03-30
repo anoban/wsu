@@ -2,8 +2,8 @@
 
 import cv2
 import numpy as np
-import utils
 from numpy.typing import NDArray
+from utils import PIXELS_PER_MM
 
 
 def component_length(skeletonized_component: NDArray[np.integer | np.floating], scale: bool = False) -> float:
@@ -23,7 +23,7 @@ def component_length(skeletonized_component: NDArray[np.integer | np.floating], 
             length += None  # what's this number????
         else:
             length += None  # this too????
-    return length if not scale else (length / utils.PIXELS_PER_MM)
+    return length if not scale else (length / PIXELS_PER_MM)
 
 
 def total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float:
@@ -41,4 +41,4 @@ def total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float
         if stats[i, cv2.CC_STAT_AREA] > noise_threshold:
             component = (labels == i).astype(np.uint8)
             total_length += component_length(component, scale=False)
-    return total_length / utils.PIXELS_PER_MM
+    return total_length / PIXELS_PER_MM
