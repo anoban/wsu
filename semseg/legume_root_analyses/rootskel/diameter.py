@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 from numpy.typing import NDArray
-import utils
+
+from .utils import PIXELS_PER_MM
 
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -44,7 +45,7 @@ def average_diameter(skeletonized_image: NDArray[np.floating | np.integer]) -> f
     for y in range(skeletonized_image.shape[0]):
         for x in range(skeletonized_image.shape[1]):
             if skeletonized_image[y, x] > 0:  # Check if the pixel is part of the skeleton
-                radius = distance_transform[y, x] * PIXEL_SIZE_CENTIMETERS
+                radius = distance_transform[y, x] / PIXELS_PER_MM
                 diameter = 2 * radius
                 diameter_sum += diameter
     return diameter_sum / TRL

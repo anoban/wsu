@@ -24,7 +24,7 @@ RV = total_area * PIXEL_SIZE_CENTIMETERS
 print("Root Volume (cm3)", RV)
 
 
-def __volume(skeletonized_image: NDArray[np.floating | np.integer]) -> float:
+def volume(skeletonized_image: NDArray[np.floating | np.integer]) -> float:
     """ """
 
     total_area = 0.000

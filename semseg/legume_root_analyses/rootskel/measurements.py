@@ -2,10 +2,13 @@
 
 import cv2
 import numpy as np
+from numba import njit  # type: ignore
 from numpy.typing import NDArray
-from utils import PIXELS_PER_MM
+
+from .utils import PIXELS_PER_MM, UCHAR_MAX, UCHAR_MIN
 
 
+@njit(fastmath=True, cache=True, parallel=True)  # type: ignore
 def component_length(skeletonized_component: NDArray[np.integer | np.floating], scale: bool = False) -> float:
     """
     For every connected component in the skeletonized image (can be imagined as fragments of roots or continuous root segments),
@@ -42,3 +45,28 @@ def total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float
             component = (labels == i).astype(np.uint8)
             total_length += component_length(component, scale=False)
     return total_length / PIXELS_PER_MM
+
+
+@njit(fastmath=True, cache=True, parallel=True)  # type: ignore
+def surface_area(_image: NDArray[np.integer | np.floating]) -> float:
+    """ """
+
+    assert len(_image.shape) == 2, "only single channel greyscale images are accepted!"
+
+    cv2.bitwise_not(src=_image, dst=_image)
+    cv2.medianBlur(src=_image, ksize=5, dst=_image)
+    cv2.threshold(src=_image, thresh=UCHAR_MIN, maxval=UCHAR_MAX, type=cv2.THRESH_BINARY + cv2.THRESH_OTSU, dst=_image)
+    cv2.threshold(src=_image, thresh=UCHAR_MIN, maxval=UCHAR_MAX, type=cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE, dst=_image)
+    cv2.ximgproc.thinning(src=_image, dst=_image)
+
+    _distance = cv2.distanceTransform(src=_image, distanceType=cv2.DIST_L2, maskSize=5)
+    surface_area = 0.0000
+
+    for y in range(_image.shape[0]):
+        for x in range(_image.shape[1]):
+            if _image[y, x] > 0:
+                radius = _distance[y, x] / PIXELS_PER_MM
+                circumference = 2 * np.pi * radius
+                surface_area += circumference
+
+    return surface_area / PIXELS_PER_MM
