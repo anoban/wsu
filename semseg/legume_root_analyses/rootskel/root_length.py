@@ -2,21 +2,15 @@
 
 import cv2
 import numpy as np
+import utils
 from numpy.typing import NDArray
-from params import PIXEL_SIZE_CENTIMETERS
-
-image = cv2.imread("D:/1.tiff")
-image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-image = cv2.bitwise_not(image)
-blur = cv2.medianBlur(image, 5)
-ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE)
-skeleton = cv2.ximgproc.thinning(image)
 
 
 def component_length(skeletonized_component: NDArray[np.integer | np.floating], scale: bool = False) -> float:
     """
     For every connected component in the skeletonized image (can be imagined as fragments of roots or continuous root segments),
     calculate its length
+    With `scale` argument set to True, the unit of the returned length will be in millimeters, else just pixel counts (scale=False, the default)
     """
 
     coords = np.column_stack(np.where(skeletonized_component > 0))
@@ -24,29 +18,27 @@ def component_length(skeletonized_component: NDArray[np.integer | np.floating], 
     for j in range(len(coords) - 1):
         dx = abs(coords[j + 1][0] - coords[j][0])
         dy = abs(coords[j + 1][1] - coords[j][1])
+        raise NotImplementedError("Incomplete implementation!")
         if dx == dy == 1:
-            length += 1.4142
+            length += None  # what's this number????
         else:
-            length += 1
-    return length if not scale else length * PIXEL_SIZE_CENTIMETERS
+            length += None  # this too????
+    return length if not scale else (length / utils.PIXELS_PER_MM)
 
 
 def total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float:
     """
     Extract the connected components from the skeletonized image and calculate the cumulative length of the components
     The core functionality of this function is provided by the OpenCV function `connectedComponentsWithStats`.
+    The unit of the returned length is in millimeters
     """
 
     # https://stackoverflow.com/questions/35854197/how-to-use-opencvs-connectedcomponentswithstats-in-python
-    num_components, labels, stats, centroids = cv2.connectedComponentsWithStats(skeletonized_image)
+    nlabels, labels, stats, _ = cv2.connectedComponentsWithStats(skeletonized_image)
     total_length = 0.00000
     noise_threshold = 1
-    for i in range(1, num_components):
+    for i in range(1, nlabels):
         if stats[i, cv2.CC_STAT_AREA] > noise_threshold:
             component = (labels == i).astype(np.uint8)
             total_length += component_length(component, scale=False)
-    return total_length * PIXEL_SIZE_CENTIMETERS
-
-
-total_length = total_length(skeleton)
-print("TRL is", total_length * 0.0063)
+    return total_length / utils.PIXELS_PER_MM
