@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
 from numpy.typing import NDArray
+from params import PIXEL_SIZE_CENTIMETERS
 from PIL import Image
-
-from .params import PIXEL_SIZE_CENTIMETERS
 
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -24,7 +23,7 @@ def open_and_skeletonize(fpath: str) -> NDArray[np.integer | np.floating]:
     with open(file=fpath, mode="rb") as fp:
         _image = Image.open(fp)
         if _image.mode != "RGB":
-            raise TypeError(f"Only images with RGB colour channels are supported, got {_image.mode}!")
+            raise TypeError(f"Only images with RGB colour channels are supported, got {_image.mode} for {fpath}!")
         _image = np.array(_image)
 
     _image = cv2.cvtColor(
@@ -35,6 +34,10 @@ def open_and_skeletonize(fpath: str) -> NDArray[np.integer | np.floating]:
     cv2.threshold(
         src=_image, thresh=0, maxval=255, type=cv2.THRESH_BINARY + cv2.THRESH_OTSU, dst=_image
     )  # inplace greyscale to binary colour transformation
+    # cv2.threshold(src=_image, thresh=0, maxval=255, type=cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE, dst=_image) # is this necessary???
+    cv2.ximgproc.thinning(  # https://docs.opencv.org/4.13.0/d9/d29/namespacecv_1_1ximgproc.html#aa244a73deb4e58ae70ee96afe9d2460b
+        src=_image, dst=_image
+    )  # applies a binary blob thinning operation (in place), to achieve a skeletization of the input image
     return _image
 
 
