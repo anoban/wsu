@@ -2,13 +2,11 @@
 
 import cv2
 import numpy as np
-from numba import njit  # type: ignore
 from numpy.typing import NDArray
 
 from .utils import PIXELS_PER_MM, UCHAR_MAX, UCHAR_MIN
 
 
-@njit(fastmath=True, cache=True, parallel=True)  # type: ignore
 def component_length(skeletonized_component: NDArray[np.integer | np.floating], scale: bool = False) -> float:
     """
     For every connected component in the skeletonized image (can be imagined as fragments of roots or continuous root segments),
@@ -47,7 +45,6 @@ def total_length(skeletonized_image: NDArray[np.integer | np.floating]) -> float
     return total_length / PIXELS_PER_MM
 
 
-@njit(fastmath=True, cache=True, parallel=True)  # type: ignore
 def surface_area(_image: NDArray[np.integer | np.floating]) -> float:
     """ """
 

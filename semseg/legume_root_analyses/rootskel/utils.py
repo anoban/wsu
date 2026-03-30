@@ -3,7 +3,7 @@ import numpy as np
 from numpy.typing import NDArray
 from PIL import Image
 
-PIXELS_PER_MM: float = None  # number of pixels in a millimeter
+PIXELS_PER_MM: float = 45.9  # number of pixels in a millimeter
 UCHAR_MIN: int = 0
 UCHAR_MAX: int = 255
 
