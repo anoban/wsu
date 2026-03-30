@@ -5,8 +5,6 @@ from PIL import Image
 
 from .params import PIXEL_SIZE_CENTIMETERS
 
-# We'll port this to use scikitimage instead of the bloated OpenCV
-
 image = cv2.imread("D:/1.tiff")
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 image = cv2.bitwise_not(image)
@@ -16,9 +14,10 @@ ret3, image = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGL
 skeleton_image = cv2.ximgproc.thinning(image)
 
 
-def open_and_transform_image(fpath: str) -> NDArray[np.integer | np.floating]:
+def open_and_skeletonize(fpath: str) -> NDArray[np.integer | np.floating]:
     """
-    Read in the image file and apply the necessary transforms
+    Read in the image file and apply the necessary transforms (skeletonization)
+    Won't need this when we have image masks to work with (which is basically equivalent to the skeletonized output)
     Opting for inplace transformation of arrays, hoping we could squeeze out a bit more performance
     """
 
@@ -33,6 +32,10 @@ def open_and_transform_image(fpath: str) -> NDArray[np.integer | np.floating]:
     )  # input has three colour channels while the result only has one, cannot coerce the result into the input inplace
     cv2.bitwise_not(src=_image, dst=_image)  # inplace modification works here because the input and the result have the same shape
     cv2.medianBlur(src=_image, ksize=5, dst=_image)
+    cv2.threshold(
+        src=_image, thresh=0, maxval=255, type=cv2.THRESH_BINARY + cv2.THRESH_OTSU, dst=_image
+    )  # inplace greyscale to binary colour transformation
+    return _image
 
 
 num_components, labels, stats, centroids = cv2.connectedComponentsWithStats(skeleton_image)
