@@ -49,5 +49,6 @@ def biplot(
 # INCOMPLETE
 def screeplot(axis: Axes, color: str, line_props: dict[str, str], model: PCA) -> Axes:
     """ """
+    raise NotImplementedError("Implemementation incomplete!")
     axis.plot(model.explained_variance_, *line_props, color=color)  # type: ignore
     return axis
