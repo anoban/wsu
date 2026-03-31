@@ -1,11 +1,12 @@
-import cv2
-import torch
-import numpy as np
 from typing import Any
+
+import cv2
+import numpy as np
+import torch
 from matplotlib.axes import Axes
 from numpy.typing import NDArray
 
-__all__: list[str] = ["rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars", "plot_segmentations"]
+__all__: list[str] = ["rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars", "plot_segmentations", "plot_predictions"]
 
 
 def rgb_image_to_tensor(image: NDArray[np.uint8]) -> torch.Tensor:
@@ -50,7 +51,11 @@ def downscale_to_uchars(tensor: torch.Tensor | NDArray[np.floating]) -> torch.Te
     return tensor.type(torch.uint8) if isinstance(tensor, torch.Tensor) else tensor.astype(np.uint8)
 
 
-def plot_segmentations(ax: Axes, masks: NDArray[np.integer], height: int, width: int, alpha: float = 0.35, borders: bool = True) -> Axes:
+def __overlay_edges():
+    # https://opencv.org/edge-detection-using-opencv/
+    # https://scikit-image.org/docs/0.25.x/auto_examples/edges/plot_edge_filter.html
+
+def plot_segmentations(axes: Axes, masks: NDArray[np.integer], height: int, width: int, alpha: float = 0.35, borders: bool = True) -> Axes:
     """
     overlay segmentation results of a segmentation model on an image (or empty axes)
     the parameter `masks` is expected to be a 3 dimensional numpy array of shape (N, H, W) where N is the number of binary masks,
@@ -69,15 +74,14 @@ def plot_segmentations(ax: Axes, masks: NDArray[np.integer], height: int, width:
         rgba[mask.astype(np.bool), :] = np.array(
             [*np.random.random(3), alpha]
         )  # and update the colour (RGB) values with the specified alpha value
-        ax.imshow(rgba)  # type: ignore
+        axes.imshow(rgba)  # type: ignore
 
         if borders:  # this block of code is adapted from https://github.com/facebookresearch/sam2/blob/main/notebooks/automatic_mask_generator_example.ipynb
             contours, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # type: ignore
             # try to smooth contours
             contours = [cv2.approxPolyDP(contour, epsilon=0.01, closed=True) for contour in contours]  # type: ignore
             cv2.drawContours(image=rgba, contours=contours, contourIdx=-1, color=(0, 0, 1, alpha), thickness=1)
-
-    return ax
+    return axes
 
 
 def plot_predictions(segmentations: list[dict[str, Any]], axes: Axes) -> None:
@@ -85,18 +89,24 @@ def plot_predictions(segmentations: list[dict[str, Any]], axes: Axes) -> None:
     an alternative to the plot_segmentations function, that's designed to handle raw outputs from SAM and SAM2 models.
     this output is expected to be a list of segmentation dictoionaries
     """
-    
-    if len(segmentations) == 0: # if the segmentation list is empty
+
+    if len(segmentations) == 0:  # if the segmentation list is empty
         raise ValueError("Argument 'segmentations' cannot be empty!")
-    
-    sorted_segmentations = sorted(segmentations, key=(lambda x: x['area']), reverse=True) # sort the masks in ascending order of area 
+
+    sorted_segmentations = sorted(segmentations, key=(lambda x: x["area"]), reverse=True)  # sort the masks in ascending order of area
     axes.set_autoscale_on(False)
     # create a rgba colour channel tensor with width and height matching the segmentation masks
-    rgba = np.ones((sorted_segmentations[0]['segmentation'].shape[0], # width
-                    sorted_segmentations[0]['segmentation'].shape[1], # height
-                    4)) 
-    rgba[:, :, 3] = 0 # set all the alpha channel values to 0
+    rgba = np.ones(
+        (
+            sorted_segmentations[0]["segmentation"].shape[0],  # width
+            sorted_segmentations[0]["segmentation"].shape[1],  # height
+            4,
+        )
+    )
+    rgba[:, :, 3] = 0  # set all the alpha channel values to 0
     for seg in sorted_segmentations:
-        mask = seg['segmentation'].astype(np.bool) # capture the boolean mask matrix
-        rgba[mask] = np.concatenate([np.random.random(3), [0.35]]) # update the masked region with a new RGBA colour - random RGB with a fixed alpha value
-    axes.imshow(rgba)
+        mask = seg["segmentation"].astype(np.bool)  # capture the boolean mask matrix
+        rgba[mask] = np.concatenate(
+            [np.random.random(3), [0.35]]
+        )  # update the masked region with a new RGBA colour - random RGB with a fixed alpha value
+    axes.imshow(rgba)  # type: ignore
