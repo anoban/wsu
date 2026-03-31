@@ -80,21 +80,23 @@ def plot_segmentations(ax: Axes, masks: NDArray[np.integer], height: int, width:
     return ax
 
 
-def plot_predictions(predictions: list[dict[str, Any]], axes: Axes) -> None:
+def plot_predictions(segmentations: list[dict[str, Any]], axes: Axes) -> None:
     """
-    an alternative of the plot_segmentations function, this is designed to handle raw outputs from SAM and SAM2 models.
+    an alternative to the plot_segmentations function, that's designed to handle raw outputs from SAM and SAM2 models.
     this output is expected to be a list of segmentation dictoionaries
     """
     
-    if len(predictions) == 0:
-        return
+    if len(segmentations) == 0: # if the segmentation list is empty
+        raise ValueError("Argument 'segmentations' cannot be empty!")
     
-    sorted_anns = sorted(predictions, key=(lambda x: x['area']), reverse=True) # sor the masks in ascending order of area 
+    sorted_segmentations = sorted(segmentations, key=(lambda x: x['area']), reverse=True) # sort the masks in ascending order of area 
     axes.set_autoscale_on(False)
-    rgba = np.ones((sorted_anns[0]['segmentation'].shape[0], sorted_anns[0]['segmentation'].shape[1], 4)) # 
-    rgba[:,:,3] = 0
-    for ann in sorted_anns:
-        m = ann['segmentation']
-        color_mask = np.concatenate([np.random.random(3), [0.35]])
-        rgba[m] = color_mask
+    # create a rgba colour channel tensor with width and height matching the segmentation masks
+    rgba = np.ones((sorted_segmentations[0]['segmentation'].shape[0], # width
+                    sorted_segmentations[0]['segmentation'].shape[1], # height
+                    4)) 
+    rgba[:, :, 3] = 0 # set all the alpha channel values to 0
+    for seg in sorted_segmentations:
+        mask = seg['segmentation'].astype(np.bool) # capture the boolean mask matrix
+        rgba[mask] = np.concatenate([np.random.random(3), [0.35]]) # update the masked region with a new RGBA colour - random RGB with a fixed alpha value
     axes.imshow(rgba)
