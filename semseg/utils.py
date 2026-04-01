@@ -5,6 +5,7 @@ import numpy as np
 import torch
 from matplotlib.axes import Axes
 from numpy.typing import NDArray
+from skimage import filters
 
 __all__: list[str] = ["rgb_image_to_tensor", "tensor_to_rgb_image", "downscale_to_uchars", "plot_segmentations", "plot_predictions"]
 
@@ -51,11 +52,34 @@ def downscale_to_uchars(tensor: torch.Tensor | NDArray[np.floating]) -> torch.Te
     return tensor.type(torch.uint8) if isinstance(tensor, torch.Tensor) else tensor.astype(np.uint8)
 
 
-def __overlay_edges():
-    # https://opencv.org/edge-detection-using-opencv/
-    # https://scikit-image.org/docs/0.25.x/auto_examples/edges/plot_edge_filter.html
+def __edges(mask: NDArray[np.integer | np.floating], algorithm: str = "sobel") -> tuple[NDArray[np.integer]]:
+    """
+    find the edge of the segmentation mask area to apply a contrast to the border, to increase the visibility of the masks
+    https://opencv.org/edge-detection-using-opencv/
+    https://scikit-image.org/docs/0.25.x/auto_examples/edges/plot_edge_filter.html
+    we opt for scikit-image instead of the lumpy OpenCV
+    returns a tuple of arrays with identical sizes where the first array is the row offsets and second one is the column offsets
+    for the pixels that define the object edge
+    """
 
-def plot_segmentations(axes: Axes, masks: NDArray[np.integer], height: int, width: int, alpha: float = 0.35, borders: bool = True) -> Axes:
+    EDGE_DETECTION_ALGORITHMS = ("sobel", "roberts", "scharr")
+    if algorithm not in EDGE_DETECTION_ALGORITHMS:
+        raise ValueError(f"Unsupported edge detection algorithm specified, expected one of {EDGE_DETECTION_ALGORITHMS}, got {algorithm}!")
+
+    if algorithm == "sobel":
+        edge = filters.sobel(image=mask)  # type: ignore
+    elif algorithm == "roberts":
+        edge = filters.roberts(image=mask)  # type: ignore
+    else:  # algorithm == "scharr"
+        edge = filters.scharr(image=mask)  # type: ignore
+
+    # edge is not a boolean matrix, it is a matrix of continuous values
+    return np.where(edge > 0)  # type: ignore
+
+
+def plot_segmentations(
+    axes: Axes, masks: NDArray[np.integer | np.floating], height: int, width: int, alpha: float = 0.35, borders: bool = True
+) -> Axes:
     """
     overlay segmentation results of a segmentation model on an image (or empty axes)
     the parameter `masks` is expected to be a 3 dimensional numpy array of shape (N, H, W) where N is the number of binary masks,
