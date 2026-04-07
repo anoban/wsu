@@ -3,6 +3,7 @@
 library("ape")
 library("phytools")
 library("corHMM")
+library("RColorBrewer")
 
 PHYLOGENY <- ape::read.tree("../data/chapter2/uphylomaker/FRED_subset_collab_395sp.tre") # 395 species
 stopifnot(length(PHYLOGENY$tip.label) == 395)
@@ -162,3 +163,6 @@ ape::tiplabels(pie = to.matrix(states$state, sort(unique(states$state))), piecol
 legend("topright", legend = sort(unique(states$state)), pt.bg = state_colors, cex = 3, pt.cex = 5, pch = 21, ncol = 1)
 dev.off()
 
+# the above tree with an outer circle added to show order delineation amongst tips
+data <- read.csv("../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv")
+data
