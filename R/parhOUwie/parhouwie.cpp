@@ -43,7 +43,7 @@
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/R-4.5.3/bin/R.exe)" }; // the install directory of the R.exe binary
 [[maybe_unused]] static constexpr wchar_t FRED_ROOT_DIAMETER[] { LR"(F00679)" };
 [[maybe_unused]] static constexpr wchar_t FRED_SPECIFIC_ROOT_LENGTH[] { LR"(F00727)" };
 
@@ -284,7 +284,7 @@ namespace houwie {
             L"library('OUwie');"
             L"set.seed(1, kind = 'Mersenne-Twister');" // make sure reruns don't give us inconsistent results, don't know how useful this is
             L"phylogeny <- ape::read.tree('%s');"
-            L"data <- read.csv('%s')[, c('binominal', 'state', '%s'];"
+            L"data <- read.csv('%s')[, c('binominal', 'state', '%s')];"
             L"stopifnot(all(phylogeny$tip.label == data$binominal));"
             L"model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = %1u, discrete_model = '%s', continuous_model = '%s', nSim = %llu, null.model = %s);"
             L"saveRDS(object = model, file = '%s');",
@@ -342,14 +342,14 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 // THESE TWO STRUCTS ARE INTENTIONALLY PLACED HERE TO BE FRESHLY CREATED IN EVERY ITERATION!!!!
                 STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                 .wShowWindow = SW_HIDE }; // DON'T WANT TO SEE 9 INTERPRETER SESSIONS ON SCREEN
+                                                 .wShowWindow = SW_HIDE }; // whether or not to display the terminal for the launched process
                 PROCESS_INFORMATION procinfo {};
 
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
                         LR"(./../../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv)",
-                        L"()",
+                        FRED_ROOT_DIAMETER,
                         static_cast<houwie::DISCRETE_MODELS>(dmod),
                         static_cast<houwie::CONTINUOUS_MODELS>(cmod),
                         LR"(./../../data/chapter2/rdata/parallel/LOG_RD_995SP_100SIMS/)",
@@ -360,11 +360,14 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                     ::exit(EXIT_FAILURE);
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
+#ifndef __TEST__
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
-                // ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
+                // ::_putws(cmdline.c_str());
+#else
                 ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
                 ::_putws(cmdline.c_str());
-
+#endif
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= NPARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
