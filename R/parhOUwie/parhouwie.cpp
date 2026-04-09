@@ -43,7 +43,9 @@
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
 #define HOUWIE_VARIABLE_ALPHA_WARNING "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
+[[maybe_unused]] static constexpr wchar_t FRED_ROOT_DIAMETER[] { LR"(F00679)" };
+[[maybe_unused]] static constexpr wchar_t FRED_SPECIFIC_ROOT_LENGTH[] { LR"(F00727)" };
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
@@ -347,9 +349,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
                         LR"(./../../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv)",
+                        L"()",
                         static_cast<houwie::DISCRETE_MODELS>(dmod),
                         static_cast<houwie::CONTINUOUS_MODELS>(cmod),
-                        LR"(./../rdata/parallel/LOG_RD_995SP_5/)",
+                        LR"(./../../data/chapter2/rdata/parallel/LOG_RD_995SP_100SIMS/)",
                         nullptr,
                         nm,
                         100
