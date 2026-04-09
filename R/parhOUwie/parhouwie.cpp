@@ -42,8 +42,7 @@
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
-#define HOUWIE_VARIABLE_ALPHA_WARNING                                                                            \
-    "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
+#define HOUWIE_VARIABLE_ALPHA_WARNING "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
 static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/R-4.5.2/bin/R.exe)" }; // the install directory of the R.exe binary
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
@@ -64,9 +63,7 @@ namespace utils {
 
     // get the string representation of a _WIN32 error code
 
-    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(
-        _In_ const unsigned long& errcode
-    ) noexcept {
+    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(_In_ const unsigned long& errcode) noexcept {
         static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE };     // length of the error message buffer in number of wchar_t s
         static wchar_t                      buffer[ERRORMSG_BUFFSIZE] { 0 }; // needs to be in static memory for returning
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
@@ -74,19 +71,10 @@ namespace utils {
 
         // https://devblogs.microsoft.com/oldnewthing/20191025-00/?p=103025
         // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessage
-        unsigned long nbyteswritten = ::FormatMessageW(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK,
-            nullptr,
-            errcode,
-            0,
-            buffer,
-            ERRORMSG_BUFFSIZE,
-            nullptr
-        );
+        unsigned long nbyteswritten =
+            ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK, nullptr, errcode, 0, buffer, ERRORMSG_BUFFSIZE, nullptr);
 
-        if (
-            !nbyteswritten
-        ) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
+        if (!nbyteswritten) { // will be 0 if the call above to FormatMessageW failed; if that, the error string is not found in the system, try Ntdsbmsg.dll
             // if the library hasn't already been loaded by previous calls to this function
             if (!handle_ntdsbmsg) handle_ntdsbmsg = ::LoadLibraryW(L"Ntdsbmsg.DLL");
             if (!handle_ntdsbmsg) { // will be NULL if the DLL failed to load
@@ -95,13 +83,7 @@ namespace utils {
             }
 
             nbyteswritten = ::FormatMessageW(
-                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK,
-                handle_ntdsbmsg,
-                errcode,
-                0,
-                buffer,
-                ERRORMSG_BUFFSIZE,
-                nullptr
+                FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK, handle_ntdsbmsg, errcode, 0, buffer, ERRORMSG_BUFFSIZE, nullptr
             );
             // ::FreeLibrary(handle_ntdsbmsg); // detach the DLL from the process - atexit() will handle this for us
         }
@@ -110,10 +92,7 @@ namespace utils {
 
     // will only return true when the wait is signalled success
     [[nodiscard]] static inline bool __stdcall handle_parallel_waits(
-        _Inout_ std::vector<HANDLE64>& phandles,
-        _Inout_ std::vector<HANDLE64>& thandles,
-        _In_ const bool&               all,
-        _In_ const unsigned long&      duration
+        _Inout_ std::vector<HANDLE64>& phandles, _Inout_ std::vector<HANDLE64>& thandles, _In_ const bool& all, _In_ const unsigned long& duration
     ) noexcept {
         // made the function more customizeable
         // WAIT_OBJECT_0 is defined as 0 and WAIT_ABANDONED_0 is defined as 0x00000080L
@@ -158,10 +137,7 @@ namespace utils {
         // WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)
         else if ((waitstatus >= WAIT_ABANDONED_0) && (waitstatus < (WAIT_ABANDONED_0 + phandles.size()))) {
             if (all) {
-                ::fputws(
-                    L"WaitForMultipleObjects signalled WAIT_ABANDONED with bWaitAll set to TRUE, 1 or more probable abandoned mutexes!\n",
-                    stderr
-                );
+                ::fputws(L"WaitForMultipleObjects signalled WAIT_ABANDONED with bWaitAll set to TRUE, 1 or more probable abandoned mutexes!\n", stderr);
                 goto CLOSE_ACTIVE_HANDLES_AND_EXIT;
             }
             // bWaitAll == FALSE
@@ -207,19 +183,15 @@ namespace houwie {
     };
 
     enum class CONTINUOUS_MODELS : unsigned char {
-        OUM, // only the continuous trait optimum varies depending on the discrete state regimes
-        OUMA [[deprecated(
-            HOUWIE_VARIABLE_ALPHA_WARNING
-        )]],  // the continuous trait optimum and the pull towards the optimum vary depending on the discrete state regimes
-        OUMV, // the continuous trait optimum and the rate of continuous trait evolution vary depending on the discrete state regimes
+        OUM,                                                // only the continuous trait optimum varies depending on the discrete state regimes
+        OUMA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]], // the continuous trait optimum and the pull towards the optimum vary depending on the discrete state regimes
+        OUMV,                                               // the continuous trait optimum and the rate of continuous trait evolution vary depending on the discrete state regimes
         OUMVA [[deprecated(
             HOUWIE_VARIABLE_ALPHA_WARNING
         )]] // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
     };
 
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _dmod_tostr(
-        _In_ const DISCRETE_MODELS& model
-    ) noexcept {
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _dmod_tostr(_In_ const DISCRETE_MODELS& model) noexcept {
         switch (model) {
             case DISCRETE_MODELS::ER  : return L"ER";
             case DISCRETE_MODELS::SYM : return L"SYM";
@@ -228,9 +200,7 @@ namespace houwie {
         // MSVC bitches about "not all control paths return a value"
     }
 
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _cmod_tostr(
-        _In_ const CONTINUOUS_MODELS& model
-    ) noexcept {
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _cmod_tostr(_In_ const CONTINUOUS_MODELS& model) noexcept {
         switch (model) {
             case CONTINUOUS_MODELS::OUM   : return L"OUM";
             case CONTINUOUS_MODELS::OUMA  : return L"OUMA";
@@ -264,16 +234,7 @@ namespace houwie {
                 suffix
             );
         else // e.g. C:/Users/Documents/ARDOUMV_F00679_CD.Rds
-            ::swprintf_s(
-                buffer,
-                SAVERDS_NAME_LENGTH,
-                L"%s%s%s_%s_%s.Rds",
-                savedir,
-                _dmod_tostr(dmodel),
-                _cmod_tostr(cmodel),
-                contrait,
-                nullmodel ? L"CID" : L"CD"
-            );
+            ::swprintf_s(buffer, SAVERDS_NAME_LENGTH, L"%s%s%s_%s_%s.Rds", savedir, _dmod_tostr(dmodel), _cmod_tostr(cmodel), contrait, nullmodel ? L"CID" : L"CD");
 
         return buffer;
     }
@@ -292,23 +253,17 @@ namespace houwie {
     ) noexcept {
         // make sure that all the paths are valid, using separate conditional for detailed error reporting
         if (!::PathFileExistsW(savedir)) {
-            ::fwprintf_s(
-                stderr, L"Invalid argument savedir in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError())
-            );
+            ::fwprintf_s(stderr, L"Invalid argument savedir in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError()));
             return false;
         }
 
         if (!::PathFileExistsW(phylogeny)) {
-            ::fwprintf_s(
-                stderr, L"Invalid argument phylogeny in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError())
-            );
+            ::fwprintf_s(stderr, L"Invalid argument phylogeny in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError()));
             return false;
         }
 
         if (!::PathFileExistsW(traitdata)) {
-            ::fwprintf_s(
-                stderr, L"Invalid argument traitdata in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError())
-            );
+            ::fwprintf_s(stderr, L"Invalid argument traitdata in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError()));
             return false;
         }
 
@@ -463,9 +418,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
 
     if (is_broken_prematurely) {
         exitcode = EXIT_FAILURE;
-        ::fwprintf_s(
-            stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches
-        );
+        ::fwprintf_s(stderr, L"Process launch terminated prematurely, %llu active processes running at termination!\n", nsucceeded_launches);
     }
 
     // return only when all the processs are signalled (ON PREMATURE LOOP BREAK OR SUCCESSFUL COMPLETION)
