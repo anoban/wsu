@@ -59,13 +59,13 @@ static HINSTANCE handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const
 
 namespace utils {
 
-    extern "C" inline void __cdecl __release_ntdbsdll() noexcept {
+    extern "C" inline void __cdecl release_ntdbsdll() noexcept {
         if (handle_ntdsbmsg) ::FreeLibrary(handle_ntdsbmsg);
     }
 
     // get the string representation of a _WIN32 error code
 
-    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall __error_code_to_wstring(_In_ const unsigned long& errcode) noexcept {
+    [[nodiscard, clang::always_inline]] static inline const wchar_t* __stdcall error_code_to_wstring(_In_ const unsigned long& errcode) noexcept {
         static constexpr unsigned long long ERRORMSG_BUFFSIZE { 0x2EE };     // length of the error message buffer in number of wchar_t s
         static wchar_t                      buffer[ERRORMSG_BUFFSIZE] { 0 }; // needs to be in static memory for returning
         // without this the previously written buffer can get partially overwritten and returned in subsequent function invocations
@@ -113,7 +113,7 @@ namespace utils {
         // WAIT_FAILED or WAIT_TIMEOUT
         switch (waitstatus) {
             case WAIT_FAILED :
-                ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", __error_code_to_wstring(::GetLastError()));
+                ::fwprintf_s(stderr, L"WaitForMultipleObjects signalled WAIT_FAILED, %s\n", error_code_to_wstring(::GetLastError()));
                 if (all) goto CLOSE_ACTIVE_HANDLES_AND_EXIT; // if the wait was for all processes, close all the handles and return false
                 return false;                                // else just return false
 
@@ -178,13 +178,13 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
 } // namespace utils
 
 namespace houwie {
-    enum class DISCRETE_MODELS : unsigned char {
+    enum class DISCRETE_MODEL : unsigned char {
         ER,  // all rates are identical
         SYM, // symmetrically identical rates
         ARD  // all rates are allowed to be different (asymmetrically)
     };
 
-    enum class CONTINUOUS_MODELS : unsigned char {
+    enum class CONTINUOUS_MODEL : unsigned char {
         OUM,                                                // only the continuous trait optimum varies depending on the discrete state regimes
         OUMA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]], // the continuous trait optimum and the pull towards the optimum vary depending on the discrete state regimes
         OUMV,                                               // the continuous trait optimum and the rate of continuous trait evolution vary depending on the discrete state regimes
@@ -193,32 +193,32 @@ namespace houwie {
         )]] // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
     };
 
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _dmod_tostr(_In_ const DISCRETE_MODELS& model) noexcept {
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall dmod_tostr(_In_ const DISCRETE_MODEL& model) noexcept {
         switch (model) {
-            case DISCRETE_MODELS::ER  : return L"ER";
-            case DISCRETE_MODELS::SYM : return L"SYM";
-            case DISCRETE_MODELS::ARD : return L"ARD";
+            case DISCRETE_MODEL::ER  : return L"ER";
+            case DISCRETE_MODEL::SYM : return L"SYM";
+            case DISCRETE_MODEL::ARD : return L"ARD";
         }
         // MSVC bitches about "not all control paths return a value"
     }
 
-    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall _cmod_tostr(_In_ const CONTINUOUS_MODELS& model) noexcept {
+    [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall cmod_tostr(_In_ const CONTINUOUS_MODEL& model) noexcept {
         switch (model) {
-            case CONTINUOUS_MODELS::OUM   : return L"OUM";
-            case CONTINUOUS_MODELS::OUMA  : return L"OUMA";
-            case CONTINUOUS_MODELS::OUMV  : return L"OUMV";
-            case CONTINUOUS_MODELS::OUMVA : return L"OUMVA";
+            case CONTINUOUS_MODEL::OUM   : return L"OUM";
+            case CONTINUOUS_MODEL::OUMA  : return L"OUMA";
+            case CONTINUOUS_MODEL::OUMV  : return L"OUMV";
+            case CONTINUOUS_MODEL::OUMVA : return L"OUMVA";
         }
         // MSVC bitches about "not all control paths return a value"
     }
 
-    [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall _rdspath(
-        _In_ const DISCRETE_MODELS&   dmodel,
-        _In_ const CONTINUOUS_MODELS& cmodel,
-        _In_ const wchar_t* const     contrait, // e.g. F00727
-        _In_ const wchar_t* const     savedir,  // assumed ends with a forward slash, e.g. "C:/Users/Documents/"
-        _In_ const bool&              nullmodel,
-        _In_ const wchar_t* const     suffix // e.g. _1006sp
+    [[clang::always_inline, nodiscard]] static inline const wchar_t* __stdcall rds_path(
+        _In_ const DISCRETE_MODEL&   dmodel,
+        _In_ const CONTINUOUS_MODEL& cmodel,
+        _In_ const wchar_t* const    contrait, // e.g. F00727
+        _In_ const wchar_t* const    savedir,  // assumed ends with a forward slash, e.g. "C:/Users/Documents/"
+        _In_ const bool&             nullmodel,
+        _In_ const wchar_t* const    suffix // e.g. _1006sp
     ) noexcept {
         static constexpr unsigned long long SAVERDS_NAME_LENGTH { MAX_PATH };
         static wchar_t                      buffer[SAVERDS_NAME_LENGTH] {};
@@ -229,14 +229,14 @@ namespace houwie {
                 SAVERDS_NAME_LENGTH,
                 L"%s%s%s_%s_%s_%s.Rds", // we expect the directory path to end with a forward slash
                 savedir,
-                _dmod_tostr(dmodel),
-                _cmod_tostr(cmodel),
+                dmod_tostr(dmodel),
+                cmod_tostr(cmodel),
                 contrait,
                 nullmodel ? L"CID" : L"CD",
                 suffix
             );
         else // e.g. C:/Users/Documents/ARDOUMV_F00679_CD.Rds
-            ::swprintf_s(buffer, SAVERDS_NAME_LENGTH, L"%s%s%s_%s_%s.Rds", savedir, _dmod_tostr(dmodel), _cmod_tostr(cmodel), contrait, nullmodel ? L"CID" : L"CD");
+            ::swprintf_s(buffer, SAVERDS_NAME_LENGTH, L"%s%s%s_%s_%s.Rds", savedir, dmod_tostr(dmodel), cmod_tostr(cmodel), contrait, nullmodel ? L"CID" : L"CD");
 
         return buffer;
     }
@@ -246,8 +246,8 @@ namespace houwie {
         _In_ const wchar_t* const      phylogeny,
         _In_ const wchar_t* const      traitdata,
         _In_ const wchar_t* const      contrait,
-        _In_ const DISCRETE_MODELS&    dmodel,
-        _In_ const CONTINUOUS_MODELS&  cmodel,
+        _In_ const DISCRETE_MODEL&     dmodel,
+        _In_ const CONTINUOUS_MODEL&   cmodel,
         _In_ const wchar_t* const      savedir,
         _In_ const wchar_t* const      suffix,
         _In_ const bool&               nullmodel,
@@ -255,24 +255,24 @@ namespace houwie {
     ) noexcept {
         // make sure that all the paths are valid, using separate conditional for detailed error reporting
         if (!::PathFileExistsW(savedir)) {
-            ::fwprintf_s(stderr, L"Invalid argument savedir in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError()));
+            ::fwprintf_s(stderr, L"Invalid argument savedir in call to " __FUNCTIONW__ ". %s\n", utils::error_code_to_wstring(::GetLastError()));
             return false;
         }
 
         if (!::PathFileExistsW(phylogeny)) {
-            ::fwprintf_s(stderr, L"Invalid argument phylogeny in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError()));
+            ::fwprintf_s(stderr, L"Invalid argument phylogeny in call to " __FUNCTIONW__ ". %s\n", utils::error_code_to_wstring(::GetLastError()));
             return false;
         }
 
         if (!::PathFileExistsW(traitdata)) {
-            ::fwprintf_s(stderr, L"Invalid argument traitdata in call to " __FUNCTIONW__ ". %s\n", utils::__error_code_to_wstring(::GetLastError()));
+            ::fwprintf_s(stderr, L"Invalid argument traitdata in call to " __FUNCTIONW__ ". %s\n", utils::error_code_to_wstring(::GetLastError()));
             return false;
         }
 
         if (buffer.size() < RSCRIPT_BUFFSIZE) buffer.resize(RSCRIPT_BUFFSIZE);
         ::memset(buffer.data(), 0, buffer.size() * sizeof(wchar_t)); // clean up the buffer before every new write
-        const wchar_t* const rdspath = _rdspath(dmodel, cmodel, contrait, savedir, nullmodel, suffix);
-        if (!rdspath) return false;
+        const wchar_t* const rds_savepath = rds_path(dmodel, cmodel, contrait, savedir, nullmodel, suffix);
+        if (!rds_savepath) return false;
 
         ::swprintf_s(
             buffer.data(),
@@ -293,11 +293,11 @@ namespace houwie {
             contrait,
             // if null_model is true, then it's a CID model with 2 rate categories, else it's a CD model with just 1 rate category
             nullmodel ? 2U : 1U,
-            _dmod_tostr(dmodel),
-            _cmod_tostr(cmodel),
+            dmod_tostr(dmodel),
+            cmod_tostr(cmodel),
             nsims,
             nullmodel ? L"TRUE" : L"FALSE",
-            rdspath
+            rds_savepath
         );
 
         return true;
@@ -311,7 +311,7 @@ namespace houwie {
 // TURNS OUT THAT THE EXPRESSION ARGUMENT (-e) MUST BE ENCLOSED IN DOUBLE QUOTES NOT SINGLE QUOTES!!
 
 int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]) {
-    ::atexit(utils::__release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
+    ::atexit(utils::release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
 
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
     // SYSTEM_INFO sysinf {};
@@ -342,7 +342,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                 // THESE TWO STRUCTS ARE INTENTIONALLY PLACED HERE TO BE FRESHLY CREATED IN EVERY ITERATION!!!!
                 STARTUPINFOW        starupinfo { .cb          = sizeof(STARTUPINFOW),
                                                  .dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES | STARTF_FORCEONFEEDBACK,
-                                                 .wShowWindow = SW_HIDE }; // whether or not to display the terminal for the launched process
+                                                 .wShowWindow = SW_HIDE }; // whether or not to display the terminal for the launched processes
                 PROCESS_INFORMATION procinfo {};
 
                 if (!houwie::generate_rscript(
@@ -350,8 +350,8 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
                         LR"(./../../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv)",
                         FRED_ROOT_DIAMETER,
-                        static_cast<houwie::DISCRETE_MODELS>(dmod),
-                        static_cast<houwie::CONTINUOUS_MODELS>(cmod),
+                        static_cast<houwie::DISCRETE_MODEL>(dmod),
+                        static_cast<houwie::CONTINUOUS_MODEL>(cmod),
                         LR"(./../../data/chapter2/rdata/parallel/LOG_RD_995SP_100SIMS/)",
                         nullptr,
                         nm,
@@ -401,10 +401,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                     ::fwprintf_s( // log where the launch failed
                         stderr,
                         L"Failed to launch %s-%s-%s fit, Error in call to ::CreateProcessW: %s\n",
-                        houwie::_dmod_tostr(static_cast<houwie::DISCRETE_MODELS>(dmod)),
-                        houwie::_cmod_tostr(static_cast<houwie::CONTINUOUS_MODELS>(cmod)),
+                        houwie::dmod_tostr(static_cast<houwie::DISCRETE_MODEL>(dmod)),
+                        houwie::cmod_tostr(static_cast<houwie::CONTINUOUS_MODEL>(cmod)),
                         nm ? L"CID" : L"CD",
-                        utils::__error_code_to_wstring(::GetLastError())
+                        utils::error_code_to_wstring(::GetLastError())
                     );
                     continue; // move on to the next launch
                 }
