@@ -4,7 +4,7 @@
     #error This is a Windows only implementation that liberally uses the Win32 API, not meant to be used on other platforms!.
 #endif
 
-// clang .\parhouwie.cpp -Wall -Wextra -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
+// clang .\parhouwie.cpp -Wall -Wextra -Wpedantic -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
 // cl .\parhouwie.cpp /Wall /std:c++20 /O2 /MT /EHsc /DNDEBUG /D_NDEBUG
 
 #if defined(_MSC_FULL_VER) && !defined(__llvm__) // MSVC specific warnings
