@@ -349,10 +349,10 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                         rscript, // the launch directory of this programme will have all the needed files
                         LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
                         LR"(./../../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv)",
-                        FRED_ROOT_DIAMETER,
+                        FRED_SPECIFIC_ROOT_LENGTH,
                         static_cast<houwie::DISCRETE_MODEL>(dmod),
                         static_cast<houwie::CONTINUOUS_MODEL>(cmod),
-                        LR"(./../../data/chapter2/rdata/parallel/LOG_RD_995SP_100SIMS/)",
+                        LR"(./../../data/chapter2/rdata/parallel/LOG_SRL_995SP_100SIMS/)",
                         nullptr,
                         nm,
                         100
