@@ -83,7 +83,12 @@ paired_dc_changes <- function(phylogeny, rdextant, srlextant, discextant, rdinte
 }
 
 
-plot_houwie_averages <- function(model_avraged_params) {
-    #
-
+failed_convergence <- function(model_table, stripoff='', threshold_diff_aicc=1e5){
+  # expected to directly redirect the output of the OUwie::hOUwie() function to this function
+  model_names <- row.names(model_table)
+  model_names <- gsub(pattern = stripoff, replacement = '', x = model_names) # strip off the specified pattern from the names
+  aiccs <- model_table[, "AICc"] # this becomes a hard requirement of the function, that the input dataframe needs to have a column named "AICc"
+  # so the criteria is that the absoulte difference AICc of a given model and the model with the highest AICc (worst fit) shouldn't exceed 1e5,
+  # else it's considered a convergence failure
+  model_names[abs(aiccs - max(aiccs)) >= threshold_diff_aicc]  # with an option provided to pass in a custom difference threshold
 }
