@@ -1,11 +1,6 @@
-// this thing has been a lifesaver :)
-
 #if !(defined(_WIN32) || defined(_WIN64)) && !(defined(_MSC_VER) || defined(_MSC_FULL_VER))
     #error This is a Windows only implementation that liberally uses the Win32 API, not meant to be used on other platforms!.
 #endif
-
-// clang .\parhouwie.cpp -Wall -Wextra -Wpedantic -static -march=native -DNDEBUG -D_NDEBUG -O3 -std=c++20 -o .\parhouwie.exe
-// cl .\parhouwie.cpp /Wall /std:c++20 /O2 /MT /EHsc /DNDEBUG /D_NDEBUG
 
 #if defined(_MSC_FULL_VER) && !defined(__llvm__) // MSVC specific warnings
     #pragma warning(disable : 4267 4710 4711 4774 4800 4820)
@@ -41,12 +36,10 @@
 #include <string>
 #include <vector>
 
-#pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
-
-static constexpr unsigned long long NPARALLEL_PROCESSES { 0xA }, NTOTAL_PROCESSES { 0x1E };
-static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit too generous here
-static constexpr wchar_t            EXECUTABLE_PATH[] { LR"(C:\Program Files\LLVM\bin\clang.exe)" };
-static constexpr wchar_t            PYTHON_FULLPATH[] { LR"(C:\Program Files\Python314\python.exe)" };
+static constexpr unsigned long long       NPARALLEL_PROCESSES { 0xA }, NTOTAL_PROCESSES { 0x1E };
+static constexpr unsigned long long       CMDLINE_BUFFSIZE { 0xFF };
+[[maybe_unused]] static constexpr wchar_t EXECUTABLE_PATH[] { LR"(C:\Program Files\LLVM\bin\clang.exe)" };
+[[maybe_unused]] static constexpr wchar_t PYTHON_FULLPATH[] { LR"(C:\Program Files\Python314\python.exe)" };
 
 #define PATH LR"(./dummy.exe)"
 
