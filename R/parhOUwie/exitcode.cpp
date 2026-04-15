@@ -33,6 +33,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
+#include <numeric>
 #include <string>
 #include <vector>
 
@@ -258,6 +259,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
     if (!utils::handle_parallel_waits(active_process_handles, active_thread_handles, proc_exitcodes, true, INFINITE)) exitcode = EXIT_FAILURE;
 
     for (unsigned long i = 0; i < proc_exitcodes.size(); ++i) ::wprintf_s(L"Proc No: %3lu - exitcode: %lu\n", i, proc_exitcodes[i]);
+    const auto sum { std::accumulate(proc_exitcodes.cbegin(), proc_exitcodes.cend(), 0ul) };
 
     return exitcode;
 }
