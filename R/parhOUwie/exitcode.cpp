@@ -47,7 +47,8 @@ static constexpr unsigned long long NPARALLEL_PROCESSES { 0xA }, NTOTAL_PROCESSE
 static constexpr unsigned long long CMDLINE_BUFFSIZE { 0x6F0 }; // being a bit too generous here
 static constexpr wchar_t            EXECUTABLE_PATH[] { LR"(C:\Program Files\LLVM\bin\clang.exe)" };
 static constexpr wchar_t            PYTHON_FULLPATH[] { LR"(C:\Program Files\Python314\python.exe)" };
-static constexpr wchar_t            PYTHON[] { LR"(python.exe)" }; // because python.exe is already in PATH
+
+#define PATH LR"(./dummy.exe)"
 
 static HINSTANCE handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
 
@@ -149,7 +150,8 @@ CLOSE_ACTIVE_HANDLES_AND_EXIT:                                    // close all t
         for (unsigned long i = 0; i < phandles.size(); ++i) {     // taking it for granted that phandles.size()==thandles.size()
             if (!::GetExitCodeProcess(phandles.at(i), &exitcode)) // 0 is failed
                 ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", error_code_to_wstring(::GetLastError()));
-            exitcodes.push_back(exitcode);
+            else
+                exitcodes.push_back(exitcode);
             ::CloseHandle(phandles.at(i));
             ::CloseHandle(thandles.at(i));
         }
@@ -162,7 +164,8 @@ CLOSE_SELECTED_HANDLE_AND_EXIT:
         // capture the exit code
         if (!::GetExitCodeProcess(*(phandles.data() + handle_offset), &exitcode))
             ::fwprintf_s(stderr, L"GetExitCodeProcess returned 0, %s\n", error_code_to_wstring(::GetLastError()));
-        exitcodes.push_back(exitcode);
+        else
+            exitcodes.push_back(exitcode);
         ::CloseHandle(*(phandles.data() + handle_offset));
         phandles.erase(phandles.begin() + handle_offset); // remove the signalled process
         ::CloseHandle(*(thandles.data() + handle_offset));
@@ -197,11 +200,12 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
         PROCESS_INFORMATION procinfo {};
 
         ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
-        // ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --hello", EXECUTABLE_PATH);
+        ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --hello", PATH);
 
         // for python.exe
-        ::swprintf_s(cmdline.data(), cmdline.size(), L"%s -c \"import sys; sys.exit(%d)\"", PYTHON_FULLPATH, ::rand());
-        ::_putws(cmdline.c_str());
+        // ::swprintf_s(cmdline.data(), cmdline.size(), L"%s -c \"import sys; sys.exit(%d)\"", PYTHON_FULLPATH, ::rand());
+
+        // ::_putws(cmdline.c_str());
         // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
         if (active_process_handles.size() >= NPARALLEL_PROCESSES) {
             // if we are at capacity and wait failed, break out the loop and focus on the already active processes
@@ -219,7 +223,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
         // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
         // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
         if (!::CreateProcessW(
-                PYTHON_FULLPATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                 cmdline.data(),
                 nullptr,
                 nullptr,
@@ -235,7 +239,7 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
             ::fwprintf_s( // log where the launch failed
                         stderr,
                         L"Failed to launch %s, Error in call to ::CreateProcessW: %s\n",
-                        PYTHON_FULLPATH,
+                        PATH,
                         utils::error_code_to_wstring(::GetLastError())
                     );
             continue; // move on to the next launch
