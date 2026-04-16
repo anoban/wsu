@@ -42,7 +42,7 @@ static constexpr unsigned long long       CMDLINE_BUFFSIZE { 0xFF };
 [[maybe_unused]] static constexpr wchar_t EXECUTABLE_PATH[] { LR"(C:\Program Files\LLVM\bin\clang.exe)" };
 [[maybe_unused]] static constexpr wchar_t PYTHON_FULLPATH[] { LR"(C:\Program Files\Python314\python.exe)" };
 
-#define PATH LR"(./dummy.exe)"
+#define PATH LR"(./dummy.exe)" // dummy test executable
 
 static HINSTANCE handle_ntdsbmsg {}; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables) handle to Ntdsbmsg.dll
 
