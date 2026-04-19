@@ -1,11 +1,11 @@
 library("ape")
 library("corHMM")
 
-readallRds <- function(dirpath, cd, regstrip, rmunderscores = TRUE) {
+readallRds <- function(dirpath, cd, regstrip, rm_underscores = TRUE) {
     # dirpath = path to the directory containing the .Rds files
     # cd = character dependent or independent models, these are expected to contain "CD" or "CID" in their names
     # regstrip = the regex pattern to strip out of the file names when naming objects, can be a plain string as well
-    # rmunderscores - strip all the underscores in the object name
+    # rm_underscores - strip all the underscores in the object name
 
     fnames <- list.files(dirpath) # all the files in the specified dir
     if(cd) fnames <- fnames[grep(pattern = "CD", fnames)]
@@ -15,7 +15,7 @@ readallRds <- function(dirpath, cd, regstrip, rmunderscores = TRUE) {
     paths <- paste0(dirpath, fnames) # relative paths for all the Rds files
     stopifnot(length(fnames)==length(paths))
 
-    mnames <- gsub(x = gsub(pattern = regstrip, replacement = '', x = fnames), pattern = ifelse(rmunderscores, '_', ''), replacement = '') # remove the unnecessary parts of the file names to create the model names
+    mnames <- gsub(x = gsub(pattern = regstrip, replacement = '', x = fnames), pattern = ifelse(rm_underscores, '_', ''), replacement = '') # remove the unnecessary parts of the file names to create the model names
     # also remove all the underscores
     stopifnot(length(fnames)==length(mnames))
 
