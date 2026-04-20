@@ -6,9 +6,11 @@ from typing import Dict, List
 import numpy as np
 import PIL
 import torch
+from PIL import Image
+from torchvision.transforms import v2
+
 from sam3.model import box_ops
 from sam3.model.data_misc import FindStage, interpolate
-from torchvision.transforms import v2
 
 
 class Sam3Processor:
@@ -60,20 +62,16 @@ class Sam3Processor:
         inst_interactivity_en = self.model.inst_interactive_predictor is not None
         if inst_interactivity_en and "sam2_backbone_out" in state["backbone_out"]:
             sam2_backbone_out = state["backbone_out"]["sam2_backbone_out"]
-            sam2_backbone_out["backbone_fpn"][0] = (
-                self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s0(
-                    sam2_backbone_out["backbone_fpn"][0]
-                )
+            sam2_backbone_out["backbone_fpn"][0] = self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s0(
+                sam2_backbone_out["backbone_fpn"][0]
             )
-            sam2_backbone_out["backbone_fpn"][1] = (
-                self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s1(
-                    sam2_backbone_out["backbone_fpn"][1]
-                )
+            sam2_backbone_out["backbone_fpn"][1] = self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s1(
+                sam2_backbone_out["backbone_fpn"][1]
             )
         return state
 
     @torch.inference_mode()
-    def set_image_batch(self, images: List[np.ndarray], state=None):
+    def set_image_batch(self, images: List[Image.Image], state=None):
         """Sets the image batch on which we want to do predictions."""
         if state is None:
             state = {}
@@ -81,31 +79,22 @@ class Sam3Processor:
         if not isinstance(images, list):
             raise ValueError("Images must be a list of PIL images or tensors")
         assert len(images) > 0, "Images list must not be empty"
-        assert isinstance(images[0], PIL.Image.Image), (
-            "Images must be a list of PIL images"
-        )
+        assert isinstance(images[0], Image.Image), "Images must be a list of PIL images"
 
         state["original_heights"] = [image.height for image in images]
         state["original_widths"] = [image.width for image in images]
 
-        images = [
-            self.transform(v2.functional.to_image(image).to(self.device))
-            for image in images
-        ]
+        images = [self.transform(v2.functional.to_image(image).to(self.device)) for image in images]
         images = torch.stack(images, dim=0)
         state["backbone_out"] = self.model.backbone.forward_image(images)
         inst_interactivity_en = self.model.inst_interactive_predictor is not None
         if inst_interactivity_en and "sam2_backbone_out" in state["backbone_out"]:
             sam2_backbone_out = state["backbone_out"]["sam2_backbone_out"]
-            sam2_backbone_out["backbone_fpn"][0] = (
-                self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s0(
-                    sam2_backbone_out["backbone_fpn"][0]
-                )
+            sam2_backbone_out["backbone_fpn"][0] = self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s0(
+                sam2_backbone_out["backbone_fpn"][0]
             )
-            sam2_backbone_out["backbone_fpn"][1] = (
-                self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s1(
-                    sam2_backbone_out["backbone_fpn"][1]
-                )
+            sam2_backbone_out["backbone_fpn"][1] = self.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s1(
+                sam2_backbone_out["backbone_fpn"][1]
             )
         return state
 
@@ -136,9 +125,7 @@ class Sam3Processor:
 
         if "language_features" not in state["backbone_out"]:
             # Looks like we don't have a text prompt yet. This is allowed, but we need to set the text prompt to "visual" for the model to rely only on the geometric prompt
-            dummy_text_outputs = self.model.backbone.forward_text(
-                ["visual"], device=self.device
-            )
+            dummy_text_outputs = self.model.backbone.forward_text(["visual"], device=self.device)
             state["backbone_out"].update(dummy_text_outputs)
 
         if "geometric_prompt" not in state:
@@ -154,11 +141,7 @@ class Sam3Processor:
     def reset_all_prompts(self, state: Dict):
         """Removes all the prompts and results"""
         if "backbone_out" in state:
-            backbone_keys_to_del = [
-                "language_features",
-                "language_mask",
-                "language_embeds",
-            ]
+            backbone_keys_to_del = ["language_features", "language_mask", "language_embeds"]
             for key in backbone_keys_to_del:
                 if key in state["backbone_out"]:
                     del state["backbone_out"][key]
@@ -182,10 +165,7 @@ class Sam3Processor:
     @torch.inference_mode()
     def _forward_grounding(self, state: Dict):
         outputs = self.model.forward_grounding(
-            backbone_out=state["backbone_out"],
-            find_input=self.find_stage,
-            geometric_prompt=state["geometric_prompt"],
-            find_target=None,
+            backbone_out=state["backbone_out"], find_input=self.find_stage, geometric_prompt=state["geometric_prompt"], find_target=None
         )
 
         out_bbox = outputs["pred_boxes"]
@@ -208,12 +188,7 @@ class Sam3Processor:
         scale_fct = torch.tensor([img_w, img_h, img_w, img_h]).to(self.device)
         boxes = boxes * scale_fct[None, :]
 
-        out_masks = interpolate(
-            out_masks.unsqueeze(1),
-            (img_h, img_w),
-            mode="bilinear",
-            align_corners=False,
-        ).sigmoid()
+        out_masks = interpolate(out_masks.unsqueeze(1), (img_h, img_w), mode="bilinear", align_corners=False).sigmoid()
 
         state["masks_logits"] = out_masks
         state["masks"] = out_masks > 0.5

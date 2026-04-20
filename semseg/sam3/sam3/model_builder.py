@@ -2,7 +2,6 @@
 
 # pyre-unsafe
 
-import os
 from typing import Optional
 
 import pkg_resources
@@ -10,6 +9,7 @@ import torch
 import torch.nn as nn
 from huggingface_hub import hf_hub_download
 from iopath.common.file_io import g_pathmgr
+
 from sam3.model.decoder import (
     DecoupledTransformerDecoderLayerv2,
     SimpleRoPEAttention,
@@ -22,18 +22,9 @@ from sam3.model.decoder import (
 from sam3.model.encoder import TransformerEncoderFusion, TransformerEncoderLayer
 from sam3.model.geometry_encoders import SequenceGeometryEncoder
 from sam3.model.maskformer_segmentation import PixelDecoder, UniversalSegmentationHead
-from sam3.model.memory import (
-    CXBlock,
-    SimpleFuser,
-    SimpleMaskDownSampler,
-    SimpleMaskEncoder,
-)
-from sam3.model.model_misc import (
-    DotProductScoring,
-    MLP,
-    MultiheadAttentionWrapper as MultiheadAttention,
-    TransformerWrapper,
-)
+from sam3.model.memory import CXBlock, SimpleFuser, SimpleMaskDownSampler, SimpleMaskEncoder
+from sam3.model.model_misc import MLP, DotProductScoring, TransformerWrapper
+from sam3.model.model_misc import MultiheadAttentionWrapper as MultiheadAttention
 from sam3.model.multiplex_utils import MultiplexController
 from sam3.model.necks import Sam3DualViTDetNeck, Sam3TriViTDetNeck
 from sam3.model.position_encoding import PositionEmbeddingSine
@@ -44,7 +35,6 @@ from sam3.model.sam3_video_inference import Sam3VideoInferenceWithInstanceIntera
 from sam3.model.sam3_video_predictor import Sam3VideoPredictorMultiGPU
 from sam3.model.text_encoder_ve import VETextEncoder
 from sam3.model.tokenizer_ve import SimpleTokenizer
-from sam3.model.video_tracking_multiplex import VideoTrackingDynamicMultiplex
 from sam3.model.vitdet import ViT
 from sam3.model.vl_combiner import SAM3VLBackbone, SAM3VLBackboneTri, TriHeadVisionOnly
 from sam3.sam.transformer import RoPEAttention
@@ -66,11 +56,7 @@ _setup_tf32()
 def _create_position_encoding(precompute_resolution=None):
     """Create position encoding for visual backbone."""
     return PositionEmbeddingSine(
-        num_pos_feats=256,
-        normalize=True,
-        scale=None,
-        temperature=10000,
-        precompute_resolution=precompute_resolution,
+        num_pos_feats=256, normalize=True, scale=None, temperature=10000, precompute_resolution=precompute_resolution
     )
 
 
@@ -133,20 +119,8 @@ def _create_transformer_encoder(use_fa3=False) -> TransformerEncoderFusion:
         pos_enc_at_cross_attn_keys=False,
         pos_enc_at_cross_attn_queries=False,
         pre_norm=True,
-        self_attention=MultiheadAttention(
-            num_heads=8,
-            dropout=0.1,
-            embed_dim=256,
-            batch_first=True,
-            use_fa3=use_fa3,
-        ),
-        cross_attention=MultiheadAttention(
-            num_heads=8,
-            dropout=0.1,
-            embed_dim=256,
-            batch_first=True,
-            use_fa3=use_fa3,
-        ),
+        self_attention=MultiheadAttention(num_heads=8, dropout=0.1, embed_dim=256, batch_first=True, use_fa3=use_fa3),
+        cross_attention=MultiheadAttention(num_heads=8, dropout=0.1, embed_dim=256, batch_first=True, use_fa3=use_fa3),
     )
 
     encoder = TransformerEncoderFusion(
@@ -169,12 +143,7 @@ def _create_transformer_decoder(use_fa3=False) -> TransformerDecoder:
         d_model=256,
         dim_feedforward=2048,
         dropout=0.1,
-        cross_attention=MultiheadAttention(
-            num_heads=8,
-            dropout=0.1,
-            embed_dim=256,
-            use_fa3=use_fa3,
-        ),
+        cross_attention=MultiheadAttention(num_heads=8, dropout=0.1, embed_dim=256, use_fa3=use_fa3),
         n_heads=8,
         use_text_cross_attention=True,
     )
@@ -202,33 +171,15 @@ def _create_transformer_decoder(use_fa3=False) -> TransformerDecoder:
 
 def _create_dot_product_scoring():
     """Create dot product scoring module."""
-    prompt_mlp = MLP(
-        input_dim=256,
-        hidden_dim=2048,
-        output_dim=256,
-        num_layers=2,
-        dropout=0.1,
-        residual=True,
-        out_norm=nn.LayerNorm(256),
-    )
+    prompt_mlp = MLP(input_dim=256, hidden_dim=2048, output_dim=256, num_layers=2, dropout=0.1, residual=True, out_norm=nn.LayerNorm(256))
     return DotProductScoring(d_model=256, d_proj=256, prompt_mlp=prompt_mlp)
 
 
 def _create_segmentation_head(compile_mode=None, use_fa3=False):
     """Create segmentation head with pixel decoder."""
-    pixel_decoder = PixelDecoder(
-        num_upsampling_stages=3,
-        interpolation_mode="nearest",
-        hidden_dim=256,
-        compile_mode=compile_mode,
-    )
+    pixel_decoder = PixelDecoder(num_upsampling_stages=3, interpolation_mode="nearest", hidden_dim=256, compile_mode=compile_mode)
 
-    cross_attend_prompt = MultiheadAttention(
-        num_heads=8,
-        dropout=0,
-        embed_dim=256,
-        use_fa3=use_fa3,
-    )
+    cross_attend_prompt = MultiheadAttention(num_heads=8, dropout=0, embed_dim=256, use_fa3=use_fa3)
 
     segmentation_head = UniversalSegmentationHead(
         hidden_dim=256,
@@ -248,13 +199,7 @@ def _create_geometry_encoder():
     # Create position encoding for geometry encoder
     geo_pos_enc = _create_position_encoding()
     # Create CX block for fuser
-    cx_block = CXBlock(
-        dim=256,
-        kernel_size=7,
-        padding=3,
-        layer_scale_init_value=1.0e-06,
-        use_dwconv=True,
-    )
+    cx_block = CXBlock(dim=256, kernel_size=7, padding=3, layer_scale_init_value=1.0e-06, use_dwconv=True)
     # Create geometry encoder layer
     geo_layer = TransformerEncoderLayer(
         activation="relu",
@@ -263,20 +208,10 @@ def _create_geometry_encoder():
         dropout=0.1,
         pos_enc_at_attn=False,
         pre_norm=True,
-        self_attention=MultiheadAttention(
-            num_heads=8,
-            dropout=0.1,
-            embed_dim=256,
-            batch_first=False,
-        ),
+        self_attention=MultiheadAttention(num_heads=8, dropout=0.1, embed_dim=256, batch_first=False),
         pos_enc_at_cross_attn_queries=False,
         pos_enc_at_cross_attn_keys=True,
-        cross_attention=MultiheadAttention(
-            num_heads=8,
-            dropout=0.1,
-            embed_dim=256,
-            batch_first=False,
-        ),
+        cross_attention=MultiheadAttention(num_heads=8, dropout=0.1, embed_dim=256, batch_first=False),
     )
 
     # Create geometry encoder
@@ -300,13 +235,7 @@ def _create_geometry_encoder():
 
 
 def _create_sam3_model(
-    backbone,
-    transformer,
-    input_geometry_encoder,
-    segmentation_head,
-    dot_prod_scoring,
-    inst_interactive_predictor,
-    eval_mode,
+    backbone, transformer, input_geometry_encoder, segmentation_head, dot_prod_scoring, inst_interactive_predictor, eval_mode
 ):
     """Create the SAM3 image model."""
     common_params = {
@@ -326,15 +255,7 @@ def _create_sam3_model(
     if not eval_mode:
         from sam3.train.matcher import BinaryHungarianMatcherV2
 
-        matcher = BinaryHungarianMatcherV2(
-            focal=True,
-            cost_class=2.0,
-            cost_bbox=5.0,
-            cost_giou=2.0,
-            alpha=0.25,
-            gamma=2,
-            stable=False,
-        )
+        matcher = BinaryHungarianMatcherV2(focal=True, cost_class=2.0, cost_bbox=5.0, cost_giou=2.0, alpha=0.25, gamma=2, stable=False)
     common_params["matcher"] = matcher
     model = Sam3Image(**common_params)
 
@@ -344,35 +265,16 @@ def _create_sam3_model(
 def _create_tracker_maskmem_backbone():
     """Create the SAM3 Tracker memory encoder."""
     # Position encoding for mask memory backbone
-    position_encoding = PositionEmbeddingSine(
-        num_pos_feats=64,
-        normalize=True,
-        scale=None,
-        temperature=10000,
-        precompute_resolution=1008,
-    )
+    position_encoding = PositionEmbeddingSine(num_pos_feats=64, normalize=True, scale=None, temperature=10000, precompute_resolution=1008)
 
     # Mask processing components
-    mask_downsampler = SimpleMaskDownSampler(
-        kernel_size=3, stride=2, padding=1, interpol_size=[1152, 1152]
-    )
+    mask_downsampler = SimpleMaskDownSampler(kernel_size=3, stride=2, padding=1, interpol_size=[1152, 1152])
 
-    cx_block_layer = CXBlock(
-        dim=256,
-        kernel_size=7,
-        padding=3,
-        layer_scale_init_value=1.0e-06,
-        use_dwconv=True,
-    )
+    cx_block_layer = CXBlock(dim=256, kernel_size=7, padding=3, layer_scale_init_value=1.0e-06, use_dwconv=True)
 
     fuser = SimpleFuser(layer=cx_block_layer, num_layers=2)
 
-    maskmem_backbone = SimpleMaskEncoder(
-        out_dim=64,
-        position_encoding=position_encoding,
-        mask_downsampler=mask_downsampler,
-        fuser=fuser,
-    )
+    maskmem_backbone = SimpleMaskEncoder(out_dim=64, position_encoding=position_encoding, mask_downsampler=mask_downsampler, fuser=fuser)
 
     return maskmem_backbone
 
@@ -433,18 +335,12 @@ def _create_tracker_transformer():
     )
 
     # Transformer wrapper
-    transformer = TransformerWrapper(
-        encoder=encoder,
-        decoder=None,
-        d_model=256,
-    )
+    transformer = TransformerWrapper(encoder=encoder, decoder=None, d_model=256)
 
     return transformer
 
 
-def build_tracker(
-    apply_temporal_disambiguation: bool, with_backbone: bool = False, compile_mode=None
-) -> Sam3TrackerPredictor:
+def build_tracker(apply_temporal_disambiguation: bool, with_backbone: bool = False, compile_mode=None) -> Sam3TrackerPredictor:
     """
     Build the SAM3 Tracker module for video tracking.
 
@@ -500,35 +396,21 @@ def build_tracker(
 def _create_text_encoder(bpe_path: str) -> VETextEncoder:
     """Create SAM3 text encoder."""
     tokenizer = SimpleTokenizer(bpe_path=bpe_path)
-    return VETextEncoder(
-        tokenizer=tokenizer,
-        d_model=256,
-        width=1024,
-        heads=16,
-        layers=24,
-    )
+    return VETextEncoder(tokenizer=tokenizer, d_model=256, width=1024, heads=16, layers=24)
 
 
-def _create_vision_backbone(
-    compile_mode=None, enable_inst_interactivity=True
-) -> Sam3DualViTDetNeck:
+def _create_vision_backbone(compile_mode=None, enable_inst_interactivity=True) -> Sam3DualViTDetNeck:
     """Create SAM3 visual backbone with ViT and neck."""
     # Position encoding
     position_encoding = _create_position_encoding(precompute_resolution=1008)
     # ViT backbone
     vit_backbone: ViT = _create_vit_backbone(compile_mode=compile_mode)
-    vit_neck: Sam3DualViTDetNeck = _create_vit_neck(
-        position_encoding,
-        vit_backbone,
-        enable_inst_interactivity=enable_inst_interactivity,
-    )
+    vit_neck: Sam3DualViTDetNeck = _create_vit_neck(position_encoding, vit_backbone, enable_inst_interactivity=enable_inst_interactivity)
     # Visual neck
     return vit_neck
 
 
-def _create_sam3_transformer(
-    has_presence_token: bool = True, use_fa3: bool = False
-) -> TransformerWrapper:
+def _create_sam3_transformer(has_presence_token: bool = True, use_fa3: bool = False) -> TransformerWrapper:
     """Create SAM3 transformer encoder and decoder."""
     encoder: TransformerEncoderFusion = _create_transformer_encoder(use_fa3=use_fa3)
     decoder: TransformerDecoder = _create_transformer_decoder(use_fa3=use_fa3)
@@ -542,23 +424,12 @@ def _load_checkpoint(model, checkpoint_path):
         ckpt = torch.load(f, map_location="cpu", weights_only=True)
     if "model" in ckpt and isinstance(ckpt["model"], dict):
         ckpt = ckpt["model"]
-    sam3_image_ckpt = {
-        k.replace("detector.", ""): v for k, v in ckpt.items() if "detector" in k
-    }
+    sam3_image_ckpt = {k.replace("detector.", ""): v for k, v in ckpt.items() if "detector" in k}
     if model.inst_interactive_predictor is not None:
-        sam3_image_ckpt.update(
-            {
-                k.replace("tracker.", "inst_interactive_predictor.model."): v
-                for k, v in ckpt.items()
-                if "tracker" in k
-            }
-        )
+        sam3_image_ckpt.update({k.replace("tracker.", "inst_interactive_predictor.model."): v for k, v in ckpt.items() if "tracker" in k})
     missing_keys, _ = model.load_state_dict(sam3_image_ckpt, strict=False)
     if len(missing_keys) > 0:
-        print(
-            f"loaded {checkpoint_path} and found "
-            f"missing and/or unexpected keys:\n{missing_keys=}"
-        )
+        print(f"loaded {checkpoint_path} and found missing and/or unexpected keys:\n{missing_keys=}")
 
 
 def _setup_device_and_mode(model, device, eval_mode):
@@ -596,15 +467,11 @@ def build_sam3_image_model(
         A SAM3 image model
     """
     if bpe_path is None:
-        bpe_path = pkg_resources.resource_filename(
-            "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
-        )
+        bpe_path = pkg_resources.resource_filename("sam3", "assets/bpe_simple_vocab_16e6.txt.gz")
 
     # Create visual components
     compile_mode = "default" if compile else None
-    vision_encoder = _create_vision_backbone(
-        compile_mode=compile_mode, enable_inst_interactivity=enable_inst_interactivity
-    )
+    vision_encoder = _create_vision_backbone(compile_mode=compile_mode, enable_inst_interactivity=enable_inst_interactivity)
 
     # Create text components
     text_encoder = _create_text_encoder(bpe_path)
@@ -619,11 +486,7 @@ def build_sam3_image_model(
     dot_prod_scoring = _create_dot_product_scoring()
 
     # Create segmentation head if enabled
-    segmentation_head = (
-        _create_segmentation_head(compile_mode=compile_mode)
-        if enable_segmentation
-        else None
-    )
+    segmentation_head = _create_segmentation_head(compile_mode=compile_mode) if enable_segmentation else None
 
     # Create geometry encoder
     input_geometry_encoder = _create_geometry_encoder()
@@ -634,13 +497,7 @@ def build_sam3_image_model(
         inst_predictor = None
     # Create the SAM3 model
     model = _create_sam3_model(
-        backbone,
-        transformer,
-        input_geometry_encoder,
-        segmentation_head,
-        dot_prod_scoring,
-        inst_predictor,
-        eval_mode,
+        backbone, transformer, input_geometry_encoder, segmentation_head, dot_prod_scoring, inst_predictor, eval_mode
     )
     if load_from_HF and checkpoint_path is None:
         checkpoint_path = download_ckpt_from_hf(version="sam3")
@@ -695,9 +552,7 @@ def build_sam3_video_model(
         Sam3VideoInferenceWithInstanceInteractivity: The instantiated dense tracking model
     """
     if bpe_path is None:
-        bpe_path = pkg_resources.resource_filename(
-            "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
-        )
+        bpe_path = pkg_resources.resource_filename("sam3", "assets/bpe_simple_vocab_16e6.txt.gz")
 
     # Build Tracker module
     tracker = build_tracker(apply_temporal_disambiguation=apply_temporal_disambiguation)
@@ -712,17 +567,9 @@ def build_sam3_video_model(
 
     # Create main dot product scoring
     main_dot_prod_mlp = MLP(
-        input_dim=256,
-        hidden_dim=2048,
-        output_dim=256,
-        num_layers=2,
-        dropout=0.1,
-        residual=True,
-        out_norm=nn.LayerNorm(256),
+        input_dim=256, hidden_dim=2048, output_dim=256, num_layers=2, dropout=0.1, residual=True, out_norm=nn.LayerNorm(256)
     )
-    main_dot_prod_scoring = DotProductScoring(
-        d_model=256, d_proj=256, prompt_mlp=main_dot_prod_mlp
-    )
+    main_dot_prod_scoring = DotProductScoring(d_model=256, d_proj=256, prompt_mlp=main_dot_prod_mlp)
 
     # Build Detector module
     detector = Sam3ImageOnVideoMultiGPU(
@@ -802,9 +649,7 @@ def build_sam3_video_model(
         if "model" in ckpt and isinstance(ckpt["model"], dict):
             ckpt = ckpt["model"]
 
-        missing_keys, unexpected_keys = model.load_state_dict(
-            ckpt, strict=strict_state_dict_loading
-        )
+        missing_keys, unexpected_keys = model.load_state_dict(ckpt, strict=strict_state_dict_loading)
         if missing_keys:
             print(f"Missing keys: {missing_keys}")
         if unexpected_keys:
@@ -815,20 +660,12 @@ def build_sam3_video_model(
 
 
 def build_sam3_video_predictor(*model_args, gpus_to_use=None, **model_kwargs):
-    return Sam3VideoPredictorMultiGPU(
-        *model_args, gpus_to_use=gpus_to_use, **model_kwargs
-    )
+    return Sam3VideoPredictorMultiGPU(*model_args, gpus_to_use=gpus_to_use, **model_kwargs)
 
 
 def _create_multiplex_maskmem_backbone(multiplex_count=16):
     """Create the multiplex memory encoder with per-object mask channels."""
-    position_encoding = PositionEmbeddingSine(
-        num_pos_feats=256,
-        normalize=True,
-        scale=None,
-        temperature=10000,
-        precompute_resolution=1008,
-    )
+    position_encoding = PositionEmbeddingSine(num_pos_feats=256, normalize=True, scale=None, temperature=10000, precompute_resolution=1008)
 
     mask_downsampler = SimpleMaskDownSampler(
         kernel_size=3,
@@ -840,22 +677,11 @@ def _create_multiplex_maskmem_backbone(multiplex_count=16):
         input_channel_multiplier=2,
     )
 
-    cx_block_layer = CXBlock(
-        dim=256,
-        kernel_size=7,
-        padding=3,
-        layer_scale_init_value=1.0e-06,
-        use_dwconv=True,
-    )
+    cx_block_layer = CXBlock(dim=256, kernel_size=7, padding=3, layer_scale_init_value=1.0e-06, use_dwconv=True)
 
     fuser = SimpleFuser(layer=cx_block_layer, num_layers=2)
 
-    maskmem_backbone = SimpleMaskEncoder(
-        out_dim=256,
-        position_encoding=position_encoding,
-        mask_downsampler=mask_downsampler,
-        fuser=fuser,
-    )
+    maskmem_backbone = SimpleMaskEncoder(out_dim=256, position_encoding=position_encoding, mask_downsampler=mask_downsampler, fuser=fuser)
 
     return maskmem_backbone
 
@@ -863,13 +689,7 @@ def _create_multiplex_maskmem_backbone(multiplex_count=16):
 def _create_multiplex_transformer(use_fa3=False, use_rope_real=False):
     """Create the decoupled transformer for multiplex memory attention."""
     self_attention_rope = SimpleRoPEAttention(
-        d_model=256,
-        num_heads=8,
-        dropout_p=0.1,
-        rope_theta=10000.0,
-        feat_sizes=[72, 72],
-        use_fa3=use_fa3,
-        use_rope_real=use_rope_real,
+        d_model=256, num_heads=8, dropout_p=0.1, rope_theta=10000.0, feat_sizes=[72, 72], use_fa3=use_fa3, use_rope_real=use_rope_real
     )
 
     cross_attention_rope = SimpleRoPEAttention(
@@ -908,29 +728,16 @@ def _create_multiplex_transformer(use_fa3=False, use_rope_real=False):
         batch_first=True,
     )
 
-    transformer = TransformerWrapper(
-        encoder=encoder,
-        decoder=None,
-        d_model=256,
-    )
+    transformer = TransformerWrapper(encoder=encoder, decoder=None, d_model=256)
 
     return transformer
 
 
-def _create_multiplex_tri_backbone(
-    compile_mode=None, use_fa3=False, use_rope_real=False
-):
+def _create_multiplex_tri_backbone(compile_mode=None, use_fa3=False, use_rope_real=False):
     """Create the TriHead vision backbone for multiplex model."""
     position_encoding = _create_position_encoding(precompute_resolution=1008)
-    vit_backbone = _create_vit_backbone(
-        compile_mode=compile_mode, use_fa3=use_fa3, use_rope_real=use_rope_real
-    )
-    tri_neck = Sam3TriViTDetNeck(
-        trunk=vit_backbone,
-        position_encoding=position_encoding,
-        d_model=256,
-        scale_factors=[4.0, 2.0, 1.0],
-    )
+    vit_backbone = _create_vit_backbone(compile_mode=compile_mode, use_fa3=use_fa3, use_rope_real=use_rope_real)
+    tri_neck = Sam3TriViTDetNeck(trunk=vit_backbone, position_encoding=position_encoding, d_model=256, scale_factors=[4.0, 2.0, 1.0])
     return tri_neck
 
 
@@ -960,24 +767,11 @@ def build_sam3_multiplex_video_model(
         VideoTrackingDynamicMultiplex: The instantiated multiplex tracking model
     """
     # Build multiplex-specific components
-    maskmem_backbone = _create_multiplex_maskmem_backbone(
-        multiplex_count=multiplex_count
-    )
-    transformer = _create_multiplex_transformer(
-        use_fa3=use_fa3, use_rope_real=use_rope_real
-    )
-    tri_neck = _create_multiplex_tri_backbone(
-        compile_mode="max-autotune" if compile else None
-    )
-    backbone = TriHeadVisionOnly(
-        visual=tri_neck,
-        n_features=256,
-        scalp=0,
-    )
-    multiplex_controller = MultiplexController(
-        multiplex_count=multiplex_count,
-        eval_multiplex_count=multiplex_count,
-    )
+    maskmem_backbone = _create_multiplex_maskmem_backbone(multiplex_count=multiplex_count)
+    transformer = _create_multiplex_transformer(use_fa3=use_fa3, use_rope_real=use_rope_real)
+    tri_neck = _create_multiplex_tri_backbone(compile_mode="max-autotune" if compile else None)
+    backbone = TriHeadVisionOnly(visual=tri_neck, n_features=256, scalp=0)
+    multiplex_controller = MultiplexController(multiplex_count=multiplex_count, eval_multiplex_count=multiplex_count)
 
     # Build the multiplex model (use demo class for init_state and other demo methods)
     from sam3.model.video_tracking_multiplex_demo import Sam3VideoTrackingMultiplexDemo
@@ -1055,9 +849,7 @@ def build_sam3_multiplex_video_model(
         if "model" in ckpt and isinstance(ckpt["model"], dict):
             ckpt = ckpt["model"]
 
-        missing_keys, unexpected_keys = model.load_state_dict(
-            ckpt, strict=strict_state_dict_loading
-        )
+        missing_keys, unexpected_keys = model.load_state_dict(ckpt, strict=strict_state_dict_loading)
         if missing_keys:
             print(f"Missing keys: {missing_keys}")
         if unexpected_keys:
@@ -1105,15 +897,11 @@ def build_sam3_multiplex_video_predictor(
         Sam3MultiplexVideoPredictor: The fully-initialized predictor
     """
     if bpe_path is None:
-        bpe_path = pkg_resources.resource_filename(
-            "sam3", "assets/bpe_simple_vocab_16e6.txt.gz"
-        )
+        bpe_path = pkg_resources.resource_filename("sam3", "assets/bpe_simple_vocab_16e6.txt.gz")
 
     from sam3.model.sam3_multiplex_base import Sam3MultiplexPredictorWrapper
     from sam3.model.sam3_multiplex_detector import Sam3MultiplexDetector
-    from sam3.model.sam3_multiplex_tracking import (
-        Sam3MultiplexTrackingWithInteractivity,
-    )
+    from sam3.model.sam3_multiplex_tracking import Sam3MultiplexTrackingWithInteractivity
     from sam3.model.sam3_multiplex_video_predictor import Sam3MultiplexVideoPredictor
 
     # Build tracker
@@ -1130,17 +918,11 @@ def build_sam3_multiplex_video_predictor(
     tracker_model.backbone = None
 
     sam2_predictor = Sam3MultiplexPredictorWrapper(
-        model=tracker_model,
-        per_obj_inference=False,
-        fill_hole_area=0,
-        is_multiplex=True,
-        is_multiplex_dynamic=True,
+        model=tracker_model, per_obj_inference=False, fill_hole_area=0, is_multiplex=True, is_multiplex_dynamic=True
     )
 
     # Build detector
-    tri_neck = _create_multiplex_tri_backbone(
-        compile_mode=None, use_fa3=use_fa3, use_rope_real=use_rope_real
-    )
+    tri_neck = _create_multiplex_tri_backbone(compile_mode=None, use_fa3=use_fa3, use_rope_real=use_rope_real)
     text_encoder = _create_text_encoder(bpe_path)
     backbone = SAM3VLBackboneTri(scalp=0, visual=tri_neck, text=text_encoder)
     transformer = _create_sam3_transformer(use_fa3=use_fa3)
@@ -1206,9 +988,7 @@ def build_sam3_multiplex_video_predictor(
             ckpt = ckpt["model"]
         # Remap checkpoint keys if needed (internal naming -> OSS naming)
         # HF checkpoints are already remapped; local checkpoints may use old naming
-        needs_remap = any(
-            k.startswith("sam3_model.") or k.startswith("sam2_predictor.") for k in ckpt
-        )
+        needs_remap = any(k.startswith("sam3_model.") or k.startswith("sam2_predictor.") for k in ckpt)
         if needs_remap:
             remapped_ckpt = {}
             for k, v in ckpt.items():
@@ -1223,9 +1003,7 @@ def build_sam3_multiplex_video_predictor(
         if missing_keys:
             print(f"Missing keys ({len(missing_keys)}): {missing_keys[:10]}...")
         if unexpected_keys:
-            print(
-                f"Unexpected keys ({len(unexpected_keys)}): {unexpected_keys[:10]}..."
-            )
+            print(f"Unexpected keys ({len(unexpected_keys)}): {unexpected_keys[:10]}...")
 
     demo_model.cuda().eval()
 
@@ -1308,11 +1086,7 @@ def build_sam3_predictor(
         )
     elif version == "sam3":
         return build_sam3_video_predictor(
-            checkpoint_path=checkpoint_path,
-            bpe_path=bpe_path,
-            compile=compile,
-            async_loading_frames=async_loading_frames,
-            **kwargs,
+            checkpoint_path=checkpoint_path, bpe_path=bpe_path, compile=compile, async_loading_frames=async_loading_frames, **kwargs
         )
     else:
         raise ValueError(f"Unknown version: {version!r}. Use 'sam3' or 'sam3.1'.")
