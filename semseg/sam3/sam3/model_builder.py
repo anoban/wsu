@@ -7,8 +7,6 @@ from typing import Optional
 import pkg_resources
 import torch
 import torch.nn as nn
-from huggingface_hub import hf_hub_download
-from iopath.common.file_io import g_pathmgr
 
 from sam3.model.decoder import (
     DecoupledTransformerDecoderLayerv2,
@@ -418,9 +416,9 @@ def _create_sam3_transformer(has_presence_token: bool = True, use_fa3: bool = Fa
     return TransformerWrapper(encoder=encoder, decoder=decoder, d_model=256)
 
 
-def _load_checkpoint(model, checkpoint_path):
+def _load_checkpoint(model, checkpoint_path: str):
     """Load model checkpoint from file."""
-    with g_pathmgr.open(checkpoint_path, "rb") as f:
+    with open(checkpoint_path, "rb") as f:
         ckpt = torch.load(f, map_location="cpu", weights_only=True)
     if "model" in ckpt and isinstance(ckpt["model"], dict):
         ckpt = ckpt["model"]
@@ -442,11 +440,10 @@ def _setup_device_and_mode(model, device, eval_mode):
 
 
 def build_sam3_image_model(
+    checkpoint_path: str,
     bpe_path=None,
     device="cuda" if torch.cuda.is_available() else "cpu",
     eval_mode=True,
-    checkpoint_path=None,
-    load_from_HF=True,
     enable_segmentation=True,
     enable_inst_interactivity=False,
     compile=False,
@@ -499,11 +496,9 @@ def build_sam3_image_model(
     model = _create_sam3_model(
         backbone, transformer, input_geometry_encoder, segmentation_head, dot_prod_scoring, inst_predictor, eval_mode
     )
-    if load_from_HF and checkpoint_path is None:
-        checkpoint_path = download_ckpt_from_hf(version="sam3")
-    # Load checkpoint if provided
-    if checkpoint_path is not None:
-        _load_checkpoint(model, checkpoint_path)
+
+    # Load checkpoint
+    _load_checkpoint(model, checkpoint_path)
 
     # Setup device and mode
     model = _setup_device_and_mode(model, device, eval_mode)
@@ -511,28 +506,8 @@ def build_sam3_image_model(
     return model
 
 
-def download_ckpt_from_hf(version="sam3"):
-    """Download model checkpoint from HuggingFace Hub.
-
-    Args:
-        version: "sam3" or "sam3.1"
-    """
-    if version == "sam3.1":
-        repo_id = "facebook/sam3.1"
-        ckpt_name = "sam3.1_multiplex.pt"
-        cfg_name = "config.json"
-    else:
-        repo_id = "facebook/sam3"
-        ckpt_name = "sam3.pt"
-        cfg_name = "config.json"
-    _ = hf_hub_download(repo_id=repo_id, filename=cfg_name)
-    checkpoint_path = hf_hub_download(repo_id=repo_id, filename=ckpt_name)
-    return checkpoint_path
-
-
 def build_sam3_video_model(
-    checkpoint_path: Optional[str] = None,
-    load_from_HF=True,
+    checkpoint_path: str,
     bpe_path: Optional[str] = None,
     has_presence_token: bool = True,
     geo_encoder_use_img_cross_attn: bool = True,
@@ -640,20 +615,18 @@ def build_sam3_video_model(
             compile_model=compile,
         )
 
-    # Load checkpoint if provided
-    if load_from_HF and checkpoint_path is None:
-        checkpoint_path = download_ckpt_from_hf(version="sam3")
-    if checkpoint_path is not None:
-        with g_pathmgr.open(checkpoint_path, "rb") as f:
-            ckpt = torch.load(f, map_location="cpu", weights_only=True)
+    # Load checkpoint
+
+    with open(checkpoint_path, "rb") as f:
+        ckpt = torch.load(f, map_location="cpu", weights_only=True)
         if "model" in ckpt and isinstance(ckpt["model"], dict):
             ckpt = ckpt["model"]
 
-        missing_keys, unexpected_keys = model.load_state_dict(ckpt, strict=strict_state_dict_loading)
-        if missing_keys:
-            print(f"Missing keys: {missing_keys}")
-        if unexpected_keys:
-            print(f"Unexpected keys: {unexpected_keys}")
+    missing_keys, unexpected_keys = model.load_state_dict(ckpt, strict=strict_state_dict_loading)
+    if missing_keys:
+        print(f"Missing keys: {missing_keys}")
+    if unexpected_keys:
+        print(f"Unexpected keys: {unexpected_keys}")
 
     model.to(device=device)
     return model
@@ -742,8 +715,7 @@ def _create_multiplex_tri_backbone(compile_mode=None, use_fa3=False, use_rope_re
 
 
 def build_sam3_multiplex_video_model(
-    checkpoint_path: Optional[str] = None,
-    load_from_HF=True,
+    checkpoint_path: str,
     multiplex_count: int = 16,
     use_fa3: bool = False,
     use_rope_real: bool = False,
@@ -840,27 +812,24 @@ def build_sam3_multiplex_video_model(
         use_memory_selection=False,
     )
 
-    # Load checkpoint if provided
-    if load_from_HF and checkpoint_path is None:
-        checkpoint_path = download_ckpt_from_hf(version="sam3.1")
-    if checkpoint_path is not None:
-        with g_pathmgr.open(checkpoint_path, "rb") as f:
-            ckpt = torch.load(f, map_location="cpu", weights_only=True)
-        if "model" in ckpt and isinstance(ckpt["model"], dict):
-            ckpt = ckpt["model"]
+    # Load checkpoint
+    with open(checkpoint_path, "rb") as f:
+        ckpt = torch.load(f, map_location="cpu", weights_only=True)
+    if "model" in ckpt and isinstance(ckpt["model"], dict):
+        ckpt = ckpt["model"]
 
-        missing_keys, unexpected_keys = model.load_state_dict(ckpt, strict=strict_state_dict_loading)
-        if missing_keys:
-            print(f"Missing keys: {missing_keys}")
-        if unexpected_keys:
-            print(f"Unexpected keys: {unexpected_keys}")
+    missing_keys, unexpected_keys = model.load_state_dict(ckpt, strict=strict_state_dict_loading)
+    if missing_keys:
+        print(f"Missing keys: {missing_keys}")
+    if unexpected_keys:
+        print(f"Unexpected keys: {unexpected_keys}")
 
     model.to(device=device)
     return model
 
 
 def build_sam3_multiplex_video_predictor(
-    checkpoint_path: Optional[str] = None,
+    checkpoint_path: str,
     bpe_path: Optional[str] = None,
     max_num_objects: int = 16,
     multiplex_count: int = 16,
@@ -980,30 +949,30 @@ def build_sam3_multiplex_video_predictor(
     )
 
     # Load checkpoint (auto-download from HuggingFace if not provided)
-    if checkpoint_path is None:
-        checkpoint_path = download_ckpt_from_hf(version="sam3.1")
-    if checkpoint_path is not None:
-        ckpt = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
-        if "model" in ckpt and isinstance(ckpt["model"], dict):
-            ckpt = ckpt["model"]
-        # Remap checkpoint keys if needed (internal naming -> OSS naming)
-        # HF checkpoints are already remapped; local checkpoints may use old naming
-        needs_remap = any(k.startswith("sam3_model.") or k.startswith("sam2_predictor.") for k in ckpt)
-        if needs_remap:
-            remapped_ckpt = {}
-            for k, v in ckpt.items():
-                new_k = k
-                if k.startswith("sam3_model."):
-                    new_k = "detector." + k[len("sam3_model.") :]
-                elif k.startswith("sam2_predictor."):
-                    new_k = "tracker." + k[len("sam2_predictor.") :]
-                remapped_ckpt[new_k] = v
-            ckpt = remapped_ckpt
-        missing_keys, unexpected_keys = demo_model.load_state_dict(ckpt, strict=False)
-        if missing_keys:
-            print(f"Missing keys ({len(missing_keys)}): {missing_keys[:10]}...")
-        if unexpected_keys:
-            print(f"Unexpected keys ({len(unexpected_keys)}): {unexpected_keys[:10]}...")
+
+    with open(file=checkpoint_path, mode="rb") as fp:
+        ckpt = torch.load(fp, map_location="cpu", weights_only=True)
+
+    if "model" in ckpt and isinstance(ckpt["model"], dict):
+        ckpt = ckpt["model"]
+    # Remap checkpoint keys if needed (internal naming -> OSS naming)
+    # HF checkpoints are already remapped; local checkpoints may use old naming
+    needs_remap = any(k.startswith("sam3_model.") or k.startswith("sam2_predictor.") for k in ckpt)
+    if needs_remap:
+        remapped_ckpt = {}
+        for k, v in ckpt.items():
+            new_k = k
+            if k.startswith("sam3_model."):
+                new_k = "detector." + k[len("sam3_model.") :]
+            elif k.startswith("sam2_predictor."):
+                new_k = "tracker." + k[len("sam2_predictor.") :]
+            remapped_ckpt[new_k] = v
+        ckpt = remapped_ckpt
+    missing_keys, unexpected_keys = demo_model.load_state_dict(ckpt, strict=False)
+    if missing_keys:
+        print(f"Missing keys ({len(missing_keys)}): {missing_keys[:10]}...")
+    if unexpected_keys:
+        print(f"Unexpected keys ({len(unexpected_keys)}): {unexpected_keys[:10]}...")
 
     demo_model.cuda().eval()
 
@@ -1019,7 +988,7 @@ def build_sam3_multiplex_video_predictor(
 
 
 def build_sam3_predictor(
-    checkpoint_path: Optional[str] = None,
+    checkpoint_path: str,
     bpe_path: Optional[str] = None,
     version: str = "sam3.1",  # "sam3" or "sam3.1"
     compile: bool = False,
