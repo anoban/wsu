@@ -1,0 +1,3 @@
+[submodule "R/thirdparty/U.PhyloMaker"]
+	path = R/thirdparty/U.PhyloMaker
+	url = https://github.com/jinyizju/U.PhyloMaker.git
