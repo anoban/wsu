@@ -8,7 +8,7 @@ Steps:
 
 1. `git clone <REPO_URL>`   
 
-2. `&"C:\R-x.y.z\bin\R.exe" CMD build <PACKAGE_NAME>` (PowerShell)       
+2. `&"C:\R-x.y.z\bin\R.exe" CMD build <PACKAGE_NAME>` --no-build-vignettes --ignore-vignettes (PowerShell)       
     Make sure the package name matches the name of the cloned repo.   
 	This will "build" the library into a .tar.gz archive that's ready to be installed. However, C/C++ sources (if included in the library) won't be built during this step.   
 
