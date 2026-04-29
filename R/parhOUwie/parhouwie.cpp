@@ -42,10 +42,12 @@
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
-#define HOUWIE_VARIABLE_ALPHA_WARNING "Warning: as of OUwie version 2.16, users are temporarily discouraged from using the variable alpha models!"
-static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/R-4.5.3/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
 [[maybe_unused]] static constexpr wchar_t FRED_ROOT_DIAMETER[] { LR"(F00679)" };
 [[maybe_unused]] static constexpr wchar_t FRED_SPECIFIC_ROOT_LENGTH[] { LR"(F00727)" };
+static constexpr wchar_t                  PATH_TO_PHYLOGENY[] { LR"()" };
+static constexpr wchar_t                  PATH_TO_TRAIT_DATA[] { LR"()" };
+static constexpr wchar_t                  PATH_TO_SAVE_RDS[] { LR"()" }; // must end with a foward slash
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
@@ -185,12 +187,10 @@ namespace houwie {
     };
 
     enum class CONTINUOUS_MODEL : unsigned char {
-        OUM,                                                // only the continuous trait optimum varies depending on the discrete state regimes
-        OUMA [[deprecated(HOUWIE_VARIABLE_ALPHA_WARNING)]], // the continuous trait optimum and the pull towards the optimum vary depending on the discrete state regimes
-        OUMV,                                               // the continuous trait optimum and the rate of continuous trait evolution vary depending on the discrete state regimes
-        OUMVA [[deprecated(
-            HOUWIE_VARIABLE_ALPHA_WARNING
-        )]] // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
+        OUM,  // only the continuous trait optimum varies depending on the discrete state regimes
+        OUMA, // the continuous trait optimum and the pull towards the optimum vary depending on the discrete state regimes
+        OUMV, // the continuous trait optimum and the rate of continuous trait evolution vary depending on the discrete state regimes
+        OUMVA // optima, rate of evolution and the pull towards the optima of the continuous trait vary depending on the discrete state regimes
     };
 
     [[clang::always_inline, nodiscard]] static inline constexpr const wchar_t* __stdcall dmod_tostr(_In_ const DISCRETE_MODEL& model) noexcept {
@@ -347,12 +347,12 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
 
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
-                        LR"(./../../data/chapter2/uphylomaker/collab_fineroots_log_995_species_means_5states.tre)",
-                        LR"(./../../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states_name_matched_with_phylogeny.csv)",
+                        PATH_TO_PHYLOGENY,
+                        PATH_TO_TRAIT_DATA,
                         FRED_SPECIFIC_ROOT_LENGTH,
                         static_cast<houwie::DISCRETE_MODEL>(dmod),
                         static_cast<houwie::CONTINUOUS_MODEL>(cmod),
-                        LR"(./../../data/chapter2/rdata/parallel/LOG_SRL_995SP_100SIMS/)",
+                        PATH_TO_SAVE_RDS,
                         nullptr,
                         nm,
                         100
