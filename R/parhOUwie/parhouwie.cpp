@@ -223,7 +223,13 @@ namespace houwie {
         static constexpr unsigned long long SAVERDS_NAME_LENGTH { MAX_PATH };
         static wchar_t                      buffer[SAVERDS_NAME_LENGTH] {};
         ::memset(buffer, 0, sizeof(buffer)); // we don't want buffer contents from previous writes intefereing with new writes
-        if (suffix)                          // e.g. C:/Users/Documents/ARDOUMV_F00679_CD_395sp.Rds
+
+        if (::wcsrchr(savedir, L'/') != (savedir + ::wcslen(savedir))) { // exit if savedir does not end with a foward slash
+            ::fputws(L"Invalid argument savedir in call to " __FUNCTIONW__ "; it must end with a foward slash!\n", stderr);
+            return nullptr;
+        }
+
+        if (suffix) // e.g. C:/Users/Documents/ARDOUMV_F00679_CD_395sp.Rds
             ::swprintf_s(
                 buffer,
                 SAVERDS_NAME_LENGTH,
@@ -310,7 +316,7 @@ namespace houwie {
 // figure out why the quotes get stripped away and how to preserve them when they are loaded into the R interpreter
 // TURNS OUT THAT THE EXPRESSION ARGUMENT (-e) MUST BE ENCLOSED IN DOUBLE QUOTES NOT SINGLE QUOTES!!
 
-int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]) {
+int wmain() {
     ::atexit(utils::release_ntdbsdll); // to release the Ntdsbmsg.DLL at the parent process exit
 
     // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlogicalprocessorinformationex
@@ -360,14 +366,11 @@ int wmain(_In_ [[maybe_unused]] int argc, [[maybe_unused]] _In_ wchar_t* wargv[]
                     ::exit(EXIT_FAILURE);
 
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
-#ifndef __TEST__
+
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
                 ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
                 // ::_putws(cmdline.c_str());
-#else
-                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"sys.exit(status=0)\"", RINTERPRETER_PATH);
-                ::_putws(cmdline.c_str());
-#endif
+
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
                 if (active_process_handles.size() >= NPARALLEL_PROCESSES) {
                     // if we are at capacity and wait failed, break out the loop and focus on the already active processes
