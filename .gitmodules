@@ -4,3 +4,6 @@
 [submodule "R/thirdparty/OUwie"]
 	path = R/thirdparty/OUwie
 	url = https://github.com/thej022214/OUwie.git
+[submodule "R/thirdparty/--force"]
+	path = R/thirdparty/--force
+	url = https://github.com/thej022214/OUwie.git
