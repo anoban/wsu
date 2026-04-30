@@ -8,6 +8,7 @@ from __future__ import absolute_import, division, print_function
 
 import logging
 import os
+from typing import override
 
 import numpy as np
 import torch
@@ -49,6 +50,7 @@ class SpatialGather_Module(nn.Module):
         self.cls_num = cls_num
         self.scale = scale
 
+    @override
     def forward(self, feats, probs):
         batch_size, c, h, w = probs.size(0), probs.size(1), probs.size(2), probs.size(3)
         probs = probs.view(batch_size, c, -1)
@@ -100,6 +102,7 @@ class _ObjectAttentionBlock(nn.Module):
             ModuleHelper.BNReLU(self.in_channels, bn_type=bn_type),
         )
 
+    @override
     def forward(self, x, proxy):
         batch_size, h, w = x.size(0), x.size(2), x.size(3)
         if self.scale > 1:
@@ -148,6 +151,7 @@ class SpatialOCR_Module(nn.Module):
             nn.Dropout2d(dropout),
         )
 
+    @override
     def forward(self, feats, proxy_feats):
         context = self.object_context_block(feats, proxy_feats)
 
@@ -169,6 +173,7 @@ class BasicBlock(nn.Module):
         self.downsample = downsample
         self.stride = stride
 
+    @override
     def forward(self, x):
         residual = x
 
@@ -203,6 +208,7 @@ class Bottleneck(nn.Module):
         self.downsample = downsample
         self.stride = stride
 
+    @override
     def forward(self, x):
         residual = x
 
@@ -334,6 +340,7 @@ class HighResolutionModule(nn.Module):
     def get_num_inchannels(self):
         return self.num_inchannels
 
+    @override
     def forward(self, x):
         if self.num_branches == 1:
             return [self.branches[0](x[0])]
@@ -405,7 +412,7 @@ class HighResolutionNet(nn.Module):
         self.transition3 = self._make_transition_layer(pre_stage_channels, num_channels)
         self.stage4, pre_stage_channels = self._make_stage(self.stage4_cfg, num_channels, multi_scale_output=True)
 
-        last_inp_channels = np.int(np.sum(pre_stage_channels))
+        last_inp_channels = int(np.sum(pre_stage_channels))
         ocr_mid_channels = config.MODEL.OCR.MID_CHANNELS
         ocr_key_channels = config.MODEL.OCR.KEY_CHANNELS
 
@@ -499,6 +506,7 @@ class HighResolutionNet(nn.Module):
 
         return nn.Sequential(*modules), num_inchannels
 
+    @override
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
