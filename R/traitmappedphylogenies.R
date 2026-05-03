@@ -153,7 +153,7 @@ tscale_max <- max(phytools::nodeHeights(phylogeny))
 states <- read.csv("../data/chapter2/FREDv3subset/collab_fineroots_log_995_species_means_5states.csv")[, c("binominal", "state")]
 
 # par(bg = NA)
-png("../plots/995_species_5states_mapped_phylogeny.png", width = 22000, height = 22000, units = "px", res = 400, bg = "transparent")
+png("../plots/995_species_5states_mapped_phylogeny.png", width = 22000, height = 22000, units = "px", res = 400)#, bg = "transparent")
 plot <- phytools::plotTree(tree = phylogeny, ftype = "i", fsize = 1.0, lwd = 1, offset = 2, part = 0.998, type = "fan")
 tscale_ticks <- seq(0, tscale_max, length.out = 20)
 tscale_axis <- axis(1, pos = -1, at = tscale_max - tscale_ticks, cex.axis = 1., labels = FALSE, col = "red")
