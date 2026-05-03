@@ -197,6 +197,8 @@ data/chapter2/austraits-7.0.0/*
 *.svg
 *.pdf
 semseg/images/MaxSee/*.*
+# keep the plots though
+!plots/*.*
 
 # videos
 *.mp4
