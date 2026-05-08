@@ -42,12 +42,15 @@
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
-static constexpr wchar_t                  RINTERPRETER_PATH[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
+static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
+
 [[maybe_unused]] static constexpr wchar_t FRED_ROOT_DIAMETER[] { LR"(F00679)" };
 [[maybe_unused]] static constexpr wchar_t FRED_SPECIFIC_ROOT_LENGTH[] { LR"(F00727)" };
-static constexpr wchar_t                  PATH_TO_PHYLOGENY[] { LR"()" };
-static constexpr wchar_t                  PATH_TO_TRAIT_DATA[] { LR"()" };
-static constexpr wchar_t                  PATH_TO_SAVE_RDS[] { LR"()" }; // must end with a foward slash
+[[maybe_unused]] static constexpr wchar_t FRED_ROOT_TISSUE_DENSITY[] { LR"(F00709)" };
+
+static constexpr wchar_t PATH_TO_PHYLOGENY[] { LR"()" };
+static constexpr wchar_t PATH_TO_TRAIT_DATA[] { LR"()" };
+static constexpr wchar_t PATH_TO_SAVE_RDS[] { LR"()" }; // must end with a foward slash
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
