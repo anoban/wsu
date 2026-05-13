@@ -42,15 +42,18 @@
 
 #pragma comment(lib, "Shlwapi.lib") // for ::PathFileExistsW
 
-static constexpr wchar_t RINTERPRETER_PATH[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
+namespace fred {
+    [[maybe_unused]] static constexpr wchar_t ROOT_DIAMETER[] { LR"(F00679)" };
+    [[maybe_unused]] static constexpr wchar_t SPECIFIC_ROOT_LENGTH[] { LR"(F00727)" };
+    [[maybe_unused]] static constexpr wchar_t ROOT_TISSUE_DENSITY[] { LR"(F00709)" };
+}
 
-[[maybe_unused]] static constexpr wchar_t FRED_ROOT_DIAMETER[] { LR"(F00679)" };
-[[maybe_unused]] static constexpr wchar_t FRED_SPECIFIC_ROOT_LENGTH[] { LR"(F00727)" };
-[[maybe_unused]] static constexpr wchar_t FRED_ROOT_TISSUE_DENSITY[] { LR"(F00709)" };
-
-static constexpr wchar_t PATH_TO_PHYLOGENY[] { LR"()" };
-static constexpr wchar_t PATH_TO_TRAIT_DATA[] { LR"()" };
-static constexpr wchar_t PATH_TO_SAVE_RDS[] { LR"()" }; // must end with a foward slash
+namespace paths {
+    static constexpr wchar_t RINTERPRETER[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
+    static constexpr wchar_t PHYLOGENY[] { LR"()" };
+    static constexpr wchar_t TRAIT_DATA[] { LR"()" };
+    static constexpr wchar_t SAVE_RDS[] { LR"()" }; // must end with a foward slash
+}
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
 static constexpr unsigned long long NPARALLEL_PROCESSES { 0xC };
@@ -356,12 +359,12 @@ int wmain() {
 
                 if (!houwie::generate_rscript(
                         rscript, // the launch directory of this programme will have all the needed files
-                        PATH_TO_PHYLOGENY,
-                        PATH_TO_TRAIT_DATA,
-                        FRED_SPECIFIC_ROOT_LENGTH,
+                        paths::PHYLOGENY,
+                        paths::TRAIT_DATA,
+                        fred::SPECIFIC_ROOT_LENGTH,
                         static_cast<houwie::DISCRETE_MODEL>(dmod),
                         static_cast<houwie::CONTINUOUS_MODEL>(cmod),
-                        PATH_TO_SAVE_RDS,
+                        paths::SAVE_RDS,
                         nullptr,
                         nm,
                         100
@@ -371,7 +374,7 @@ int wmain() {
                 ::memset(cmdline.data(), 0, cmdline.size() * sizeof(wchar_t));
 
                 // the double quotation marks enclosing the expression (-e) argument are absolutely critical
-                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", RINTERPRETER_PATH, rscript.c_str());
+                ::swprintf_s(cmdline.data(), cmdline.size(), L"%s --no-save -e \"%s\"", paths::RINTERPRETER, rscript.c_str());
                 // ::_putws(cmdline.c_str());
 
                 // if we are at (or above) capacity, halt the launch of new processes and wait for one to finish before laucning a new one
@@ -391,7 +394,7 @@ int wmain() {
                 // https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw
                 // https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
                 if (!::CreateProcessW(
-                        RINTERPRETER_PATH, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
+                        paths::RINTERPRETER, // DO NOT LEAVE THIS EMPTY!!! i.e. nullptr
                         cmdline.data(),
                         nullptr,
                         nullptr,
