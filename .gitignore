@@ -180,6 +180,7 @@ data/chapter2/FRED/*
 !data/chapter2/FRED/subsets
 data/chapter2/FungalRoot/*
 data/chapter2/wcvp/*
+data/chapter2/wcvp_dwca/*
 *.parquet
 
 .ipynb_checkpoints
