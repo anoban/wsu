@@ -140,7 +140,6 @@ Athyrium monomachii,Athyrium,monomachii,Athyriaceae,Polypodiales,AM
 Athyrium sinense,Athyrium,sinense,Athyriaceae,Polypodiales,AM
 Athyrium spinulosum,Athyrium,spinulosum,Athyriaceae,Polypodiales,AM
 Atractylis humilis,Atractylis,humilis,Asteraceae,Asterales,AM
-Austroblechnum lanceolatum,Austroblechnum,lanceolatum,Blechnaceae,Polypodiales,AM
 Baccaurea ramiflora,Baccaurea,ramiflora,Phyllanthaceae,Malpighiales,AM
 Baptisia alba,Baptisia,alba,Fabaceae,Fabales,AM
 Barringtonia fusicarpa,Barringtonia,fusicarpa,Lecythidaceae,Ericales,AM
@@ -161,6 +160,8 @@ Bituminaria bituminosa,Bituminaria,bituminosa,Fabaceae,Fabales,AM
 Blastus cochinchinensis,Blastus,cochinchinensis,Melastomataceae,Myrtales,AM
 Blastus pauciflorus,Blastus,pauciflorus,Melastomataceae,Myrtales,AM
 Blechnopsis orientalis,Blechnopsis,orientalis,Blechnaceae,Polypodiales,AM
+Blechnum fluviatilis,Blechnum,fluviatilis,Aspleniaceae,Polypodiales,AM
+Blechnum lanceolatum,Blechnum,lanceolatum,Aspleniaceae,Polypodiales,AM
 Blepharocalyx eggersii,Blepharocalyx,eggersii,Myrtaceae,Myrtales,AM
 Blumeodendron tokbrai,Blumeodendron,tokbrai,Euphorbiaceae,Malpighiales,AM
 Bouteloua curtipendula,Bouteloua,curtipendula,Poaceae,Poales,AM
@@ -235,7 +236,7 @@ Celtis timorensis,Celtis,timorensis,Cannabaceae,Rosales,AM
 Cenchrus americanus,Cenchrus,americanus,Poaceae,Poales,AM
 Centaurea pectinata,Centaurea,pectinata,Asteraceae,Asterales,AM
 Centronia laurifolia,Centronia,laurifolia,Melastomataceae,Myrtales,AM
-Cephalotaxus harringtonii,Cephalotaxus,harringtonii,Cephalotaxaceae,Cupressales,AM
+Cephalotaxus harringtonii,Cephalotaxus,harringtonii,Cephalotaxaceae,Pinales,AM
 Cerastium arvense,Cerastium,arvense,Caryophyllaceae,Caryophyllales,NMAM
 Cercidiphyllum japonicum,Cercidiphyllum,japonicum,Cercidiphyllaceae,Saxifragales,AM
 Cercis canadensis,Cercis,canadensis,Fabaceae,Fabales,AM
@@ -314,7 +315,6 @@ Cotoneaster acutifolius,Cotoneaster,acutifolius,Rosaceae,Rosales,AM
 Cotoneaster adpressus,Cotoneaster,adpressus,Rosaceae,Rosales,AM
 Cotoneaster multiflorus,Cotoneaster,multiflorus,Rosaceae,Rosales,AM
 Couepia magnoliifolia,Couepia,magnoliifolia,Chrysobalanaceae,Malpighiales,AM
-Cranfillia fluviatilis,Cranfillia,fluviatilis,Blechnaceae,Polypodiales,AM
 Crataegus monogyna,Crataegus,monogyna,Rosaceae,Rosales,AM
 Crataegus pinnatifida,Crataegus,pinnatifida,Rosaceae,Rosales,AM
 Cratoxylum cochinchinense,Cratoxylum,cochinchinense,Hypericaceae,Malpighiales,AM
@@ -478,7 +478,7 @@ Fuchsia excorticata,Fuchsia,excorticata,Onagraceae,Myrtales,AM
 Fumana thymifolia,Fumana,thymifolia,Cistaceae,Malvales,EcM
 Gahnia procera,Gahnia,procera,Cyperaceae,Poales,NMAM
 Gahnia xanthocarpa,Gahnia,xanthocarpa,Cyperaceae,Poales,NMAM
-Galearia maingayi,Galearia,maingayi,Fabaceae,Fabales,AM
+Galearia maingayi,Galearia,maingayi,Pandaceae,Malpighiales,AM
 Galium aparine,Galium,aparine,Rubiaceae,Gentianales,NMAM
 Galium boreale,Galium,boreale,Rubiaceae,Gentianales,NMAM
 Garcinia cowa,Garcinia,cowa,Clusiaceae,Malpighiales,AM
@@ -514,6 +514,7 @@ Hakea lissocarpha,Hakea,lissocarpha,Proteaceae,Proteales,NM
 Hakea oldfieldii,Hakea,oldfieldii,Proteaceae,Proteales,NM
 Hakea tuberculata,Hakea,tuberculata,Proteaceae,Proteales,NM
 Hakea varia,Hakea,varia,Proteaceae,Proteales,NM
+Halesia tetraptera,Halesia,tetraptera,Styracaceae,Ericales,AM
 Halocarpus biformis,Halocarpus,biformis,Podocarpaceae,Araucariales,AM
 Halocarpus kirkii,Halocarpus,kirkii,Podocarpaceae,Araucariales,AM
 Hamamelis virginiana,Hamamelis,virginiana,Hamamelidaceae,Saxifragales,AM
@@ -522,10 +523,9 @@ Handroanthus ochraceus,Handroanthus,ochraceus,Bignoniaceae,Lamiales,AM
 Harpullia cupanioides,Harpullia,cupanioides,Sapindaceae,Sapindales,AM
 Hedeoma hispida,Hedeoma,hispida,Lamiaceae,Lamiales,AM
 Hedera helix,Hedera,helix,Araliaceae,Apiales,AM
-Hedycarya arborea,Hedycarya,arborea,Minimiaceae,Laurales,AM
+Hedycarya arborea,Hedycarya,arborea,Monimiaceae,Laurales,AM
 Hedyosmum goudotianum,Hedyosmum,goudotianum,Chloranthaceae,Chloranthales,AM
 Hedyosmum purpurascens,Hedyosmum,purpurascens,Chloranthaceae,Chloranthales,AM
-Helesia tetraptera,Helesia,tetraptera,Styracaceae,Ericales,
 Helianthemum almeriense,Helianthemum,almeriense,Cistaceae,Malvales,EcM
 Helianthemum apenninum,Helianthemum,apenninum,Cistaceae,Malvales,EcM
 Helianthemum oelandicum,Helianthemum,oelandicum,Cistaceae,Malvales,EcM
@@ -916,7 +916,7 @@ Parablechnum novae-zelandiae,Parablechnum,novae-zelandiae,Blechnaceae,Polypodial
 Parablechnum procerum,Parablechnum,procerum,Blechnaceae,Polypodiales,AM
 Parthenocissus quinquefolia,Parthenocissus,quinquefolia,Vitaceae,Vitales,AM
 Payena microphylla,Payena,microphylla,Sapotaceae,Ericales,AM
-Pectinopitys ferruginea,Pectinopitys,ferruginea,Podocarpaceae,Araucariales,AM
+Pectinopitys ferruginea,Pectinopitys,ferruginea,Podocarpaceae,Pinales,AM
 Pennantia corymbosa,Pennantia,corymbosa,Pennantiaceae,Apiales,AM
 Penstemon bradburyi,Penstemon,bradburyi,Plantaginaceae,Lamiales,AM
 Penstemon confertus,Penstemon,confertus,Plantaginaceae,Lamiales,AM
@@ -1270,7 +1270,7 @@ Vepris nobilis,Vepris,nobilis,Rutaceae,Sapindales,AM
 Veratrum nigrum,Veratrum,nigrum,Melanthiaceae,Liliales,AM
 Verbascum thapsus,Verbascum,thapsus,Scrophulariaceae,Lamiales,AM
 Verbena hastata,Verbena,hastata,Verbenaceae,Lamiales,AM
-Veronia fasciculata,Veronia,fasciculata,Asteraceae,Asterales,
+Vernonia fasciculata,Vernonia,fasciculata,Asteraceae,Asterales,AM
 Veronica persica,Veronica,persica,Plantaginaceae,Lamiales,NMAM
 Veronica spuria,Veronica,spuria,Plantaginaceae,Lamiales,NMAM
 Veronicastrum virginicum,Veronicastrum,virginicum,Plantaginaceae,Lamiales,AM
@@ -1283,7 +1283,7 @@ Viola adunca,Viola,adunca,Violaceae,Malpighiales,AM
 Vitex lucens,Vitex,lucens,Lamiaceae,Lamiales,AM
 Vitis amurensis,Vitis,amurensis,Vitaceae,Vitales,AM
 Vitis vinifera,Vitis,vinifera,Vitaceae,Vitales,AM
-Vitis vulpina,Vitis,vulpina,Vitaceae,Alismatales,AM
+Vitis vulpina,Vitis,vulpina,Vitaceae,Vitales,AM
 Weinmannia elliptica,Weinmannia,elliptica,Cunoniaceae,Oxalidales,AM
 Weinmannia fagaroides,Weinmannia,fagaroides,Cunoniaceae,Oxalidales,AM
 Weinmannia magnifolia,Weinmannia,magnifolia,Cunoniaceae,Oxalidales,AM
