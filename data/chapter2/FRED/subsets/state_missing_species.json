@@ -14,7 +14,12 @@
             "F01289": "Lamiaceae",
             "F01290": "Lamiales",
             "binominal": "Agastache foeniculum",
-            "synonyms": null
+            "synonyms": [
+                "Stachys foeniculum",
+                "Lophanthus foeniculum",
+                "Hyssopus foeniculum",
+                "Vleckia foeniculum"
+            ]
         },
         {
             "F01286": "Aglaia",
@@ -22,7 +27,9 @@
             "F01289": "Meliaceae",
             "F01290": "Sapindales",
             "binominal": "Aglaia exstipulata",
-            "synonyms": null
+            "synonyms": [
+                "Euphoria exstipulata"
+            ]
         },
         {
             "F01286": "Aglaia",
@@ -46,7 +53,12 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Aiouea montana",
-            "synonyms": null
+            "synonyms": [
+                "Persea montana",
+                "Phoebe montana",
+                "Cinnamomum montanum",
+                "Laurus montana"
+            ]
         },
         {
             "F01286": "Allophylus",
@@ -54,7 +66,9 @@
             "F01289": "Sapindaceae",
             "F01290": "Sapindales",
             "binominal": "Allophylus abyssinicus",
-            "synonyms": null
+            "synonyms": [
+                "Schmidelia abyssinica"
+            ]
         },
         {
             "F01286": "Alseodaphnopsis",
@@ -62,7 +76,10 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Alseodaphnopsis andersonii",
-            "synonyms": null
+            "synonyms": [
+                "Alseodaphne andersonii",
+                "Cryptocarya andersonii"
+            ]
         },
         {
             "F01286": "Anaxagorea",
@@ -78,7 +95,12 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Andesanthus lepidotus",
-            "synonyms": null
+            "synonyms": [
+                "Tibouchina lepidota",
+                "Pleroma lepidotum",
+                "Chaetogastra lepidota",
+                "Rhexia lepidota"
+            ]
         },
         {
             "F01286": "Androsace",
@@ -86,7 +108,11 @@
             "F01289": "Primulaceae",
             "F01290": "Ericales",
             "binominal": "Androsace occidentalis",
-            "synonyms": null
+            "synonyms": [
+                "Primula occidentalis",
+                "Aretia occidentalis",
+                "Amadea occidentalis"
+            ]
         },
         {
             "F01286": "Anemone",
@@ -102,7 +128,9 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Aniba coto",
-            "synonyms": null
+            "synonyms": [
+                "Nectandra coto"
+            ]
         },
         {
             "F01286": "Aniba",
@@ -110,7 +138,10 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Aniba muca",
-            "synonyms": null
+            "synonyms": [
+                "Aydendron muca",
+                "Laurus muca"
+            ]
         },
         {
             "F01286": "Aporosa",
@@ -126,7 +157,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Artemisia barrelieri",
-            "synonyms": null
+            "synonyms": [
+                "Seriphidium barrelieri"
+            ]
         },
         {
             "F01286": "Artocarpus",
@@ -150,7 +183,9 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Astragalus agrestis",
-            "synonyms": null
+            "synonyms": [
+                "Phaca agrestis"
+            ]
         },
         {
             "F01286": "Astragalus",
@@ -158,7 +193,10 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Astragalus canadensis",
-            "synonyms": null
+            "synonyms": [
+                "Phaca canadensis",
+                "Tragacantha canadensis"
+            ]
         },
         {
             "F01286": "Atractylis",
@@ -182,7 +220,11 @@
             "F01289": "Rubiaceae",
             "F01290": "Gentianales",
             "binominal": "Bathysa australis",
-            "synonyms": null
+            "synonyms": [
+                "Voigtia australis",
+                "Cinchona australis",
+                "Exostema australe"
+            ]
         },
         {
             "F01286": "Beilschmiedia",
@@ -214,7 +256,12 @@
             "F01289": "Euphorbiaceae",
             "F01290": "Malpighiales",
             "binominal": "Blumeodendron tokbrai",
-            "synonyms": null
+            "synonyms": [
+                "Mallotus tokbrai",
+                "Elateriospermum tokbrai",
+                "Blumeodendron elateriospermum",
+                "Rottlera tokbrai"
+            ]
         },
         {
             "F01286": "Calpurnia",
@@ -222,7 +269,11 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Calpurnia aurea",
-            "synonyms": null
+            "synonyms": [
+                "Virgilia aurea",
+                "Podalyria aurea",
+                "Sophora aurea"
+            ]
         },
         {
             "F01286": "Carex",
@@ -230,7 +281,9 @@
             "F01289": "Cyperaceae",
             "F01290": "Poales",
             "binominal": "Carex atrofusca",
-            "synonyms": null
+            "synonyms": [
+                "Proteocarpus atrofuscus"
+            ]
         },
         {
             "F01286": "Carex",
@@ -238,7 +291,10 @@
             "F01289": "Cyperaceae",
             "F01290": "Poales",
             "binominal": "Carex coriophora",
-            "synonyms": null
+            "synonyms": [
+                "Carex atrofusca subsp. coriophora",
+                "Carex atrofusca var. coriophora"
+            ]
         },
         {
             "F01286": "Carex",
@@ -246,7 +302,9 @@
             "F01289": "Cyperaceae",
             "F01290": "Poales",
             "binominal": "Carex pseuduncinoides",
-            "synonyms": null
+            "synonyms": [
+                "Kobresia pseuduncinoides"
+            ]
         },
         {
             "F01286": "Castanopsis",
@@ -262,7 +320,10 @@
             "F01289": "Fagaceae",
             "F01290": "Fagales",
             "binominal": "Castanopsis ferox",
-            "synonyms": null
+            "synonyms": [
+                "Quercus ferox",
+                "Castanopsis tribuloides var. ferox"
+            ]
         },
         {
             "F01286": "Castanopsis",
@@ -286,7 +347,9 @@
             "F01289": "Meliaceae",
             "F01290": "Sapindales",
             "binominal": "Cedrela montana",
-            "synonyms": null
+            "synonyms": [
+                "Surenus montana"
+            ]
         },
         {
             "F01286": "Celtis",
@@ -302,7 +365,10 @@
             "F01289": "Poaceae",
             "F01290": "Poales",
             "binominal": "Cenchrus americanus",
-            "synonyms": null
+            "synonyms": [
+                "Pennisetum americanum",
+                "Panicum americanum"
+            ]
         },
         {
             "F01286": "Centaurea",
@@ -310,7 +376,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Centaurea pectinata",
-            "synonyms": null
+            "synonyms": [
+                "Jacea pectinata"
+            ]
         },
         {
             "F01286": "Centronia",
@@ -350,7 +418,12 @@
             "F01289": "Cistaceae",
             "F01290": "Malvales",
             "binominal": "Cistus calycinus",
-            "synonyms": null
+            "synonyms": [
+                "Stegitris calicinus",
+                "Halimium calycinum",
+                "Halimium atriplicifolium var. calycinum",
+                "Helianthemum calycinum"
+            ]
         },
         {
             "F01286": "Cistus",
@@ -358,7 +431,9 @@
             "F01289": "Cistaceae",
             "F01290": "Malvales",
             "binominal": "Cistus crispus",
-            "synonyms": null
+            "synonyms": [
+                "Cistus vulgaris var. crispus"
+            ]
         },
         {
             "F01286": "Cistus",
@@ -382,7 +457,9 @@
             "F01289": "Clethraceae",
             "F01290": "Ericales",
             "binominal": "Clethra revoluta",
-            "synonyms": null
+            "synonyms": [
+                "Cuellaria revoluta"
+            ]
         },
         {
             "F01286": "Clinopodium",
@@ -390,7 +467,15 @@
             "F01289": "Lamiaceae",
             "F01290": "Lamiales",
             "binominal": "Clinopodium nepeta",
-            "synonyms": null
+            "synonyms": [
+                "Melissa nepeta",
+                "Satureja nepeta",
+                "Calamintha officinalis var. nepeta",
+                "Satureja calamintha var. nepeta",
+                "Thymus nepeta",
+                "Satureja calamintha subsp. nepeta",
+                "Calamintha nepeta"
+            ]
         },
         {
             "F01286": "Clusia",
@@ -422,7 +507,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Coreopsis palmata",
-            "synonyms": null
+            "synonyms": [
+                "Anacis palmata"
+            ]
         },
         {
             "F01286": "Coronilla",
@@ -430,7 +517,9 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Coronilla juncea",
-            "synonyms": null
+            "synonyms": [
+                "Ornithopus junceus"
+            ]
         },
         {
             "F01286": "Coronilla",
@@ -438,7 +527,9 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Coronilla minima",
-            "synonyms": null
+            "synonyms": [
+                "Ornithopus minimus"
+            ]
         },
         {
             "F01286": "Critoniopsis",
@@ -446,7 +537,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Critoniopsis floribunda",
-            "synonyms": null
+            "synonyms": [
+                "Vernonia floribunda"
+            ]
         },
         {
             "F01286": "Critoniopsis",
@@ -454,7 +547,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Critoniopsis pycnantha",
-            "synonyms": null
+            "synonyms": [
+                "Vernonia pycnantha"
+            ]
         },
         {
             "F01286": "Cryptocarya",
@@ -478,7 +573,9 @@
             "F01289": "Cystopteridaceae",
             "F01290": "Polypodiales",
             "binominal": "Cystopteris sudetica",
-            "synonyms": null
+            "synonyms": [
+                "Rhizomatopteris sudetica"
+            ]
         },
         {
             "F01286": "Cytisus",
@@ -486,7 +583,11 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Cytisus grandiflorus",
-            "synonyms": null
+            "synonyms": [
+                "Laburnum grandiflorum",
+                "Sarothamnus grandiflorus",
+                "Genista grandiflora"
+            ]
         },
         {
             "F01286": "Dacryodes",
@@ -494,7 +595,9 @@
             "F01289": "Burseraceae",
             "F01290": "Sapindales",
             "binominal": "Dacryodes peruviana",
-            "synonyms": null
+            "synonyms": [
+                "Pachylobus peruvianus"
+            ]
         },
         {
             "F01286": "Danthonia",
@@ -502,7 +605,10 @@
             "F01289": "Poaceae",
             "F01290": "Poales",
             "binominal": "Danthonia intermedia",
-            "synonyms": null
+            "synonyms": [
+                "Merathrepta intermedia",
+                "Pentameris intermedia"
+            ]
         },
         {
             "F01286": "Desmodium",
@@ -510,7 +616,11 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Desmodium canadense",
-            "synonyms": null
+            "synonyms": [
+                "Pleurolobus canadensis",
+                "Hedysarum canadense",
+                "Edusaron canadense"
+            ]
         },
         {
             "F01286": "Dovyalis",
@@ -518,7 +628,9 @@
             "F01289": "Salicaceae",
             "F01290": "Malpighiales",
             "binominal": "Dovyalis abyssinica",
-            "synonyms": null
+            "synonyms": [
+                "Rumea abyssinica"
+            ]
         },
         {
             "F01286": "Drymocallis",
@@ -526,7 +638,11 @@
             "F01289": "Rosaceae",
             "F01290": "Rosales",
             "binominal": "Drymocallis arguta",
-            "synonyms": null
+            "synonyms": [
+                "Potentilla agrimonioides var. arguta",
+                "Potentilla arguta",
+                "Potentilla pensylvanica var. arguta"
+            ]
         },
         {
             "F01286": "Dussia",
@@ -550,7 +666,9 @@
             "F01289": "Poaceae",
             "F01290": "Poales",
             "binominal": "Elymus lanceolatus",
-            "synonyms": null
+            "synonyms": [
+                "Agropyron lanceolatum"
+            ]
         },
         {
             "F01286": "Endlicheria",
@@ -582,7 +700,9 @@
             "F01289": "Juglandaceae",
             "F01290": "Fagales",
             "binominal": "Engelhardia spicata",
-            "synonyms": null
+            "synonyms": [
+                "Engelhardia pterococca var. spicata"
+            ]
         },
         {
             "F01286": "Ephedra",
@@ -598,7 +718,11 @@
             "F01289": "Ericaceae",
             "F01290": "Ericales",
             "binominal": "Erica scoparia",
-            "synonyms": null
+            "synonyms": [
+                "Ericoides scoparia",
+                "Ericoides scoparia",
+                "Chlorocodon scoparius"
+            ]
         },
         {
             "F01286": "Erigeron",
@@ -606,7 +730,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Erigeron glabellus",
-            "synonyms": null
+            "synonyms": [
+                "Tessenia glabella"
+            ]
         },
         {
             "F01286": "Erigeron",
@@ -614,7 +740,11 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Erigeron pumilus",
-            "synonyms": null
+            "synonyms": [
+                "Tessenia pumila",
+                "Fragmosa pumila",
+                "Erigeron hirsutus"
+            ]
         },
         {
             "F01286": "Eriotheca",
@@ -630,7 +760,9 @@
             "F01289": "Malvaceae",
             "F01290": "Malvales",
             "binominal": "Eriotheca surinamensis",
-            "synonyms": null
+            "synonyms": [
+                "Bombax surinamense"
+            ]
         },
         {
             "F01286": "Eugenia",
@@ -646,7 +778,10 @@
             "F01289": "Myrtaceae",
             "F01290": "Myrtales",
             "binominal": "Eugenia sinemariensis",
-            "synonyms": null
+            "synonyms": [
+                "Myrtus sinemariensis",
+                "Epleienda sinemariensis"
+            ]
         },
         {
             "F01286": "Euptelea",
@@ -694,7 +829,9 @@
             "F01289": "Moraceae",
             "F01290": "Rosales",
             "binominal": "Ficus pertusa",
-            "synonyms": null
+            "synonyms": [
+                "Urostigma pertusum"
+            ]
         },
         {
             "F01286": "Ficus",
@@ -742,7 +879,9 @@
             "F01289": "Burseraceae",
             "F01290": "Sapindales",
             "binominal": "Garuga floribunda",
-            "synonyms": null
+            "synonyms": [
+                "Kunthia floribunda"
+            ]
         },
         {
             "F01286": "Geissanthus",
@@ -766,7 +905,10 @@
             "F01289": "Gentianaceae",
             "F01290": "Gentianales",
             "binominal": "Gentiana andrewsii",
-            "synonyms": null
+            "synonyms": [
+                "Pneumonanthe andrewsii",
+                "Dasystephana andrewsii"
+            ]
         },
         {
             "F01286": "Glochidion",
@@ -774,7 +916,9 @@
             "F01289": "Phyllanthaceae",
             "F01290": "Malpighiales",
             "binominal": "Glochidion eriocarpum",
-            "synonyms": null
+            "synonyms": [
+                "Phyllanthus eriocarpus"
+            ]
         },
         {
             "F01286": "Glochidion",
@@ -782,7 +926,9 @@
             "F01289": "Phyllanthaceae",
             "F01290": "Malpighiales",
             "binominal": "Glochidion lanceolarium",
-            "synonyms": null
+            "synonyms": [
+                "Phyllanthus lanceolarius"
+            ]
         },
         {
             "F01286": "Gordonia",
@@ -790,7 +936,10 @@
             "F01289": "Theaceae",
             "F01290": "Ericales",
             "binominal": "Gordonia fruticosa",
-            "synonyms": null
+            "synonyms": [
+                "Laplacea fruticosa",
+                "Wikstroemia fruticosa"
+            ]
         },
         {
             "F01286": "Graffenrieda",
@@ -838,7 +987,10 @@
             "F01289": "Celastraceae",
             "F01290": "Celastrales",
             "binominal": "Gymnosporia arbutifolia",
-            "synonyms": null
+            "synonyms": [
+                "Celastrus arbutifolius",
+                "Maytenus arbutifolia"
+            ]
         },
         {
             "F01286": "Hakea",
@@ -894,7 +1046,10 @@
             "F01289": "Lamiaceae",
             "F01290": "Lamiales",
             "binominal": "Hedeoma hispida",
-            "synonyms": null
+            "synonyms": [
+                "Cunila hispida",
+                "Ziziphora hispida"
+            ]
         },
         {
             "F01286": "Hedyosmum",
@@ -902,7 +1057,9 @@
             "F01289": "Chloranthaceae",
             "F01290": "Chloranthales",
             "binominal": "Hedyosmum goudotianum",
-            "synonyms": null
+            "synonyms": [
+                "Tafalla goudotiana"
+            ]
         },
         {
             "F01286": "Hedyosmum",
@@ -918,7 +1075,10 @@
             "F01289": "Cistaceae",
             "F01290": "Malvales",
             "binominal": "Helianthemum oelandicum",
-            "synonyms": null
+            "synonyms": [
+                "Helianthemum oelandicum var. glabrum",
+                "Cistus oelandicus"
+            ]
         },
         {
             "F01286": "Helianthemum",
@@ -926,7 +1086,13 @@
             "F01289": "Cistaceae",
             "F01290": "Malvales",
             "binominal": "Helianthemum syriacum",
-            "synonyms": null
+            "synonyms": [
+                "Halimium syriacum",
+                "Cistus lavandulifolius var. syriacus",
+                "Cistus syriacus",
+                "Helianthemum racemosum var. syriacum",
+                "Helianthemum lavandulifolium var. syriacum"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -942,7 +1108,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Helianthus angustifolius",
-            "synonyms": null
+            "synonyms": [
+                "Discomela angustifolius"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -982,7 +1150,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Helianthus giganteus",
-            "synonyms": null
+            "synonyms": [
+                "Helianthus angustifolius subsp. giganteus"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -990,7 +1160,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Helianthus heterophyllus",
-            "synonyms": null
+            "synonyms": [
+                "Helianthus atrorubens subsp. heterophyllus"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -1022,7 +1194,10 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Helianthus porteri",
-            "synonyms": null
+            "synonyms": [
+                "Gymnolomia porteri",
+                "Rudbeckia porteri"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -1030,7 +1205,10 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Helianthus praecox",
-            "synonyms": null
+            "synonyms": [
+                "Helianthus debilis subsp. praecox",
+                "Helianthus cucumerifolius var. praecox"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -1038,7 +1216,11 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Helianthus radula",
-            "synonyms": null
+            "synonyms": [
+                "Centrocarpha radula",
+                "Helianthus atrorubens subsp. radula",
+                "Rudbeckia radula"
+            ]
         },
         {
             "F01286": "Helianthus",
@@ -1070,7 +1252,9 @@
             "F01289": "Moraceae",
             "F01290": "Rosales",
             "binominal": "Helicostylis tovarensis",
-            "synonyms": null
+            "synonyms": [
+                "Olmedia tovarensis"
+            ]
         },
         {
             "F01286": "Heuchera",
@@ -1078,7 +1262,9 @@
             "F01289": "Saxifragaceae",
             "F01290": "Saxifragales",
             "binominal": "Heuchera richardsonii",
-            "synonyms": null
+            "synonyms": [
+                "Heuchera hispida var. richardsonii"
+            ]
         },
         {
             "F01286": "Hieronyma",
@@ -1094,7 +1280,9 @@
             "F01289": "Phyllanthaceae",
             "F01290": "Malpighiales",
             "binominal": "Hieronyma fendleri",
-            "synonyms": null
+            "synonyms": [
+                "Hieronyma moritziana var. fendleri"
+            ]
         },
         {
             "F01286": "Hieronyma",
@@ -1110,7 +1298,9 @@
             "F01289": "Phyllanthaceae",
             "F01290": "Malpighiales",
             "binominal": "Hieronyma oblonga",
-            "synonyms": null
+            "synonyms": [
+                "Stilaginella oblonga"
+            ]
         },
         {
             "F01286": "Horsfieldia",
@@ -1118,7 +1308,10 @@
             "F01289": "Myristicaceae",
             "F01290": "Magnoliales",
             "binominal": "Horsfieldia amygdalina",
-            "synonyms": null
+            "synonyms": [
+                "Palala amygdalina",
+                "Myristica amygdalina"
+            ]
         },
         {
             "F01286": "Hypobathrum",
@@ -1126,7 +1319,10 @@
             "F01289": "Rubiaceae",
             "F01290": "Gentianales",
             "binominal": "Hypobathrum racemosum",
-            "synonyms": null
+            "synonyms": [
+                "Randia racemosa",
+                "Petunga racemosa"
+            ]
         },
         {
             "F01286": "Ilex",
@@ -1142,7 +1338,13 @@
             "F01289": "Aquifoliaceae",
             "F01290": "Aquifoliales",
             "binominal": "Ilex macropoda",
-            "synonyms": null
+            "synonyms": [
+                "Ilex montana var. macropoda",
+                "Ilex monticola var. macropoda",
+                "Ilex dubia var. macropoda",
+                "Ilex ambigua subsp. macropoda",
+                "Ilex ambigua var. macropoda"
+            ]
         },
         {
             "F01286": "Ilex",
@@ -1174,7 +1376,10 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Inga rubiginosa",
-            "synonyms": null
+            "synonyms": [
+                "Feuilleea rubiginosa",
+                "Mimosa rubiginosa"
+            ]
         },
         {
             "F01286": "Ladenbergia",
@@ -1182,7 +1387,10 @@
             "F01289": "Rubiaceae",
             "F01290": "Gentianales",
             "binominal": "Ladenbergia riveroana",
-            "synonyms": null
+            "synonyms": [
+                "Remijia riveroana",
+                "Cascarilla riveroana"
+            ]
         },
         {
             "F01286": "Lathyrus",
@@ -1198,7 +1406,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Launaea arborescens",
-            "synonyms": null
+            "synonyms": [
+                "Zollikoferia arborescens"
+            ]
         },
         {
             "F01286": "Leonia",
@@ -1206,7 +1416,9 @@
             "F01289": "Violaceae",
             "F01290": "Malpighiales",
             "binominal": "Leonia glycycarpa",
-            "synonyms": null
+            "synonyms": [
+                "Theophrasta glycycarpa"
+            ]
         },
         {
             "F01286": "Lespedeza",
@@ -1246,7 +1458,9 @@
             "F01289": "Altingiaceae",
             "F01290": "Saxifragales",
             "binominal": "Liquidambar gracilipes",
-            "synonyms": null
+            "synonyms": [
+                "Altingia gracilipes"
+            ]
         },
         {
             "F01286": "Liquidambar",
@@ -1254,7 +1468,9 @@
             "F01289": "Altingiaceae",
             "F01290": "Saxifragales",
             "binominal": "Liquidambar obovata",
-            "synonyms": null
+            "synonyms": [
+                "Altingia obovata"
+            ]
         },
         {
             "F01286": "Lithocarpus",
@@ -1262,7 +1478,9 @@
             "F01289": "Fagaceae",
             "F01290": "Fagales",
             "binominal": "Lithocarpus bacgiangensis",
-            "synonyms": null
+            "synonyms": [
+                "Pasania bacgiangensis"
+            ]
         },
         {
             "F01286": "Lithocarpus",
@@ -1270,7 +1488,10 @@
             "F01289": "Fagaceae",
             "F01290": "Fagales",
             "binominal": "Lithocarpus elegans",
-            "synonyms": null
+            "synonyms": [
+                "Quercus elegans",
+                "Lithocarpus spicatus var. elegans"
+            ]
         },
         {
             "F01286": "Lithocarpus",
@@ -1278,7 +1499,9 @@
             "F01289": "Fagaceae",
             "F01290": "Fagales",
             "binominal": "Lithocarpus fohaiensis",
-            "synonyms": null
+            "synonyms": [
+                "Pasania fohaiensis"
+            ]
         },
         {
             "F01286": "Lithocarpus",
@@ -1286,7 +1509,11 @@
             "F01289": "Fagaceae",
             "F01290": "Fagales",
             "binominal": "Lithocarpus variolosus",
-            "synonyms": null
+            "synonyms": [
+                "Quercus variolosa",
+                "Synaedrys variolosa",
+                "Pasania variolosa"
+            ]
         },
         {
             "F01286": "Litsea",
@@ -1294,7 +1521,9 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Litsea martabanica",
-            "synonyms": null
+            "synonyms": [
+                "Tetranthera martabanica"
+            ]
         },
         {
             "F01286": "Litsea",
@@ -1310,7 +1539,9 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Litsea umbellata",
-            "synonyms": null
+            "synonyms": [
+                "Hexanthus umbellatus"
+            ]
         },
         {
             "F01286": "Lupinus",
@@ -1326,7 +1557,9 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Machilus rufipes",
-            "synonyms": null
+            "synonyms": [
+                "Persea rufipes"
+            ]
         },
         {
             "F01286": "Matayba",
@@ -1350,7 +1583,9 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Meriania franciscana",
-            "synonyms": null
+            "synonyms": [
+                "Meriania macrophylla subsp. franciscana"
+            ]
         },
         {
             "F01286": "Miconia",
@@ -1358,7 +1593,10 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Miconia calophylla",
-            "synonyms": null
+            "synonyms": [
+                "Acinodendron calophyllum",
+                "Cremanium calophyllum"
+            ]
         },
         {
             "F01286": "Miconia",
@@ -1374,7 +1612,9 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Miconia dolichorrhyncha",
-            "synonyms": null
+            "synonyms": [
+                "Acinodendron dolichorrhynchum"
+            ]
         },
         {
             "F01286": "Miconia",
@@ -1390,7 +1630,11 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Miconia punctata",
-            "synonyms": null
+            "synonyms": [
+                "Acinodendron punctatum",
+                "Melastoma punctatum",
+                "Eurychaenia punctata"
+            ]
         },
         {
             "F01286": "Miconia",
@@ -1398,7 +1642,9 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Miconia radula",
-            "synonyms": null
+            "synonyms": [
+                "Acinodendron radula"
+            ]
         },
         {
             "F01286": "Micromelum",
@@ -1406,7 +1652,10 @@
             "F01289": "Rutaceae",
             "F01290": "Sapindales",
             "binominal": "Micromelum integerrimum",
-            "synonyms": null
+            "synonyms": [
+                "Micromelum pubescens var. integerrimum",
+                "Bergera integerrima"
+            ]
         },
         {
             "F01286": "Mitrephora",
@@ -1414,7 +1663,9 @@
             "F01289": "Annonaceae",
             "F01290": "Magnoliales",
             "binominal": "Mitrephora tomentosa",
-            "synonyms": null
+            "synonyms": [
+                "Kinginda tomentosa"
+            ]
         },
         {
             "F01286": "Monoon",
@@ -1422,7 +1673,11 @@
             "F01289": "Annonaceae",
             "F01290": "Magnoliales",
             "binominal": "Monoon simiarum",
-            "synonyms": null
+            "synonyms": [
+                "Polyalthia simiarum",
+                "Unona simiarum",
+                "Guatteria simiarum"
+            ]
         },
         {
             "F01286": "Morus",
@@ -1430,7 +1685,9 @@
             "F01289": "Moraceae",
             "F01290": "Rosales",
             "binominal": "Morus insignis",
-            "synonyms": null
+            "synonyms": [
+                "Paratrophis insignis"
+            ]
         },
         {
             "F01286": "Munroa",
@@ -1446,7 +1703,11 @@
             "F01289": "Apiaceae",
             "F01290": "Apiales",
             "binominal": "Musineon divaricatum",
-            "synonyms": null
+            "synonyms": [
+                "Marathrum divaricatum",
+                "Seseli divaricatum",
+                "Adorium divaricatum"
+            ]
         },
         {
             "F01286": "Myrcianthes",
@@ -1454,7 +1715,10 @@
             "F01289": "Myrtaceae",
             "F01290": "Myrtales",
             "binominal": "Myrcianthes rhopaloides",
-            "synonyms": null
+            "synonyms": [
+                "Eugenia rhopaloides",
+                "Myrtus rhopaloides"
+            ]
         },
         {
             "F01286": "Myrica",
@@ -1462,7 +1726,9 @@
             "F01289": "Myricaceae",
             "F01290": "Fagales",
             "binominal": "Myrica pubescens",
-            "synonyms": null
+            "synonyms": [
+                "Morella pubescens"
+            ]
         },
         {
             "F01286": "Myriocarpa",
@@ -1478,7 +1744,9 @@
             "F01289": "Primulaceae",
             "F01290": "Ericales",
             "binominal": "Myrsine andina",
-            "synonyms": null
+            "synonyms": [
+                "Rapanea andina"
+            ]
         },
         {
             "F01286": "Mytilaria",
@@ -1502,7 +1770,11 @@
             "F01289": "Oleaceae",
             "F01290": "Lamiales",
             "binominal": "Noronhia mildbraedii",
-            "synonyms": null
+            "synonyms": [
+                "Chionanthus mildbraedii",
+                "Olea mildbraedii",
+                "Campanolea mildbraedii"
+            ]
         },
         {
             "F01286": "Nyssa",
@@ -1526,7 +1798,9 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Ocotea cuneifolia",
-            "synonyms": null
+            "synonyms": [
+                "Laurus cuneifolia"
+            ]
         },
         {
             "F01286": "Ocotea",
@@ -1534,7 +1808,9 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Ocotea infrafoveolata",
-            "synonyms": null
+            "synonyms": [
+                "Andea infrafoveolata"
+            ]
         },
         {
             "F01286": "Ocotea",
@@ -1566,7 +1842,9 @@
             "F01289": "Araliaceae",
             "F01290": "Apiales",
             "binominal": "Oreopanax sessiliflorus",
-            "synonyms": null
+            "synonyms": [
+                "Hedera sessiliflora"
+            ]
         },
         {
             "F01286": "Palicourea",
@@ -1582,7 +1860,10 @@
             "F01289": "Rubiaceae",
             "F01290": "Gentianales",
             "binominal": "Palicourea thyrsiflora",
-            "synonyms": null
+            "synonyms": [
+                "Uragoga thyrsiflora",
+                "Psychotria thyrsiflora"
+            ]
         },
         {
             "F01286": "Palicourea",
@@ -1590,7 +1871,9 @@
             "F01289": "Rubiaceae",
             "F01290": "Gentianales",
             "binominal": "Palicourea tinctoria",
-            "synonyms": null
+            "synonyms": [
+                "Uragoga tinctoria"
+            ]
         },
         {
             "F01286": "Pappobolus",
@@ -1598,7 +1881,12 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Pappobolus microphyllus",
-            "synonyms": null
+            "synonyms": [
+                "Leighia microphylla",
+                "Helianthopsis microphylla",
+                "Viguiera microphylla",
+                "Helianthus microphyllus"
+            ]
         },
         {
             "F01286": "Penstemon",
@@ -1606,7 +1894,9 @@
             "F01289": "Plantaginaceae",
             "F01290": "Lamiales",
             "binominal": "Penstemon bradburyi",
-            "synonyms": null
+            "synonyms": [
+                "Chelone bradburyi"
+            ]
         },
         {
             "F01286": "Penstemon",
@@ -1630,7 +1920,10 @@
             "F01289": "Lauraceae",
             "F01290": "Laurales",
             "binominal": "Persea areolatocostae",
-            "synonyms": null
+            "synonyms": [
+                "Cinnamomum areolatocostae",
+                "Phoebe areolatocostae"
+            ]
         },
         {
             "F01286": "Persea",
@@ -1686,7 +1979,11 @@
             "F01289": "Sapotaceae",
             "F01290": "Ericales",
             "binominal": "Planchonella grandifolia",
-            "synonyms": null
+            "synonyms": [
+                "Lucuma grandifolia",
+                "Sideroxylon grandifolium",
+                "Pouteria grandifolia"
+            ]
         },
         {
             "F01286": "Plantago",
@@ -1702,7 +1999,9 @@
             "F01289": "Poaceae",
             "F01290": "Poales",
             "binominal": "Pleioblastus amarus",
-            "synonyms": null
+            "synonyms": [
+                "Arundinaria amara"
+            ]
         },
         {
             "F01286": "Pleroma",
@@ -1710,7 +2009,11 @@
             "F01289": "Melastomataceae",
             "F01290": "Myrtales",
             "binominal": "Pleroma ochypetalum",
-            "synonyms": null
+            "synonyms": [
+                "Lasiandra ochypetala",
+                "Tibouchina ochypetala",
+                "Rhexia ochypetala"
+            ]
         },
         {
             "F01286": "Podocarpus",
@@ -1718,7 +2021,9 @@
             "F01289": "Podocarpaceae",
             "F01290": "Araucariales",
             "binominal": "Podocarpus oleifolius",
-            "synonyms": null
+            "synonyms": [
+                "Nageia oleifolia"
+            ]
         },
         {
             "F01286": "Pourouma",
@@ -1734,7 +2039,9 @@
             "F01289": "Sapotaceae",
             "F01290": "Ericales",
             "binominal": "Pouteria austin-smithii",
-            "synonyms": null
+            "synonyms": [
+                "Lucuma austin-smithii"
+            ]
         },
         {
             "F01286": "Prumnopitys",
@@ -1742,7 +2049,14 @@
             "F01289": "Podocarpaceae",
             "F01290": "Araucariales",
             "binominal": "Prumnopitys montana",
-            "synonyms": null
+            "synonyms": [
+                "Torreya montana",
+                "Van-tieghemia montana",
+                "Podocarpus montanus",
+                "Botryopitys montana",
+                "Nageia montana",
+                "Taxus montana"
+            ]
         },
         {
             "F01286": "Prunus",
@@ -1758,7 +2072,10 @@
             "F01289": "Rosaceae",
             "F01290": "Rosales",
             "binominal": "Prunus opaca",
-            "synonyms": null
+            "synonyms": [
+                "Cerasus opaca",
+                "Lauro-cerasus opaca"
+            ]
         },
         {
             "F01286": "Pseudodictamnus",
@@ -1766,7 +2083,9 @@
             "F01289": "Lamiaceae",
             "F01290": "Lamiales",
             "binominal": "Pseudodictamnus hirsutus",
-            "synonyms": null
+            "synonyms": [
+                "Marrubium hirsutum"
+            ]
         },
         {
             "F01286": "Pseudolmedia",
@@ -1774,7 +2093,9 @@
             "F01289": "Moraceae",
             "F01290": "Rosales",
             "binominal": "Pseudolmedia rigida",
-            "synonyms": null
+            "synonyms": [
+                "Olmedia rigida"
+            ]
         },
         {
             "F01286": "Puccinellia",
@@ -1782,7 +2103,11 @@
             "F01289": "Poaceae",
             "F01290": "Poales",
             "binominal": "Puccinellia rupestris",
-            "synonyms": null
+            "synonyms": [
+                "Poa rupestris",
+                "Pseudosclerochloa rupestris",
+                "Sclerochloa rupestris"
+            ]
         },
         {
             "F01286": "Quercus",
@@ -1806,7 +2131,11 @@
             "F01289": "Dipterocarpaceae",
             "F01290": "Malvales",
             "binominal": "Richetia multiflora",
-            "synonyms": null
+            "synonyms": [
+                "Doona multiflora",
+                "Balanocarpus multiflorus",
+                "Shorea multiflora"
+            ]
         },
         {
             "F01286": "Rosa",
@@ -1814,7 +2143,10 @@
             "F01289": "Rosaceae",
             "F01290": "Rosales",
             "binominal": "Rosa arkansana",
-            "synonyms": null
+            "synonyms": [
+                "Rosa blanda var. arkansana",
+                "Rosa virginiana var. arkansana"
+            ]
         },
         {
             "F01286": "Roucheria",
@@ -1830,7 +2162,9 @@
             "F01289": "Meliaceae",
             "F01290": "Sapindales",
             "binominal": "Ruagea glabra",
-            "synonyms": null
+            "synonyms": [
+                "Guarea trianae"
+            ]
         },
         {
             "F01286": "Rubroshorea",
@@ -1838,7 +2172,9 @@
             "F01289": "Dipterocarpaceae",
             "F01290": "Malvales",
             "binominal": "Rubroshorea acuminata",
-            "synonyms": null
+            "synonyms": [
+                "Shorea acuminata"
+            ]
         },
         {
             "F01286": "Salix",
@@ -1854,7 +2190,9 @@
             "F01289": "Euphorbiaceae",
             "F01290": "Malpighiales",
             "binominal": "Sapium stylare",
-            "synonyms": null
+            "synonyms": [
+                "Excoecaria stylaris"
+            ]
         },
         {
             "F01286": "Saurauia",
@@ -1870,7 +2208,11 @@
             "F01289": "Araliaceae",
             "F01290": "Apiales",
             "binominal": "Sciodaphyllum acuminatum",
-            "synonyms": null
+            "synonyms": [
+                "Brassaia acuminata",
+                "Schefflera acuminata",
+                "Actinophyllum acuminatum"
+            ]
         },
         {
             "F01286": "Semecarpus",
@@ -1886,7 +2228,9 @@
             "F01289": "Lamiaceae",
             "F01290": "Lamiales",
             "binominal": "Sideritis pusilla",
-            "synonyms": null
+            "synonyms": [
+                "Sideritis scordioides var. pusilla"
+            ]
         },
         {
             "F01286": "Siparuna",
@@ -1894,7 +2238,9 @@
             "F01289": "Siparunaceae",
             "F01290": "Laurales",
             "binominal": "Siparuna aspera",
-            "synonyms": null
+            "synonyms": [
+                "Citrosma aspera"
+            ]
         },
         {
             "F01286": "Siparuna",
@@ -1902,7 +2248,9 @@
             "F01289": "Siparunaceae",
             "F01290": "Laurales",
             "binominal": "Siparuna muricata",
-            "synonyms": null
+            "synonyms": [
+                "Citrosma muricata"
+            ]
         },
         {
             "F01286": "Sloanea",
@@ -1926,7 +2274,20 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Solidago ptarmicoides",
-            "synonyms": null
+            "synonyms": [
+                "Doellingeria ptarmicoides",
+                "Aster albus",
+                "Aster ptarmicoides",
+                "Chrysopsis alba",
+                "Diplopappus albus",
+                "Eucephalus albus",
+                "Heleastrum album",
+                "Inula alba",
+                "Oligoneuron album",
+                "Solidago asteroides",
+                "Unamia alba",
+                "Unamia ptarmicoides"
+            ]
         },
         {
             "F01286": "Sorbus",
@@ -1934,7 +2295,9 @@
             "F01289": "Rosaceae",
             "F01290": "Rosales",
             "binominal": "Sorbus discolor",
-            "synonyms": null
+            "synonyms": [
+                "Pyrus discolor"
+            ]
         },
         {
             "F01286": "Sporobolus",
@@ -1942,7 +2305,9 @@
             "F01289": "Poaceae",
             "F01290": "Poales",
             "binominal": "Sporobolus rigidus",
-            "synonyms": null
+            "synonyms": [
+                "Vilfa rigida"
+            ]
         },
         {
             "F01286": "Stauracanthus",
@@ -1950,7 +2315,9 @@
             "F01289": "Fabaceae",
             "F01290": "Fabales",
             "binominal": "Stauracanthus genistoides",
-            "synonyms": null
+            "synonyms": [
+                "Ulex genistoides"
+            ]
         },
         {
             "F01286": "Symphoricarpos",
@@ -1958,7 +2325,9 @@
             "F01289": "Caprifoliaceae",
             "F01290": "Dipsacales",
             "binominal": "Symphoricarpos occidentalis",
-            "synonyms": null
+            "synonyms": [
+                "Symphoria occidentalis"
+            ]
         },
         {
             "F01286": "Symphyotrichum",
@@ -1966,7 +2335,10 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Symphyotrichum ciliolatum",
-            "synonyms": null
+            "synonyms": [
+                "Aster ciliolatus",
+                "Aster lindleyanus var. ciliolatus"
+            ]
         },
         {
             "F01286": "Symphyotrichum",
@@ -1974,7 +2346,9 @@
             "F01289": "Asteraceae",
             "F01290": "Asterales",
             "binominal": "Symphyotrichum oolentangiense",
-            "synonyms": null
+            "synonyms": [
+                "Aster oolentangiensis"
+            ]
         },
         {
             "F01286": "Teucrium",
@@ -1998,7 +2372,12 @@
             "F01289": "Apiaceae",
             "F01290": "Apiales",
             "binominal": "Tordylium maximum",
-            "synonyms": null
+            "synonyms": [
+                "Heracleum tordylium",
+                "Pastinaca tordylium",
+                "Pastinaca maxima",
+                "Caucalis maxima"
+            ]
         },
         {
             "F01286": "Toxicoscordion",
@@ -2006,7 +2385,9 @@
             "F01289": "Melanthiaceae",
             "F01290": "Liliales",
             "binominal": "Toxicoscordion venenosum",
-            "synonyms": null
+            "synonyms": [
+                "Zigadenus venenosus"
+            ]
         },
         {
             "F01286": "Trattinnickia",
@@ -2030,7 +2411,10 @@
             "F01289": "Staphyleaceae",
             "F01290": "Crossosomatales",
             "binominal": "Turpinia occidentalis",
-            "synonyms": null
+            "synonyms": [
+                "Staphylea occidentalis",
+                "Maurocenia occidentalis"
+            ]
         },
         {
             "F01286": "Unonopsis",
@@ -2038,7 +2422,9 @@
             "F01289": "Annonaceae",
             "F01290": "Magnoliales",
             "binominal": "Unonopsis rufescens",
-            "synonyms": null
+            "synonyms": [
+                "Trigynaea rufescens"
+            ]
         },
         {
             "F01286": "Vepris",
@@ -2046,7 +2432,11 @@
             "F01289": "Rutaceae",
             "F01290": "Sapindales",
             "binominal": "Vepris nobilis",
-            "synonyms": null
+            "synonyms": [
+                "Teclea nobilis",
+                "Toddalia nobilis",
+                "Cranzia nobilis"
+            ]
         },
         {
             "F01286": "Veronicastrum",
@@ -2054,7 +2444,12 @@
             "F01289": "Plantaginaceae",
             "F01290": "Lamiales",
             "binominal": "Veronicastrum virginicum",
-            "synonyms": null
+            "synonyms": [
+                "Callistachya virginica",
+                "Paederota virginica",
+                "Leptandra virginica",
+                "Veronica virginica"
+            ]
         },
         {
             "F01286": "Viburnum",
@@ -2070,7 +2465,9 @@
             "F01289": "Cunoniaceae",
             "F01290": "Oxalidales",
             "binominal": "Weinmannia elliptica",
-            "synonyms": null
+            "synonyms": [
+                "Windmannia elliptica"
+            ]
         },
         {
             "F01286": "Weinmannia",
@@ -2078,7 +2475,10 @@
             "F01289": "Cunoniaceae",
             "F01290": "Oxalidales",
             "binominal": "Weinmannia fagaroides",
-            "synonyms": null
+            "synonyms": [
+                "Windmannia fagaroides",
+                "Weinmannia microphylla var. fagaroides"
+            ]
         },
         {
             "F01286": "Weinmannia",
@@ -2102,7 +2502,9 @@
             "F01289": "Cunoniaceae",
             "F01290": "Oxalidales",
             "binominal": "Weinmannia ovata",
-            "synonyms": null
+            "synonyms": [
+                "Windmannia ovata"
+            ]
         },
         {
             "F01286": "Withania",
@@ -2110,7 +2512,11 @@
             "F01289": "Solanaceae",
             "F01290": "Solanales",
             "binominal": "Withania frutescens",
-            "synonyms": null
+            "synonyms": [
+                "Physalis frutescens",
+                "Hypnoticum frutescens",
+                "Atropa frutescens"
+            ]
         }
     ]
 }
