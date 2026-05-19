@@ -1,0 +1,1302 @@
+binominal,F01286,F01287,F01289,F01290,reconciled_state,synonyms
+Abies alba,Abies,alba,Pinaceae,Pinales,EcM,"['Pinus alba', 'Pinus abies var. pectinata', 'Pinus picea', 'Picea pectinata']"
+Abies nephrolepis,Abies,nephrolepis,Pinaceae,Pinales,EcM,"['Abies veitchii var. nephrolepis', 'Abies sibirica var. nephrolepis', 'Pinus nephrolepis']"
+Acacia auriculiformis,Acacia,auriculiformis,Fabaceae,Fabales,AM,['Racosperma auriculiforme']
+Acacia crassicarpa,Acacia,crassicarpa,Fabaceae,Fabales,EcMAM,['Racosperma crassicarpum']
+Acacia mangium,Acacia,mangium,Fabaceae,Fabales,EcMAM,['Racosperma mangium']
+Acer barbinerve,Acer,barbinerve,Sapindaceae,Sapindales,AM,['Acer diabolicum subsp. barbinerve']
+Acer campbellii,Acer,campbellii,Sapindaceae,Sapindales,AM,
+Acer campestre,Acer,campestre,Sapindaceae,Sapindales,AM,['Euacer campestre']
+Acer caudatum,Acer,caudatum,Sapindaceae,Sapindales,EcMAM,
+Acer coriaceifolium,Acer,coriaceifolium,Sapindaceae,Sapindales,AM,
+Acer davidii,Acer,davidii,Sapindaceae,Sapindales,AM,['Acer sikkimense subsp. davidii']
+Acer fabri,Acer,fabri,Sapindaceae,Sapindales,AM,
+Acer laurinum,Acer,laurinum,Sapindaceae,Sapindales,,
+Acer negundo,Acer,negundo,Sapindaceae,Sapindales,NMAM,"['Negundo aceroides', 'Rulac negundo']"
+Acer pictum,Acer,pictum,Sapindaceae,Sapindales,EcMAM,"['Kalopanax pictus', 'Acer lobelii subsp. pictum', 'Acer platanoides subsp. pictum']"
+Acer platanoides,Acer,platanoides,Sapindaceae,Sapindales,NMAM,['Euacer platanoides']
+Acer pseudoplatanus,Acer,pseudoplatanus,Sapindaceae,Sapindales,NMAM,
+Acer rubrum,Acer,rubrum,Sapindaceae,Sapindales,AM,['Rufacer rubrum']
+Acer saccharum,Acer,saccharum,Sapindaceae,Sapindales,NMAM,['Saccharodendron saccharum']
+Acer tataricum,Acer,tataricum,Sapindaceae,Sapindales,EcMAM,['Euacer tataricum']
+Acer tegmentosum,Acer,tegmentosum,Sapindaceae,Sapindales,AM,['Acer pensylvanicum var. tegmentosum']
+Acer triflorum,Acer,triflorum,Sapindaceae,Sapindales,AM,['Crula triflora']
+Acer truncatum,Acer,truncatum,Sapindaceae,Sapindales,EcMAM,"['Acer cappadocicum subsp. truncatum', 'Acer laetum var. truncatum', 'Acer lobelii subsp. truncatum', 'Acer pictum var. truncatum']"
+Achillea millefolium,Achillea,millefolium,Asteraceae,Asterales,NMAM,"['Chamaemelum millefolium', 'Alitubus millefolium', 'Santolina millefolium']"
+Ackama rosifolia,Ackama,rosifolia,Cunoniaceae,Oxalidales,AM,['Caldcluvia rosifolia']
+Acronychia pedunculata,Acronychia,pedunculata,Rutaceae,Sapindales,AM,"['Jambolifera pedunculata', 'Cyminosma pedunculata']"
+Actaea cimicifuga,Actaea,cimicifuga,Ranunculaceae,Ranunculales,NMAM,['Cimicifuga foetida']
+Actinidia kolomikta,Actinidia,kolomikta,Actinidiaceae,Ericales,AM,"['Prunus kolomikta', 'Trochostigma kolomikta']"
+Actinodaphne henryi,Actinodaphne,henryi,Lauraceae,Laurales,AM,
+Adenocaulon himalaicum,Adenocaulon,himalaicum,Asteraceae,Asterales,AM,
+Adiantum pedatum,Adiantum,pedatum,Pteridaceae,Polypodiales,AM,
+Adina metcalfii,Adina,metcalfii,Rubiaceae,Gentianales,AM,['Pertusadina metcalfii']
+Adina pilulifera,Adina,pilulifera,Rubiaceae,Gentianales,AM,"['Cephalanthus pilulifer', 'Nauclea pilulifera']"
+Aesculus hippocastanum,Aesculus,hippocastanum,Sapindaceae,Sapindales,AM,['Pawia hippocastanum']
+Aesculus parviflora,Aesculus,parviflora,Sapindaceae,Sapindales,AM,
+Afrocarpus falcatus,Afrocarpus,falcatus,Podocarpaceae,Araucariales,AM,"['Taxus falcata', 'Nageia falcata', 'Podocarpus falcatus', 'Decussocarpus falcatus']"
+Agastache foeniculum,Agastache,foeniculum,Lamiaceae,Lamiales,,"['Stachys foeniculum', 'Lophanthus foeniculum', 'Hyssopus foeniculum', 'Vleckia foeniculum']"
+Agathis australis,Agathis,australis,Araucariaceae,Araucariales,AM,"['Dammara australis', 'Salisburyodendron australis']"
+Agathis kinabaluensis,Agathis,kinabaluensis,Araucariaceae,Araucariales,AM,
+Agathis moorei,Agathis,moorei,Araucariaceae,Araucariales,AM,"['Salisburyodendron moorei', 'Dammara moorei']"
+Aglaia exstipulata,Aglaia,exstipulata,Meliaceae,Sapindales,,['Euphoria exstipulata']
+Aglaia odoratissima,Aglaia,odoratissima,Meliaceae,Sapindales,,
+Agouticarpa curviflora,Agouticarpa,curviflora,Rubiaceae,Gentianales,AM,['Genipa curviflora']
+Agrimonia pilosa,Agrimonia,pilosa,Rosaceae,Rosales,AM,"['Agrimonia eupatoria var. pilosa', 'Agrimonia dahurica var. pilosa']"
+Agropyron cristatum,Agropyron,cristatum,Poaceae,Poales,AM,"['Eremopyrum cristatum', 'Triticum cristatum', 'Costia cristata', 'Kratzmannia cristata', 'Bromus cristatus', 'Zeia cristata']"
+Agrostis capillaris,Agrostis,capillaris,Poaceae,Poales,AM,"['Agrostis polymorpha var. capillaris', 'Trichodium capillare']"
+Agrostis scabra,Agrostis,scabra,Poaceae,Poales,AM,"['Agrostis hyemalis var. scabra', 'Agrostis laxiflora var. scabra', 'Trichodium scabrum']"
+Aidia oxyodonta,Aidia,oxyodonta,Rubiaceae,Gentianales,AM,['Randia oxyodonta']
+Ailanthus fordii,Ailanthus,fordii,Simaroubaceae,Sapindales,,
+Aiouea montana,Aiouea,montana,Lauraceae,Laurales,,"['Persea montana', 'Phoebe montana', 'Cinnamomum montanum', 'Laurus montana']"
+Alangium chinense,Alangium,chinense,Cornaceae,Cornales,AM,"['Karangolum chinense', 'Stylis chinensis', 'Stylidium chinense', 'Marlea chinensis']"
+Alchornea tiliifolia,Alchornea,tiliifolia,Euphorbiaceae,Malpighiales,AM,['Stipellaria tiliifolia']
+Alchornea trewioides,Alchornea,trewioides,Euphorbiaceae,Malpighiales,AM,['Stipellaria trewioides']
+Alectryon excelsus,Alectryon,excelsus,Sapindaceae,Sapindales,AM,
+Alibertia claviflora,Alibertia,claviflora,Rubiaceae,Gentianales,AM,"['Borojoa claviflora', 'Cordiera claviflora']"
+Alibertia edulis,Alibertia,edulis,Rubiaceae,Gentianales,AM,"['Genipa edulis', 'Cordiera edulis', 'Gardenia edulis', 'Amaioua edulis']"
+Allantoma lineata,Allantoma,lineata,Lecythidaceae,Ericales,AM,['Couratari lineata']
+Allium bidentatum,Allium,bidentatum,Amaryllidaceae,Asparagales,AM,
+Allium tenuissimum,Allium,tenuissimum,Amaryllidaceae,Asparagales,AM,
+Allium textile,Allium,textile,Amaryllidaceae,Asparagales,AM,
+Allophylus abyssinicus,Allophylus,abyssinicus,Sapindaceae,Sapindales,,['Schmidelia abyssinica']
+Allophylus cobbe,Allophylus,cobbe,Sapindaceae,Sapindales,AM,"['Ornitrophe cobbe', 'Schmidelia cobbe', 'Toxicodendrum cobbe', 'Rhus cobbe']"
+Alniphyllum fortunei,Alniphyllum,fortunei,Styracaceae,Ericales,AM,['Halesia fortunei']
+Alnus glutinosa,Alnus,glutinosa,Betulaceae,Fagales,EcM,"['Betula alnus var. glutinosa', 'Betula glutinosa', 'Betula alnus subsp. glutinosa']"
+Alpinia japonica,Alpinia,japonica,Zingiberaceae,Zingiberales,AM,"['Globba japonica', 'Languas japonica']"
+Alseis blackiana,Alseis,blackiana,Rubiaceae,Gentianales,AM,
+Alseodaphnopsis andersonii,Alseodaphnopsis,andersonii,Lauraceae,Laurales,,"['Alseodaphne andersonii', 'Cryptocarya andersonii']"
+Alsophila smithii,Alsophila,smithii,Cyatheaceae,Cyatheales,AM,"['Hemitelia smithii', 'Cyathea smithii']"
+Alsophila tricolor,Alsophila,tricolor,Cyatheaceae,Cyatheales,AM,
+Alstonia scholaris,Alstonia,scholaris,Apocynaceae,Gentianales,AM,"['Echites scholaris', 'Pala scholaris']"
+Amaioua glomerulata,Amaioua,glomerulata,Rubiaceae,Gentianales,AM,"['Rondeletia glomerulata', 'Mussaenda glomerulata']"
+Amaioua guianensis,Amaioua,guianensis,Rubiaceae,Gentianales,AM,
+Ambrosia artemisiifolia,Ambrosia,artemisiifolia,Asteraceae,Asterales,AM,['Ambrosia elatior var. artemisiifolia']
+Amelanchier alnifolia,Amelanchier,alnifolia,Rosaceae,Rosales,EcMAM,"['Pyrus alnifolia', 'Amelanchier sanguinea var. alnifolia', 'Amelanchier canadensis var. alnifolia', 'Amelanchier diversifolia var. alnifolia', 'Aronia alnifolia']"
+Anaphalis aureopunctata,Anaphalis,aureopunctata,Asteraceae,Asterales,NMAM,
+Anaphalis hancockii,Anaphalis,hancockii,Asteraceae,Asterales,AM,
+Anaxagorea javanica,Anaxagorea,javanica,Annonaceae,Magnoliales,,
+Andesanthus lepidotus,Andesanthus,lepidotus,Melastomataceae,Myrtales,,"['Tibouchina lepidota', 'Pleroma lepidotum', 'Chaetogastra lepidota', 'Rhexia lepidota']"
+Andropogon gerardii,Andropogon,gerardii,Poaceae,Poales,AM,
+Androsace occidentalis,Androsace,occidentalis,Primulaceae,Ericales,,"['Primula occidentalis', 'Aretia occidentalis', 'Amadea occidentalis']"
+Anemone cylindrica,Anemone,cylindrica,Ranunculaceae,Ranunculales,,
+Aniba coto,Aniba,coto,Lauraceae,Laurales,,['Nectandra coto']
+Aniba guianensis,Aniba,guianensis,Lauraceae,Laurales,AM,['Cedrota guianensis']
+Aniba hostmanniana,Aniba,hostmanniana,Lauraceae,Laurales,AM,['Aydendron hostmannianum']
+Aniba muca,Aniba,muca,Lauraceae,Laurales,,"['Aydendron muca', 'Laurus muca']"
+Aniba terminalis,Aniba,terminalis,Lauraceae,Laurales,AM,
+Antennaria neglecta,Antennaria,neglecta,Asteraceae,Asterales,AM,
+Antennaria parvifolia,Antennaria,parvifolia,Asteraceae,Asterales,AM,['Antennaria dioica var. parvifolia']
+Anthyllis cytisoides,Anthyllis,cytisoides,Fabaceae,Fabales,AM,['Zenopogon cytisoides']
+Anthyllis terniflora,Anthyllis,terniflora,Fabaceae,Fabales,AM,"['Anthyllis cytisoides subsp. terniflora', 'Genista terniflora']"
+Antiaris toxicaria,Antiaris,toxicaria,Moraceae,Rosales,NMAM,"['Cestrum toxicarium', 'Mithridatea toxicaria', 'Ipo toxicaria']"
+Antidesma maclurei,Antidesma,maclurei,Phyllanthaceae,Malpighiales,AM,
+Aphanamixis polystachya,Aphanamixis,polystachya,Meliaceae,Sapindales,AM,"['Amoora polystachya', 'Aglaia polystachya', 'Ricinocarpodendron polystachyum']"
+Apodytes dimidiata,Apodytes,dimidiata,Metteniusaceae,Metteniusales,NMAM,
+Aporosa octandra,Aporosa,octandra,Phyllanthaceae,Malpighiales,AM,['Myrica octandra']
+Aporosa subcaudata,Aporosa,subcaudata,Phyllanthaceae,Malpighiales,,
+Aporosa yunnanensis,Aporosa,yunnanensis,Phyllanthaceae,Malpighiales,AM,['Aporosa wallichii f. yunnanensis']
+Araucaria luxurians,Araucaria,luxurians,Araucariaceae,Araucariales,AM,"['Eutassa luxurians', 'Araucaria columnaris f. luxurians', 'Araucaria cookii var. luxurians']"
+Araucaria rulei,Araucaria,rulei,Araucariaceae,Araucariales,AM,"['Eutassa rulei', 'Eutacta rulei']"
+Arbutus unedo,Arbutus,unedo,Ericaceae,Ericales,EcM,
+Archidendron clypearia,Archidendron,clypearia,Fabaceae,Fabales,AM,"['Pithecellobium clypearia', 'Abarema clypearia', 'Feuilleea clypearia', 'Inga clypearia', 'Albizia clypearia']"
+Archidendron lucidum,Archidendron,lucidum,Fabaceae,Fabales,AM,"['Pithecellobium lucidum', 'Abarema lucida']"
+Ardisia depressa,Ardisia,depressa,Primulaceae,Ericales,AM,
+Ardisia japonica,Ardisia,japonica,Primulaceae,Ericales,AM,"['Tinus japonica', 'Bladhia japonica']"
+Ardisia quinquegona,Ardisia,quinquegona,Primulaceae,Ericales,NMAM,['Bladhia quinquegona']
+Arenaria serpyllifolia,Arenaria,serpyllifolia,Caryophyllaceae,Caryophyllales,NMAM,"['Stellaria serpyllifolia', 'Alsinanthus serpyllifolius']"
+Aristotelia serrata,Aristotelia,serrata,Elaeocarpaceae,Oxalidales,AM,['Dicera serrata']
+Armeria velutina,Armeria,velutina,Plumbaginaceae,Caryophyllales,NMAM,"['Statice velutina', 'Armeria maritima subsp. velutina']"
+Arnica fulgens,Arnica,fulgens,Asteraceae,Asterales,AM,['Arnica montana var. fulgens']
+Arnica sororia,Arnica,sororia,Asteraceae,Asterales,AM,['Arnica fulgens var. sororia']
+Artemisia barrelieri,Artemisia,barrelieri,Asteraceae,Asterales,,['Seriphidium barrelieri']
+Artemisia cana,Artemisia,cana,Asteraceae,Asterales,AM,['Seriphidium canum']
+Artemisia frigida,Artemisia,frigida,Asteraceae,Asterales,AM,['Absinthium frigidum']
+Artemisia igniaria,Artemisia,igniaria,Asteraceae,Asterales,AM,
+Artemisia ludoviciana,Artemisia,ludoviciana,Asteraceae,Asterales,AM,"['Artemisia vulgaris var. ludoviciana', 'Artemisia vulgaris subsp. ludoviciana']"
+Artemisia mongolica,Artemisia,mongolica,Asteraceae,Asterales,AM,['Artemisia vulgaris var. mongolica']
+Artocarpus lakoocha,Artocarpus,lakoocha,Moraceae,Rosales,,
+Artocarpus styracifolius,Artocarpus,styracifolius,Moraceae,Rosales,AM,
+Ascarina lucida,Ascarina,lucida,Chloranthaceae,Chloranthales,AM,
+Asclepias incarnata,Asclepias,incarnata,Apocynaceae,Gentianales,AM,['Acerates incarnata']
+Asclepias syriaca,Asclepias,syriaca,Apocynaceae,Gentianales,AM,
+Asclepias tuberosa,Asclepias,tuberosa,Apocynaceae,Gentianales,AM,
+Asimina triloba,Asimina,triloba,Annonaceae,Magnoliales,AM,"['Uvaria triloba', 'Porcelia triloba', 'Annona triloba']"
+Asparagus schoberioides,Asparagus,schoberioides,Asparagaceae,Asparagales,AM,
+Asplenium bulbiferum,Asplenium,bulbiferum,Aspleniaceae,Polypodiales,AM,"['Asplenium marinum var. bulbiferum', 'Caenopteris bulbifera', 'Chamaefilix bulbifera']"
+Astelia fragrans,Astelia,fragrans,Asteliaceae,Asparagales,AM,['Funckia fragrans']
+Astelia nervosa,Astelia,nervosa,Asteliaceae,Asparagales,AM,['Funckia nervosa']
+Aster lanceolatus,Aster,lanceolatus,Asteraceae,Asterales,AM,
+Aster scaber,Aster,scaber,Asteraceae,Asterales,AM,"['Cardiagyris scabra', 'Doellingeria scabra']"
+Aster tataricus,Aster,tataricus,Asteraceae,Asterales,AM,
+Astilbe rivularis,Astilbe,rivularis,Saxifragaceae,Saxifragales,AM,
+Astilbe rubra,Astilbe,rubra,Saxifragaceae,Saxifragales,AM,
+Astragalus aboriginum,Astragalus,aboriginum,Fabaceae,Fabales,,
+Astragalus agrestis,Astragalus,agrestis,Fabaceae,Fabales,,['Phaca agrestis']
+Astragalus bisulcatus,Astragalus,bisulcatus,Fabaceae,Fabales,AM,"['Phaca bisulcata', 'Diholcos bisulcatus', 'Tragacantha bisulcata']"
+Astragalus canadensis,Astragalus,canadensis,Fabaceae,Fabales,,"['Phaca canadensis', 'Tragacantha canadensis']"
+Astragalus scaberrimus,Astragalus,scaberrimus,Fabaceae,Fabales,AM,['Tragacantha scaberrima']
+Athyrium monomachii,Athyrium,monomachii,Athyriaceae,Polypodiales,AM,['Athyrium filix-femina var. monomachii']
+Athyrium sinense,Athyrium,sinense,Athyriaceae,Polypodiales,AM,['Athyrium filix-femina subsp. sinense']
+Athyrium spinulosum,Athyrium,spinulosum,Athyriaceae,Polypodiales,AM,"['Cystopteris spinulosa', 'Pseudocystopteris spinulosa']"
+Atractylis humilis,Atractylis,humilis,Asteraceae,Asterales,,
+Baccaurea ramiflora,Baccaurea,ramiflora,Phyllanthaceae,Malpighiales,AM,
+Baptisia alba,Baptisia,alba,Fabaceae,Fabales,AM,"['Podalyria alba', 'Sophora alba', 'Crotalaria alba']"
+Barringtonia fusicarpa,Barringtonia,fusicarpa,Lecythidaceae,Ericales,,
+Barringtonia racemosa,Barringtonia,racemosa,Lecythidaceae,Ericales,AM,"['Caryophyllus racemosus', 'Butonica racemosa', 'Butonica alba', 'Eugenia racemosa', 'Michelia racemosa', 'Stravadium racemosum', 'Huttum racemosum']"
+Bathysa australis,Bathysa,australis,Rubiaceae,Gentianales,,"['Voigtia australis', 'Cinchona australis', 'Exostema australe']"
+Beilschmiedia purpurascens,Beilschmiedia,purpurascens,Lauraceae,Laurales,,
+Beilschmiedia tarairi,Beilschmiedia,tarairi,Lauraceae,Laurales,AM,['Laurus tarairi']
+Beilschmiedia tawa,Beilschmiedia,tawa,Lauraceae,Laurales,AM,['Laurus tawa']
+Berberis thunbergii,Berberis,thunbergii,Berberidaceae,Ranunculales,AM,
+Berteroa incana,Berteroa,incana,Brassicaceae,Brassicales,NM,"['Moenchia incana', 'Vesicaria incana', 'Alyssum incanum', 'Farsetia incana']"
+Betula costata,Betula,costata,Betulaceae,Fagales,EcM,"['Betula ermanii f. costata', 'Betula ermanii var. costata', 'Betula ulmifolia var. costata']"
+Betula dahurica,Betula,dahurica,Betulaceae,Fagales,EcM,
+Betula fruticosa,Betula,fruticosa,Betulaceae,Fagales,EcM,
+Betula lenta,Betula,lenta,Betulaceae,Fagales,EcM,
+Betula pendula,Betula,pendula,Betulaceae,Fagales,EcM,"['Betula alba lusus pendula', 'Betula alba var. pendula', 'Betula alba var. pendula']"
+Betula utilis,Betula,utilis,Betulaceae,Fagales,EcM,
+Bituminaria bituminosa,Bituminaria,bituminosa,Fabaceae,Fabales,AM,"['Aspalthium bituminosum', 'Lotodes bituminosum', 'Rhynchodium bituminosum', 'Psoralea bituminosa', 'Bipontinia bituminosa']"
+Blastus cochinchinensis,Blastus,cochinchinensis,Melastomataceae,Myrtales,AM,
+Blastus pauciflorus,Blastus,pauciflorus,Melastomataceae,Myrtales,AM,"['Oxyspora pauciflora', 'Allomorphia pauciflora']"
+Blechnopsis orientalis,Blechnopsis,orientalis,Blechnaceae,Polypodiales,AM,
+Blechnum fluviatilis,Blechnum,fluviatilis,Aspleniaceae,Polypodiales,,
+Blechnum lanceolatum,Blechnum,lanceolatum,Aspleniaceae,Polypodiales,,
+Blepharocalyx eggersii,Blepharocalyx,eggersii,Myrtaceae,Myrtales,AM,"['Marlieriopsis eggersii', 'Mitranthes eggersii']"
+Blumeodendron tokbrai,Blumeodendron,tokbrai,Euphorbiaceae,Malpighiales,,"['Mallotus tokbrai', 'Elateriospermum tokbrai', 'Blumeodendron elateriospermum', 'Rottlera tokbrai']"
+Bouteloua curtipendula,Bouteloua,curtipendula,Poaceae,Poales,AM,"['Cynodon curtipendulus', 'Atheropogon curtipendulus', 'Dinebra curtipendula', 'Andropogon curtipendulus', 'Chloris curtipendula', 'Eutriana curtipendula']"
+Bouteloua gracilis,Bouteloua,gracilis,Poaceae,Poales,AM,"['Atheropogon gracilis', 'Chondrosum gracile', 'Eutriana gracilis', 'Actinochloa gracilis']"
+Brachypodium phoenicoides,Brachypodium,phoenicoides,Poaceae,Poales,AM,"['Schedonorus phoenicoides', 'Brachypodium pinnatum subsp. phoenicoides', 'Brachypodium pinnatum var. phoenicoides', 'Festuca phoenicoides', 'Brachypodium pinnatum subsp. phoenicoides', 'Brachypodium cespitosum var. phoenicoides', 'Poa phoenicoides', 'Brachypodium ramosum var. phoenicoides', 'Brachypodium ramosum proles phoenicoides', 'Brachypodium pinnatum var. phoenicoides', 'Brachypodium caespitosum var. phoenicoides', 'Triticum phoenicoides', 'Bromus phoenicoides']"
+Brachypodium pinnatum,Brachypodium,pinnatum,Poaceae,Poales,AM,"['Festuca pinnata', 'Bromus pinnatus', 'Tragus pinnatus', 'Triticum pinnatum', 'Agropyron pinnatum']"
+Brachypodium sylvaticum,Brachypodium,sylvaticum,Poaceae,Poales,AM,"['Bromus pinnatus var. sylvaticus', 'Festuca sylvatica', 'Brachypodium pinnatum var. sylvaticum', 'Brachypodium pinnatum var. sylvaticum', 'Festuca pinnata var. sylvatica', 'Brevipodium sylvaticum', 'Agropyron sylvaticum', 'Bromus sylvaticus', 'Triticum sylvaticum']"
+Bromus catharticus,Bromus,catharticus,Poaceae,Poales,AM,['Ceratochloa cathartica']
+Bromus erectus,Bromus,erectus,Poaceae,Poales,AM,"['Forasaccus erectus', 'Festuca erecta', 'Schedonorus erectus', 'Bromopsis erecta', 'Zerna erecta']"
+Bromus inermis,Bromus,inermis,Poaceae,Poales,NMAM,"['Forasaccus inermis', 'Zerna inermis', 'Festuca inermis', 'Schedonorus inermis', 'Bromopsis inermis']"
+Bromus madritensis,Bromus,madritensis,Poaceae,Poales,AM,"['Anisantha madritensis', 'Zerna madritensis', 'Genea madritensis', 'Festuca madritensis', 'Bromus rubens subsp. madritensis', 'Bromus sterilis var. madritensis']"
+Brosimum lactescens,Brosimum,lactescens,Moraceae,Rosales,AM,['Brosimopsis lactescens']
+Brosimum rubescens,Brosimum,rubescens,Moraceae,Rosales,AM,['Piratinera rubescens']
+Brosimum utile,Brosimum,utile,Moraceae,Rosales,AM,"['Piratinera utilis', 'Galactodendrum utile']"
+Calamagrostis canadensis,Calamagrostis,canadensis,Poaceae,Poales,AM,"['Arundo canadensis', 'Calamagrostis langsdorffii var. marylandica', 'Deyeuxia canadensis']"
+Calamus rhabdocladus,Calamus,rhabdocladus,Arecaceae,Arecales,AM,
+Calliandra houstoniana,Calliandra,houstoniana,Fabaceae,Fabales,AM,"['Mimosa houstoniana', 'Anneslia houstoniana']"
+Callitropsis nootkatensis,Callitropsis,nootkatensis,Cupressaceae,Cupressales,AM,"['Xanthocyparis nootkatensis', 'Chamaecyparis nootkatensis', 'Cupressus nootkatensis']"
+Calluna vulgaris,Calluna,vulgaris,Ericaceae,Ericales,ErM,"['Ericoides vulgaris', 'Erica vulgaris']"
+Calocedrus decurrens,Calocedrus,decurrens,Cupressaceae,Cupressales,AM,"['Heyderia decurrens', 'Thuja decurrens', 'Libocedrus decurrens']"
+Calpurnia aurea,Calpurnia,aurea,Fabaceae,Fabales,,"['Virgilia aurea', 'Podalyria aurea', 'Sophora aurea']"
+Caltha palustris,Caltha,palustris,Ranunculaceae,Ranunculales,NMAM,"['Populago palustris', 'Trollius palustris']"
+Calycolpus goetheanus,Calycolpus,goetheanus,Myrtaceae,Myrtales,AM,['Myrtus goetheana']
+Campanula rotundifolia,Campanula,rotundifolia,Campanulaceae,Asterales,NMAM,
+Canarium album,Canarium,album,Burseraceae,Sapindales,AM,['Pimela alba']
+Canarium subulatum,Canarium,subulatum,Burseraceae,Sapindales,AM,
+Carallia brachiata,Carallia,brachiata,Rhizophoraceae,Malpighiales,AM,"['Karekandelia brachiata', 'Petalotoma brachiata', 'Diatoma brachiata']"
+Carapichea pacimonica,Carapichea,pacimonica,Rubiaceae,Gentianales,AM,"['Uragoga pacimonica', 'Psychotria pacimonica']"
+Carex atrofusca,Carex,atrofusca,Cyperaceae,Poales,,['Proteocarpus atrofuscus']
+Carex coriophora,Carex,coriophora,Cyperaceae,Poales,,"['Carex atrofusca subsp. coriophora', 'Carex atrofusca var. coriophora']"
+Carex filifolia,Carex,filifolia,Cyperaceae,Poales,NM,"['Olotrema filifolia', 'Uncinia filifolia']"
+Carex flacca,Carex,flacca,Cyperaceae,Poales,NMAM,
+Carex humulis,Carex,humulis,Cyperaceae,Poales,NM,
+Carex korshinskyi,Carex,korshinskyi,Cyperaceae,Poales,NMAM,"['Carex supina var. korshinskyi', 'Carex supina subsp. korshinskyi']"
+Carex lasiocarpa,Carex,lasiocarpa,Cyperaceae,Poales,NM,
+Carex obtusata,Carex,obtusata,Cyperaceae,Poales,NMAM,"['Genersichia obtusata', 'Psyllophora obtusata']"
+Carex pseuduncinoides,Carex,pseuduncinoides,Cyperaceae,Poales,,['Kobresia pseuduncinoides']
+Carex tibetikobresia,Carex,tibetikobresia,Cyperaceae,Poales,NMAM,"['Kobresia capillifolia var. tibetica', 'Kobresia tibetica']"
+Carpinus betulus,Carpinus,betulus,Betulaceae,Fagales,EcM,
+Carpinus caroliniana,Carpinus,caroliniana,Betulaceae,Fagales,EcM,
+Carpinus cordata,Carpinus,cordata,Betulaceae,Fagales,EcM,['Distegocarpus cordatus']
+Carpodetus serratus,Carpodetus,serratus,Rousseaceae,Asterales,AM,
+Carya cordiformis,Carya,cordiformis,Juglandaceae,Fagales,EcM,"['Juglans cordiformis', 'Hicorius cordiformis']"
+Carya glabra,Carya,glabra,Juglandaceae,Fagales,EcM,"['Juglans glabra', 'Hicorius glabra', 'Scoria glabra']"
+Carya ovata,Carya,ovata,Juglandaceae,Fagales,EcM,"['Juglans alba var. ovata', 'Juglans alba ovata', 'Carya alba subsp. ovata', 'Juglans ovata', 'Hicorius ovata', 'Scoria ovata']"
+Caryota maxima,Caryota,maxima,Arecaceae,Arecales,AM,['Caryota rumphiana var. javanica']
+Castanea henryi,Castanea,henryi,Fagaceae,Fagales,EcM,['Castanopsis henryi']
+Castanopsis boisii,Castanopsis,boisii,Fagaceae,Fagales,,
+Castanopsis calathiformis,Castanopsis,calathiformis,Fagaceae,Fagales,AM,"['Lithocarpus calathiformis', 'Pasania calathiformis', 'Quercus calathiformis', 'Synaedrys calathiformis']"
+Castanopsis carlesii,Castanopsis,carlesii,Fagaceae,Fagales,EcM,"['Shiia carlesii', 'Synaedrys carlesii', 'Quercus carlesii', 'Castanopsis cuspidata var. carlesii']"
+Castanopsis echinocarpa,Castanopsis,echinocarpa,Fagaceae,Fagales,EcM,['Castanopsis tribuloides var. echinocarpa']
+Castanopsis eyrei,Castanopsis,eyrei,Fagaceae,Fagales,EcM,"['Lithocarpus eyrei', 'Pasania eyrei', 'Quercus eyrei']"
+Castanopsis fabri,Castanopsis,fabri,Fagaceae,Fagales,EcM,
+Castanopsis fargesii,Castanopsis,fargesii,Fagaceae,Fagales,EcM,
+Castanopsis ferox,Castanopsis,ferox,Fagaceae,Fagales,,"['Quercus ferox', 'Castanopsis tribuloides var. ferox']"
+Castanopsis fissa,Castanopsis,fissa,Fagaceae,Fagales,EcM,"['Lithocarpus fissus', 'Pasania fissa', 'Quercus fissa', 'Shiia fissa', 'Synaedrys fissa']"
+Castanopsis fleuryi,Castanopsis,fleuryi,Fagaceae,Fagales,,
+Castanopsis hystrix,Castanopsis,hystrix,Fagaceae,Fagales,EcM,
+Castanopsis indica,Castanopsis,indica,Fagaceae,Fagales,NMAM,"['Quercus indica', 'Castanea indica']"
+Castanopsis wattii,Castanopsis,wattii,Fagaceae,Fagales,EcM,"['Castanea wattii', 'Castanopsis tribuloides var. wattii']"
+Catalpa bignonioides,Catalpa,bignonioides,Bignoniaceae,Lamiales,AM,
+Catostemma sclerophyllum,Catostemma,sclerophyllum,Malvaceae,Malvales,AM,
+Catunaregam spinosa,Catunaregam,spinosa,Rubiaceae,Gentianales,AM,"['Xeromphis spinosa', 'Randia spinosa', 'Canthium spinosum', 'Gardenia spinosa']"
+Caulophyllum robustum,Caulophyllum,robustum,Berberidaceae,Ranunculales,AM,"['Leontice robusta', 'Caulophyllum thalictroides subsp. robustum']"
+Cecropia angustifolia,Cecropia,angustifolia,Urticaceae,Rosales,,
+Cedrela montana,Cedrela,montana,Meliaceae,Sapindales,,['Surenus montana']
+Cedrus libani,Cedrus,libani,Pinaceae,Pinales,EcM,"['Larix cedrus', 'Picea cedrus', 'Abies cedrus', 'Cedrus effusa', 'Cedrus libanotica subsp. libani', 'Pinus cedrus']"
+Celtis australis,Celtis,australis,Cannabaceae,Rosales,AM,
+Celtis sinensis,Celtis,sinensis,Cannabaceae,Rosales,AM,['Celtis tetrandra subsp. sinensis']
+Celtis tetrandra,Celtis,tetrandra,Cannabaceae,Rosales,AM,['Celtis sinensis var. tetrandra']
+Celtis timorensis,Celtis,timorensis,Cannabaceae,Rosales,,
+Cenchrus americanus,Cenchrus,americanus,Poaceae,Poales,,"['Pennisetum americanum', 'Panicum americanum']"
+Centaurea pectinata,Centaurea,pectinata,Asteraceae,Asterales,,['Jacea pectinata']
+Centronia laurifolia,Centronia,laurifolia,Melastomataceae,Myrtales,,
+Cephalotaxus harringtonii,Cephalotaxus,harringtonii,Cephalotaxaceae,Pinales,AM,
+Cerastium arvense,Cerastium,arvense,Caryophyllaceae,Caryophyllales,NMAM,"['Alsine arvensis', 'Leucodonium arvense', 'Centunculus arvensis']"
+Cercidiphyllum japonicum,Cercidiphyllum,japonicum,Cercidiphyllaceae,Saxifragales,AM,
+Cercis canadensis,Cercis,canadensis,Fabaceae,Fabales,AM,['Siliquastrum canadense']
+Cestrum schlechtendalii,Cestrum,schlechtendalii,Solanaceae,Solanales,,
+Chamaecrista fasciculata,Chamaecrista,fasciculata,Fabaceae,Fabales,AM,['Cassia fasciculata']
+Chamaecyparis obtusa,Chamaecyparis,obtusa,Cupressaceae,Cupressales,AM,"['Retinispora obtusa', 'Cupressus obtusa', 'Chamaepeuce obtusa']"
+Chamaecyparis pisifera,Chamaecyparis,pisifera,Cupressaceae,Cupressales,AM,"['Thuja pisifera', 'Retinispora pisifera', 'Cupressus pisifera']"
+Chamaerhodos erecta,Chamaerhodos,erecta,Rosaceae,Rosales,NM,['Sibbaldia erecta']
+Chassalia subnuda,Chassalia,subnuda,Rubiaceae,Gentianales,AM,"['Uragoga subnuda', 'Psychotria subnuda']"
+Chenopodium album,Chenopodium,album,Amaranthaceae,Caryophyllales,NMAM,"['Chenopodium viride var. album', 'Botrys albus', 'Atriplex alba']"
+Chionanthus virginicus,Chionanthus,virginicus,Oleaceae,Lamiales,AM,
+Chloranthus henryi,Chloranthus,henryi,Chloranthaceae,Chloranthales,,
+Choerospondias axillaris,Choerospondias,axillaris,Anacardiaceae,Sapindales,AM,"['Spondias axillaris', 'Poupartia axillaris']"
+Chomelia psilocarpa,Chomelia,psilocarpa,Rubiaceae,Gentianales,AM,
+Chomelia tenuiflora,Chomelia,tenuiflora,Rubiaceae,Gentianales,AM,"['Caruelina tenuiflora', 'Anisomeris tenuiflora']"
+Chromolucuma rubriflora,Chromolucuma,rubriflora,Sapotaceae,Ericales,AM,['Pouteria rubriflora']
+Chrysojasminum fruticans,Chrysojasminum,fruticans,Oleaceae,Lamiales,AM,['Jasminum fruticans']
+Chrysophyllum sanguinolentum,Chrysophyllum,sanguinolentum,Sapotaceae,Ericales,AM,
+Chrysopsis villosa,Chrysopsis,villosa,Asteraceae,Asterales,AM,
+Cibotium barometz,Cibotium,barometz,Cibotiaceae,Cyatheales,NM,"['Dicksonia barometz', 'Polypodium barometz', 'Aspidium barometz', 'Nephrodium barometz']"
+Cichorium intybus,Cichorium,intybus,Asteraceae,Asterales,AM,
+Cinnamomum austro-sinensis,Cinnamomum,austro-sinensis,Lauraceae,Laurales,AM,
+Cinnamomum camphora,Cinnamomum,camphora,Lauraceae,Laurales,AM,
+Cinnamomum chekiangense,Cinnamomum,chekiangense,Lauraceae,Laurales,AM,
+Cinnamomum contractum,Cinnamomum,contractum,Lauraceae,Laurales,,
+Cinnamomum glanduliferum,Cinnamomum,glanduliferum,Lauraceae,Laurales,AM,
+Cinnamomum iners,Cinnamomum,iners,Lauraceae,Laurales,AM,"['Cinnamomum nitidum var. iners', 'Laurus iners']"
+Cinnamomum micranthum,Cinnamomum,micranthum,Lauraceae,Laurales,AM,
+Cinnamomum parthenoxylon,Cinnamomum,parthenoxylon,Lauraceae,Laurales,AM,
+Cistus albidus,Cistus,albidus,Cistaceae,Malvales,EcM,['Cistus vulgaris var. albidus']
+Cistus calycinus,Cistus,calycinus,Cistaceae,Malvales,,"['Stegitris calicinus', 'Halimium calycinum', 'Halimium atriplicifolium var. calycinum', 'Helianthemum calycinum']"
+Cistus crispus,Cistus,crispus,Cistaceae,Malvales,,['Cistus vulgaris var. crispus']
+Cistus halimifolius,Cistus,halimifolius,Cistaceae,Malvales,AM,"['Strobon halimifolium', 'Helianthemum halimifolium', 'Halimium halimifolium']"
+Cistus ladanifer,Cistus,ladanifer,Cistaceae,Malvales,EcM,
+Cistus libanotis,Cistus,libanotis,Cistaceae,Malvales,,
+Cistus monspeliensis,Cistus,monspeliensis,Cistaceae,Malvales,EcM,['Stephanocarpus monspeliensis']
+Cistus salviifolius,Cistus,salviifolius,Cistaceae,Malvales,EcM,['Ledonia peduncularis var. salviifolia']
+Clarisia biflora,Clarisia,biflora,Moraceae,Rosales,,
+Clarisia racemosa,Clarisia,racemosa,Moraceae,Rosales,AM,
+Cleidion brevipetiolatum,Cleidion,brevipetiolatum,Euphorbiaceae,Malpighiales,AM,
+Cleistogenes squarrosa,Cleistogenes,squarrosa,Poaceae,Poales,NMAM,"['Molinia squarrosa', 'Kengia squarrosa', 'Diplachne squarrosa']"
+Clethra revoluta,Clethra,revoluta,Clethraceae,Ericales,,['Cuellaria revoluta']
+Clinopodium nepeta,Clinopodium,nepeta,Lamiaceae,Lamiales,,"['Melissa nepeta', 'Satureja nepeta', 'Calamintha officinalis var. nepeta', 'Satureja calamintha var. nepeta', 'Thymus nepeta', 'Satureja calamintha subsp. nepeta', 'Calamintha nepeta']"
+Clitoria javitensis,Clitoria,javitensis,Fabaceae,Fabales,AM,"['Ternatea javitensis', 'Neurocarpum javitense']"
+Clusia alata,Clusia,alata,Clusiaceae,Malpighiales,,
+Clusia ducuoides,Clusia,ducuoides,Clusiaceae,Malpighiales,,
+Clusia elliptica,Clusia,elliptica,Clusiaceae,Malpighiales,,
+Coccoloba excelsa,Coccoloba,excelsa,Polygonaceae,Caryophyllales,EcMAM,
+Coccoloba manzinellensis,Coccoloba,manzinellensis,Polygonaceae,Caryophyllales,EcMAM,['Uvifera manzinellensis']
+Comandra umbellata,Comandra,umbellata,Santalaceae,Santalales,AM,['Thesium umbellatum']
+Combretum collinum,Combretum,collinum,Combretaceae,Myrtales,AM,
+Combretum decandrum,Combretum,decandrum,Combretaceae,Myrtales,AM,['Poivrea decandra']
+Convallaria majalis,Convallaria,majalis,Asparagaceae,Asparagales,NMAM,"['Polygonatum majale', 'Lilium-convallium majale']"
+Coprosma ciliata,Coprosma,ciliata,Rubiaceae,Gentianales,AM,
+Coprosma foetidissima,Coprosma,foetidissima,Rubiaceae,Gentianales,AM,
+Coprosma linariifolia,Coprosma,linariifolia,Rubiaceae,Gentianales,AM,['Coprosma propinqua var. linariifolia']
+Coprosma lucida,Coprosma,lucida,Rubiaceae,Gentianales,AM,
+Coprosma rhamnoides,Coprosma,rhamnoides,Rubiaceae,Gentianales,AM,
+Cordiera myrciifolia,Cordiera,myrciifolia,Rubiaceae,Gentianales,AM,['Alibertia myrciifolia']
+Coreopsis palmata,Coreopsis,palmata,Asteraceae,Asterales,,
+Coriaria arborea,Coriaria,arborea,Coriariaceae,Cucurbitales,AM,
+Coriaria nepalensis,Coriaria,nepalensis,Coriariaceae,Cucurbitales,AM,
+Cornus bretschneideri,Cornus,bretschneideri,Cornaceae,Cornales,AM,['Swida bretschneideri']
+Cornus controversa,Cornus,controversa,Cornaceae,Cornales,AM,"['Bothrocaryum controversum', 'Swida controversa']"
+Cornus florida,Cornus,florida,Cornaceae,Cornales,AM,"['Benthamia florida', 'Benthamidia florida', 'Cynoxylon floridum']"
+Cornus kousa,Cornus,kousa,Cornaceae,Cornales,AM,"['Benthamia kousa', 'Benthamia japonica', 'Dendrobenthamia japonica', 'Benthamidia japonica', 'Cynoxylon japonicum', 'Cynoxylon kousa']"
+Cornus officinalis,Cornus,officinalis,Cornaceae,Cornales,EcMAM,['Macrocarpium officinale']
+Cornus ulotricha,Cornus,ulotricha,Cornaceae,Cornales,AM,['Swida ulotricha']
+Coronilla juncea,Coronilla,juncea,Fabaceae,Fabales,,['Ornithopus junceus']
+Coronilla minima,Coronilla,minima,Fabaceae,Fabales,,['Ornithopus minimus']
+Corylus ferox,Corylus,ferox,Betulaceae,Fagales,EcM,
+Corylus sieboldiana,Corylus,sieboldiana,Betulaceae,Fagales,EcM,"['Corylus heterophylla var. sieboldiana', 'Corylus rostrata var. sieboldiana']"
+Corynocarpus laevigatus,Corynocarpus,laevigatus,Corynocarpaceae,Cucurbitales,AM,
+Corythophora alta,Corythophora,alta,Lecythidaceae,Ericales,AM,
+Cotoneaster acutifolius,Cotoneaster,acutifolius,Rosaceae,Rosales,AM,"['Pyrus acutifolia', 'Cotoneaster niger var. acutifolius']"
+Cotoneaster adpressus,Cotoneaster,adpressus,Rosaceae,Rosales,AM,"['Cotoneaster horizontalis var. adpressus', 'Pyrus adpressa']"
+Cotoneaster multiflorus,Cotoneaster,multiflorus,Rosaceae,Rosales,AM,['Pyrus multiflora']
+Couepia magnoliifolia,Couepia,magnoliifolia,Chrysobalanaceae,Malpighiales,AM,
+Crataegus monogyna,Crataegus,monogyna,Rosaceae,Rosales,AM,"['Oxyacantha apiifolia', 'Mespilus oxyacantha subsp. monogyna', 'Mespilus monogyna', 'Crataegus oxyacantha proles monogyna', 'Oxyacantha monogyna', 'Crataegus oxyacantha var. monogyna', 'Crataegus oxyacantha subsp. monogyna', 'Crataegus oxyacantha monogyna']"
+Crataegus pinnatifida,Crataegus,pinnatifida,Rosaceae,Rosales,EcMAM,"['Mespilus pinnatifida', 'Mespilus pentagyna var. pinnatifida', 'Crataegus oxyacantha var. pinnatifida']"
+Cratoxylum cochinchinense,Cratoxylum,cochinchinense,Hypericaceae,Malpighiales,AM,"['Vismia cochinchinensis', 'Hypericum cochinchinense']"
+Crepis foetida,Crepis,foetida,Asteraceae,Asterales,AM,"['Hostia foetida', 'Wibelia foetida', 'Rhynchopappus foetidus', 'Anisoderis foetida', 'Arnoseris foetida', 'Barkhausia foetida', 'Berinia foetida', 'Picris foetida', 'Hieracium foetidum', 'Hieracioides foetida']"
+Crepis tectorum,Crepis,tectorum,Asteraceae,Asterales,NM,"['Hieracioides tectorum', 'Hedypnois tectorum', 'Hieracium tectorum']"
+Critoniopsis floribunda,Critoniopsis,floribunda,Asteraceae,Asterales,,['Vernonia floribunda']
+Critoniopsis pycnantha,Critoniopsis,pycnantha,Asteraceae,Asterales,,['Vernonia pycnantha']
+Croton kongensis,Croton,kongensis,Euphorbiaceae,Malpighiales,AM,
+Cryptocarya acutifolia,Cryptocarya,acutifolia,Lauraceae,Laurales,,
+Cryptocarya brachythyrsa,Cryptocarya,brachythyrsa,Lauraceae,Laurales,,
+Cryptocarya chinensis,Cryptocarya,chinensis,Lauraceae,Laurales,AM,['Beilschmiedia chinensis']
+Cryptocarya concinna,Cryptocarya,concinna,Lauraceae,Laurales,AM,
+Cryptocarya yunnanensis,Cryptocarya,yunnanensis,Lauraceae,Laurales,AM,
+Cryptomeria japonica,Cryptomeria,japonica,Cupressaceae,Cupressales,AM,"['Cupressus japonica', 'Schubertia japonica', 'Taxodium japonicum']"
+Cunninghamia lanceolata,Cunninghamia,lanceolata,Cupressaceae,Cupressales,AM,"['Araucaria lanceolata', 'Belis lanceolata', 'Abies lanceolata', 'Pinus lanceolata']"
+Cyathea smithii,Cyathea,smithii,Cyatheaceae,Cyatheales,AM,
+Cycas nathorstii,Cycas,nathorstii,Cycadaceae,Cycadales,AM,
+Cycas panzhihuaensis,Cycas,panzhihuaensis,Cycadaceae,Cycadales,AM,
+Cydonia oblonga,Cydonia,oblonga,Rosaceae,Rosales,AM,"['Pyrus cydonia', 'Pyrus oblonga', 'Cydonia vulgaris silvestris']"
+Cystopteris sudetica,Cystopteris,sudetica,Cystopteridaceae,Polypodiales,,['Rhizomatopteris sudetica']
+Cytisus grandiflorus,Cytisus,grandiflorus,Fabaceae,Fabales,,"['Laburnum grandiflorum', 'Sarothamnus grandiflorus', 'Genista grandiflora']"
+Dacrycarpus dacrydioides,Dacrycarpus,dacrydioides,Podocarpaceae,Araucariales,AM,"['Nageia excelsa', 'Podocarpus dacrydioides', 'Nageia dacrydioides', 'Podocarpus excelsus']"
+Dacrycarpus imbricatus,Dacrycarpus,imbricatus,Podocarpaceae,Araucariales,AM,"['Bracteocarpus imbricatus', 'Podocarpus imbricatus']"
+Dacrydium balansae,Dacrydium,balansae,Podocarpaceae,Araucariales,AM,['Metadacrydium balansae']
+Dacrydium cupressinum,Dacrydium,cupressinum,Podocarpaceae,Araucariales,AM,['Thalamia cupressina']
+Dacrydium gracile,Dacrydium,gracile,Podocarpaceae,Araucariales,AM,['Corneria gracilis']
+Dacrydium pectinatum,Dacrydium,pectinatum,Podocarpaceae,Araucariales,AM,['Corneria pectinata']
+Dacryodes peruviana,Dacryodes,peruviana,Burseraceae,Sapindales,,['Pachylobus peruvianus']
+Dactylis glomerata,Dactylis,glomerata,Poaceae,Poales,AM,"['Koeleria dactylis', 'Phalaris glomerata', 'Limnetis glomerata', 'Bromus glomeratus', 'Festuca glomerata']"
+Dalea purpurea,Dalea,purpurea,Fabaceae,Fabales,AM,"['Petalostemon purpureus', 'Psoralea purpurea', 'Kuhnistera purpurea']"
+Danthonia intermedia,Danthonia,intermedia,Poaceae,Poales,,"['Merathrepta intermedia', 'Pentameris intermedia']"
+Daphniphyllum pentandrum,Daphniphyllum,pentandrum,Daphniphyllaceae,Saxifragales,AM,
+Daucus carota,Daucus,carota,Apiaceae,Apiales,AM,['Caucalis carota']
+Decaspermum gracilentum,Decaspermum,gracilentum,Myrtaceae,Myrtales,AM,"['Eugenia gracilenta', 'Syzygium gracilentum']"
+Dendropanax dentigerus,Dendropanax,dentigerus,Araliaceae,Apiales,AM,"['Textoria dentigera', 'Dendropanax chevalieri var. dentigerus', 'Gilibertia dentigera']"
+Deschampsia cespitosa,Deschampsia,cespitosa,Poaceae,Poales,NMAM,"['Agrostis cespitosa', 'Aira major subsp. cespitosa', 'Avena cespitosa', 'Campella cespitosa', 'Aira cespitosa', 'Podionapus cespitosus']"
+Descurainia sophia,Descurainia,sophia,Brassicaceae,Brassicales,NM,"['Phryne sophia', 'Arabis sophia', 'Crucifera sophia', 'Discurea sophia', 'Sisymbrium sophia', 'Sophia vulgaris']"
+Desmodium canadense,Desmodium,canadense,Fabaceae,Fabales,,"['Pleurolobus canadensis', 'Hedysarum canadense', 'Edusaron canadense']"
+Deutzia glabrata,Deutzia,glabrata,Hydrangeaceae,Cornales,AM,
+Deutzia grandiflora,Deutzia,grandiflora,Hydrangeaceae,Cornales,AM,
+Dicksonia squarrosa,Dicksonia,squarrosa,Dicksoniaceae,Cyatheales,AM,['Trichomanes squarrosum']
+Dicranopteris linearis,Dicranopteris,linearis,Gleicheniaceae,Gleicheniales,AM,"['Gleichenia linearis', 'Polypodium lineare']"
+Dicranopteris pedata,Dicranopteris,pedata,Gleicheniaceae,Gleicheniales,NM,['Polypodium pedatum']
+Didymocheton spectabilis,Didymocheton,spectabilis,Meliaceae,Sapindales,AM,"['Dysoxylum spectabile', 'Trichilia spectabilis']"
+Dioon rzedowskii,Dioon,rzedowskii,Zamiaceae,Cycadales,AM,
+Dioscorea nipponica,Dioscorea,nipponica,Dioscoreaceae,Dioscoreales,AM,
+Diospyros strigosa,Diospyros,strigosa,Ebenaceae,Ericales,AM,
+Diospyros virginiana,Diospyros,virginiana,Ebenaceae,Ericales,AM,['Persimon virginiana']
+Diplospora dubia,Diplospora,dubia,Rubiaceae,Gentianales,AM,"['Canthium dubium', 'Discospermum dubium', 'Tricalysia dubia']"
+Dovyalis abyssinica,Dovyalis,abyssinica,Salicaceae,Malpighiales,,['Rumea abyssinica']
+Draba nemorosa,Draba,nemorosa,Brassicaceae,Brassicales,NM,['Tomostima nemorosum']
+Dracophyllum longifolium,Dracophyllum,longifolium,Ericaceae,Ericales,ErM,['Epacris longifolia']
+Drymocallis arguta,Drymocallis,arguta,Rosaceae,Rosales,,"['Potentilla agrimonioides var. arguta', 'Potentilla arguta', 'Potentilla pensylvanica var. arguta']"
+Dryopteris lepidopoda,Dryopteris,lepidopoda,Dryopteridaceae,Polypodiales,NM,
+Dryopteris sparsa,Dryopteris,sparsa,Dryopteridaceae,Polypodiales,AM,"['Aspidium sparsum', 'Lastrea sparsa', 'Nephrodium sparsum', 'Polystichum sparsum']"
+Dussia tessmannii,Dussia,tessmannii,Fabaceae,Fabales,,
+Echinacea serotina,Echinacea,serotina,Asteraceae,Asterales,,
+Ekebergia capensis,Ekebergia,capensis,Meliaceae,Sapindales,AM,['Trichilia capensis']
+Elaeagnus commutata,Elaeagnus,commutata,Elaeagnaceae,Rosales,AM,
+Elaeocarpus dentatus,Elaeocarpus,dentatus,Elaeocarpaceae,Oxalidales,AM,"['Monocera dentata', 'Skidanthera dentata', 'Cassine dentata', 'Eriostemon dentatus', 'Dicera dentata']"
+Elaeocarpus dubius,Elaeocarpus,dubius,Elaeocarpaceae,Oxalidales,AM,
+Elaeocarpus glabripetalus,Elaeocarpus,glabripetalus,Elaeocarpaceae,Oxalidales,AM,
+Elaeocarpus hookerianus,Elaeocarpus,hookerianus,Elaeocarpaceae,Oxalidales,AM,['Cassine hookeriana']
+Elaeocarpus sylvestris,Elaeocarpus,sylvestris,Elaeocarpaceae,Oxalidales,AM,['Adenodus sylvestris']
+Eleutherococcus senticosus,Eleutherococcus,senticosus,Araliaceae,Apiales,AM,"['Hedera senticosa', 'Acanthopanax senticosus']"
+Elymus canadensis,Elymus,canadensis,Poaceae,Poales,AM,"['Hordeum canadense', 'Clinelymus canadensis', 'Roegneria canadensis', 'Terrellia canadensis']"
+Elymus lanceolatus,Elymus,lanceolatus,Poaceae,Poales,,['Agropyron lanceolatum']
+Elymus repens,Elymus,repens,Poaceae,Poales,AM,"['Agropyron repens', 'Frumentum repens', 'Triticum repens', 'Agropyron junceum var. repens', 'Elytrigia repens', 'Zeia repens']"
+Elymus virginicus,Elymus,virginicus,Poaceae,Poales,AM,"['Hordeum virginicum', 'Terrellia virginica', 'Leptothrix virginica']"
+Embelia vestita,Embelia,vestita,Primulaceae,Ericales,AM,"['Ribesiodes vestitum', 'Samara vestita']"
+Encephalartos gratus,Encephalartos,gratus,Zamiaceae,Cycadales,AM,
+Endlicheria anomala,Endlicheria,anomala,Lauraceae,Laurales,AM,['Goeppertia anomala']
+Endlicheria arenosa,Endlicheria,arenosa,Lauraceae,Laurales,AM,
+Endlicheria bracteolata,Endlicheria,bracteolata,Lauraceae,Laurales,AM,['Goeppertia sericea var. bracteolata']
+Endlicheria citriodora,Endlicheria,citriodora,Lauraceae,Laurales,AM,
+Endlicheria longicaudata,Endlicheria,longicaudata,Lauraceae,Laurales,AM,['Huberodaphne longicaudata']
+Endlicheria macrophylla,Endlicheria,macrophylla,Lauraceae,Laurales,AM,['Ampelodaphne macrophylla']
+Endlicheria oreocola,Endlicheria,oreocola,Lauraceae,Laurales,,
+Endlicheria ruforamula,Endlicheria,ruforamula,Lauraceae,Laurales,,
+Endospermum chinense,Endospermum,chinense,Euphorbiaceae,Malpighiales,AM,
+Engelhardia roxburghiana,Engelhardia,roxburghiana,Juglandaceae,Fagales,EcM,"['Alfaropsis roxburghiana', 'Alfaroa roxburghiana']"
+Engelhardia serrata,Engelhardia,serrata,Juglandaceae,Fagales,,
+Engelhardia spicata,Engelhardia,spicata,Juglandaceae,Fagales,,['Engelhardia pterococca var. spicata']
+Ephedra distachya,Ephedra,distachya,Ephedraceae,Ephedrales,AM,['Chaetocladus distachys']
+Ephedra fragilis,Ephedra,fragilis,Ephedraceae,Ephedrales,,
+Equisetum hyemale,Equisetum,hyemale,Equisetaceae,Equisetales,NMAM,"['Presla hyemalis', 'Hippochaete hyemalis']"
+Equisetum pratense,Equisetum,pratense,Equisetaceae,Equisetales,NM,
+Eragrostis trichodes,Eragrostis,trichodes,Poaceae,Poales,AM,['Poa trichodes']
+Erica arborea,Erica,arborea,Ericaceae,Ericales,ErM,"['Arsace arborea', 'Ericoides arborea']"
+Erica scoparia,Erica,scoparia,Ericaceae,Ericales,,"['Ericoides scoparia', 'Ericoides scoparia', 'Chlorocodon scoparius']"
+Erigeron canadensis,Erigeron,canadensis,Asteraceae,Asterales,AM,"['Leptilon canadense', 'Marsea canadensis', 'Conyzella canadensis', 'Tessenia canadensis', 'Trimorpha canadensis', 'Conyza canadensis']"
+Erigeron glabellus,Erigeron,glabellus,Asteraceae,Asterales,,['Tessenia glabella']
+Erigeron pumilus,Erigeron,pumilus,Asteraceae,Asterales,,"['Tessenia pumila', 'Fragmosa pumila', 'Erigeron hirsutus']"
+Eriobotrya japonica,Eriobotrya,japonica,Rosaceae,Rosales,AM,"['Photinia japonica', 'Mespilus japonica']"
+Eriotheca longitubulosa,Eriotheca,longitubulosa,Malvaceae,Malvales,,
+Eriotheca surinamensis,Eriotheca,surinamensis,Malvaceae,Malvales,,['Bombax surinamense']
+Erysimum inconspicuum,Erysimum,inconspicuum,Brassicaceae,Brassicales,NM,['Erysimum asperum var. inconspicuum']
+Eschweilera albiflora,Eschweilera,albiflora,Lecythidaceae,Ericales,AM,['Lecythis albiflora']
+Eschweilera atropetiolata,Eschweilera,atropetiolata,Lecythidaceae,Ericales,AM,
+Eschweilera bracteosa,Eschweilera,bracteosa,Lecythidaceae,Ericales,AM,['Lecythis bracteosa']
+Eschweilera coriacea,Eschweilera,coriacea,Lecythidaceae,Ericales,AM,"['Lecythis coriacea', 'Jugastrum coriaceum']"
+Eschweilera decolorans,Eschweilera,decolorans,Lecythidaceae,Ericales,AM,['Chytroma decolorans']
+Eschweilera grandiflora,Eschweilera,grandiflora,Lecythidaceae,Ericales,AM,['Lecythis grandiflora']
+Eschweilera ovata,Eschweilera,ovata,Lecythidaceae,Ericales,AM,['Lecythis ovata']
+Eschweilera parviflora,Eschweilera,parviflora,Lecythidaceae,Ericales,AM,['Lecythis parviflora']
+Eschweilera pedicellata,Eschweilera,pedicellata,Lecythidaceae,Ericales,AM,['Lecythis pedicellata']
+Eschweilera tenuifolia,Eschweilera,tenuifolia,Lecythidaceae,Ericales,AM,['Lecythis tenuifolia']
+Eschweilera truncata,Eschweilera,truncata,Lecythidaceae,Ericales,AM,
+Eschweilera wachenheimii,Eschweilera,wachenheimii,Lecythidaceae,Ericales,AM,['Lecythis wachenheimii']
+Eucalyptus urophylla,Eucalyptus,urophylla,Myrtaceae,Myrtales,EcMAM,
+Eugenia biflora,Eugenia,biflora,Myrtaceae,Myrtales,AM,['Myrtus biflora']
+Eugenia florida,Eugenia,florida,Myrtaceae,Myrtales,,
+Eugenia lambertiana,Eugenia,lambertiana,Myrtaceae,Myrtales,AM,
+Eugenia lisboae,Eugenia,lisboae,Myrtaceae,Myrtales,AM,
+Eugenia patrisii,Eugenia,patrisii,Myrtaceae,Myrtales,AM,"['Myrtus patrisii', 'Stenocalyx patrisii']"
+Eugenia protenta,Eugenia,protenta,Myrtaceae,Myrtales,AM,
+Eugenia pseudopsidium,Eugenia,pseudopsidium,Myrtaceae,Myrtales,AM,"['Eugenia willdenowii', 'Myrtus pseudopsidium', 'Stenocalyx pseudopsidium']"
+Eugenia pusilliflora,Eugenia,pusilliflora,Myrtaceae,Myrtales,AM,
+Eugenia sinemariensis,Eugenia,sinemariensis,Myrtaceae,Myrtales,,"['Myrtus sinemariensis', 'Epleienda sinemariensis']"
+Eugenia spruceana,Eugenia,spruceana,Myrtaceae,Myrtales,AM,
+Eumachia astrellantha,Eumachia,astrellantha,Rubiaceae,Gentianales,AM,"['Chytropsia astrellantha', 'Margaritopsis astrellantha', 'Psychotria astrellantha']"
+Eumachia podocephala,Eumachia,podocephala,Rubiaceae,Gentianales,AM,"['Psychotria podocephala', 'Uragoga podocephala', 'Mapouria podocephala', 'Margaritopsis podocephala']"
+Euonymus alatus,Euonymus,alatus,Celastraceae,Celastrales,AM,"['Melanocarya alata', 'Euonymus striatus var. alatus', 'Euonymus striatus subsp. alatus', 'Celastrus alatus']"
+Euonymus verrucosus,Euonymus,verrucosus,Celastraceae,Celastrales,AM,
+Euptelea pleiosperma,Euptelea,pleiosperma,Eupteleaceae,Ranunculales,,
+Eurya japonica,Eurya,japonica,Pentaphylacaceae,Ericales,AM,
+Fagus engleriana,Fagus,engleriana,Fagaceae,Fagales,EcM,
+Fagus grandifolia,Fagus,grandifolia,Fagaceae,Fagales,EcM,
+Fagus sylvatica,Fagus,sylvatica,Fagaceae,Fagales,EcM,
+Fallopia convolvulus,Fallopia,convolvulus,Polygonaceae,Caryophyllales,NMAM,"['Tiniaria convolvulus', 'Polygonum convolvulus', 'Reynoutria convolvulus', 'Bilderdykia convolvulus', 'Helxine convolvulus', 'Fagopyrum convolvulus']"
+Faramea bangii,Faramea,bangii,Rubiaceae,Gentianales,,
+Faramea capillipes,Faramea,capillipes,Rubiaceae,Gentianales,AM,
+Faramea platyneura,Faramea,platyneura,Rubiaceae,Gentianales,AM,
+Faramea torquata,Faramea,torquata,Rubiaceae,Gentianales,AM,
+Ferdinandusa hirsuta,Ferdinandusa,hirsuta,Rubiaceae,Gentianales,AM,
+Ferdinandusa rudgeoides,Ferdinandusa,rudgeoides,Rubiaceae,Gentianales,AM,['Aspidanthera rudgeoides']
+Festuca christianii-bernardii,Festuca,christianii-bernardii,Poaceae,Poales,,
+Festuca hallii,Festuca,hallii,Poaceae,Poales,AM,"['Festuca altaica subsp. hallii', 'Festuca altaica subvar. hallii', 'Melica hallii', 'Dalucum hallii', 'Festuca scabrella subsp. hallii']"
+Festuca ovina,Festuca,ovina,Poaceae,Poales,NMAM,"['Bromus ovinus', 'Gnomonia ovina']"
+Festuca rubra,Festuca,rubra,Poaceae,Poales,NMAM,"['Gramen rubrum', 'Festuca polymorpha var. rubra', 'Festuca communis var. rubra', 'Festuca ovina subsp. rubra', 'Festuca ovina var. rubra', 'Festuca duriuscula var. rubra']"
+Ficus apollinaris,Ficus,apollinaris,Moraceae,Rosales,,
+Ficus carica,Ficus,carica,Moraceae,Rosales,AM,
+Ficus citrifolia,Ficus,citrifolia,Moraceae,Rosales,AM,
+Ficus fistulosa,Ficus,fistulosa,Moraceae,Rosales,AM,
+Ficus langkokensis,Ficus,langkokensis,Moraceae,Rosales,AM,
+Ficus maclellandii,Ficus,maclellandii,Moraceae,Rosales,,
+Ficus pertusa,Ficus,pertusa,Moraceae,Rosales,,['Urostigma pertusum']
+Ficus simplicissima,Ficus,simplicissima,Moraceae,Rosales,,
+Ficus sodiroi,Ficus,sodiroi,Moraceae,Rosales,,
+Ficus tonduzii,Ficus,tonduzii,Moraceae,Rosales,,
+Ficus variolosa,Ficus,variolosa,Moraceae,Rosales,AM,
+Ficus vasculosa,Ficus,vasculosa,Moraceae,Rosales,,
+Filipendula digitata,Filipendula,digitata,Rosaceae,Rosales,NMAM,['Spiraea digitata']
+Fraxinus americana,Fraxinus,americana,Oleaceae,Lamiales,AM,"['Ornus americana', 'Ornanthes americana', 'Calycomelia americana']"
+Fraxinus angustifolia,Fraxinus,angustifolia,Oleaceae,Lamiales,AM,"['Fraxinus oxyphylla subsp. angustifolia', 'Fraxinus excelsior proles angustifolia', 'Fraxinus oxycarpa var. angustifolia', 'Fraxinus excelsior subsp. angustifolia', 'Fraxinus excelsior var. angustifolia']"
+Fraxinus chinensis,Fraxinus,chinensis,Oleaceae,Lamiales,AM,
+Fraxinus excelsior,Fraxinus,excelsior,Oleaceae,Lamiales,AM,
+Fraxinus mandshurica,Fraxinus,mandshurica,Oleaceae,Lamiales,AM,"['Fraxinus nigra var. mandshurica', 'Fraxinus nigra subsp. mandshurica']"
+Fraxinus nigra,Fraxinus,nigra,Oleaceae,Lamiales,AM,"['Leptalix nigra', 'Fraxinus americana var. nigra', 'Fraxinoides nigra', 'Calycomelia nigra']"
+Fuchsia excorticata,Fuchsia,excorticata,Onagraceae,Myrtales,AM,['Skinnera excorticata']
+Fumana thymifolia,Fumana,thymifolia,Cistaceae,Malvales,AM,"['Helianthemum thymifolium', 'Helianthemum glutinosum var. thymifolium', 'Cistus thymifolius', 'Fumana glutinosa var. thymifolia', 'Fumanopsis thymifolia']"
+Gahnia procera,Gahnia,procera,Cyperaceae,Poales,AM,
+Gahnia xanthocarpa,Gahnia,xanthocarpa,Cyperaceae,Poales,AM,"['Gahnia setifolia var. xanthocarpa', 'Mariscus xanthocarpus', 'Lampocarya xanthocarpa', 'Cladium xanthocarpum']"
+Galearia maingayi,Galearia,maingayi,Pandaceae,Malpighiales,,
+Galium aparine,Galium,aparine,Rubiaceae,Gentianales,NMAM,"['Asterophyllum aparine', 'Aparine vulgaris', 'Rubia aparine', 'Galion aparinum']"
+Galium boreale,Galium,boreale,Rubiaceae,Gentianales,AM,"['Aparine borealis', 'Trichogalium boreale', 'Rubia borealis']"
+Garcinia cowa,Garcinia,cowa,Clusiaceae,Malpighiales,AM,['Stalagmitis cowa']
+Garcinia oblongifolia,Garcinia,oblongifolia,Clusiaceae,Malpighiales,AM,
+Garcinia xanthochymus,Garcinia,xanthochymus,Clusiaceae,Malpighiales,AM,"['Stalagmitis pictoria', 'Xanthochymus pictorius']"
+Garuga floribunda,Garuga,floribunda,Burseraceae,Sapindales,,['Kunthia floribunda']
+Geissanthus vanderwerffii,Geissanthus,vanderwerffii,Primulaceae,Ericales,,
+Genista hirsuta,Genista,hirsuta,Fabaceae,Fabales,AM,
+Genista triacanthos,Genista,triacanthos,Fabaceae,Fabales,,
+Gentiana andrewsii,Gentiana,andrewsii,Gentianaceae,Gentianales,,"['Pneumonanthe andrewsii', 'Dasystephana andrewsii']"
+Geranium rotundifolium,Geranium,rotundifolium,Geraniaceae,Geraniales,AM,
+Ginkgo biloba,Ginkgo,biloba,Ginkgoaceae,Ginkgoales,AM,['Salisburia biloba']
+Gironniera subaequalis,Gironniera,subaequalis,Cannabaceae,Rosales,NM,['Gironniera nervosa var. subaequalis']
+Gleditsia triacanthos,Gleditsia,triacanthos,Fabaceae,Fabales,AM,['Caesalpiniodes triacanthum']
+Glochidion eriocarpum,Glochidion,eriocarpum,Phyllanthaceae,Malpighiales,,
+Glochidion lanceolarium,Glochidion,lanceolarium,Phyllanthaceae,Malpighiales,,
+Gnetum gnemon,Gnetum,gnemon,Gnetaceae,Gnetales,AM,
+Goniothalamus griffithii,Goniothalamus,griffithii,Annonaceae,Magnoliales,AM,
+Gordonia fruticosa,Gordonia,fruticosa,Theaceae,Ericales,,"['Laplacea fruticosa', 'Wikstroemia fruticosa']"
+Graffenrieda emarginata,Graffenrieda,emarginata,Melastomataceae,Myrtales,EcMAM,
+Graffenrieda harlingii,Graffenrieda,harlingii,Melastomataceae,Myrtales,,
+Graffenrieda uribei,Graffenrieda,uribei,Melastomataceae,Myrtales,,
+Grias peruviana,Grias,peruviana,Lecythidaceae,Ericales,,
+Guarea kunthiana,Guarea,kunthiana,Meliaceae,Sapindales,AM,
+Guarea macrophylla,Guarea,macrophylla,Meliaceae,Sapindales,,
+Guarea subandina,Guarea,subandina,Meliaceae,Sapindales,,
+Gutierrezia sarothrae,Gutierrezia,sarothrae,Asteraceae,Asterales,AM,"['Xanthocephalum sarothrae', 'Solidago sarothrae']"
+Gymnosporia arbutifolia,Gymnosporia,arbutifolia,Celastraceae,Celastrales,,"['Celastrus arbutifolius', 'Maytenus arbutifolia']"
+Hakea ceratophylla,Hakea,ceratophylla,Proteaceae,Proteales,NM,['Conchium ceratophyllum']
+Hakea cyclocarpa,Hakea,cyclocarpa,Proteaceae,Proteales,,
+Hakea linearis,Hakea,linearis,Proteaceae,Proteales,,
+Hakea lissocarpha,Hakea,lissocarpha,Proteaceae,Proteales,NM,
+Hakea oldfieldii,Hakea,oldfieldii,Proteaceae,Proteales,,
+Hakea tuberculata,Hakea,tuberculata,Proteaceae,Proteales,,
+Hakea varia,Hakea,varia,Proteaceae,Proteales,,
+Halesia tetraptera,Halesia,tetraptera,Styracaceae,Ericales,,
+Halocarpus biformis,Halocarpus,biformis,Podocarpaceae,Araucariales,AM,"['Dacrydium biforme', 'Podocarpus biformis']"
+Halocarpus kirkii,Halocarpus,kirkii,Podocarpaceae,Araucariales,AM,['Dacrydium kirkii']
+Hamamelis virginiana,Hamamelis,virginiana,Hamamelidaceae,Saxifragales,AM,['Trilopus virginiana']
+Handroanthus guayacan,Handroanthus,guayacan,Bignoniaceae,Lamiales,AM,"['Tabebuia guayacan', 'Tecoma guayacan']"
+Handroanthus ochraceus,Handroanthus,ochraceus,Bignoniaceae,Lamiales,AM,"['Tecoma ochracea', 'Tabebuia ochracea']"
+Harpullia cupanioides,Harpullia,cupanioides,Sapindaceae,Sapindales,AM,
+Hedeoma hispida,Hedeoma,hispida,Lamiaceae,Lamiales,,"['Cunila hispida', 'Ziziphora hispida']"
+Hedera helix,Hedera,helix,Araliaceae,Apiales,AM,
+Hedycarya arborea,Hedycarya,arborea,Monimiaceae,Laurales,AM,
+Hedyosmum goudotianum,Hedyosmum,goudotianum,Chloranthaceae,Chloranthales,,['Tafalla goudotiana']
+Hedyosmum purpurascens,Hedyosmum,purpurascens,Chloranthaceae,Chloranthales,,
+Helianthemum almeriense,Helianthemum,almeriense,Cistaceae,Malvales,EcM,
+Helianthemum apenninum,Helianthemum,apenninum,Cistaceae,Malvales,EcMAM,"['Helianthemum polifolium subsp. apenninum', 'Helianthemum polifolium var. apenninum', 'Cistus apenninus']"
+Helianthemum oelandicum,Helianthemum,oelandicum,Cistaceae,Malvales,,"['Helianthemum oelandicum var. glabrum', 'Cistus oelandicus']"
+Helianthemum syriacum,Helianthemum,syriacum,Cistaceae,Malvales,,"['Halimium syriacum', 'Cistus lavandulifolius var. syriacus', 'Cistus syriacus', 'Helianthemum racemosum var. syriacum', 'Helianthemum lavandulifolium var. syriacum']"
+Helianthus agrestis,Helianthus,agrestis,Asteraceae,Asterales,,
+Helianthus angustifolius,Helianthus,angustifolius,Asteraceae,Asterales,,['Discomela angustifolius']
+Helianthus annuus,Helianthus,annuus,Asteraceae,Asterales,AM,
+Helianthus argophyllus,Helianthus,argophyllus,Asteraceae,Asterales,AM,['Helianthus annuus var. argophyllus']
+Helianthus atrorubens,Helianthus,atrorubens,Asteraceae,Asterales,,
+Helianthus carnosus,Helianthus,carnosus,Asteraceae,Asterales,,
+Helianthus cusickii,Helianthus,cusickii,Asteraceae,Asterales,,
+Helianthus debilis,Helianthus,debilis,Asteraceae,Asterales,AM,['Helianthus annuus var. debilis']
+Helianthus floridanus,Helianthus,floridanus,Asteraceae,Asterales,,
+Helianthus giganteus,Helianthus,giganteus,Asteraceae,Asterales,,['Helianthus angustifolius subsp. giganteus']
+Helianthus grosseserratus,Helianthus,grosseserratus,Asteraceae,Asterales,AM,
+Helianthus heterophyllus,Helianthus,heterophyllus,Asteraceae,Asterales,,['Helianthus atrorubens subsp. heterophyllus']
+Helianthus longifolius,Helianthus,longifolius,Asteraceae,Asterales,,
+Helianthus maximiliani,Helianthus,maximiliani,Asteraceae,Asterales,AM,
+Helianthus mollis,Helianthus,mollis,Asteraceae,Asterales,AM,
+Helianthus neglectus,Helianthus,neglectus,Asteraceae,Asterales,,
+Helianthus niveus,Helianthus,niveus,Asteraceae,Asterales,AM,"['Helianthus annuus var. niveus', 'Encelia nivea']"
+Helianthus occidentalis,Helianthus,occidentalis,Asteraceae,Asterales,,
+Helianthus pauciflorus,Helianthus,pauciflorus,Asteraceae,Asterales,AM,
+Helianthus petiolaris,Helianthus,petiolaris,Asteraceae,Asterales,AM,['Helianthus annuus subsp. petiolaris']
+Helianthus porteri,Helianthus,porteri,Asteraceae,Asterales,,"['Gymnolomia porteri', 'Rudbeckia porteri']"
+Helianthus praecox,Helianthus,praecox,Asteraceae,Asterales,,"['Helianthus debilis subsp. praecox', 'Helianthus cucumerifolius var. praecox']"
+Helianthus radula,Helianthus,radula,Asteraceae,Asterales,,"['Centrocarpha radula', 'Helianthus atrorubens subsp. radula', 'Rudbeckia radula']"
+Helianthus salicifolius,Helianthus,salicifolius,Asteraceae,Asterales,,
+Helianthus silphioides,Helianthus,silphioides,Asteraceae,Asterales,,
+Helianthus verticillatus,Helianthus,verticillatus,Asteraceae,Asterales,,
+Helichrysum italicum,Helichrysum,italicum,Asteraceae,Asterales,AM,['Gnaphalium italicum']
+Helichrysum stoechas,Helichrysum,stoechas,Asteraceae,Asterales,AM,['Gnaphalium stoechas']
+Helicia formosana,Helicia,formosana,Proteaceae,Proteales,AM,
+Helicostylis scabra,Helicostylis,scabra,Moraceae,Rosales,AM,['Pseudolmedia scabra']
+Helicostylis tomentosa,Helicostylis,tomentosa,Moraceae,Rosales,AM,['Olmedia tomentosa']
+Helicostylis tovarensis,Helicostylis,tovarensis,Moraceae,Rosales,,['Olmedia tovarensis']
+Heliocarpus americanus,Heliocarpus,americanus,Malvaceae,Malvales,AM,
+Heliopsis helianthoides,Heliopsis,helianthoides,Asteraceae,Asterales,NM,['Buphthalmum helianthoides']
+Heptapleurum heptaphyllum,Heptapleurum,heptaphyllum,Araliaceae,Apiales,AM,"['Aralia heptaphylla', 'Sciodaphyllum heptaphyllum', 'Schefflera heptaphylla', 'Vitis heptaphylla', 'Ampelopsis heptaphylla']"
+Heptapleurum minutistellatum,Heptapleurum,minutistellatum,Araliaceae,Apiales,AM,['Schefflera minutistellata']
+Hesperostipa comata,Hesperostipa,comata,Poaceae,Poales,AM,['Stipa comata']
+Hesperostipa spartea,Hesperostipa,spartea,Poaceae,Poales,AM,['Stipa spartea']
+Heuchera richardsonii,Heuchera,richardsonii,Saxifragaceae,Saxifragales,,['Heuchera hispida var. richardsonii']
+Hieronyma asperifolia,Hieronyma,asperifolia,Phyllanthaceae,Malpighiales,,
+Hieronyma fendleri,Hieronyma,fendleri,Phyllanthaceae,Malpighiales,,['Hieronyma moritziana var. fendleri']
+Hieronyma macrocarpa,Hieronyma,macrocarpa,Phyllanthaceae,Malpighiales,,
+Hieronyma oblonga,Hieronyma,oblonga,Phyllanthaceae,Malpighiales,,['Stilaginella oblonga']
+Hoheria lyallii,Hoheria,lyallii,Malvaceae,Malvales,AM,"['Gaya lyallii', 'Plagianthus lyallii']"
+Hoheria sexstylosa,Hoheria,sexstylosa,Malvaceae,Malvales,AM,
+Holcus lanatus,Holcus,lanatus,Poaceae,Poales,AM,"['Notholcus lanatus', 'Avena lanata', 'Nothoholcus lanatus', 'Ginannia lanata']"
+Horsfieldia amygdalina,Horsfieldia,amygdalina,Myristicaceae,Magnoliales,,"['Palala amygdalina', 'Myristica amygdalina']"
+Hosta ventricosa,Hosta,ventricosa,Asparagaceae,Asparagales,AM,"['Niobe caerulea', 'Hemerocallis caerulea', 'Saussurea caerulea', 'Funkia caerulea', 'Hosta japonica var. caerulea', 'Funkia ovata var. caerulea']"
+Hymenopus adolphoduckei,Hymenopus,adolphoduckei,Chrysobalanaceae,Malpighiales,AM,['Licania adolphoduckei']
+Hymenopus caudatus,Hymenopus,caudatus,Chrysobalanaceae,Malpighiales,AM,['Licania caudata']
+Hymenopus macrophyllus,Hymenopus,macrophyllus,Chrysobalanaceae,Malpighiales,AM,['Licania macrophylla']
+Hymenopus reticulatus,Hymenopus,reticulatus,Chrysobalanaceae,Malpighiales,AM,['Licania reticulata']
+Hymenopus sothersiae,Hymenopus,sothersiae,Chrysobalanaceae,Malpighiales,AM,['Licania sothersiae']
+Hymenoxys richardsonii,Hymenoxys,richardsonii,Asteraceae,Asterales,AM,"['Picradenia richardsonii', 'Actinea richardsonii', 'Actinella richardsonii']"
+Hypobathrum racemosum,Hypobathrum,racemosum,Rubiaceae,Gentianales,,"['Randia racemosa', 'Petunga racemosa']"
+Ilex laurina,Ilex,laurina,Aquifoliaceae,Aquifoliales,,
+Ilex macropoda,Ilex,macropoda,Aquifoliaceae,Aquifoliales,,"['Ilex montana var. macropoda', 'Ilex monticola var. macropoda', 'Ilex dubia var. macropoda', 'Ilex ambigua subsp. macropoda', 'Ilex ambigua var. macropoda']"
+Ilex opaca,Ilex,opaca,Aquifoliaceae,Aquifoliales,AM,"['Ageria opaca', 'Ilex aquifolium var. opaca']"
+Ilex pedunculosa,Ilex,pedunculosa,Aquifoliaceae,Aquifoliales,AM,
+Ilex teratopis,Ilex,teratopis,Aquifoliaceae,Aquifoliales,,
+Ilex verticillata,Ilex,verticillata,Aquifoliaceae,Aquifoliales,AM,['Prinos verticillatus']
+Imbralyx leptobotrys,Imbralyx,leptobotrys,Fabaceae,Fabales,AM,"['Fordia leptobotrys', 'Millettia leptobotrys']"
+Inga alba,Inga,alba,Fabaceae,Fabales,AM,"['Feuilleea alba', 'Mimosa alba']"
+Inga auristellae,Inga,auristellae,Fabaceae,Fabales,AM,
+Inga bicoloriflora,Inga,bicoloriflora,Fabaceae,Fabales,AM,
+Inga brevipes,Inga,brevipes,Fabaceae,Fabales,AM,['Feuilleea alata']
+Inga cayennensis,Inga,cayennensis,Fabaceae,Fabales,AM,['Feuilleea cayennensis']
+Inga cordatoalata,Inga,cordatoalata,Fabaceae,Fabales,AM,
+Inga extra-nodis,Inga,extra-nodis,Fabaceae,Fabales,,
+Inga gracilifolia,Inga,gracilifolia,Fabaceae,Fabales,AM,
+Inga huberi,Inga,huberi,Fabaceae,Fabales,AM,
+Inga lateriflora,Inga,lateriflora,Fabaceae,Fabales,AM,['Feuilleea lateriflora']
+Inga loubryana,Inga,loubryana,Fabaceae,Fabales,,
+Inga macrophylla,Inga,macrophylla,Fabaceae,Fabales,AM,"['Feuilleea macrophylla', 'Mimosa macrophylla']"
+Inga marginata,Inga,marginata,Fabaceae,Fabales,AM,"['Inga fagifolia var. marginata', 'Feuilleea marginata']"
+Inga nobilis,Inga,nobilis,Fabaceae,Fabales,AM,['Feuilleea nobilis']
+Inga obidensis,Inga,obidensis,Fabaceae,Fabales,AM,
+Inga paraensis,Inga,paraensis,Fabaceae,Fabales,AM,
+Inga rubiginosa,Inga,rubiginosa,Fabaceae,Fabales,,"['Feuilleea rubiginosa', 'Mimosa rubiginosa']"
+Inga ruiziana,Inga,ruiziana,Fabaceae,Fabales,AM,['Feuilleea ruiziana']
+Inga splendens,Inga,splendens,Fabaceae,Fabales,AM,"['Mimosa splendens', 'Feuilleea splendens']"
+Inga stipularis,Inga,stipularis,Fabaceae,Fabales,AM,['Feuilleea stipularis']
+Inga suberosa,Inga,suberosa,Fabaceae,Fabales,AM,
+Inga thibaudiana,Inga,thibaudiana,Fabaceae,Fabales,AM,['Feuilleea thibaudiana']
+Inga umbellifera,Inga,umbellifera,Fabaceae,Fabales,AM,"['Feuilleea umbellifera', 'Mimosa umbellifera']"
+Inga umbratica,Inga,umbratica,Fabaceae,Fabales,AM,['Feuilleea umbratica']
+Inula conyza,Inula,conyza,Asteraceae,Asterales,AM,
+Iris japonica,Iris,japonica,Iridaceae,Asparagales,AM,['Evansia japonica']
+Iris versicolor,Iris,versicolor,Iridaceae,Asparagales,AM,"['Xiphion versicolor', 'Limniris versicolor']"
+Itea chinensis,Itea,chinensis,Iteaceae,Saxifragales,AM,['Polyosma chinensis']
+Ixora intensa,Ixora,intensa,Rubiaceae,Gentianales,AM,
+Ixora panurensis,Ixora,panurensis,Rubiaceae,Gentianales,AM,
+Juglans mandshurica,Juglans,mandshurica,Juglandaceae,Fagales,AM,
+Juglans nigra,Juglans,nigra,Juglandaceae,Fagales,AM,['Wallia nigra']
+Juniperus chinensis,Juniperus,chinensis,Cupressaceae,Cupressales,AM,['Sabina chinensis']
+Juniperus communis,Juniperus,communis,Cupressaceae,Cupressales,AM,
+Juniperus phoenicea,Juniperus,phoenicea,Cupressaceae,Cupressales,NMAM,"['Sabinella phoenicea', 'Sabina phoenicea']"
+Juniperus sabina,Juniperus,sabina,Cupressaceae,Cupressales,AM,['Sabina vulgaris']
+Knema erratica,Knema,erratica,Myristicaceae,Magnoliales,AM,"['Myristica longifolia var. erratica', 'Myristica erratica']"
+Knightia excelsa,Knightia,excelsa,Proteaceae,Proteales,NMAM,['Rymandra excelsa']
+Koeleria macrantha,Koeleria,macrantha,Poaceae,Poales,AM,"['Koeleria cristata var. macrantha', 'Aira macrantha', 'Koeleria cristata subsp. macrantha']"
+Koeleria pyramidata,Koeleria,pyramidata,Poaceae,Poales,AM,"['Poa pyramidata', 'Koeleria cristata subsp. pyramidata', 'Koeleria cristata var. pyramidata', 'Koeleria ciliata var. pyramidata']"
+Koeleria vallesiana,Koeleria,vallesiana,Poaceae,Poales,AM,"['Airochloa vallesiana', 'Aira vallesiana', 'Poa vallesiana', 'Koeleria setacea var. glabra']"
+Koelreuteria paniculata,Koelreuteria,paniculata,Sapindaceae,Sapindales,AM,['Sapindus paniculata']
+Krascheninnikovia ceratoides,Krascheninnikovia,ceratoides,Amaranthaceae,Caryophyllales,AM,"['Axyris ceratoides', 'Ceratoides papposa', 'Diotis ceratoides', 'Eurotia ceratoides']"
+Kubitzkia mezii,Kubitzkia,mezii,Lauraceae,Laurales,AM,['Systemonodaphne mezii']
+Kunzea ericoides,Kunzea,ericoides,Myrtaceae,Myrtales,EcMAM,['Leptospermum ericoides']
+Kutchubaea oocarpa,Kutchubaea,oocarpa,Rubiaceae,Gentianales,AM,"['Amaioua oocarpa', 'Duroia oocarpa']"
+Kutchubaea semisericea,Kutchubaea,semisericea,Rubiaceae,Gentianales,AM,
+Kutchubaea sericantha,Kutchubaea,sericantha,Rubiaceae,Gentianales,AM,['Einsteinia sericantha']
+Lactuca tatarica,Lactuca,tatarica,Asteraceae,Asterales,AM,"['Lagedium tataricum', 'Wiestia tatarica', 'Mulgedium tataricum', 'Sonchus tataricus', 'Agathyrsus tataricus']"
+Ladenbergia riveroana,Ladenbergia,riveroana,Rubiaceae,Gentianales,,"['Remijia riveroana', 'Cascarilla riveroana']"
+Lamium album,Lamium,album,Lamiaceae,Lamiales,NMAM,
+Larix decidua,Larix,decidua,Pinaceae,Pinales,EcM,"['Abies larix', 'Picea larix', 'Pinus larix']"
+Larix gmelinii,Larix,gmelinii,Pinaceae,Pinales,EcMAM,['Abies gmelinii']
+Larix kaempferi,Larix,kaempferi,Pinaceae,Pinales,EcM,"['Abies kaempferi', 'Pinus kaempferi', 'Pseudolarix kaempferi', 'Laricopsis kaempferi']"
+Lathyrus venosus,Lathyrus,venosus,Fabaceae,Fabales,,
+Launaea arborescens,Launaea,arborescens,Asteraceae,Asterales,,['Zollikoferia arborescens']
+Laurelia novae-zelandiae,Laurelia,novae-zelandiae,Atherospermataceae,Laurales,AM,"['Atherosperma novae-zelandiae', 'Pavonia novozelandiae']"
+Lavandula multifida,Lavandula,multifida,Lamiaceae,Lamiales,AM,
+Leonia glycycarpa,Leonia,glycycarpa,Violaceae,Malpighiales,,['Theophrasta glycycarpa']
+Lepidium densiflorum,Lepidium,densiflorum,Brassicaceae,Brassicales,NM,
+Lepidothamnus intermedius,Lepidothamnus,intermedius,Podocarpaceae,Araucariales,AM,['Dacrydium intermedium']
+Lepisanthes senegalensis,Lepisanthes,senegalensis,Sapindaceae,Sapindales,AM,"['Sapindus senegalensis', 'Aphania senegalensis']"
+Leptecophylla juniperina,Leptecophylla,juniperina,Ericaceae,Ericales,ErM,"['Styphelia juniperina', 'Epacris juniperina', 'Cyathodes juniperina']"
+Leptobalanus granvillei,Leptobalanus,granvillei,Chrysobalanaceae,Malpighiales,AM,['Licania granvillei']
+Leptobalanus latus,Leptobalanus,latus,Chrysobalanaceae,Malpighiales,AM,['Licania lata']
+Leptobalanus longistylus,Leptobalanus,longistylus,Chrysobalanaceae,Malpighiales,AM,"['Licania longistyla', 'Moquilea longistyla']"
+Leptobalanus octandrus,Leptobalanus,octandrus,Chrysobalanaceae,Malpighiales,AM,"['Licania octandra', 'Hirtella octandra']"
+Leptobalanus sprucei,Leptobalanus,sprucei,Chrysobalanaceae,Malpighiales,AM,"['Moquilea sprucei', 'Licania sprucei']"
+Leptospermum scoparium,Leptospermum,scoparium,Myrtaceae,Myrtales,EcMAM,"['Melaleuca scoparia', 'Philadelphus scoparius']"
+Lespedeza bicolor,Lespedeza,bicolor,Fabaceae,Fabales,AM,
+Lespedeza capitata,Lespedeza,capitata,Fabaceae,Fabales,AM,['Despeleza capitata']
+Lespedeza davurica,Lespedeza,davurica,Fabaceae,Fabales,,
+Lespedeza thunbergii,Lespedeza,thunbergii,Fabaceae,Fabales,EcMAM,['Desmodium thunbergii']
+Leymus chinensis,Leymus,chinensis,Poaceae,Poales,AM,"['Agropyron chinense', 'Aneurolepidium chinense', 'Elymus chinensis', 'Triticum chinense']"
+Liatris aspera,Liatris,aspera,Asteraceae,Asterales,AM,"['Lacinaria scariosa var. aspera', 'Lacinaria aspera']"
+Licania bracteata,Licania,bracteata,Chrysobalanaceae,Malpighiales,AM,
+Licania gracilipes,Licania,gracilipes,Chrysobalanaceae,Malpighiales,AM,
+Licania harlingii,Licania,harlingii,Chrysobalanaceae,Malpighiales,,
+Licania hypoleuca,Licania,hypoleuca,Chrysobalanaceae,Malpighiales,AM,
+Licania irwinii,Licania,irwinii,Chrysobalanaceae,Malpighiales,,
+Licania micrantha,Licania,micrantha,Chrysobalanaceae,Malpighiales,AM,
+Licania niloi,Licania,niloi,Chrysobalanaceae,Malpighiales,AM,
+Licania ovalifolia,Licania,ovalifolia,Chrysobalanaceae,Malpighiales,,
+Licania parviflora,Licania,parviflora,Chrysobalanaceae,Malpighiales,AM,
+Licania rodriguesii,Licania,rodriguesii,Chrysobalanaceae,Malpighiales,AM,
+Licaria chrysophylla,Licaria,chrysophylla,Lauraceae,Laurales,AM,"['Misanteca chrysophylla', 'Acrodiclidium chrysophyllum']"
+Licaria guianensis,Licaria,guianensis,Lauraceae,Laurales,AM,
+Licaria hirsuta,Licaria,hirsuta,Lauraceae,Laurales,AM,
+Licaria macrophylla,Licaria,macrophylla,Lauraceae,Laurales,AM,"['Misanteca macrophylla', 'Acrodiclidium macrophyllum']"
+Licaria oppositifolia,Licaria,oppositifolia,Lauraceae,Laurales,AM,"['Misanteca oppositifolia', 'Acrodiclidium oppositifolium']"
+Lindera benzoin,Lindera,benzoin,Lauraceae,Laurales,AM,"['Ozanthes benzoin', 'Laurus benzoin']"
+Lindera communis,Lindera,communis,Lauraceae,Laurales,AM,['Benzoin commune']
+Lindera metcalfiana,Lindera,metcalfiana,Lauraceae,Laurales,NM,
+Lindera obtusiloba,Lindera,obtusiloba,Lauraceae,Laurales,AM,['Benzoin obtusilobum']
+Linum lewisii,Linum,lewisii,Linaceae,Malpighiales,AM,"['Adenolinum lewisii', 'Linum perenne subsp. lewisii', 'Linum perenne var. lewisii', 'Linum sibiricum var. lewisii']"
+Liquidambar formosana,Liquidambar,formosana,Altingiaceae,Saxifragales,AM,
+Liquidambar gracilipes,Liquidambar,gracilipes,Altingiaceae,Saxifragales,,['Altingia gracilipes']
+Liquidambar obovata,Liquidambar,obovata,Altingiaceae,Saxifragales,,['Altingia obovata']
+Liquidambar styraciflua,Liquidambar,styraciflua,Altingiaceae,Saxifragales,AM,
+Liriodendron chinense,Liriodendron,chinense,Magnoliaceae,Magnoliales,AM,['Liriodendron tulipifera var. chinense']
+Liriodendron tulipifera,Liriodendron,tulipifera,Magnoliaceae,Magnoliales,AM,['Tulipifera liriodendrum']
+Lithocarpus bacgiangensis,Lithocarpus,bacgiangensis,Fagaceae,Fagales,,['Pasania bacgiangensis']
+Lithocarpus chiungchungensis,Lithocarpus,chiungchungensis,Fagaceae,Fagales,EcM,
+Lithocarpus cleistocarpus,Lithocarpus,cleistocarpus,Fagaceae,Fagales,EcM,"['Synaedrys cleistocarpa', 'Quercus cleistocarpa', 'Pasania cleistocarpa']"
+Lithocarpus clementianus,Lithocarpus,clementianus,Fagaceae,Fagales,EcM,"['Pasania clementiana', 'Quercus clementiana', 'Synaedrys clementiana']"
+Lithocarpus confertus,Lithocarpus,confertus,Fagaceae,Fagales,EcM,
+Lithocarpus elegans,Lithocarpus,elegans,Fagaceae,Fagales,,"['Quercus elegans', 'Lithocarpus spicatus var. elegans']"
+Lithocarpus fenestratus,Lithocarpus,fenestratus,Fagaceae,Fagales,EcM,"['Pasania fenestrata', 'Synaedrys fenestrata', 'Quercus fenestrata']"
+Lithocarpus fohaiensis,Lithocarpus,fohaiensis,Fagaceae,Fagales,,['Pasania fohaiensis']
+Lithocarpus lampadarius,Lithocarpus,lampadarius,Fagaceae,Fagales,EcM,"['Pasania lampadaria', 'Quercus lampadaria', 'Synaedrys lampadaria']"
+Lithocarpus rigidus,Lithocarpus,rigidus,Fagaceae,Fagales,EcM,
+Lithocarpus variolosus,Lithocarpus,variolosus,Fagaceae,Fagales,,"['Quercus variolosa', 'Synaedrys variolosa', 'Pasania variolosa']"
+Litsea baviensis,Litsea,baviensis,Lauraceae,Laurales,AM,
+Litsea cubeba,Litsea,cubeba,Lauraceae,Laurales,AM,"['Malapoenna cubeba', 'Cubeba pipereta', 'Benzoin cubeba', 'Daphnidium cubeba', 'Tetranthera cubeba', 'Laurus cubeba', 'Persea cubeba']"
+Litsea elongata,Litsea,elongata,Lauraceae,Laurales,AM,"['Malapoenna elongata', 'Tetranthera elongata', 'Daphnidium elongatum']"
+Litsea glutinosa,Litsea,glutinosa,Lauraceae,Laurales,AM,['Sebifera glutinosa']
+Litsea ichangensis,Litsea,ichangensis,Lauraceae,Laurales,AM,
+Litsea martabanica,Litsea,martabanica,Lauraceae,Laurales,,['Tetranthera martabanica']
+Litsea mollis,Litsea,mollis,Lauraceae,Laurales,,
+Litsea panamanja,Litsea,panamanja,Lauraceae,Laurales,AM,"['Malapoenna panamonja', 'Tetranthera panamanja']"
+Litsea salicifolia,Litsea,salicifolia,Lauraceae,Laurales,AM,['Tetranthera salicifolia']
+Litsea szemaois,Litsea,szemaois,Lauraceae,Laurales,AM,"['Litsea baviensis var. szemaois', 'Litsea pierrei var. szemaois']"
+Litsea umbellata,Litsea,umbellata,Lauraceae,Laurales,,['Hexanthus umbellatus']
+Litsea verticillata,Litsea,verticillata,Lauraceae,Laurales,AM,
+Lolium arundinaceum,Lolium,arundinaceum,Poaceae,Poales,AM,"['Bromus arundinaceus', 'Schedonorus arundinaceus', 'Festuca elatior subsp. arundinacea', 'Festuca elatior var. arundinacea', 'Festuca arundinacea']"
+Lolium perenne,Lolium,perenne,Poaceae,Poales,EcMAM,['Festuca perennis']
+Lomaria discolor,Lomaria,discolor,Blechnaceae,Polypodiales,AM,
+Lonicera chrysantha,Lonicera,chrysantha,Caprifoliaceae,Dipsacales,AM,"['Caprifolium chrysanthum', 'Xylosteon chrysanthum', 'Lonicera xylosteum var. chrysantha']"
+Lonicera maackii,Lonicera,maackii,Caprifoliaceae,Dipsacales,AM,['Xylosteon maackii']
+Lotus corniculatus,Lotus,corniculatus,Fabaceae,Fabales,NMAM,
+Lupinus perennis,Lupinus,perennis,Fabaceae,Fabales,,
+Lygodesmia juncea,Lygodesmia,juncea,Asteraceae,Asterales,AM,['Prenanthes juncea']
+Macaranga sampsonii,Macaranga,sampsonii,Euphorbiaceae,Malpighiales,AM,
+Machilus breviflora,Machilus,breviflora,Lauraceae,Laurales,AM,
+Machilus kwangtungensis,Machilus,kwangtungensis,Lauraceae,Laurales,AM,['Persea kwangtungensis']
+Machilus nanmu,Machilus,nanmu,Lauraceae,Laurales,AM,"['Persea nanmu', 'Phoebe nanmu']"
+Machilus oculodracontis,Machilus,oculodracontis,Lauraceae,Laurales,AM,['Persea oculodracontis']
+Machilus robusta,Machilus,robusta,Lauraceae,Laurales,AM,
+Machilus rufipes,Machilus,rufipes,Lauraceae,Laurales,,['Persea rufipes']
+Machilus shweliensis,Machilus,shweliensis,Lauraceae,Laurales,AM,['Persea shweliensis']
+Machilus tenuipilis,Machilus,tenuipilis,Lauraceae,Laurales,AM,['Persea tenuipilis']
+Machilus velutina,Machilus,velutina,Lauraceae,Laurales,AM,
+Macropanax undulatus,Macropanax,undulatus,Araliaceae,Apiales,AM,"['Hedera undulata', 'Paratropia undulata']"
+Madhuca endertii,Madhuca,endertii,Sapotaceae,Ericales,AM,
+Magnolia acuminata,Magnolia,acuminata,Magnoliaceae,Magnoliales,AM,"['Kobus acuminata', 'Tulipastrum acuminatum', 'Yulania acuminata', 'Magnolia virginiana var. acuminata', 'Magnolia umbrella var. acuminata']"
+Magnolia baillonii,Magnolia,baillonii,Magnoliaceae,Magnoliales,AM,"['Michelia baillonii', 'Paramichelia baillonii', 'Aromadendron baillonii']"
+Magnolia balansae,Magnolia,balansae,Magnoliaceae,Magnoliales,AM,['Michelia balansae']
+Magnolia carsonii,Magnolia,carsonii,Magnoliaceae,Magnoliales,AM,['Aromadendron carsonii']
+Magnolia cavaleriei,Magnolia,cavaleriei,Magnoliaceae,Magnoliales,AM,['Michelia cavaleriei']
+Magnolia champaca,Magnolia,champaca,Magnoliaceae,Magnoliales,AM,"['Michelia champaca', 'Michelia tsiampacca var. champaca']"
+Magnolia championii,Magnolia,championii,Magnoliaceae,Magnoliales,AM,"['Lirianthe championii', 'Magnolia liliifera var. championii', 'Magnolia pumila var. championii']"
+Magnolia chapensis,Magnolia,chapensis,Magnoliaceae,Magnoliales,AM,['Michelia chapensis']
+Magnolia dandyi,Magnolia,dandyi,Magnoliaceae,Magnoliales,AM,['Manglietia dandyi']
+Magnolia denudata,Magnolia,denudata,Magnoliaceae,Magnoliales,AM,"['Yulania denudata', 'Magnolia purpurea var. denudata']"
+Magnolia ernestii,Magnolia,ernestii,Magnoliaceae,Magnoliales,AM,['Michelia wilsonii']
+Magnolia fulva,Magnolia,fulva,Magnoliaceae,Magnoliales,AM,['Michelia fulva']
+Magnolia grandiflora,Magnolia,grandiflora,Magnoliaceae,Magnoliales,AM,
+Magnolia kobus,Magnolia,kobus,Magnoliaceae,Magnoliales,AM,['Yulania kobus']
+Magnolia lotungensis,Magnolia,lotungensis,Magnoliaceae,Magnoliales,AM,"['Parakmeria lotungensis', 'Magnolia nitida var. lotungensis']"
+Magnolia macclurei,Magnolia,macclurei,Magnoliaceae,Magnoliales,AM,['Michelia macclurei']
+Magnolia macrophylla,Magnolia,macrophylla,Magnoliaceae,Magnoliales,AM,['Metamagnolia macrophylla']
+Magnolia maudiae,Magnolia,maudiae,Magnoliaceae,Magnoliales,AM,['Michelia maudiae']
+Magnolia odora,Magnolia,odora,Magnoliaceae,Magnoliales,AM,"['Michelia odora', 'Tsoongiodendron odorum']"
+Magnolia opipara,Magnolia,opipara,Magnoliaceae,Magnoliales,AM,['Michelia opipara']
+Magnolia stellata,Magnolia,stellata,Magnoliaceae,Magnoliales,AM,"['Magnolia kobus f. stellata', 'Talauma stellata', 'Buergeria stellata', 'Yulania stellata', 'Magnolia kobus var. stellata']"
+Magnolia tripetala,Magnolia,tripetala,Magnoliaceae,Magnoliales,AM,"['Magnolia virginiana var. tripetala', 'Houpoea tripetala', 'Magnolia umbrella var. tripetala']"
+Magnolia virginiana,Magnolia,virginiana,Magnoliaceae,Magnoliales,AM,
+Magnolia yunnanensis,Magnolia,yunnanensis,Magnoliaceae,Magnoliales,AM,"['Parakmeria yunnanensis', 'Pachylarnax yunnanensis']"
+Magnolia yuyuanensis,Magnolia,yuyuanensis,Magnoliaceae,Magnoliales,AM,['Manglietia yuyuanensis']
+Mallotus paniculatus,Mallotus,paniculatus,Euphorbiaceae,Malpighiales,AM,"['Croton paniculatus', 'Rottlera paniculata']"
+Malus baccata,Malus,baccata,Rosaceae,Rosales,AM,"['Malus microcarpa baccata', 'Sinomalus baccata', 'Pyrus baccata']"
+Manglietia paruicula,Manglietia,paruicula,Magnoliaceae,Magnoliales,AM,
+Manoao colensoi,Manoao,colensoi,Podocarpaceae,Araucariales,AM,"['Lagarostrobos colensoi', 'Lepidothamnus colensoi', 'Dacrydium colensoi']"
+Maquira calophylla,Maquira,calophylla,Moraceae,Rosales,AM,"['Perebea calophylla', 'Olmedioperebea calophylla', 'Olmedia calophylla']"
+Maquira coriacea,Maquira,coriacea,Moraceae,Rosales,AM,['Pseudolmedia coriacea']
+Maquira sclerophylla,Maquira,sclerophylla,Moraceae,Rosales,AM,['Olmedioperebea sclerophylla']
+Matayba inelegans,Matayba,inelegans,Sapindaceae,Sapindales,,
+Matayba peruviana,Matayba,peruviana,Sapindaceae,Sapindales,,
+Matteuccia struthiopteris,Matteuccia,struthiopteris,Onocleaceae,Polypodiales,AM,
+Maytenus schippii,Maytenus,schippii,Celastraceae,Celastrales,AM,['Monteverdia schippii']
+Medicago minima,Medicago,minima,Fabaceae,Fabales,AM,"['Spirocarpus minimus', 'Medicago polymorpha var. minima']"
+Medicago ruthenica,Medicago,ruthenica,Fabaceae,Fabales,AM,"['Trigonella ruthenica', 'Turukhania ruthenica', 'Pocockia ruthenica', 'Melilotoides ruthenica', 'Melissitus ruthenicus']"
+Medicago sativa,Medicago,sativa,Fabaceae,Fabales,AM,['Medica sativa']
+Melicope pteleifolia,Melicope,pteleifolia,Rutaceae,Sapindales,AM,"['Euodia pteleifolia', 'Zanthoxylum pteleifolium']"
+Melicytus ramiflorus,Melicytus,ramiflorus,Violaceae,Malpighiales,AM,
+Melilotus officinalis,Melilotus,officinalis,Fabaceae,Fabales,AM,"['Trifolium officinale', 'Medicago officinalis', 'Sertula officinalis', 'Brachylobus officinalis', 'Trigonella officinalis']"
+Memecylon nigrescens,Memecylon,nigrescens,Melastomataceae,Myrtales,AM,
+Meriania franciscana,Meriania,franciscana,Melastomataceae,Myrtales,,
+Metasequoia glyptostroboides,Metasequoia,glyptostroboides,Cupressaceae,Cupressales,AM,['Sequoia glyptostroboides']
+Metrosideros diffusa,Metrosideros,diffusa,Myrtaceae,Myrtales,AM,"['Melaleuca diffusa', 'Nania diffusa']"
+Metrosideros excelsa,Metrosideros,excelsa,Myrtaceae,Myrtales,AM,
+Metrosideros fulgens,Metrosideros,fulgens,Myrtaceae,Myrtales,AM,
+Metrosideros robusta,Metrosideros,robusta,Myrtaceae,Myrtales,AM,['Nania robusta']
+Metrosideros umbellata,Metrosideros,umbellata,Myrtaceae,Myrtales,AM,['Agalmanthus umbellata']
+Mezilaurus ita-uba,Mezilaurus,ita-uba,Lauraceae,Laurales,AM,"['Endiandra ita-uba', 'Acrodiclidium ita-uba', 'Mezia ita-uba', 'Silvia ita-uba', 'Silvia ita-uba']"
+Miconia calophylla,Miconia,calophylla,Melastomataceae,Myrtales,,"['Acinodendron calophyllum', 'Cremanium calophyllum']"
+Miconia crebribullata,Miconia,crebribullata,Melastomataceae,Myrtales,,
+Miconia dolichorrhyncha,Miconia,dolichorrhyncha,Melastomataceae,Myrtales,,['Acinodendron dolichorrhynchum']
+Miconia jahnii,Miconia,jahnii,Melastomataceae,Myrtales,,
+Miconia punctata,Miconia,punctata,Melastomataceae,Myrtales,,"['Acinodendron punctatum', 'Melastoma punctatum', 'Eurychaenia punctata']"
+Miconia radula,Miconia,radula,Melastomataceae,Myrtales,,['Acinodendron radula']
+Microbiota decussata,Microbiota,decussata,Cupressaceae,Cupressales,AM,['Platycladus decussata']
+Microcos paniculata,Microcos,paniculata,Malvaceae,Malvales,AM,
+Micromelum integerrimum,Micromelum,integerrimum,Rutaceae,Sapindales,,"['Micromelum pubescens var. integerrimum', 'Bergera integerrima']"
+Micropholis casiquiarensis,Micropholis,casiquiarensis,Sapotaceae,Ericales,AM,
+Micropholis cylindrocarpa,Micropholis,cylindrocarpa,Sapotaceae,Ericales,AM,"['Sideroxylon cylindrocarpon', 'Mastichodendron cylindrocarpon', 'Pouteria cylindrocarpa']"
+Micropholis egensis,Micropholis,egensis,Sapotaceae,Ericales,AM,"['Sideroxylon egense', 'Pouteria egensis', 'Sideroxylon rugosum var. egense', 'Bumelia egensis']"
+Micropholis guyanensis,Micropholis,guyanensis,Sapotaceae,Ericales,AM,['Sideroxylon guyanense']
+Micropholis mensalis,Micropholis,mensalis,Sapotaceae,Ericales,AM,['Pouteria mensalis']
+Micropholis trunciflora,Micropholis,trunciflora,Sapotaceae,Ericales,AM,
+Micropholis venulosa,Micropholis,venulosa,Sapotaceae,Ericales,AM,"['Pouteria venulosa', 'Sideroxylon venulosum', 'Xantolis venulosa']"
+Microtropis discolor,Microtropis,discolor,Celastraceae,Celastrales,AM,['Cassine discolor']
+Millettia leptobotrya,Millettia,leptobotrya,Fabaceae,Fabales,AM,
+Mitrephora tomentosa,Mitrephora,tomentosa,Annonaceae,Magnoliales,,['Kinginda tomentosa']
+Monarda fistulosa,Monarda,fistulosa,Lamiaceae,Lamiales,AM,
+Monoon simiarum,Monoon,simiarum,Annonaceae,Magnoliales,,"['Polyalthia simiarum', 'Unona simiarum', 'Guatteria simiarum']"
+Morus insignis,Morus,insignis,Moraceae,Rosales,,
+Munroa christianii-bernardii,Munroa,christianii-bernardii,Poaceae,Poales,,
+Musineon divaricatum,Musineon,divaricatum,Apiaceae,Apiales,,"['Marathrum divaricatum', 'Seseli divaricatum', 'Adorium divaricatum']"
+Myrcia bracteata,Myrcia,bracteata,Myrtaceae,Myrtales,AM,['Eugenia bracteata']
+Myrcia caudata,Myrcia,caudata,Myrtaceae,Myrtales,AM,['Marlierea caudata']
+Myrcia citrifolia,Myrcia,citrifolia,Myrtaceae,Myrtales,AM,"['Myrtus citrifolia', 'Aulomyrcia citrifolia']"
+Myrcia crebra,Myrcia,crebra,Myrtaceae,Myrtales,AM,['Calyptranthes crebra']
+Myrcia cuspidata,Myrcia,cuspidata,Myrtaceae,Myrtales,AM,"['Chytraculia cuspidata', 'Calyptranthes cuspidata']"
+Myrcia fenestrata,Myrcia,fenestrata,Myrtaceae,Myrtales,AM,
+Myrcia ferruginea,Myrcia,ferruginea,Myrtaceae,Myrtales,AM,"['Eugenia ferruginea', 'Marlierea ferruginea', 'Krugia ferruginea', 'Myrtus ferruginea']"
+Myrcia grandis,Myrcia,grandis,Myrtaceae,Myrtales,AM,
+Myrcia integra,Myrcia,integra,Myrtaceae,Myrtales,AM,
+Myrcia neospeciosa,Myrcia,neospeciosa,Myrtaceae,Myrtales,AM,['Calyptranthes speciosa']
+Myrcia paivae,Myrcia,paivae,Myrtaceae,Myrtales,AM,
+Myrcia servata,Myrcia,servata,Myrtaceae,Myrtales,AM,
+Myrcia splendens,Myrcia,splendens,Myrtaceae,Myrtales,AM,['Myrtus splendens']
+Myrcia subsericea,Myrcia,subsericea,Myrtaceae,Myrtales,AM,
+Myrcia sylvatica,Myrcia,sylvatica,Myrtaceae,Myrtales,AM,"['Myrtus sylvatica', 'Myrcia ambigua var. sylvatica']"
+Myrcia umbraticola,Myrcia,umbraticola,Myrtaceae,Myrtales,AM,"['Marlierea umbraticola', 'Myrtus umbraticola']"
+Myrcianthes rhopaloides,Myrcianthes,rhopaloides,Myrtaceae,Myrtales,,"['Eugenia rhopaloides', 'Myrtus rhopaloides']"
+Myrciaria floribunda,Myrciaria,floribunda,Myrtaceae,Myrtales,AM,"['Eugenia floribunda', 'Myrtus floribunda']"
+Myrciaria tenella,Myrciaria,tenella,Myrtaceae,Myrtales,AM,['Eugenia tenella']
+Myrica pubescens,Myrica,pubescens,Myricaceae,Fagales,,['Morella pubescens']
+Myriocarpa stipitata,Myriocarpa,stipitata,Urticaceae,Rosales,,
+Myrsine andina,Myrsine,andina,Primulaceae,Ericales,,['Rapanea andina']
+Myrsine australis,Myrsine,australis,Primulaceae,Ericales,AM,"['Rapanea australis', 'Suttonia australis']"
+Myrsine coriacea,Myrsine,coriacea,Primulaceae,Ericales,AM,"['Rapanea coriacea', 'Samara coriacea', 'Anguillaria coriacea', 'Tinus coriacea', 'Ardisia coriacea']"
+Myrsine divaricata,Myrsine,divaricata,Primulaceae,Ericales,AM,['Rapanea divaricata']
+Myrsine seguinii,Myrsine,seguinii,Primulaceae,Ericales,AM,['Athruphyllum seguinii']
+Myrtus communis,Myrtus,communis,Myrtaceae,Myrtales,AM,
+Mytilaria laosensis,Mytilaria,laosensis,Hamamelidaceae,Saxifragales,,
+Nabalus tatarinowii,Nabalus,tatarinowii,Asteraceae,Asterales,AM,['Prenanthes tatarinowii']
+Nageia nagi,Nageia,nagi,Podocarpaceae,Araucariales,AM,"['Morella nagi', 'Podocarpus nagi', 'Decussocarpus nagi', 'Myrica nagi']"
+Nassella viridula,Nassella,viridula,Poaceae,Poales,AM,['Stipa viridula']
+Naucleopsis caloneura,Naucleopsis,caloneura,Moraceae,Rosales,AM,"['Ogcodeia caloneura', 'Olmedia caloneura']"
+Naucleopsis francisci,Naucleopsis,francisci,Moraceae,Rosales,,
+Naucleopsis imitans,Naucleopsis,imitans,Moraceae,Rosales,AM,['Ogcodeia imitans']
+Naucleopsis insculptula,Naucleopsis,insculptula,Moraceae,Rosales,AM,
+Naucleopsis krukovii,Naucleopsis,krukovii,Moraceae,Rosales,AM,['Pseudolmedia krukovii']
+Naucleopsis ternstroemiiflora,Naucleopsis,ternstroemiiflora,Moraceae,Rosales,AM,['Ogcodeia ternstroemiiflora']
+Neolitsea cassia,Neolitsea,cassia,Lauraceae,Laurales,AM,"['Laurus cassia', 'Balanopsis cassia', 'Camphorina cassia', 'Persea cassia', 'Cinnamomum cassia']"
+Neolitsea phanerophlebia,Neolitsea,phanerophlebia,Lauraceae,Laurales,AM,
+Neomyrtus pedunculata,Neomyrtus,pedunculata,Myrtaceae,Myrtales,AM,['Myrtus pedunculata']
+Neopanax arboreus,Neopanax,arboreus,Araliaceae,Apiales,AM,"['Pseudopanax arboreus', 'Panax arboreus', 'Nothopanax arboreus']"
+Neopanax colensoi,Neopanax,colensoi,Araliaceae,Apiales,AM,"['Nothopanax colensoi', 'Panax colensoi', 'Pseudopanax colensoi']"
+Nephelium lappaceum,Nephelium,lappaceum,Sapindaceae,Sapindales,AM,
+Nerium oleander,Nerium,oleander,Apocynaceae,Gentianales,NMAM,
+Nestegis lanceolata,Nestegis,lanceolata,Oleaceae,Lamiales,AM,
+Noronhia mildbraedii,Noronhia,mildbraedii,Oleaceae,Lamiales,,"['Chionanthus mildbraedii', 'Olea mildbraedii', 'Campanolea mildbraedii']"
+Nothofagus fusca,Nothofagus,fusca,Nothofagaceae,Fagales,EcMAM,"['Fagus fusca', 'Fuscospora fusca']"
+Nothofagus menziesii,Nothofagus,menziesii,Nothofagaceae,Fagales,AM,"['Fagus menziesii', 'Lophozonia menziesii']"
+Nothofagus obliqua,Nothofagus,obliqua,Nothofagaceae,Fagales,EcM,"['Fagus obliqua', 'Lophozonia obliqua']"
+Nothofagus solandri,Nothofagus,solandri,Nothofagaceae,Fagales,EcMAM,"['Fagus solandri', 'Fuscospora solandri']"
+Nyssa aquatica,Nyssa,aquatica,Nyssaceae,Cornales,,
+Nyssa sylvatica,Nyssa,sylvatica,Nyssaceae,Cornales,AM,['Nyssa multiflora var. sylvatica']
+Ocotea aciphylla,Ocotea,aciphylla,Lauraceae,Laurales,AM,['Oreodaphne aciphylla']
+Ocotea amazonica,Ocotea,amazonica,Lauraceae,Laurales,AM,['Oreodaphne amazonica']
+Ocotea andina,Ocotea,andina,Lauraceae,Laurales,,
+Ocotea argyrophylla,Ocotea,argyrophylla,Lauraceae,Laurales,AM,
+Ocotea aurantiodora,Ocotea,aurantiodora,Lauraceae,Laurales,AM,"['Laurus aurantiodora', 'Mespilodaphne aurantiodora', 'Nectandra aurantiodora']"
+Ocotea boissieriana,Ocotea,boissieriana,Lauraceae,Laurales,AM,['Oreodaphne boissieriana']
+Ocotea cujumary,Ocotea,cujumary,Lauraceae,Laurales,AM,"['Aydendron cujumary', 'Aniba cujumary', 'Alseodaphne cujumary']"
+Ocotea cuneifolia,Ocotea,cuneifolia,Lauraceae,Laurales,,['Laurus cuneifolia']
+Ocotea infrafoveolata,Ocotea,infrafoveolata,Lauraceae,Laurales,,
+Ocotea lancifolia,Ocotea,lancifolia,Lauraceae,Laurales,AM,"['Oreodaphne lancifolia', 'Persea lancifolia']"
+Ocotea myriantha,Ocotea,myriantha,Lauraceae,Laurales,AM,['Oreodaphne myriantha']
+Ocotea nigra,Ocotea,nigra,Lauraceae,Laurales,,
+Ocotea nigrescens,Ocotea,nigrescens,Lauraceae,Laurales,AM,
+Ocotea olivacea,Ocotea,olivacea,Lauraceae,Laurales,AM,
+Ocotea pauciflora,Ocotea,pauciflora,Lauraceae,Laurales,AM,['Oreodaphne pauciflora']
+Ocotea pedanomischa,Ocotea,pedanomischa,Lauraceae,Laurales,,
+Ocotea percurrens,Ocotea,percurrens,Lauraceae,Laurales,AM,
+Ocotea rotundata,Ocotea,rotundata,Lauraceae,Laurales,,
+Ocotea scabrella,Ocotea,scabrella,Lauraceae,Laurales,AM,
+Ocotea splendens,Ocotea,splendens,Lauraceae,Laurales,AM,['Oreodaphne splendens']
+Oenothera biennis,Oenothera,biennis,Onagraceae,Myrtales,AM,"['Oenothera communis proles biennis', 'Brunyera biennis', 'Onagra biennis']"
+Olea europaea,Olea,europaea,Oleaceae,Lamiales,AM,
+Olearia avicenniaefolia,Olearia,avicenniaefolia,Asteraceae,Asterales,AM,
+Olearia rani,Olearia,rani,Asteraceae,Asterales,AM,"['Brachyglottis rani', 'Aster rani']"
+Onoclea sensibilis,Onoclea,sensibilis,Onocleaceae,Polypodiales,AM,"['Angiopteris sensibilis', 'Calypterium sensibile', 'Riedlea sensibilis', 'Pterinodes sensibilis']"
+Oreocnide frutescens,Oreocnide,frutescens,Urticaceae,Rosales,AM,"['Villebrunea frutescens', 'Boehmeria frutescens', 'Urtica frutescens']"
+Oreopanax sessiliflorus,Oreopanax,sessiliflorus,Araliaceae,Apiales,,['Hedera sessiliflora']
+Orophea creaghii,Orophea,creaghii,Annonaceae,Magnoliales,AM,['Mezzettiopsis creaghii']
+Orthocarpus luteus,Orthocarpus,luteus,Orobanchaceae,Lamiales,NMAM,
+Osmanthus didymopetalus,Osmanthus,didymopetalus,Oleaceae,Lamiales,AM,
+Osmunda japonica,Osmunda,japonica,Osmundaceae,Osmundales,AM,"['Osmunda regalis var. japonica', 'Osmunda regalis subsp. japonica', 'Osmundastrum japonicum']"
+Osyris alba,Osyris,alba,Santalaceae,Santalales,NMAM,
+Oxytropis sericea,Oxytropis,sericea,Fabaceae,Fabales,NM,"['Aragallus lambertii var. sericeus', 'Aragallus sericeus', 'Oxytropis lambertii var. sericea', 'Spiesia lambertii var. sericea']"
+Pachira insignis,Pachira,insignis,Malvaceae,Malvales,AM,['Carolinea insignis']
+Pachira macrocalyx,Pachira,macrocalyx,Malvaceae,Malvales,AM,"['Bombacopsis macrocalyx', 'Bombax macrocalyx']"
+Pachira minor,Pachira,minor,Malvaceae,Malvales,AM,"['Carolinea minor', 'Rhodognaphalopsis minor', 'Bombax minus', 'Pochota minor']"
+Pagamea macrophylla,Pagamea,macrophylla,Rubiaceae,Gentianales,AM,
+Palicourea amplectens,Palicourea,amplectens,Rubiaceae,Gentianales,AM,"['Uragoga amplectens', 'Psychotria amplectens']"
+Palicourea corymbifera,Palicourea,corymbifera,Rubiaceae,Gentianales,AM,"['Uragoga urbaniana', 'Psychotria corymbifera']"
+Palicourea dichotoma,Palicourea,dichotoma,Rubiaceae,Gentianales,AM,['Cephaelis dichotoma']
+Palicourea hoffmannseggiana,Palicourea,hoffmannseggiana,Rubiaceae,Gentianales,AM,"['Psychotria hoffmannseggiana', 'Uragoga hoffmannseggiana', 'Uragoga hoffmannseggiana', 'Cephaelis hoffmannseggiana']"
+Palicourea spicata,Palicourea,spicata,Rubiaceae,Gentianales,AM,"['Psychotria spiciflora', 'Uragoga spicata']"
+Palicourea stenosepala,Palicourea,stenosepala,Rubiaceae,Gentianales,,
+Palicourea thyrsiflora,Palicourea,thyrsiflora,Rubiaceae,Gentianales,,"['Uragoga thyrsiflora', 'Psychotria thyrsiflora']"
+Palicourea tinctoria,Palicourea,tinctoria,Rubiaceae,Gentianales,,['Uragoga tinctoria']
+Palicourea virens,Palicourea,virens,Rubiaceae,Gentianales,AM,"['Uragoga virens', 'Psychotria virens']"
+Panicum capillare,Panicum,capillare,Poaceae,Poales,NMAM,"['Chasea capillaris', 'Leptoloma capillare']"
+Panicum virgatum,Panicum,virgatum,Poaceae,Poales,AM,"['Chasea virgata', 'Milium virgatum']"
+Pappobolus microphyllus,Pappobolus,microphyllus,Asteraceae,Asterales,,"['Leighia microphylla', 'Helianthopsis microphylla', 'Viguiera microphylla', 'Helianthus microphyllus']"
+Parablechnum novae-zelandiae,Parablechnum,novae-zelandiae,Blechnaceae,Polypodiales,AM,
+Parablechnum procerum,Parablechnum,procerum,Blechnaceae,Polypodiales,AM,
+Parthenocissus quinquefolia,Parthenocissus,quinquefolia,Vitaceae,Vitales,AM,"['Quinaria quinquefolia', 'Psedera quinquefolia', 'Cissus quinquefolia', 'Ampelopsis quinquefolia', 'Vitis quinquefolia', 'Hedera quinquefolia']"
+Payena microphylla,Payena,microphylla,Sapotaceae,Ericales,AM,['Isonandra microphylla']
+Pectinopitys ferruginea,Pectinopitys,ferruginea,Podocarpaceae,Pinales,AM,"['Nageia ferruginea', 'Prumnopitys ferruginea', 'Stachycarpus ferrugineus', 'Stachypitys ferruginea', 'Podocarpus ferrugineus']"
+Pennantia corymbosa,Pennantia,corymbosa,Pennantiaceae,Apiales,AM,
+Penstemon bradburyi,Penstemon,bradburyi,Plantaginaceae,Lamiales,,['Chelone bradburyi']
+Penstemon confertus,Penstemon,confertus,Plantaginaceae,Lamiales,,
+Penstemon nitidus,Penstemon,nitidus,Plantaginaceae,Lamiales,AM,
+Penstemon procerus,Penstemon,procerus,Plantaginaceae,Lamiales,AM,['Penstemon confertus var. procerus']
+Pentaphylax euryoides,Pentaphylax,euryoides,Pentaphylacaceae,Ericales,AM,
+Pentaspadon motleyi,Pentaspadon,motleyi,Anacardiaceae,Sapindales,,
+Persea areolatocostae,Persea,areolatocostae,Lauraceae,Laurales,,"['Cinnamomum areolatocostae', 'Phoebe areolatocostae']"
+Persea ferruginea,Persea,ferruginea,Lauraceae,Laurales,,
+Persea weberbaueri,Persea,weberbaueri,Lauraceae,Laurales,,
+Phalaris arundinacea,Phalaris,arundinacea,Poaceae,Poales,NMAM,"['Baldingera arundinacea', 'Calamagrostis colorata', 'Phalaroides arundinacea', 'Phalaridantha arundinacea', 'Typhoides arundinacea', 'Digraphis arundinacea', 'Baldingera colorata']"
+Phellodendron amurense,Phellodendron,amurense,Rutaceae,Sapindales,AM,
+Philadelphus incanus,Philadelphus,incanus,Hydrangeaceae,Cornales,AM,
+Phillyrea angustifolia,Phillyrea,angustifolia,Oleaceae,Lamiales,AM,"['Phillyrea media var. angustifolia', 'Olea angustifolia', 'Phillyrea variabilis var. angustifolia', 'Phillyrea vulgaris var. angustifolia', 'Phillyrea mucronata var. linearis']"
+Phillyrea latifolia,Phillyrea,latifolia,Oleaceae,Lamiales,AM,"['Olea latifolia', 'Phillyrea angustifolia subsp. latifolia', 'Phillyrea vulgaris var. latifolia', 'Phillyrea variabilis var. latifolia']"
+Phleum pratense,Phleum,pratense,Poaceae,Poales,NMAM,"['Stelephuros pratensis', 'Plantinia pratensis', 'Phleum nodosum var. pratense']"
+Phlomis purpurea,Phlomis,purpurea,Lamiaceae,Lamiales,AM,
+Phlomoides umbrosa,Phlomoides,umbrosa,Lamiaceae,Lamiales,AM,['Phlomis umbrosa']
+Phlox hoodii,Phlox,hoodii,Polemoniaceae,Ericales,AM,"['Fonna hoodii', 'Armeria hoodii']"
+Phoebe lanceolata,Phoebe,lanceolata,Lauraceae,Laurales,AM,['Ocotea lanceolata']
+Phoebe puwenensis,Phoebe,puwenensis,Lauraceae,Laurales,AM,
+Phyllocladus hypophyllus,Phyllocladus,hypophyllus,Podocarpaceae,Araucariales,AM,['Podocarpus hypophyllus']
+Phyllocladus trichomanoides,Phyllocladus,trichomanoides,Podocarpaceae,Araucariales,AM,['Podocarpus trichomanoides']
+Physalis virginiana,Physalis,virginiana,Solanaceae,Solanales,,
+Picea abies,Picea,abies,Pinaceae,Pinales,EcM,"['Pinus abies', 'Abies picea']"
+Picea koraiensis,Picea,koraiensis,Pinaceae,Pinales,EcM,['Picea koyamae var. koraiensis']
+Picea meyeri,Picea,meyeri,Pinaceae,Pinales,EcM,
+Picea wilsonii,Picea,wilsonii,Pinaceae,Pinales,EcM,
+Picramnia latifolia,Picramnia,latifolia,Picramniaceae,Picramniales,,
+Picrasma longistaminea,Picrasma,longistaminea,Simaroubaceae,Sapindales,,
+Picris hieracioides,Picris,hieracioides,Asteraceae,Asterales,AM,['Crepis hieracioides']
+Pilosella officinarum,Pilosella,officinarum,Asteraceae,Asterales,AM,['Hieracium pilosella']
+Pinus armandii,Pinus,armandii,Pinaceae,Pinales,EcM,
+Pinus elliottii,Pinus,elliottii,Pinaceae,Pinales,EcM,
+Pinus koraiensis,Pinus,koraiensis,Pinaceae,Pinales,EcM,"['Apinus koraiensis', 'Strobus koraiensis']"
+Pinus massoniana,Pinus,massoniana,Pinaceae,Pinales,EcM,['Pinea massoniana']
+Pinus nigra,Pinus,nigra,Pinaceae,Pinales,EcM,"['Pinus nigricans subsp. nigra', 'Pinus laricio var. nigra', 'Pinus laricio subsp. nigra']"
+Pinus pinea,Pinus,pinea,Pinaceae,Pinales,EcM,['Apinus pinea']
+Pinus pumila,Pinus,pumila,Pinaceae,Pinales,EcM,"['Pinus cembra var. pumila', 'Pinus cembra subsp. pumila']"
+Pinus pungens,Pinus,pungens,Pinaceae,Pinales,EcM,
+Pinus resinosa,Pinus,resinosa,Pinaceae,Pinales,EcM,
+Pinus strobus,Pinus,strobus,Pinaceae,Pinales,EcM,"['Leucopitys strobus', 'Strobus weymouthiana']"
+Pinus sylvestris,Pinus,sylvestris,Pinaceae,Pinales,EcM,
+Pinus tabuliformis,Pinus,tabuliformis,Pinaceae,Pinales,EcM,['Pinus densiflora var. tabuliformis']
+Pinus virginiana,Pinus,virginiana,Pinaceae,Pinales,EcM,
+Piper arboreum,Piper,arboreum,Piperaceae,Piperales,,
+Pistacia chinensis,Pistacia,chinensis,Anacardiaceae,Sapindales,AM,
+Pistacia lentiscus,Pistacia,lentiscus,Anacardiaceae,Sapindales,AM,"['Lentiscus vulgaris', 'Terebinthus lentiscus']"
+Pistacia terebinthus,Pistacia,terebinthus,Anacardiaceae,Sapindales,AM,['Terebinthus vulgaris']
+Pittosporum eugenioides,Pittosporum,eugenioides,Pittosporaceae,Apiales,AM,
+Pittosporum tenuifolium,Pittosporum,tenuifolium,Pittosporaceae,Apiales,AM,
+Plagianthus regius,Plagianthus,regius,Malvaceae,Malvales,AM,"['Betula bella', 'Philippodendrum regium']"
+Planchonella grandifolia,Planchonella,grandifolia,Sapotaceae,Ericales,,"['Lucuma grandifolia', 'Sideroxylon grandifolium', 'Pouteria grandifolia']"
+Plantago lanceolata,Plantago,lanceolata,Plantaginaceae,Lamiales,AM,"['Lagopus lanceolatus', 'Arnoglossum lanceolatum']"
+Plantago patagonica,Plantago,patagonica,Plantaginaceae,Lamiales,,
+Platanus acerifolia,Platanus,acerifolia,Platanaceae,Proteales,AM,
+Platanus occidentalis,Platanus,occidentalis,Platanaceae,Proteales,AM,"['Platanus vulgaris var. angulosa', 'Platanus vulgaris proles occidentalis', 'Platanus orientalis var. occidentalis']"
+Platycladus orientalis,Platycladus,orientalis,Cupressaceae,Cupressales,AM,"['Thuja orientalis', 'Biota orientalis']"
+Platypodium elegans,Platypodium,elegans,Fabaceae,Fabales,AM,['Callisemaea elegans']
+Pleioblastus amarus,Pleioblastus,amarus,Poaceae,Poales,,['Arundinaria amara']
+Pleroma ochypetalum,Pleroma,ochypetalum,Melastomataceae,Myrtales,,"['Lasiandra ochypetala', 'Tibouchina ochypetala', 'Rhexia ochypetala']"
+Poa cusickii,Poa,cusickii,Poaceae,Poales,AM,
+Poa nemoralis,Poa,nemoralis,Poaceae,Poales,AM,"['Poa serotina var. nemoralis', 'Poa angustifolia var. nemoralis', 'Paneion nemorale']"
+Poa pratensis,Poa,pratensis,Poaceae,Poales,AM,"['Poa angustifolia var. pratensis', 'Poa angustifolia subsp. pratensis', 'Paneion pratense']"
+Podocarpus gibbsii,Podocarpus,gibbsii,Podocarpaceae,Araucariales,AM,
+Podocarpus laetus,Podocarpus,laetus,Podocarpaceae,Araucariales,AM,['Nageia laeta']
+Podocarpus neriifolius,Podocarpus,neriifolius,Podocarpaceae,Araucariales,AM,"['Nageia neriifolia', 'Margbensonia neriifolia']"
+Podocarpus oleifolius,Podocarpus,oleifolius,Podocarpaceae,Araucariales,,['Nageia oleifolia']
+Podocarpus totara,Podocarpus,totara,Podocarpaceae,Araucariales,AM,['Nageia totara']
+Podophyllum peltatum,Podophyllum,peltatum,Berberidaceae,Ranunculales,AM,
+Polyspora axillaris,Polyspora,axillaris,Theaceae,Ericales,AM,"['Camellia axillaris', 'Gordonia axillaris', 'Lasianthus axillaris']"
+Polystichum chilense,Polystichum,chilense,Dryopteridaceae,Polypodiales,AM,
+Pometia pinnata,Pometia,pinnata,Sapindaceae,Sapindales,NMAM,"['Aporetica pinnata', 'Dabanus pinnatus', 'Nephelium pinnatum', 'Euphoria pinnata']"
+Populus alba,Populus,alba,Salicaceae,Malpighiales,EcM,['Leuce alba']
+Populus cathayana,Populus,cathayana,Salicaceae,Malpighiales,EcMAM,
+Populus deltoides,Populus,deltoides,Salicaceae,Malpighiales,AM,
+Populus grandidentata,Populus,grandidentata,Salicaceae,Malpighiales,EcMAM,['Populus tremula subsp. grandidentata']
+Populus suaveolens,Populus,suaveolens,Salicaceae,Malpighiales,EcMAM,['Populus balsamifera var. suaveolens']
+Populus tremula,Populus,tremula,Salicaceae,Malpighiales,EcM,['Tremula vulgaris']
+Populus tremuloides,Populus,tremuloides,Salicaceae,Malpighiales,AM,['Populus tremula subsp. tremuloides']
+Populus trichocarpa,Populus,trichocarpa,Salicaceae,Malpighiales,EcM,
+Potentilla acaulis,Potentilla,acaulis,Rosaceae,Rosales,AM,['Potentilla verna subsp. acaulis']
+Potentilla indica,Potentilla,indica,Rosaceae,Rosales,AM,"['Fragaria indica', 'Duchesnea indica']"
+Potentilla pusilla,Potentilla,pusilla,Rosaceae,Rosales,AM,"['Potentilla verna var. pusilla', 'Potentilla verna f. pusilla', 'Potentilla tabernaemontani subvar. pusilla']"
+Potentilla tenacetifolia,Potentilla,tenacetifolia,Rosaceae,Rosales,AM,
+Pourouma cecropiifolia,Pourouma,cecropiifolia,Urticaceae,Rosales,,
+Pouteria austin-smithii,Pouteria,austin-smithii,Sapotaceae,Ericales,,['Lucuma austin-smithii']
+Pouteria caimito,Pouteria,caimito,Sapotaceae,Ericales,AM,"['Guapeba caimito', 'Labatia caimito', 'Lucuma caimito', 'Achras caimito']"
+Pouteria cuspidata,Pouteria,cuspidata,Sapotaceae,Ericales,AM,['Sideroxylon cuspidatum']
+Prasoxylon excelsum,Prasoxylon,excelsum,Meliaceae,Sapindales,AM,"['Macrochiton excelsum', 'Hartighsea excelsa', 'Dysoxylum excelsum', 'Trichilia excelsa']"
+Prionostemma aspera,Prionostemma,aspera,Celastraceae,Celastrales,AM,['Hippocratea aspera']
+Protium altsonii,Protium,altsonii,Burseraceae,Sapindales,AM,
+Protium amazonicum,Protium,amazonicum,Burseraceae,Sapindales,AM,['Paraprotium amazonicum']
+Protium apiculatum,Protium,apiculatum,Burseraceae,Sapindales,AM,
+Protium aracouchini,Protium,aracouchini,Burseraceae,Sapindales,AM,"['Bursera eracouchii', 'Bursera aracouchini', 'Icica aracouchini']"
+Protium calanense,Protium,calanense,Burseraceae,Sapindales,AM,
+Protium calendulinum,Protium,calendulinum,Burseraceae,Sapindales,AM,
+Protium crassipetalum,Protium,crassipetalum,Burseraceae,Sapindales,AM,
+Protium decandrum,Protium,decandrum,Burseraceae,Sapindales,AM,"['Elemifera decandra', 'Bursera decandra', 'Icica decandra', 'Amyris decandra', 'Elaphrium decandrum']"
+Protium divaricatum,Protium,divaricatum,Burseraceae,Sapindales,AM,
+Protium elegans,Protium,elegans,Burseraceae,Sapindales,AM,['Tingulonga elegans']
+Protium ferrugineum,Protium,ferrugineum,Burseraceae,Sapindales,AM,"['Icicopsis ferruginea', 'Tingulonga ferruginea', 'Paraprotium ferrugineum']"
+Protium gallosum,Protium,gallosum,Burseraceae,Sapindales,AM,
+Protium giganteum,Protium,giganteum,Burseraceae,Sapindales,AM,['Tingulonga gigantea']
+Protium grandifolium,Protium,grandifolium,Burseraceae,Sapindales,AM,['Tingulonga grandifolia']
+Protium hebetatum,Protium,hebetatum,Burseraceae,Sapindales,AM,
+Protium heptaphyllum,Protium,heptaphyllum,Burseraceae,Sapindales,AM,"['Tingulonga heptaphylla', 'Icica heptaphylla', 'Elaphrium heptaphyllum']"
+Protium laxiflorum,Protium,laxiflorum,Burseraceae,Sapindales,AM,['Tingulonga laxiflora']
+Protium occultum,Protium,occultum,Burseraceae,Sapindales,AM,
+Protium opacum,Protium,opacum,Burseraceae,Sapindales,AM,
+Protium paniculatum,Protium,paniculatum,Burseraceae,Sapindales,AM,['Tingulonga paniculata']
+Protium pilosissimum,Protium,pilosissimum,Burseraceae,Sapindales,AM,['Tingulonga pilosissima']
+Protium pilosum,Protium,pilosum,Burseraceae,Sapindales,AM,['Tetragastris pilosa']
+Protium sagotianum,Protium,sagotianum,Burseraceae,Sapindales,AM,
+Protium spruceanum,Protium,spruceanum,Burseraceae,Sapindales,AM,"['Tingulonga spruceana', 'Icica spruceana']"
+Protium strumosum,Protium,strumosum,Burseraceae,Sapindales,AM,
+Protium subserratum,Protium,subserratum,Burseraceae,Sapindales,AM,"['Tingulonga subserrata', 'Icicopsis subserrata']"
+Protium tenuifolium,Protium,tenuifolium,Burseraceae,Sapindales,AM,"['Tingulonga tenuifolia', 'Icicopsis tenuifolia']"
+Protium trifoliolatum,Protium,trifoliolatum,Burseraceae,Sapindales,AM,['Tingulonga trifoliolata']
+Protium unifoliolatum,Protium,unifoliolatum,Burseraceae,Sapindales,AM,['Tetragastris unifoliolata']
+Protium urophyllidium,Protium,urophyllidium,Burseraceae,Sapindales,AM,
+Prumnopitys montana,Prumnopitys,montana,Podocarpaceae,Araucariales,,"['Torreya montana', 'Van-tieghemia montana', 'Podocarpus montanus', 'Botryopitys montana', 'Nageia montana', 'Taxus montana']"
+Prumnopitys taxifolia,Prumnopitys,taxifolia,Podocarpaceae,Araucariales,AM,['Dacrydium taxifolium']
+Prunus armeniaca,Prunus,armeniaca,Rosaceae,Rosales,AM,"['Prunus armeniaca subsp. vulgaris', 'Amygdalus armeniaca', 'Armeniaca vulgaris']"
+Prunus avium,Prunus,avium,Rosaceae,Rosales,NMAM,"['Cerasus avium var. juliana', 'Druparia avium', 'Cerasus avium', 'Prunus cerasus subsp. avium', 'Prunus cerasus var. avium']"
+Prunus herthae,Prunus,herthae,Rosaceae,Rosales,,
+Prunus opaca,Prunus,opaca,Rosaceae,Rosales,,"['Cerasus opaca', 'Lauro-cerasus opaca']"
+Prunus padus,Prunus,padus,Rosaceae,Rosales,EcMAM,"['Druparia padus', 'Cerasus padus', 'Padus avium']"
+Prunus sargentii,Prunus,sargentii,Rosaceae,Rosales,AM,['Cerasus sargentii']
+Prunus serotina,Prunus,serotina,Rosaceae,Rosales,AM,"['Padus serotina', 'Cerasus serotina']"
+Pseudodictamnus hirsutus,Pseudodictamnus,hirsutus,Lamiaceae,Lamiales,,['Marrubium hirsutum']
+Pseudodiphasium volubile,Pseudodiphasium,volubile,Lycopodiaceae,Lycopodiales,AM,
+Pseudolmedia laevigata,Pseudolmedia,laevigata,Moraceae,Rosales,AM,
+Pseudolmedia laevis,Pseudolmedia,laevis,Moraceae,Rosales,AM,['Olmedia laevis']
+Pseudolmedia rigida,Pseudolmedia,rigida,Moraceae,Rosales,,['Olmedia rigida']
+Pseudopanax crassifolius,Pseudopanax,crassifolius,Araliaceae,Apiales,AM,"['Hedera crassifolia', 'Aralia crassifolia', 'Panax crassifolius']"
+Pseudotsuga menziesii,Pseudotsuga,menziesii,Pinaceae,Pinales,EcM,['Abies menziesii']
+Pseudowintera colorata,Pseudowintera,colorata,Winteraceae,Canellales,AM,"['Drimys axillaris var. colorata', 'Wintera colorata', 'Drimys colorata']"
+Pseuduvaria trimera,Pseuduvaria,trimera,Annonaceae,Magnoliales,NM,['Mitrephora trimera']
+Psychotria asiatica,Psychotria,asiatica,Rubiaceae,Gentianales,AM,['Psychotrophum asiaticum']
+Psychotria rhombibractea,Psychotria,rhombibractea,Rubiaceae,Gentianales,AM,
+Pteridium aquilinum,Pteridium,aquilinum,Dennstaedtiaceae,Polypodiales,AM,"['Eupteris aquilina', 'Filix aquilina', 'Cincinalis aquilina', 'Paesia aquilina', 'Asplenium aquilinum', 'Filix-foemina aquilina', 'Pteris aquilina', 'Ornithopteris aquilina', 'Allosorus aquilinus']"
+Pterophylla faxinea,Pterophylla,faxinea,Cunoniaceae,Oxalidales,AM,
+Pterophylla racemosa,Pterophylla,racemosa,Cunoniaceae,Oxalidales,AM,"['Weinmannia racemosa', 'Windmannia racemosa', 'Leiospermum racemosum']"
+Pterospermum acerifolium,Pterospermum,acerifolium,Malvaceae,Malvales,AM,"['Pterospermadendron acerifolium', 'Dombeya acerifolia', 'Cavanilla acerifolia', 'Pentapetes acerifolia']"
+Puccinellia rupestris,Puccinellia,rupestris,Poaceae,Poales,,"['Poa rupestris', 'Pseudosclerochloa rupestris', 'Sclerochloa rupestris']"
+Pycnanthemum virginianum,Pycnanthemum,virginianum,Lamiaceae,Lamiales,AM,"['Brachystemum virginicum', 'Thymus virginicus', 'Satureja virginiana', 'Koellia virginiana', 'Koellia virginica']"
+Pyrus betulifolia,Pyrus,betulifolia,Rosaceae,Rosales,AM,
+Pyrus bourgaeana,Pyrus,bourgaeana,Rosaceae,Rosales,AM,"['Pyrus communis subsp. bourgaeana', 'Pyrus communis var. bourgaeana', 'Pyrus communis proles bourgaeana']"
+Quercus alba,Quercus,alba,Fagaceae,Fagales,EcM,
+Quercus aliena,Quercus,aliena,Fagaceae,Fagales,EcM,
+Quercus asymmetrica,Quercus,asymmetrica,Fagaceae,Fagales,EcM,
+Quercus bicolor,Quercus,bicolor,Fagaceae,Fagales,EcM,"['Quercus discolor var. bicolor', 'Quercus prinus var. bicolor']"
+Quercus canariensis,Quercus,canariensis,Fagaceae,Fagales,,
+Quercus coccifera,Quercus,coccifera,Fagaceae,Fagales,EcM,
+Quercus faginea,Quercus,faginea,Fagaceae,Fagales,EcM,['Quercus lusitanica subsp. faginea']
+Quercus glauca,Quercus,glauca,Fagaceae,Fagales,EcMAM,"['Perytis glauca', 'Cyclobalanopsis glauca']"
+Quercus ilex,Quercus,ilex,Fagaceae,Fagales,EcM,
+Quercus lowii,Quercus,lowii,Fagaceae,Fagales,EcM,['Cyclobalanopsis lowii']
+Quercus mongolica,Quercus,mongolica,Fagaceae,Fagales,EcM,['Quercus sessiliflora var. mongolica']
+Quercus multinervis,Quercus,multinervis,Fagaceae,Fagales,EcM,
+Quercus oxyodon,Quercus,oxyodon,Fagaceae,Fagales,EcM,"['Cyclobalanopsis oxyodon', 'Cyclobalanopsis lineata var. oxyodon', 'Quercus lineata var. oxyodon']"
+Quercus palustris,Quercus,palustris,Fagaceae,Fagales,EcM,['Quercus rubra var. palustris']
+Quercus robur,Quercus,robur,Fagaceae,Fagales,EcM,
+Quercus rubra,Quercus,rubra,Fagaceae,Fagales,EcM,['Erythrobalanus rubra']
+Quercus serrata,Quercus,serrata,Fagaceae,Fagales,EcM,
+Quercus suber,Quercus,suber,Fagaceae,Fagales,EcM,['Quercus suberosa']
+Quercus variabilis,Quercus,variabilis,Fagaceae,Fagales,EcM,['Pasania variabilis']
+Quercus wutaishanica,Quercus,wutaishanica,Fagaceae,Fagales,EcM,
+Quintinia serrata,Quintinia,serrata,Paracryphiaceae,Paracryphiales,AM,
+Ratibida pinnata,Ratibida,pinnata,Asteraceae,Asterales,AM,"['Lepachys pinnata', 'Rudbeckia pinnata', 'Helianthus pinnatus', 'Obeliscaria pinnata']"
+Raukaua simplex,Raukaua,simplex,Araliaceae,Apiales,AM,"['Neopanax simplex', 'Pseudopanax simplex', 'Nothopanax simplex', 'Panax simplex']"
+Rhamnus alaternus,Rhamnus,alaternus,Rhamnaceae,Rosales,,
+Rhamnus davurica,Rhamnus,davurica,Rhamnaceae,Rosales,NMAM,['Rhamnus cathartica var. davurica']
+Rhamnus lycioides,Rhamnus,lycioides,Rhamnaceae,Rosales,AM,"['Rhamnus oleoides var. lycioides', 'Rhamnus oleoides subsp. lycioides']"
+Rhaphiolepis indica,Rhaphiolepis,indica,Rosaceae,Rosales,AM,"['Mespilus indica', 'Pyrus rhaphiolepis', 'Crataegus indica']"
+Rhododendron hypoglaucum,Rhododendron,hypoglaucum,Ericaceae,Ericales,ErM,"['Rhododendron argyrophyllum subsp. hypoglaucum', 'Azalea hypoglauca']"
+Rhododendron ponticum,Rhododendron,ponticum,Ericaceae,Ericales,ErM,['Hymenanthes pontica']
+Rhodoleia championii,Rhodoleia,championii,Hamamelidaceae,Saxifragales,AM,
+Rhodostemonodaphne crenaticupula,Rhodostemonodaphne,crenaticupula,Lauraceae,Laurales,AM,
+Rhodostemonodaphne paniculata,Rhodostemonodaphne,paniculata,Lauraceae,Laurales,AM,
+Rhodostemonodaphne parvifolia,Rhodostemonodaphne,parvifolia,Lauraceae,Laurales,AM,
+Rhopalostylis sapida,Rhopalostylis,sapida,Arecaceae,Arecales,AM,
+Rhus typhina,Rhus,typhina,Anacardiaceae,Sapindales,AM,"['Toxicodendron typhinum', 'Rhus hirta var. typhina', 'Rhus hirta f. typhina']"
+Richetia multiflora,Richetia,multiflora,Dipterocarpaceae,Malvales,,"['Doona multiflora', 'Balanocarpus multiflorus', 'Shorea multiflora']"
+Rosa acicularis,Rosa,acicularis,Rosaceae,Rosales,NMAM,
+Rosa arkansana,Rosa,arkansana,Rosaceae,Rosales,,"['Rosa blanda var. arkansana', 'Rosa virginiana var. arkansana']"
+Rosa canina,Rosa,canina,Rosaceae,Rosales,AM,['Crepinia canina']
+Rosa xanthina,Rosa,xanthina,Rosaceae,Rosales,AM,
+Roucheria columbiana,Roucheria,columbiana,Linaceae,Malpighiales,,
+Ruagea glabra,Ruagea,glabra,Meliaceae,Sapindales,,['Guarea trianae']
+Rubia peregrina,Rubia,peregrina,Rubiaceae,Gentianales,EcMAM,['Galium peregrinum']
+Rubroshorea acuminata,Rubroshorea,acuminata,Dipterocarpaceae,Malvales,,['Shorea acuminata']
+Rubroshorea leprosula,Rubroshorea,leprosula,Dipterocarpaceae,Malvales,EcM,['Shorea leprosula']
+Rubus allegheniensis,Rubus,allegheniensis,Rosaceae,Rosales,AM,['Rubus villosus var. montanus']
+Rubus crataegifolius,Rubus,crataegifolius,Rosaceae,Rosales,AM,['Rubus corchorifolius var. crataegifolius']
+Rubus idaeus,Rubus,idaeus,Rosaceae,Rosales,NMAM,['Batidaea idaea']
+Rubus irritans,Rubus,irritans,Rosaceae,Rosales,AM,
+Rubus phoenicolasius,Rubus,phoenicolasius,Rosaceae,Rosales,AM,
+Rubus rosifolius,Rubus,rosifolius,Rosaceae,Rosales,AM,
+Rubus ulmifolius,Rubus,ulmifolius,Rosaceae,Rosales,AM,"['Rubus sanctus ulmifolius', 'Rubus discolor subsp. ulmifolius', 'Rubus fruticosus var. ulmifolius']"
+Rudgea cornifolia,Rudgea,cornifolia,Rubiaceae,Gentianales,AM,"['Uragoga cornifolia', 'Psychotria cornifolia']"
+Rudgea lanceifolia,Rudgea,lanceifolia,Rubiaceae,Gentianales,AM,['Uragoga lanceifolia']
+Rumex acetosella,Rumex,acetosella,Polygonaceae,Caryophyllales,NMAM,"['Acetosa acetosella', 'Lapathum acetosella', 'Pauladolfia acetosella']"
+Salix abscondita,Salix,abscondita,Salicaceae,Malpighiales,,
+Salix atrocinerea,Salix,atrocinerea,Salicaceae,Malpighiales,EcM,"['Salix cinerea proles atrocinerea', 'Salix cinerea var. atrocinerea', 'Salix cinerea subsp. atrocinerea']"
+Salix caprea,Salix,caprea,Salicaceae,Malpighiales,EcMAM,"['Nectopix caprea', 'Capraea vulgaris']"
+Salix viminalis,Salix,viminalis,Salicaceae,Malpighiales,EcMAM,['Diplima viminalis']
+Salvia chinensis,Salvia,chinensis,Lamiaceae,Lamiales,AM,['Salvia japonica var. chinensis']
+Salvia rosmarinus,Salvia,rosmarinus,Lamiaceae,Lamiales,AM,['Rosmarinus officinalis']
+Sambucus williamsii,Sambucus,williamsii,Viburnaceae,Dipsacales,AM,
+Sanguisorba minor,Sanguisorba,minor,Rosaceae,Rosales,AM,"['Poterium minus', 'Pimpinella sanguisorba', 'Blitum sanguisorba', 'Poterium sanguisorba']"
+Sanguisorba officinalis,Sanguisorba,officinalis,Rosaceae,Rosales,NMAM,"['Pimpinella officinalis', 'Poterium officinale']"
+Sanicula orthacantha,Sanicula,orthacantha,Apiaceae,Apiales,AM,
+Sapium stylare,Sapium,stylare,Euphorbiaceae,Malpighiales,,['Excoecaria stylaris']
+Saprosma ternatum,Saprosma,ternatum,Rubiaceae,Gentianales,AM,
+Sarcandra glabra,Sarcandra,glabra,Chloranthaceae,Chloranthales,NMAM,"['Ardisia glabra', 'Bladhia glabra', 'Chloranthus glaber']"
+Sassafras albidum,Sassafras,albidum,Lauraceae,Laurales,AM,"['Tetranthera albida', 'Sassafras officinale var. albidum', 'Sassafras variifolium var. albidum', 'Laurus albida']"
+Saurauia herthae,Saurauia,herthae,Actinidiaceae,Ericales,,
+Saussurea amurensis,Saussurea,amurensis,Asteraceae,Asterales,AM,['Theodorea amurensis']
+Saussurea mongolica,Saussurea,mongolica,Asteraceae,Asterales,AM,['Saussurea ussuriensis var. mongolica']
+Saussurea nivea,Saussurea,nivea,Asteraceae,Asterales,AM,
+Schefflera digita,Schefflera,digita,Araliaceae,Apiales,AM,
+Schima superba,Schima,superba,Theaceae,Ericales,AM,['Schima wallichii var. superba']
+Schima wallichii,Schima,wallichii,Theaceae,Ericales,AM,['Gordonia wallichii']
+Schizachyrium scoparium,Schizachyrium,scoparium,Poaceae,Poales,AM,"['Pollinia scoparia', 'Sorghum scoparium', 'Andropogon scoparius']"
+Schoepfia jasminodora,Schoepfia,jasminodora,Schoepfiaceae,Santalales,NM,['Schoepfiopsis jasminodora']
+Sciadopitys verticillata,Sciadopitys,verticillata,Sciadopityaceae,Cupressales,AM,"['Taxus verticillata', 'Pinus verticillata']"
+Sciodaphyllum acuminatum,Sciodaphyllum,acuminatum,Araliaceae,Apiales,,"['Brassaia acuminata', 'Schefflera acuminata', 'Actinophyllum acuminatum']"
+Scleronema micranthum,Scleronema,micranthum,Malvaceae,Malvales,AM,['Catostemma micranthum']
+Semecarpus reticulata,Semecarpus,reticulata,Anacardiaceae,Sapindales,,
+Sequoiadendron giganteum,Sequoiadendron,giganteum,Cupressaceae,Cupressales,AM,"['Americus gigantea', 'Wellingtonia gigantea', 'Gigantabies wellingtoniana', 'Washingtonia gigantea', 'Taxodium giganteum', 'Sequoia wellingtonia', 'Steinhauera gigantea']"
+Sextonia rubra,Sextonia,rubra,Lauraceae,Laurales,AM,"['Nectandra rubra', 'Ocotea rubra']"
+Sibbaldianthe bifurca,Sibbaldianthe,bifurca,Rosaceae,Rosales,AM,"['Fragaria bifurca', 'Schistophyllidium bifurcum', 'Potentilla bifurca']"
+Sideritis pusilla,Sideritis,pusilla,Lamiaceae,Lamiales,,['Sideritis scordioides var. pusilla']
+Simira rubescens,Simira,rubescens,Rubiaceae,Gentianales,AM,['Sprucea rubescens']
+Siparuna aspera,Siparuna,aspera,Siparunaceae,Laurales,,['Citrosma aspera']
+Siparuna muricata,Siparuna,muricata,Siparunaceae,Laurales,,['Citrosma muricata']
+Sloanea grandiflora,Sloanea,grandiflora,Elaeocarpaceae,Oxalidales,,
+Sloanea rufa,Sloanea,rufa,Elaeocarpaceae,Oxalidales,,
+Smilax aspera,Smilax,aspera,Smilacaceae,Liliales,AM,
+Smilax trinervula,Smilax,trinervula,Smilacaceae,Liliales,AM,"['Smilax china var. trinervula', 'Smilax biflora var. trinervula']"
+Solidago decurrens,Solidago,decurrens,Asteraceae,Asterales,AM,
+Solidago missouriensis,Solidago,missouriensis,Asteraceae,Asterales,AM,['Aster missouriensis']
+Solidago nemoralis,Solidago,nemoralis,Asteraceae,Asterales,AM,
+Solidago ptarmicoides,Solidago,ptarmicoides,Asteraceae,Asterales,,"['Doellingeria ptarmicoides', 'Aster albus', 'Aster ptarmicoides', 'Chrysopsis alba', 'Diplopappus albus', 'Eucephalus albus', 'Heleastrum album', 'Inula alba', 'Oligoneuron album', 'Solidago asteroides', 'Unamia alba', 'Unamia ptarmicoides']"
+Solidago rigida,Solidago,rigida,Asteraceae,Asterales,AM,['Leioligo rigida']
+Solidago speciosa,Solidago,speciosa,Asteraceae,Asterales,AM,"['Aster speciosus', 'Leioligo speciosa']"
+Sophora microphylla,Sophora,microphylla,Fabaceae,Fabales,AM,"['Edwardsia grandiflora var. microphylla', 'Edwardsia microphylla', 'Sophora tetraptera var. microphylla']"
+Sorbus aucuparia,Sorbus,aucuparia,Rosaceae,Rosales,AM,"['Pyrus aucuparia', 'Pyrenia aucuparia', 'Mespilus aucuparia', 'Crataegus aucuparia', 'Aucuparia silvestris']"
+Sorbus discolor,Sorbus,discolor,Rosaceae,Rosales,,['Pyrus discolor']
+Sorghastrum nutans,Sorghastrum,nutans,Poaceae,Poales,AM,"['Chalcoelytrum nutans', 'Poranthera nutans', 'Rhaphis nutans', 'Holcus nutans', 'Digitaria nutans', 'Trichachne nutans', 'Andropogon nutans', 'Sorghum nutans']"
+Sorocea guilleminiana,Sorocea,guilleminiana,Moraceae,Rosales,AM,
+Sorocea muriculata,Sorocea,muriculata,Moraceae,Rosales,AM,
+Sorocea pubivena,Sorocea,pubivena,Moraceae,Rosales,AM,
+Sphaeralcea coccinea,Sphaeralcea,coccinea,Malvaceae,Malvales,AM,"['Malvastrum coccineum', 'Malveopsis coccinea', 'Malva coccinea', 'Sida coccinea']"
+Sphaeropteris medullaris,Sphaeropteris,medullaris,Cyatheaceae,Cyatheales,AM,"['Polypodium medullare', 'Cyathea medullaris']"
+Spiraea dahurica,Spiraea,dahurica,Rosaceae,Rosales,AM,"['Spiraea media subsp. dahurica', 'Spiraea alpina var. dahurica']"
+Spiraea ouensanensis,Spiraea,ouensanensis,Rosaceae,Rosales,AM,
+Sporobolus heterolepis,Sporobolus,heterolepis,Poaceae,Poales,AM,"['Agrostis heterolepis', 'Vilfa heterolepis']"
+Sporobolus rigidus,Sporobolus,rigidus,Poaceae,Poales,,['Vilfa rigida']
+Stachyarrhena acuminata,Stachyarrhena,acuminata,Rubiaceae,Gentianales,AM,
+Stauracanthus genistoides,Stauracanthus,genistoides,Fabaceae,Fabales,,['Ulex genistoides']
+Sterculia lanceolata,Sterculia,lanceolata,Malvaceae,Malvales,AM,
+Sterculia monosperma,Sterculia,monosperma,Malvaceae,Malvales,AM,['Clompanus monosperma']
+Sticherus cunninghamii,Sticherus,cunninghamii,Gleicheniaceae,Gleicheniales,AM,"['Gleichenia cunninghamii', 'Mertensia cunninghamii']"
+Stipa krylovii,Stipa,krylovii,Poaceae,Poales,AM,"['Stipa sareptana subsp. krylovii', 'Stipa sareptana var. krylovii']"
+Stipa pennata,Stipa,pennata,Poaceae,Poales,AM,
+Strobilanthes dimorphotricha,Strobilanthes,dimorphotricha,Acanthaceae,Lamiales,AM,['Goldfussia dimorphotricha']
+Styphnolobium japonicum,Styphnolobium,japonicum,Fabaceae,Fabales,AM,['Sophora japonica']
+Styrax suberifolius,Styrax,suberifolius,Styracaceae,Ericales,AM,
+Symphoricarpos occidentalis,Symphoricarpos,occidentalis,Caprifoliaceae,Dipsacales,,['Symphoria occidentalis']
+Symphyotrichum ciliolatum,Symphyotrichum,ciliolatum,Asteraceae,Asterales,,"['Aster ciliolatus', 'Aster lindleyanus var. ciliolatus']"
+Symphyotrichum ericoides,Symphyotrichum,ericoides,Asteraceae,Asterales,AM,"['Aster ericoides', 'Lasallea ericoides', 'Virgulus ericoides']"
+Symphyotrichum falcatum,Symphyotrichum,falcatum,Asteraceae,Asterales,AM,"['Aster falcatus', 'Virgulus falcatus', 'Lasallea falcata']"
+Symphyotrichum laeve,Symphyotrichum,laeve,Asteraceae,Asterales,AM,['Aster laevis']
+Symphyotrichum novae-angliae,Symphyotrichum,novae-angliae,Asteraceae,Asterales,AM,"['Aster spurius var. novae-angliae', 'Lasallea novae-angliae', 'Virgulus novae-angliae', 'Aster novae-angliae']"
+Symphyotrichum oolentangiense,Symphyotrichum,oolentangiense,Asteraceae,Asterales,,['Aster oolentangiensis']
+Symphyotrichum puniceum,Symphyotrichum,puniceum,Asteraceae,Asterales,AM,['Aster puniceus']
+Symplocos cochinchinensis,Symplocos,cochinchinensis,Symplocaceae,Ericales,AM,['Dicalix cochinchinensis']
+Syringa reticulata,Syringa,reticulata,Oleaceae,Lamiales,EcMAM,"['Ligustrum reticulatum', 'Ligustrina reticulata']"
+Syzygium acuminatissimum,Syzygium,acuminatissimum,Myrtaceae,Myrtales,AM,"['Acmena acuminatissima', 'Myrtus acuminatissima', 'Jambosa acuminatissima']"
+Syzygium borbonicum,Syzygium,borbonicum,Myrtaceae,Myrtales,AM,['Calyptranthes paniculata']
+Syzygium castaneum,Syzygium,castaneum,Myrtaceae,Myrtales,AM,['Eugenia castanea']
+Syzygium globiflorum,Syzygium,globiflorum,Myrtaceae,Myrtales,AM,['Eugenia globiflora']
+Syzygium hancei,Syzygium,hancei,Myrtaceae,Myrtales,AM,['Eugenia minutiflora']
+Syzygium jambos,Syzygium,jambos,Myrtaceae,Myrtales,EcM,"['Plinia jambos', 'Jambosa jambos', 'Myrtus jambos', 'Eugenia jambos']"
+Syzygium kunstleri,Syzygium,kunstleri,Myrtaceae,Myrtales,AM,['Eugenia kunstleri']
+Syzygium levinei,Syzygium,levinei,Myrtaceae,Myrtales,AM,['Eugenia levinei']
+Syzygium maire,Syzygium,maire,Myrtaceae,Myrtales,AM,['Eugenia maire']
+Syzygium napiforme,Syzygium,napiforme,Myrtaceae,Myrtales,AM,['Eugenia napiformis']
+Syzygium pachysepalum,Syzygium,pachysepalum,Myrtaceae,Myrtales,AM,
+Syzygium subdecussatum,Syzygium,subdecussatum,Myrtaceae,Myrtales,AM,['Eugenia subdecussata']
+Tanaecium pyramidatum,Tanaecium,pyramidatum,Bignoniaceae,Lamiales,AM,"['Haplolophium pyramidatum', 'Paragonia pyramidata', 'Tabebuia pyramidata', 'Bignonia pyramidata']"
+Tapirira guianensis,Tapirira,guianensis,Anacardiaceae,Sapindales,AM,"['Joncquetia guianensis', 'Bursera bahiensis']"
+Taraxacum campylodes,Taraxacum,campylodes,Asteraceae,Asterales,AM,
+Taxodium distichum,Taxodium,distichum,Cupressaceae,Cupressales,AM,"['Schubertia disticha', 'Cuprespinnata disticha', 'Cupressus disticha']"
+Taxus chinensis,Taxus,chinensis,Taxaceae,Cupressales,AM,"['Taxus wallichiana var. chinensis', 'Taxus sumatrana subsp. chinensis', 'Taxus baccata var. chinensis', 'Taxus cuspidata var. chinensis']"
+Taxus cuspidata,Taxus,cuspidata,Taxaceae,Cupressales,AM,"['Taxus baccata var. cuspidata', 'Taxus baccata subsp. cuspidata']"
+Terminalia amazonia,Terminalia,amazonia,Combretaceae,Myrtales,AM,['Chuncoa amazonia']
+Ternstroemia coriacea,Ternstroemia,coriacea,Pentaphylacaceae,Ericales,AM,['Taonabo coriacea']
+Tetractomia tetrandra,Tetractomia,tetrandra,Rutaceae,Sapindales,AM,['Melicope tetrandra']
+Tetrapilus roseus,Tetrapilus,roseus,Oleaceae,Lamiales,AM,['Olea rosea']
+Teucrium chamaedrys,Teucrium,chamaedrys,Lamiaceae,Lamiales,AM,
+Teucrium charidemi,Teucrium,charidemi,Lamiaceae,Lamiales,,
+Teucrium fruticans,Teucrium,fruticans,Lamiaceae,Lamiales,AM,
+Thalictrum simplex,Thalictrum,simplex,Ranunculaceae,Ranunculales,AM,"['Thalictrum angustifolium var. simplex', 'Thalictrum flavum subsp. simplex', 'Thalictrum angustifolium subsp. simplex']"
+Theobroma cacao,Theobroma,cacao,Malvaceae,Malvales,AM,
+Thermopsis rhombifolia,Thermopsis,rhombifolia,Fabaceae,Fabales,AM,"['Drepilia rhombifolia', 'Thermia rhombifolia', 'Cytisus rhombifolius']"
+Thuja occidentalis,Thuja,occidentalis,Cupressaceae,Cupressales,AM,
+Thymelaea hirsuta,Thymelaea,hirsuta,Thymelaeaceae,Malvales,NMAM,"['Passerina hirsuta', 'Piptochlamys hirsuta', 'Giardia hirsuta', 'Stellera hirsuta', 'Lachnaea hirsuta', 'Chlamydanthus hirsutus']"
+Thymus dolomiticus,Thymus,dolomiticus,Lamiaceae,Lamiales,,
+Thymus hyemalis,Thymus,hyemalis,Lamiaceae,Lamiales,AM,"['Origanum hyemale', 'Thymus vulgaris var. hyemalis']"
+Thymus mastichina,Thymus,mastichina,Lamiaceae,Lamiales,AM,"['Origanum mastichina', 'Satureja mastichina']"
+Tilia americana,Tilia,americana,Malvaceae,Malvales,EcM,
+Tilia amurensis,Tilia,amurensis,Malvaceae,Malvales,EcM,['Tilia cordata var. amurensis']
+Tilia cordata,Tilia,cordata,Malvaceae,Malvales,EcM,
+Tilia mandshurica,Tilia,mandshurica,Malvaceae,Malvales,EcMAM,['Tilia argentea f. mandshurica']
+Tilia mongolica,Tilia,mongolica,Malvaceae,Malvales,EcM,
+Tilia oliveri,Tilia,oliveri,Malvaceae,Malvales,EcM,
+Tordylium maximum,Tordylium,maximum,Apiaceae,Apiales,,"['Heracleum tordylium', 'Pastinaca tordylium', 'Pastinaca maxima', 'Caucalis maxima']"
+Torreya californica,Torreya,californica,Taxaceae,Cupressales,AM,['Tumion californicum']
+Torreya nucifera,Torreya,nucifera,Taxaceae,Cupressales,AM,"['Tumion nuciferum', 'Foetataxus nucifera', 'Taxus nucifera', 'Taxodium nuciferum', 'Caryotaxus nucifera', 'Podocarpus nucifer']"
+Toxicodendron acuminatum,Toxicodendron,acuminatum,Anacardiaceae,Sapindales,AM,"['Rhus acuminata', 'Toxicodendron succedaneum var. acuminatum', 'Rhus succedanea var. acuminata']"
+Toxicoscordion venenosum,Toxicoscordion,venenosum,Melanthiaceae,Liliales,,['Zigadenus venenosus']
+Trachelospermum axillare,Trachelospermum,axillare,Apocynaceae,Gentianales,AM,
+Tragopogon dubius,Tragopogon,dubius,Asteraceae,Asterales,AM,"['Tragopogon major subsp. dubius', 'Tragopogon pratensis subsp. dubius']"
+Trattinnickia lawrancei,Trattinnickia,lawrancei,Burseraceae,Sapindales,,
+Trichilia septentrionalis,Trichilia,septentrionalis,Meliaceae,Sapindales,,
+Trifolium angustifolium,Trifolium,angustifolium,Fabaceae,Fabales,AM,['Triphylloides angustifolia']
+Trifolium pratense,Trifolium,pratense,Fabaceae,Fabales,AM,['Lagopus pratensis']
+Trifolium purpureum,Trifolium,purpureum,Fabaceae,Fabales,AM,"['Trifolium angustifolium subsp. purpureum', 'Trifolium angustifolium subsp. purpureum']"
+Trifolium repens,Trifolium,repens,Fabaceae,Fabales,EcMAM,['Amoria repens']
+Trifolium subterraneum,Trifolium,subterraneum,Fabaceae,Fabales,AM,['Calycomorphum subterraneum']
+Tristaniopsis elliptica,Tristaniopsis,elliptica,Myrtaceae,Myrtales,EcMAM,['Tristania elliptica']
+Tristaniopsis obovata,Tristaniopsis,obovata,Myrtaceae,Myrtales,EcMAM,['Tristania obovata']
+Trymatococcus amazonicus,Trymatococcus,amazonicus,Moraceae,Rosales,AM,
+Tsuga canadensis,Tsuga,canadensis,Pinaceae,Pinales,EcM,"['Abies curvifolia', 'Pinus canadensis', 'Picea canadensis']"
+Turpinia occidentalis,Turpinia,occidentalis,Staphyleaceae,Crossosomatales,,"['Staphylea occidentalis', 'Maurocenia occidentalis']"
+Ulex parviflorus,Ulex,parviflorus,Fabaceae,Fabales,AM,
+Ulmus americana,Ulmus,americana,Ulmaceae,Rosales,AM,
+Ulmus davidiana,Ulmus,davidiana,Ulmaceae,Rosales,EcMAM,
+Ulmus macrocarpa,Ulmus,macrocarpa,Ulmaceae,Rosales,AM,
+Ulmus minor,Ulmus,minor,Ulmaceae,Rosales,AM,"['Ulmus vulgaris proles minor', 'Ulmus campestris minor', 'Ulmus campestris var. minor', 'Ulmus glabra f. minor']"
+Ulmus pumila,Ulmus,pumila,Ulmaceae,Rosales,AM,
+Ulmus rubra,Ulmus,rubra,Ulmaceae,Rosales,AM,['Ulmus americana var. rubra']
+Unonopsis rufescens,Unonopsis,rufescens,Annonaceae,Magnoliales,,['Trigynaea rufescens']
+Vaccinium corymbosum,Vaccinium,corymbosum,Ericaceae,Ericales,ErM,['Cyanococcus corymbosus']
+Vaccinium mandarinorum,Vaccinium,mandarinorum,Ericaceae,Ericales,ErM,
+Vepris nobilis,Vepris,nobilis,Rutaceae,Sapindales,,"['Teclea nobilis', 'Toddalia nobilis', 'Cranzia nobilis']"
+Veratrum nigrum,Veratrum,nigrum,Melanthiaceae,Liliales,AM,"['Helonias nigra', 'Melanthium nigrum']"
+Verbascum thapsus,Verbascum,thapsus,Scrophulariaceae,Lamiales,AM,
+Verbena hastata,Verbena,hastata,Verbenaceae,Lamiales,AM,
+Vernonia fasciculata,Vernonia,fasciculata,Asteraceae,Asterales,AM,['Cacalia fasciculata']
+Veronica persica,Veronica,persica,Plantaginaceae,Lamiales,NMAM,['Pocilla persica']
+Veronica spuria,Veronica,spuria,Plantaginaceae,Lamiales,AM,"['Veronica foliosa var. spuria', 'Pseudolysimachion spurium']"
+Veronicastrum virginicum,Veronicastrum,virginicum,Plantaginaceae,Lamiales,,"['Callistachya virginica', 'Paederota virginica', 'Leptandra virginica', 'Veronica virginica']"
+Viburnum dentatum,Viburnum,dentatum,Viburnaceae,Dipsacales,AM,
+Viburnum stipitatum,Viburnum,stipitatum,Viburnaceae,Dipsacales,,
+Viburnum tinus,Viburnum,tinus,Viburnaceae,Dipsacales,AM,
+Vicia americana,Vicia,americana,Fabaceae,Fabales,AM,['Abacosa americana']
+Vicia villosa,Vicia,villosa,Fabaceae,Fabales,AM,
+Viola adunca,Viola,adunca,Violaceae,Malpighiales,AM,['Viola canina var. adunca']
+Vitex lucens,Vitex,lucens,Lamiaceae,Lamiales,AM,
+Vitis amurensis,Vitis,amurensis,Vitaceae,Vitales,AM,"['Vitis vinifera f. amurensis', 'Vitis vulpina var. amurensis', 'Vitis vinifera var. amurensis']"
+Vitis vinifera,Vitis,vinifera,Vitaceae,Vitales,AM,['Cissus vinifera']
+Vitis vulpina,Vitis,vulpina,Vitaceae,Vitales,AM,"['Vitis vinifera var. vulpina', 'Vitis cordifolia var. vulpina']"
+Weinmannia elliptica,Weinmannia,elliptica,Cunoniaceae,Oxalidales,,['Windmannia elliptica']
+Weinmannia fagaroides,Weinmannia,fagaroides,Cunoniaceae,Oxalidales,,"['Windmannia fagaroides', 'Weinmannia microphylla var. fagaroides']"
+Weinmannia magnifolia,Weinmannia,magnifolia,Cunoniaceae,Oxalidales,,
+Weinmannia microphylla,Weinmannia,microphylla,Cunoniaceae,Oxalidales,,
+Weinmannia ovata,Weinmannia,ovata,Cunoniaceae,Oxalidales,,['Windmannia ovata']
+Weinmannia silvicola,Weinmannia,silvicola,Cunoniaceae,Oxalidales,AM,
+Wendlandia uvariifolia,Wendlandia,uvariifolia,Rubiaceae,Gentianales,AM,
+Withania frutescens,Withania,frutescens,Solanaceae,Solanales,,"['Physalis frutescens', 'Hypnoticum frutescens', 'Atropa frutescens']"
+Wurfbainia villosa,Wurfbainia,villosa,Zingiberaceae,Zingiberales,AM,"['Cardamomum villosum', 'Elettaria villosa', 'Zingiber villosum', 'Amomum villosum']"
+Xanthisma spinulosum,Xanthisma,spinulosum,Asteraceae,Asterales,AM,"['Dieteria spinulosa', 'Sideranthus spinulosus', 'Haplopappus spinulosus', 'Amellus spinulosus']"
+Xanthophyllum flavescens,Xanthophyllum,flavescens,Polygalaceae,Fabales,AM,
+Xanthophyllum tenue,Xanthophyllum,tenue,Polygalaceae,Fabales,AM,
+Zabelia biflora,Zabelia,biflora,Caprifoliaceae,Dipsacales,AM,['Abelia biflora']
+Zamia lucayana,Zamia,lucayana,Zamiaceae,Cycadales,AM,
+Zizia aurea,Zizia,aurea,Apiaceae,Apiales,AM,"['Smyrnium aureum', 'Sison aureum', 'Carum aureum', 'Thaspium aureum']"
+Zygia inaequalis,Zygia,inaequalis,Fabaceae,Fabales,AM,"['Inga inaequalis', 'Pithecellobium inaequale', 'Feuilleea inaequalis', 'Mimosa inaequalis']"
