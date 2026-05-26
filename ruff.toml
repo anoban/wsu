@@ -5,7 +5,7 @@ indent-width = 4
 line-length = 160
 output-format = "full"
 respect-gitignore = false
-target-version = "py313"
+target-version = "py314"
 
 [lint]
 fixable = ["ALL"]
