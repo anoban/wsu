@@ -18,3 +18,5 @@ iteration 02
 - the whole Acer genus was made AM (Luke's advice)
 - all species of Quercus were made EcM (Luke's advice)
 - updated all state missing species in Lamiaceae to AM (Brundrett & Tedersoo 2018)
+- updated all state missing species in Asteraceae to AM (Brundrett & Tedersoo 2018)
+- updated all state missing species in Annonaceae to AM (Brundrett & Tedersoo 2018)
