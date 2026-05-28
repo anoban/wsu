@@ -180,7 +180,6 @@ data/chapter2/FRED/*
 !data/chapter2/FRED/subsets
 data/chapter2/FungalRoot/*
 data/chapter2/wcvp/*
-data/chapter2/wcvp_dwca/*
 *.parquet
 
 .ipynb_checkpoints
@@ -196,8 +195,7 @@ data/chapter2/wcvp_dwca/*
 *.svg
 *.pdf
 semseg/images/MaxSee/*.*
-# keep the plots though
-!plots/*.*
+
 
 # videos
 *.mp4
