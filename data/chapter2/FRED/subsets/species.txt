@@ -1,0 +1,33 @@
+species level mycorrhizal state updates for the FRED 4.0 subset
+
+iteration 01
+------------
+
+- extracted mycorrhizal states from FRED 4.0 (the whole dataset) (had multiple entries per species, for many species).
+- extracted mycorrhizal states from Maherali et. al. 2016.
+- extracted mycorrhizal states from FungalRoot species level dataset (had multiple entries per species, for many species).
+- wherever a species had multiple and conflicting state info in FRED 4.0 and FungalRoot species level dataset, it was resolved 
+  manually by combining states where it was intuitive (AM & EcM into EcMAM, AM & NM into NMAM).
+- where this combination was less intuitive (i.e. when the resultant state is not very common), FungalRoot genus level state recommendations were used.
+- once the hand cleanup was over, merged all together to create a single dataset.
+- had 264 state missing species.
+
+iteration 02
+--------------
+
+- the whole Acer genus was made AM (Luke's advice).
+- all species of Quercus were made EcM (Luke's advice).
+- if a state mising species wasn't available in (Wang and Qiu, 2006); even when it had other species of the same genera,
+  the family level state from (Brundrett & Tedersoo 2018) was used.
+- updated all state missing species in Lamiaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Asteraceae to AM (Brundrett & Tedersoo 2018) - there are some genera in Asteraceae that were used to be considered EcM 
+  (Superficial Root Hyphae - SRH????) and but now all are consirederd AM.
+- updated all state missing species in Annonaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Anacardiaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Altingiaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Actinidiaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Apiaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Cistaceae to EcM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Cunoniaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Lauraceae to AM (Brundrett & Tedersoo 2018) - No Cassythia sp. found.
+- updated all state missing Lupinus species in Fabaceae to NM (Brundrett & Tedersoo 2018).
