@@ -1,0 +1,3617 @@
+family,examined_species,mycorrhizal_status,references
+Haplomitriaceae,Haplomitrium gibbsiae,AM-like,107
+Haplomitriaceae,Haplomitrium ovalifolium,AM-like,107
+Blasiaceae,Blasia pusilla,None,"182, 328"
+Lunulariaceae,Lunularia cruciata,Fungal association (G),182
+Marchantiaceae,Marchantia foliacea,AM-like,505
+Marchantiaceae,Marchantia polymorpha,Fungal association (G),182
+Aytoniaceae,Asterella wilmsii,AM-like,345
+Conocephalaceae,Conocephalum conicum,AM-like,346
+Ricciaceae,Riccia fluitans,None,182
+Metzgeriaceae,Apometzgeria pubescens,None,466
+Metzgeriaceae,Metzgeria conjugata,None,466
+Metzgeriaceae,Metzgeria fruticulosa,None,466
+Metzgeriaceae,Metzgeria furcata,None,466
+Metzgeriaceae,Metzgeria leptoneura,None,466
+Metzgeriaceae,Metzgeria temperata,None,466
+Aneuraceae,Aneura pinguis,ORM-like (B),347
+Aneuraceae,Cryptothallus mirabilis,Fungal association,466
+Aneuraceae,Riccardia latifrons,None,466
+Aneuraceae,Riccardia multifida,None,466
+Aneuraceae,Riccardia palmate,None,466
+Pelliaceae,Pellia endiviifolia,AM-like,598
+Pelliaceae,Pellia epiphylla,Fungal association (G),182
+Pelliaceae,Pellia fabbroniana,AM-like,483
+Codoniaceae,Fossombronia pusilla,Fungal association (G),182
+Codoniaceae,Fossombronia wondraczekii,Fungal association,328
+Radulaceae,Radula aquilegia,None,466
+Radulaceae,Radula complanata,None,466
+Radulaceae,Radula lindbergiana,None,466
+Porellaceae,Porella arboris-vitae,None,466
+Porellaceae,Porella cordaeana,None,466
+Porellaceae,Porella obtusata,None,466
+Porellaceae,Porella pinnata,None,466
+Porellaceae,Porella platyphylla,None,466
+Jubulaceae,Frullania dilatata,None,466
+Jubulaceae,Frullania fragilifolia,None,466
+Jubulaceae,Frullania microphylla,None,466
+Jubulaceae,Frullania tamarisci,None,466
+Jubulaceae,Frullania teneriffae,None,466
+Jubulaceae,Jubula hutchinsiae,None,466
+Lejeuneaceae,Aphanolejeunea microscopica,None,466
+Lejeuneaceae,Cololejeunea calcarea,None,466
+Lejeuneaceae,Cololejeunea minutissima,None,466
+Lejeuneaceae,Colura calyptrifolia,None,466
+Lejeuneaceae,Drepanolejeunea hamatifolia,None,466
+Lejeuneaceae,Harpalejeunea ovata,None,466
+Lejeuneaceae,Lejeunea cavifolia,None,466
+Lejeuneaceae,Lejeunea lamacerina,None,466
+Lejeuneaceae,Lejeunea patens,None,466
+Lejeuneaceae,Lejeunea ulicina,None,466
+Lejeuneaceae,Marchesinia mackaii,None,466
+Pseudolepicoleaceae,Blepharostoma trichophyllum,None,466
+Herbertaceae,Herbertus borealis,None,466
+Plagiochilaceae,Pedinophyllum interruptum,None,466
+Plagiochilaceae,Plagiochila asplenioides,None,466
+Plagiochilaceae,Plagiochila porelloides,None,466
+Plagiochilaceae,Plagiochila punctata,Fungal association,466
+Plagiochilaceae,Plagiochila spinulosa,None,466
+Arnelliaceae,Southbya nigrella,Fungal association (B),182
+Geocalycaceae,Chiloscyphus pallescens,None,466
+Geocalycaceae,Chiloscyphus polyanthus,None,466
+Geocalycaceae,Geocalyx graveolens,Fungal association,466
+Geocalycaceae,Harpanthus flotovianus,None,466
+Geocalycaceae,Harpanthus scutatus,Fungal association,466
+Geocalycaceae,Leptoscyphus cuneifolius,None,466
+Geocalycaceae,Lophocolea bidentata,None,466
+Geocalycaceae,Lophocolea cuspidate,None,466
+Geocalycaceae,Lophocolea heterophylla,None,"182, 466"
+Geocalycaceae,Saccogyna viticulosa,Fungal association,466
+Lepidoziaceae,Bazzania flaccida,None,328
+Lepidoziaceae,Bazzania tricrenata,None,466
+Lepidoziaceae,Bazzania trilobata,None,"328, 466"
+Lepidoziaceae,Kurzia pauciflora,Fungal association,466
+Lepidoziaceae,Kurzia sylvatica,Fungal association,466
+Lepidoziaceae,Kurzia trichoclados,Fungal association,466
+Lepidoziaceae,Lepidozia reptans,Fungal association,466
+Lepidoziaceae,Telaranea murphyae,Fungal association,466
+Lepidoziaceae,Telaranea nematodes,Fungal association,466
+Scapaniaceae,Diplophyllum albicans,None,"182, 466"
+Scapaniaceae,Diplophyllum obtusifolium,Fungal association,328
+Scapaniaceae,Douinia ovata,None,466
+Scapaniaceae,Scapania calcicola,None,466
+Scapaniaceae,Scapania cuspiduligera,None,466
+Scapaniaceae,Scapania gracilis,None,466
+Scapaniaceae,Scapania scandica,None,466
+Scapaniaceae,Scapania umbrosa,None,466
+Cephaloziellaceae,Cephaloziella baumgartneri,None,466
+Cephaloziellaceae,Cephaloziella divaricata,Fungal association,466
+Cephaloziellaceae,Cephaloziella exiliflora,Fungal association (A),118
+Cephaloziellaceae,Cephaloziella hampeana,Fungal association,466
+Cephaloziellaceae,Cephaloziella massalongi,None,466
+Cephaloziellaceae,Cephaloziella rubella,Fungal association,466
+Cephaloziaceae,Cephalozia bicuspidate,Fungal association,466
+Cephaloziaceae,Cephalozia catenulate,None,466
+Cephaloziaceae,Cephalozia connivens,Fungal association,466
+Cephaloziaceae,Cephalozia leucantha,Fungal association,466
+Cephaloziaceae,Cephalozia loitlesbergeri,Fungal association,466
+Cephaloziaceae,Cephalozia lunulifolia,Fungal association,"328, 466"
+Cephaloziaceae,Cephalozia macrostachya,Fungal association,466
+Cephaloziaceae,Cephalozia pleniceps,Fungal association,466
+Cephaloziaceae,Cladopodiella fluitans,None,466
+Cephaloziaceae,Cladopodiella francisci,Fungal association,466
+Cephaloziaceae,Nowellia curvifolia,Fungal association (A),"182, 328, 466"
+Cephaloziaceae,Odontoschisma denudatum,None,466
+Cephaloziaceae,Odontoschisma elongatum,None,466
+Cephaloziaceae,Odontoschisma sphagni,Fungal association,466
+Calypogeiaceae,Calypogeia arguta,Fungal association,466
+Calypogeiaceae,Calypogeia azurea,"Fungal association (A, B)",328
+Calypogeiaceae,Calypogeia fissa,Fungal association,466
+Calypogeiaceae,Calypogeia integristipula,Fungal association,328
+Calypogeiaceae,Calypogeia muellerana,Fungal association,466
+Calypogeiaceae,Calypogeia neesiana,Fungal association,"328, 466"
+Calypogeiaceae,Calypogeia sphagnicola,Fungal association,466
+Calypogeiaceae,Calypogeia trichomanis,Fungal association,466
+Jungermanniaceae,Anastrophyllum minutum,Fungal association,328
+Jungermanniaceae,Barbilophozia barbata,"Fungal association (A, B)",328
+Jungermanniaceae,Barbilophozia hatcheri,None,466
+Jungermanniaceae,Jamesoniella autumnalis,Fungal association,466
+Jungermanniaceae,Jamesoniella undulifolia,None,466
+Jungermanniaceae,Jungermannia atrovirens,None,466
+Jungermanniaceae,Jungermannia borealis,None,466
+Jungermanniaceae,Jungermannia exsertifolia,None,466
+Jungermanniaceae,Jungermannia gracillima,None,"182, 466"
+Jungermanniaceae,Jungermannia obovata,None,466
+Jungermanniaceae,Jungermannia pumila,None,466
+Jungermanniaceae,Leiocolea turbinata,None,466
+Jungermanniaceae,Lophozia incisa,Fungal association (B),328
+Jungermanniaceae,Lophozia sudetica,Fungal association (B),328
+Jungermanniaceae,Lophozia ventricosa,Fungal association (B),182
+Jungermanniaceae,Mylia anomala,Fungal association,"328, 466"
+Jungermanniaceae,Mylia taylorii,Fungal association,328
+Jungermanniaceae,Nardia breidleri,Fungal association,466
+Jungermanniaceae,Nardia scalaris,Fungal association (B),"182, 328"
+Jungermanniaceae,Sphenolobus helleranus,None,466
+Jungermanniaceae,Sphenolobus minutus,None,466
+Gymnomitriaceae,Gymnomitrion concinnatum,None,466
+Gymnomitriaceae,Gymnomitrion crenulatum,None,466
+Gymnomitriaceae,Gymnomitrion obtusum,None,466
+Gymnomitriaceae,Marsupella adusta,None,466
+Gymnomitriaceae,Marsupella alpina,None,466
+Gymnomitriaceae,Marsupella emarginata,None,466
+Gymnomitriaceae,Marsupella stableri,None,466
+Anthocerotaceae,Anthoceros punctatus,AM-like,525
+Anthocerotaceae,Phaeoceros laevis,AM-like,344
+Lycopodiaceae,Diphasiastrum alpinum,AM+NM,"260, 261"
+Lycopodiaceae,Diphasiastrum complanatum,NM,654
+Lycopodiaceae,Diphasiastrum issleri,AM,"260, 261"
+Lycopodiaceae,Huperzia australiana,AM,342
+Lycopodiaceae,Huperzia phyllantha,AM,226
+Lycopodiaceae,Huperzia selago,AM+NM,"260, 261"
+Lycopodiaceae,Huperzia serrata f. longipetiolata,NM,654
+Lycopodiaceae,Lycopodiastrum casuarinoides,NM,654
+Lycopodiaceae,Lycopodiella inundata,AM,212
+Lycopodiaceae,Lycopodium alpinum,NM,594
+Lycopodiaceae,Lycopodium annotinum,AM,"260, 261"
+Lycopodiaceae,Lycopodium cernuum,AM,"181, 226"
+Lycopodiaceae,Lycopodium clavatum,AM,"521, 594"
+Lycopodiaceae,Lycopodium japonicum,AM,654
+Lycopodiaceae,Lycopodium selago,NM,594
+Lycopodiaceae,Palhinhaea cernua,NM,654
+Lycopodiaceae,Phlegmariurus henryi,NM,654
+Isoetaceae,Isoetes echinospora,NM,"260, 261"
+Isoetaceae,Isoetes histrix,NM,"260, 261"
+Isoetaceae,Isoetes lacustris,NM,"260, 261"
+Selaginellaceae,Selaginella arbuscula,AM,226
+Selaginellaceae,Selaginella biformis,AM,654
+Selaginellaceae,Selaginella chrysocaulos,NM,654
+Selaginellaceae,Selaginella davidii,AM,"653, 654"
+Selaginellaceae,Selaginella delicatula,AM,654
+Selaginellaceae,Selaginella frondosa,AM,654
+Selaginellaceae,Selaginella helferi,NM,654
+Selaginellaceae,Selaginella involvens,AM,654
+Selaginellaceae,Selaginella kraussiana,AM+NM,"260, 261"
+Selaginellaceae,Selaginella mairei,AM,343
+Selaginellaceae,Selaginella moellendorfii,AM,653
+Selaginellaceae,Selaginella monospora,NM,654
+Selaginellaceae,Selaginella picta,AM,654
+Selaginellaceae,Selaginella pulvinata,AM,"343, 654"
+Selaginellaceae,Selaginella remotifolia,AM,654
+Selaginellaceae,Selaginella sanguinolenta,AM,654
+Selaginellaceae,Selaginella selaginoides,AM,"260, 261"
+Equisetaceae,Equisetum arvense,NM,"307, 594, 260, 261"
+Equisetaceae,Equisetum debile,NM,654
+Equisetaceae,Equisetum diffusum,AM,343
+Equisetaceae,Equisetum fluviatile,NM,"260, 261"
+Equisetaceae,Equisetum hyemale,AM,"653, 260, 261"
+Equisetaceae,Equisetum palustre,NM,"260, 261"
+Equisetaceae,Equisetum pratense,NM,"260, 261"
+Equisetaceae,Equisetum ramosissimum,NM,"368, 260, 261"
+Equisetaceae,Equisetum sylvaticum,AM+NM,"260, 261"
+Equisetaceae,Equisetum telmateia,AM,"260, 261"
+Equisetaceae,Equisetum,AM,"260, 261"
+Equisetaceae,Equisetum variegatum,NM,594
+Marattiaceae,Angiopteris caudatiformis,AM,"654, 655"
+Marattiaceae,Angiopteris evecta,AM,226
+Marattiaceae,Angiopteris hokouensis,AM,654
+Marattiaceae,Angiopteris wangii,AM,654
+Marattiaceae,Angiopteris yunnanensis,AM,654
+Marattiaceae,Archangiopteris bipinnata,AM,654
+Marattiaceae,Archangiopteris henryi,AM,654
+Marattiaceae,Archangiopteris hokouensis,AM,654
+Marattiaceae,Archangiopteris subrotundata,AM,654
+Marattiaceae,Calathea sp.,AM,510
+Marattiaceae,Christensenia assamica,AM,654
+Marattiaceae,Ctenanthe sp.,AM,510
+Marattiaceae,Ischnosiphon gracilis,AM,510
+Marattiaceae,Marattia douglasii,NM,226
+Marattiaceae,Monotagma plurispicatum,AM,510
+Marattiaceae,Saranthe compositae,NM,510
+Marattiaceae,Stromanthe porteana,AM,510
+Psilotaceae,Psilotum complanatum,NM,226
+Psilotaceae,Psilotum nudum,AM,226
+Psilotaceae,Psilotum sp.,AM,483
+Ophioglossaceae,Botrychium lanuginosum,AM,653
+Ophioglossaceae,Botrychium lunaria,AM,"194, 260, 261"
+Ophioglossaceae,Botrychium ternatum,AM,653
+Ophioglossaceae,Botrychium virginianum,AM,329
+Ophioglossaceae,Ophioglossum concinnum,AM,226
+Ophioglossaceae,Ophioglossum lusitanicum,AM,"260, 261"
+Ophioglossaceae,Ophioglossum pendulum,AM,226
+Ophioglossaceae,Ophioglossum petiolatum,AM,654
+Ophioglossaceae,Ophioglossum reticulatum,AM,"522, 654"
+Ophioglossaceae,Ophioglossum themale,AM,654
+Ophioglossaceae,Ophioglossum vulgatum,AM,"653, 260, 261"
+Osmundaceae,Osmunda cinnamomea,AM,140
+Osmundaceae,Osmunda japonica,AM,"653, 654"
+Osmundaceae,Osmunda regalis,AM+NM,"260, 261"
+Hymenophyllaceae,Crepidomanes latealatum,NM,654
+Hymenophyllaceae,Hymenophyllum tunbrigense,M (endo),"260, 261"
+Hymenophyllaceae,Hymenophyllum wilsonii,M (endo),"260, 261"
+Hymenophyllaceae,Mecodium badium,NM,654
+Hymenophyllaceae,Mecodium blumeanum,NM,654
+Hymenophyllaceae,Mecodium recurvum,AM,226
+Hymenophyllaceae,Sphaerocionium lanceolatum,AM,226
+Hymenophyllaceae,Trichomanes auriculatum,NM,654
+Hymenophyllaceae,Trichomanes speciosum,NM,"260, 261"
+Hymenophyllaceae,Vandenboscia cyrtotheca,NM,226
+Hymenophyllaceae,Vandenboscia davalliodes,NM,226
+Gleicheniaceae,Dicranopteris dichotoma,AM,653
+Gleicheniaceae,Dicranopteris gigantea,NM,654
+Gleicheniaceae,Dicranopteris linearis,AM,226
+Gleicheniaceae,Dicranopteris pedata,NM,654
+Gleicheniaceae,Dicranopteris splendida,NM,654
+Gleicheniaceae,Diplopterygium glaucoides,NM,654
+Gleicheniaceae,Diplopterygium glaucum,NM,654
+Gleicheniaceae,Diplopterygium pinnatum,AM,226
+Gleicheniaceae,Sticherus laevigatus,NM,654
+Gleicheniaceae,Sticherus owhyhensis,AM,226
+Schizaeaceae,Anemia phyllitidis,AM,31
+Schizaeaceae,Lygodium conforme,AM,654
+Schizaeaceae,Lygodium japonicum,AM,653
+Schizaeaceae,Schizaea robusta,AM,226
+Marsileaceae,Pilularia globulifera,AM+NM,"260, 261"
+Azollaceae,Azolla filiculoides,NM,"226, 260, 261"
+Plagiogyriaceae,Plagiogyria distinctissima,AM,654
+Cyatheaceae,Alsophila constularis,NM,654
+Cyatheaceae,Alsophila spinulosa,AM,654
+Cyatheaceae,Cyathea cooperi,AM,226
+Cyatheaceae,Gymnosphaera gigantea,NM,654
+Cyatheaceae,Gymnosphaera podophylla,NM,654
+Cyatheaceae,Sphaeropteris brunoniana,NM,654
+Dicksoniaceae,Cibotium barometze,NM,654
+Dicksoniaceae,Cibotium chamissoi,AM,226
+Dicksoniaceae,Cibotium glaucum,AM,226
+Dicksoniaceae,Cibotium st.-johnii,AM,226
+Pteridaceae,Doryopteris decipiens,AM,226
+Pteridaceae,Doryopteris decora,AM,226
+Pteridaceae,Histiopteris incisa,AM,654
+Pteridaceae,Pellaea mairei,AM,654
+Pteridaceae,Pellaea ternifolia,AM,226
+Pteridaceae,Pteridium aquilinum,AM,653
+Pteridaceae,Pteridium revolutum,NM,654
+Pteridaceae,Pteris aspericaulis,AM,653
+Pteridaceae,Pteris aspericaulis var. tricolor,NM,654
+Pteridaceae,Pteris cretica,AM,226
+Pteridaceae,Pteris cretica var. laeta,NM,654
+Pteridaceae,Pteris cretica var. nervosa,NM,654
+Pteridaceae,Pteris dissitifolia,NM,654
+Pteridaceae,Pteris ensiformis,NM,654
+Pteridaceae,Pteris esquirolii,NM,654
+Pteridaceae,Pteris excelsa,AM,226
+Pteridaceae,Pteris irregularis,AM,226
+Pteridaceae,Pteris linearis,NM,654
+Pteridaceae,Pteris semipinnata,NM,654
+Pteridaceae,Pteris setulosocostulata,AM,654
+Pteridaceae,Pteris venusta,AM,655
+Pteridaceae,Pteris vittata,AM,"226, 653"
+Pteridaceae,Pteris wangiana,NM,654
+Vittariaceae,Antrophyrum henryi,NM,654
+Vittariaceae,Vittaria elongata,AM,226
+Vittariaceae,Vittaria flexuosa,NM,654
+Adiantaceae,Adiantum bonatianum,AM,654
+Adiantaceae,Adiantum capillus-veneris,AM+NM,"260, 261"
+Adiantaceae,Adiantum edgewothii,AM,654
+Adiantaceae,Adiantum flabellulatum,AM,654
+Adiantaceae,Adiantum malesianum,NM,654
+Adiantaceae,Adiantum philipense,AM,343
+Adiantaceae,Aleuritopteris albomarginatata,AM,654
+Adiantaceae,Aleuritopteris argentea,AM,654
+Adiantaceae,Aleuritopteris duclouxii,NM,654
+Adiantaceae,Aleuritopteris pseudofarinosa,NM,654
+Adiantaceae,Anogramma leptophylla,NM,"260, 261"
+Adiantaceae,Cheilosoria hancockii,AM,654
+Adiantaceae,Coniogramme intermedia,AM,654
+Adiantaceae,Coniogramme rosthorni,NM,654
+Adiantaceae,Coniogramme simillima,AM,654
+Adiantaceae,Cryptogramma crispa,AM+NM,"260, 261"
+Adiantaceae,Gymnopteris bipinnata var. auriculata,NM,654
+Adiantaceae,Gymnopteris vestita,AM,654
+Adiantaceae,Leptolepidium subvillosum,NM,654
+Adiantaceae,Onychium angustifrons,NM,654
+Adiantaceae,Onychium contigium,AM,654
+Adiantaceae,Onychium japonicum var. lucidum,NM,654
+Adiantaceae,Onychium lucidum,AM,654
+Adiantaceae,Sinopteris grevilleoides,NM,654
+Dennstaedtiaceae,Dennstaedtia melanostipes,AM,654
+Dennstaedtiaceae,Dennstaedtia scabra,AM,654
+Dennstaedtiaceae,Hypolepis punctata,NM,654
+Dennstaedtiaceae,Lindsaea cultrata,AM,653
+Dennstaedtiaceae,Lindsaea ensifolia,NM,654
+Dennstaedtiaceae,Lindsaea javanensis,NM,654
+Dennstaedtiaceae,Lindsaea odorata,NM,654
+Dennstaedtiaceae,Lindsaea orbiculata,AM,654
+Dennstaedtiaceae,Microlepia hookeriana,AM,654
+Dennstaedtiaceae,Microlepia marginata,AM,654
+Dennstaedtiaceae,Microlepia marginata var. calvescens,AM,654
+Dennstaedtiaceae,Microlepia pilosissima,AM,654
+Dennstaedtiaceae,Microlepia platyphylla,NM,654
+Dennstaedtiaceae,Microlepia rhomboidea,NM,654
+Dennstaedtiaceae,Microlepia strigosa,AM,226
+Dennstaedtiaceae,Monachosorum henryi,AM,654
+Dennstaedtiaceae,Pteridium aquilinum,AM+NM,"260, 261"
+Dennstaedtiaceae,Pteridium decompositum,AM,226
+Dennstaedtiaceae,Schizoloma heterophyllum,NM,653
+Dennstaedtiaceae,Stenoloma chusanum,AM,"653, 654"
+Aspleniaceae,Acrophorus stipellatus,NM,654
+Aspleniaceae,Acystopteris tenuisecta,AM,654
+Aspleniaceae,Allantodia alata,NM,654
+Aspleniaceae,Allantodia chinensis,AM,653
+Aspleniaceae,Allantodia dilatata,AM,654
+Aspleniaceae,Allantodia doederleinii,NM,654
+Aspleniaceae,Allantodia laxifrons,AM,654
+Aspleniaceae,Allantodia megaphylla,NM,654
+Aspleniaceae,Allantodia spectabilis,AM,654
+Aspleniaceae,Allantodia stenochlamys,NM,654
+Aspleniaceae,Asplenium adiantum-nigrum,AM,226
+Aspleniaceae,Asplenium billotii,NM,"260, 261"
+Aspleniaceae,Asplenium cheilosorum,AM,654
+Aspleniaceae,Asplenium excisum,NM,654
+Aspleniaceae,Asplenium finlaysonianum,NM,654
+Aspleniaceae,Asplenium florentinum,AM,226
+Aspleniaceae,Asplenium fuscipes,NM,654
+Aspleniaceae,Asplenium griffithianum,NM,654
+Aspleniaceae,Asplenium horridum,NM,226
+Aspleniaceae,Asplenium lushanense,AM,654
+Aspleniaceae,Asplenium macraei,AM,226
+Aspleniaceae,Asplenium marinum,NM,"260, 261"
+Aspleniaceae,Asplenium nidus,NM,226
+Aspleniaceae,Asplenium normale,AM,226
+Aspleniaceae,Asplenium onopteris,NM,472
+Aspleniaceae,Asplenium pekinense,NM,654
+Aspleniaceae,Asplenium praemosum,NM,654
+Aspleniaceae,Asplenium prolongatum,NM,654
+Aspleniaceae,Asplenium ruta-muraria,AM+NM,"260, 261"
+Aspleniaceae,Asplenium septentrionale,NM,"260, 261"
+Aspleniaceae,Asplenium sphenotomum,AM,226
+Aspleniaceae,Asplenium tenuicaule,NM,654
+Aspleniaceae,Asplenium trichomanes,AM+NM,"260, 261"
+Aspleniaceae,Asplenium unilaterale,AM,226
+Aspleniaceae,Asplenium varians,NM,654
+Aspleniaceae,Asplenium viride,AM+NM,"260, 261"
+Aspleniaceae,Asplenium wrightioides,NM,654
+Aspleniaceae,Asplenium yunnanense,NM,654
+Aspleniaceae,Athyriopsis longipes,AM,654
+Aspleniaceae,Athyriopsis ptersennii,AM,654
+Aspleniaceae,Athyrium anisopterum,NM,654
+Aspleniaceae,Athyrium biserrulatum,AM,654
+Aspleniaceae,Athyrium delicatulum,NM,654
+Aspleniaceae,Athyrium dissitifolium,AM,654
+Aspleniaceae,Athyrium distentifolium,AM+NM,"260, 261"
+Aspleniaceae,Athyrium esculentum,AM,226
+Aspleniaceae,Athyrium filix-femina,AM+NM,"260, 261"
+Aspleniaceae,Athyrium japonica,AM,226
+Aspleniaceae,Athyrium mackinnonii,NM,654
+Aspleniaceae,Athyrium macraei,AM,226
+Aspleniaceae,Athyrium mengtzeense,AM,654
+Aspleniaceae,Athyrium microphyllum,AM,226
+Aspleniaceae,Athyrium niponicum,NM,654
+Aspleniaceae,Athyrium sandwichianum,AM,226
+Aspleniaceae,Athyrium stigillosum,AM,654
+Aspleniaceae,Athyrium wardii,AM,653
+Aspleniaceae,Bolbitis heteroclita,NM,654
+Aspleniaceae,Bolbitis hokouensis,NM,654
+Aspleniaceae,Callipteris esculenta,AM,653
+Aspleniaceae,Ceterach officinarum,NM,"260, 261"
+Aspleniaceae,Ctenitis mariformis,AM,653
+Aspleniaceae,Ctenitis membranifolia,NM,654
+Aspleniaceae,Ctenitopsis devexa,NM,654
+Aspleniaceae,Ctenitopsis glabra,NM,654
+Aspleniaceae,Ctenitopsis sagenioides,NM,654
+Aspleniaceae,Ctenitopsis setulaosa,NM,654
+Aspleniaceae,Ctenitopsis subsageriacea,NM,654
+Aspleniaceae,Cystopteris fragilis,AM+NM,"260, 261"
+Aspleniaceae,Cystopteris montana,NM,"260, 261"
+Aspleniaceae,Cystopteris pellucida,AM,653
+Aspleniaceae,Diacalpe christensenae,NM,654
+Aspleniaceae,Diplazium donianum,AM,653
+Aspleniaceae,Diplazium lanceum,AM,653
+Aspleniaceae,Diplazium splendens,AM,654
+Aspleniaceae,Dryoathyrium boryanum,NM,654
+Aspleniaceae,Dryoathyrium edentulum,AM,654
+Aspleniaceae,Egenolfia sinensis,AM,654
+Aspleniaceae,Egenolfia tokinensis,AM,654
+Aspleniaceae,Gymnocarpium dryopteris,AM+NM,"260, 261"
+Aspleniaceae,Hypodematium crenatum,AM,654
+Aspleniaceae,Lomariopsis spectabilis,NM,654
+Aspleniaceae,Lunathyrium dolosum,NM,654
+Aspleniaceae,Monomelangium pullingeri var. daweishannicolum,AM,654
+Aspleniaceae,Neottopteris antrophyoides,NM,654
+Aspleniaceae,Neottopteris simonsiana,NM,654
+Aspleniaceae,Phyllitis scolopendrium,AM,"260, 261"
+Aspleniaceae,Pleocnemia winitei,NM,654
+Aspleniaceae,Pseudocystopteris atkinsonii,NM,654
+Aspleniaceae,Quercifilix zeylanica,NM,654
+Aspleniaceae,Tectaria coadunata,NM,654
+Aspleniaceae,Tectaria decurrens,NM,654
+Aspleniaceae,Tectaria dubia,NM,654
+Aspleniaceae,Tectaria hainanensis,NM,654
+Aspleniaceae,Tectaria hokouensis,NM,654
+Aspleniaceae,Tectaria simonii,NM,654
+Aspleniaceae,Tectaria variolosa,NM,654
+Aspleniaceae,Tectaria yunnanensis,NM,654
+Aspleniaceae,Woodsia alpina,NM,"260, 261"
+Aspleniaceae,Woodsia ilvensis,NM,"260, 261"
+Thelypteridaceae,Ampelopteris prolifera,NM,654
+Thelypteridaceae,Dictyocline wilfordii,AM,653
+Thelypteridaceae,Cyclogramma auriculata,AM,654
+Thelypteridaceae,Cyclosorus acuminatus,NM,654
+Thelypteridaceae,Cyclosorus dentatus,NM,654
+Thelypteridaceae,Cyclosorus hokouensis,AM,654
+Thelypteridaceae,Cyclosorus mollicesculus,NM,654
+Thelypteridaceae,Cyclosorus parasiticus,NM,654
+Thelypteridaceae,Cyclosorus subnigrescens,NM,654
+Thelypteridaceae,Cyclosorus truncatus,NM,654
+Thelypteridaceae,Dictyocline griffithii,AM,654
+Thelypteridaceae,Glaphylopteridopsis erubescens,AM,654
+Thelypteridaceae,Macrothelypteris toressiana,AM,654
+Thelypteridaceae,Metathelypteris flaccida,NM,654
+Thelypteridaceae,Oreopteris limbosperma,AM,"260, 261"
+Thelypteridaceae,Parathelypteris beddomei,NM,654
+Thelypteridaceae,Parathelypteris hirsutipes,AM,654
+Thelypteridaceae,Parathelypteris nipponica,NM,653
+Thelypteridaceae,Phegopteris connectilis,AM+NM,"260, 261"
+Thelypteridaceae,Pronephrium gymnopteridifrons,NM,654
+Thelypteridaceae,Pronephrium nudotum,NM,654
+Thelypteridaceae,Pronephrium simplex,NM,654
+Thelypteridaceae,Pseudocyclosorus esquirolii,AM,654
+Thelypteridaceae,Pseudocyclosorus subochthodes,NM,654
+Thelypteridaceae,Pseudophegopteris pyrrhorachis,NM,654
+Thelypteridaceae,Pseudophegopteris yunkweiensis,NM,654
+Thelypteridaceae,Thelypteris cyatheoides,NM,226
+Thelypteridaceae,Thelypteris globulifera,AM,226
+Thelypteridaceae,Thelypteris hudsoniana,AM,226
+Thelypteridaceae,Thelypteris interrupta,NM,226
+Thelypteridaceae,Thelypteris parasitica,AM,226
+Thelypteridaceae,Thelypteris sandwicensis,NM,226
+Thelypteridaceae,Thelypteris thelypteroides,AM+NM,"260, 261"
+Blechnaceae,Blechnum occidentale,AM,226
+Blechnaceae,Blechnum orientale,AM,654
+Blechnaceae,Blechnum penna-marina,NM,342
+Blechnaceae,Blechnum spicant,AM+NM,"260, 261"
+Blechnaceae,Brainea insignis,NM,654
+Blechnaceae,Doodia kunthiana,AM,226
+Blechnaceae,Sadleria cyatheoides,AM,226
+Blechnaceae,Sadleria squarrosa,AM,226
+Blechnaceae,Woodwardia japonica,AM,654
+Blechnaceae,Woodwardia orientalis,AM,653
+Blechnaceae,Woodwardia unigemmata,NM,654
+Dryopteridaceae,Acrorumohra diffraeta,AM,654
+Dryopteridaceae,Arachniodes festina,AM,653
+Dryopteridaceae,Arachniodes globisora,AM,654
+Dryopteridaceae,Arachniodes rhomboidea,AM,653
+Dryopteridaceae,Arachniodes simplicior,AM,653
+Dryopteridaceae,Arachniodes sporadosora,NM,654
+Dryopteridaceae,Cyrtomium caryotideum f. caryotideum,AM,654
+Dryopteridaceae,Cyrtomium fortunei,NM,654
+Dryopteridaceae,Dryopteris basisora,NM,654
+Dryopteridaceae,Dryopteris caroli-hopei,NM,654
+Dryopteridaceae,Dryopteris carthusiana,AM,598
+Dryopteridaceae,Dryopteris chrysocoma,NM,654
+Dryopteridaceae,Dryopteris cochleata,NM,654
+Dryopteridaceae,Dryopteris cristata,AM,"260, 261"
+Dryopteridaceae,Dryopteris dilatata,AM,"260, 261"
+Dryopteridaceae,Dryopteris filix-mas,AM+ECM+NM,"260, 261"
+Dryopteridaceae,Dryopteris fructuosa,AM,654
+Dryopteridaceae,Dryopteris fuscipes,AM,653
+Dryopteridaceae,Dryopteris fusco-atra,AM,226
+Dryopteridaceae,Dryopteris glabra,AM,226
+Dryopteridaceae,Dryopteris lepidopoda,NM,654
+Dryopteridaceae,Dryopteris marginata,AM,654
+Dryopteridaceae,Dryopteris odontoloma,NM,654
+Dryopteridaceae,Dryopteris sparsa,AM,654
+Dryopteridaceae,Dryopteris stenolepis,NM,654
+Dryopteridaceae,Dryopteris sublacera,AM,654
+Dryopteridaceae,Dryopteris thelypteris,AM,140
+Dryopteridaceae,Dryopteris unidentata,AM,226
+Dryopteridaceae,Dryopteris wallichiana,AM,226
+Dryopteridaceae,Nothoperanema hendersonii,NM,654
+Dryopteridaceae,Polystichum aculeatum,AM+NM,"260, 261"
+Dryopteridaceae,Polystichum alteruatum,NM,654
+Dryopteridaceae,Polystichum chingae,NM,654
+Dryopteridaceae,Polystichum dielsii,NM,654
+Dryopteridaceae,Polystichum eximium,NM,654
+Dryopteridaceae,Polystichum jizhushanense,AM,654
+Dryopteridaceae,Polystichum lonchitis,AM,"260, 261"
+Dryopteridaceae,Polystichum pycnopterum,NM,654
+Dryopteridaceae,Polystichum tsus-simense,AM,654
+Dryopteridaceae,Polystichum vestitum,NM,342
+Dryopteridaceae,Tectaria gaudichaudii,AM,226
+Nephrolepidaceae,Arthropteris palisotii,NM,654
+Nephrolepidaceae,Nephrolepis biserrata,AM,35
+Nephrolepidaceae,Nephrolepis faleata,NM,654
+Polypodiaceae,Arthromeris mairei,NM,654
+Polypodiaceae,Cheilanthes lanosa,AM,449
+Polypodiaceae,Colysis diversifolia,NM,654
+Polypodiaceae,Colysis hemitoma,NM,653
+Polypodiaceae,Colysis hokouensis,NM,654
+Polypodiaceae,Colysis pentaphylla,NM,654
+Polypodiaceae,Drynaria propinqua,NM,654
+Polypodiaceae,Lepidogrammitis rostrama,NM,654
+Polypodiaceae,Lepisorus contortus,NM,654
+Polypodiaceae,Lepisorus macrosphaerus,NM,654
+Polypodiaceae,Lepisorus scolopendrium,NM,654
+Polypodiaceae,Microsorium carinatum,NM,654
+Polypodiaceae,Microsorium henryi,NM,654
+Polypodiaceae,Microsorium membranaceum,NM,654
+Polypodiaceae,Microsorium punctatum,NM,654
+Polypodiaceae,Microsorium spectrum,NM,226
+Polypodiaceae,Neocheiropteris palmatopedata,NM,654
+Polypodiaceae,Neolepisorus ovatus,NM,654
+Polypodiaceae,Neolepisorus sinensis,NM,654
+Polypodiaceae,Onoclea sensibilis,AM,140
+Polypodiaceae,Phlebodium aureum,NM,226
+Polypodiaceae,Phymatopsis crenatopinnata,NM,654
+Polypodiaceae,Phymatopsis nigrovenia,NM,654
+Polypodiaceae,Phymatopsis trisecta,NM,654
+Polypodiaceae,Phymatosorus scolopendria,NM,226
+Polypodiaceae,Pleopeltis thunbergiana,NM,226
+Polypodiaceae,Polypodiodes amoenum,NM,654
+Polypodiaceae,Polypodium pellucidum,NM,226
+Polypodiaceae,Polypodium vulgare,AM+NM,"260, 261"
+Polypodiaceae,Pyrrosia adnaseens,NM,654
+Polypodiaceae,Pyrrosia gralla,NM,654
+Polypodiaceae,Pyrrosia lingua,NM,654
+Polypodiaceae,Pyrrosia mollis,NM,654
+Polypodiaceae,Pyrrosia subfurfuracea,NM,654
+Polypodiaceae,Pyrrosia tonkinensis,NM,654
+Polypodiaceae,Tricholepidium maculosum,NM,654
+Grammitidaceae,Adenophorus abietinus,AM,226
+Grammitidaceae,Adenophorus pinnatifidus,NM,226
+Grammitidaceae,Adenophorus tamariscinus,AM,226
+Grammitidaceae,Grammitis baldwinii,NM,226
+Grammitidaceae,Grammitis poeppigeana,NM,342
+Grammitidaceae,Grammitis tenella,AM,226
+Grammitidaceae,Loxogramme ensiformis,NM,654
+Grammitidaceae,Xiphopteris saffordii,NM,226
+Davalliaceae,Araiostegia perdurans,NM,654
+Davalliaceae,Nephrolepis cordifolia,AM,226
+Davalliaceae,Nephrolepis exaltata,AM,226
+Davalliaceae,Nephrolepis multiflora,AM,226
+Cycadaceae,Cycas circinalis,AM,423
+Cycadaceae,Cycas revoluta,AM,423
+Zamiaceae,Ceratozamia mexicana,AM,616
+Zamiaceae,Dioon edule,AM,"203, 616"
+Zamiaceae,Lepidozamia hopei,AM,484
+Zamiaceae,Macrozamia reidlei,AM,93
+Zamiaceae,Zamia pumila,AM,203
+Ginkgoaceae,Ginkgo biloba,AM,206
+Pinaceae,Abies alba,ECM,189
+Pinaceae,Abies grandis,ECM,375
+Pinaceae,Abies lasiocarpa,ECM,314
+Pinaceae,Abies spp.,ECM,"260, 261"
+Pinaceae,Cedrus atlantica,ECM,431
+Pinaceae,Larix decidua,ECM,"260, 261"
+Pinaceae,Larix kaempferi,ECM,"644, 260, 261"
+Pinaceae,Larix occidentalis,ECM,156
+Pinaceae,Picea abies,ECM,8
+Pinaceae,Picea engelmannii,ECM,314
+Pinaceae,Picea glauca,ECM,"285, 338, 414, 470"
+Pinaceae,Picea glehnii,ECM,308
+Pinaceae,Picea mariana,ECM,91
+Pinaceae,Picea rubens,ECM,232
+Pinaceae,Picea sitchensis,ECM,"13, 205, 260, 261"
+Pinaceae,Pinus banksiana,ECM,91
+Pinaceae,Pinus cembra,ECM,498
+Pinaceae,Pinus contorta,ECM,"98, 156, 403"
+Pinaceae,Pinus densiflora,ECM,"228, 309, 634, 635"
+Pinaceae,Pinus echinata,ECM,444
+Pinaceae,Pinus edulis,ECM,"223, 265, 470"
+Pinaceae,Pinus elliottii,ECM,"470, 564 "
+Pinaceae,Pinus halepensis,ECM,"411, 590 "
+Pinaceae,Pinus jeffreyi,ECM,617
+Pinaceae,Pinus lambertiana,ECM,617
+Pinaceae,Pinus massoniana,ECM,"323, 564"
+Pinaceae,Pinus montezumae,ECM,509
+Pinaceae,Pinus muricata,ECM,"218, 280"
+Pinaceae,Pinus nigra,ECM,"260, 261"
+Pinaceae,Pinus patula,ECM,487
+Pinaceae,Pinus pinaster,ECM,"458, 260, 261"
+Pinaceae,Pinus pinea,ECM,"368, 451"
+Pinaceae,Pinus ponderosa,AM,550
+Pinaceae,Pinus radiata,ECM,184
+Pinaceae,Pinus resinosa,ECM,"363, 470"
+Pinaceae,Pinus rigida,ECM,152
+Pinaceae,Pinus sylvestris,ECM,"239, 320, 420"
+Pinaceae,Pinus tabulaeformis,ECM,"634, 635"
+Pinaceae,Pinus taeda,ECM,"139, 160, 190 "
+Pinaceae,Pinus thunbergii,ECM,364
+Pinaceae,Pseudotsuga menziesii,ECM,"70, 156, 236, 259, 280, 375"
+Pinaceae,Tsuga heterophylla,ECM,"9, 313"
+Ephedraceae,Ephedra trifurca,AM,137
+Welwitschiaceae,Welwitschia mirabilis,AM,296
+Gnetaceae,Gnetum africanum,ECM,445
+Gnetaceae,Gnetum buchholzianum,ECM,445
+Gnetaceae,Gnetum sp.,AM+ECM,445
+Araucariaceae,Agathis robusta,AM,388
+Araucariaceae,Araucaria angustifolia,AM,"31, 89, 650"
+Araucariaceae,Araucaria cunninghamii,AM,388
+Araucariaceae,Wollemia nobilis,AM+EEM,388
+Araucariaceae,Wollemia sp.,ECM,656
+Podocarpaceae,Dacrycarpus dacrydioidies,AM,504
+Podocarpaceae,Dacrydium cupressinum,AM,504
+Podocarpaceae,Parasitaxus ustus,Mycoheterotrophy via AM?,659
+Podocarpaceae,Podocarpus falcatus,AM,"637, 638"
+Podocarpaceae,Prumnopitys ferruginea,AM,504
+Podocarpaceae,Prumnopitys taxifolia,AM,504
+Taxodiaceae,Metasequoia glyptostroboides,AM,559
+Taxodiaceae,Sequoia sempervirens,AM,6
+Taxodiaceae,Sequoiadendrom giganteum,AM,6
+Cupressaceae,Austrocedrus chilensis,AM,207
+Cupressaceae,Chamaecyparis thyoides,AM,106
+Cupressaceae,Juniperus communis,AM+ECM,"260, 261"
+Cupressaceae,Juniperus communis ssp. nana,AM+ECM,"260, 261"
+Cupressaceae,Juniperus monosperma,AM,470
+Cupressaceae,Juniperus oxycedrusL. ssp. macrocarpa,AM,368
+Cupressaceae,Juniperus procera,AM,"637, 638"
+Cupressaceae,Libocedrous decurrens,AM,"6, 25"
+Cupressaceae,Tetraclinis articulata,AM,"169, 412"
+Cupressaceae,Thuja occidentalis,AM,"81, 385"
+Cupressaceae,Thuja plicata,AM,100
+Taxaceae,Taxus baccata,AM,"637, 638, 260, 261"
+Taxaceae,Taxus,AM,515
+Nymphaeaceae,Nuphar,NM,"260, 261"
+Nymphaeaceae,Nuphar lutea,NM,"62, 260, 261"
+Nymphaeaceae,Nuphar pumila,NM,"260, 261"
+Nymphaeaceae,Nymphaea alba,NM,"260, 261"
+Nymphaeaceae,Nymphaea sp.,AM,656
+Acoraceae,Acorus calamus,AM,531
+Tofieldiaceae,Tofieldia pusilla,AM,"260, 261"
+Araceae,Aglaonema modestum,AM,655
+Araceae,Alocasia longiloba,AM,655
+Araceae,Alocasis macrorrhiza,AM,422
+Araceae,Amorphophallus bannaensis,AM,422
+Araceae,Anthurium affine,AM,510
+Araceae,Anthurium pentaphyllum,AM,510
+Araceae,Anthurium pitteri,AM,474
+Araceae,Arum italicum,AM,"260, 261"
+Araceae,Arum maculatum,AM,"260, 261"
+Araceae,Arum neglectum,AM,"260, 261"
+Araceae,Caladium bicolor,AM,510
+Araceae,Calla palustris,NM,"260, 261"
+Araceae,Colacasia esculenta,AM,531
+Araceae,Dieffenbachia amoena,AM,510
+Araceae,Philodendron ornatum,NM,510
+Araceae,Philodendron undulatum,NM,510
+Araceae,Pistia stratiotes,NM,510
+Araceae,Rhaphidophora decursiva,AM,422
+Hydrocharitaceae,Egreria densa,NM,510
+Hydrocharitaceae,Elodea canadensis,NM,"62, 260, 261"
+Hydrocharitaceae,Hydrilla verticillata,NM,"260, 261"
+Hydrocharitaceae,Vallisneria americana,AM,"631, 632"
+Butomaceae,Butomus umbellatus,NM,"260, 261"
+Alismataceae,Alisma lanceolatum,AM+NM,"260, 261"
+Alismataceae,Alisma plantago-aquatica,AM,58
+Alismataceae,Alisma subcordatum,Weak AM,626
+Alismataceae,Alisma triviale,AM,140
+Alismataceae,Baldellia ranunculoides,AM,368
+Alismataceae,Echinodorus grandiflorus,NM,510
+Alismataceae,Sagitaria latifolia,AM,626
+Limnocharitaceae,Hydrocleys nymphoides,NM,510
+Juncaginaceae,Triglochin maritima,AM+NM,"260, 261"
+Juncaginaceae,Triglochin palustris,NM,"260, 261"
+Potamogetonaceae,Potamogeton crispus,NM,"62, 260, 261"
+Potamogetonaceae,Potamogeton gramineus,NM,62
+Potamogetonaceae,Potamogeton lucens,NM,62
+Potamogetonaceae,Potamageton natans,AM,58
+Potamogetonaceae,Potamogeton perfoliatus,NM,62
+Potamogetonaceae,Potamogeton polygonifolius,NM,"260, 261"
+Potamogetonaceae,Potamogeton praelongus,NM,62
+Petrosaviaceae,Petrosavia sakuraii,Mycoheterotrophy,"657, 658"
+Petrosaviaceae,Petrosavia stellaris,Mycoheterotrophy,"657, 658"
+Nartheciaceae,Narthecium ossifragum,AM+NM,"260, 261"
+Burmanniaceae,Burmannia tenella,Mycoheterotrophy (via AM),290
+Burmanniaceae,Thismia sp.,Mycoheterotrophy,656
+Dioscoreaceae,Tacca chantrieri,NM,655
+Dioscoreaceae,Tamus communis,AM,"260, 261"
+Triuridaceae,Sciaphila polygyna,Mycoheterotrophy,291
+Triuridaceae,Sciaphila tosaensis,Mycoheterotrophy (via AM),642
+Pandanaceae,Freycinetia arborea,AM,326
+Pandanaceae,Pandanus furcatus,NM,655
+Pandanaceae,Pandanus tectorius,NM,326
+Cyclanthaceae,Asplundia gardneri,NM,510
+Corsiaceae,Arachnitis uniflora,Mycoheterotrophy (via AM),79
+Alstroemeriaceae,Alstroemeria aurea,AM,207
+Colchicaceae,Colchicum autumnale,AM,"260, 261"
+Melanthiaceae,Paris quadrifolia,AM+NM,"260, 261"
+Melanthiaceae,Trillium flexipes,AM,165
+Melanthiaceae,Veratrum viride,AM,140
+Smilacaceae,Smilax aspera,AM,"63, 368"
+Smilacaceae,Smilax corbularia,AM,422
+Smilacaceae,Smilax hypoglauca,AM,422
+Smilacaceae,Smilax indica,AM,422
+Liliaceae,Gagea lutea,AM+NM,"260, 261"
+Liliaceae,Lilium martagon,AM,"260, 261"
+Liliaceae,Muscari comosum,AM,"260, 261"
+Liliaceae,Muscari neglectum,AM,"260, 261"
+Liliaceae,Smilacina racemosa,AM,165
+Orchidaceae,Aceras anthropophorum,ORM,"260, 261"
+Orchidaceae,Anacamptis pyramidalis,ORM,"260, 261"
+Orchidaceae,Anoectochilus burmannicus,ORM,422
+Orchidaceae,Anoectochilus roxburghii,ORM,422
+Orchidaceae,Anoectochilus tortus,AM,655
+Orchidaceae,Apostasia odorata,AM,422
+Orchidaceae,Arundina graminifolia,ORM,326
+Orchidaceae,Caladenia formosa,ORM,286
+Orchidaceae,Calypso bulbosa,ORM,153
+Orchidaceae,Cephalanthera austinae,Mycoheterotrophy (via ECM),569
+Orchidaceae,Cephalanthera damasonium,ORM+ECM,78
+Orchidaceae,Cephalanthera longifolia,ORM,"260, 261"
+Orchidaceae,Cephalanthera rubra,ORM+ECM,78
+Orchidaceae,Chloraea virescens,ORM,207
+Orchidaceae,Coeloglossum viride,ORM,"260, 261"
+Orchidaceae,Corallorhiza maculata,Mycoheterotrophy (via ECM),"569, 570, 571"
+Orchidaceae,Corallorhiza mertensiana,Mycoheterotrophy,570
+Orchidaceae,Corallorhiza trifida,Mycoheterotrophy,"392, 260, 261"
+Orchidaceae,Corybas dienemus,ORM,342
+Orchidaceae,Cypripedium calceolus,ORM,540
+Orchidaceae,Cypripedium californicum,ORM,540
+Orchidaceae,Cypripedium candidum,ORM,540
+Orchidaceae,Cypripedium fasciculatum,ORM,540
+Orchidaceae,Cypripedium guttatum,ORM,540
+Orchidaceae,Cypripedium montanum,ORM,540
+Orchidaceae,Cypripedium parviflorum,ORM,540
+Orchidaceae,Dactylorhiza fuchsia,ORM,"260, 261"
+Orchidaceae,Dactylorhiza incarnara,ORM,"173, 260, 261"
+Orchidaceae,Dactylorhiza maculata,ORM,"260, 261"
+Orchidaceae,Dactylorhiza maculata ssp. ericetorum,ORM,"260, 261"
+Orchidaceae,Dactylorhiza majalis,ORM,"78, 334, 480, 260, 261"
+Orchidaceae,Dactylorhiza praetermissa,ORM,"260, 261"
+Orchidaceae,Dactylorhiza praetermissa var. junialis,ORM,173
+Orchidaceae,Dactylorhiza purpurella,ORM,"260, 261"
+Orchidaceae,Epipactis atrorubens,ORM+ECM,78
+Orchidaceae,Epipactis distans,ORM+ECM,78
+Orchidaceae,Epipactis helleborine,ORM+ECM,78
+Orchidaceae,Epipactis microphylla,ORM+ECM,530
+Orchidaceae,Epipactis palustris,ORM,"78, 481"
+Orchidaceae,Epipactis purpurata,ORM,"260, 261"
+Orchidaceae,Epipogium aphyllum,ORM,"260, 261"
+Orchidaceae,Goodyera repens,ORM,"260, 261"
+Orchidaceae,Gymnadenia conopsea,ORM,"260, 261"
+Orchidaceae,Gymnadenia odoratissima,ORM,"260, 261"
+Orchidaceae,Haemaria discolor var. dawsoniana,ORM,122
+Orchidaceae,Hammarbya paludosa,ORM,"260, 261"
+Orchidaceae,Herminium monorchis,ORM,"260, 261"
+Orchidaceae,Hexalectris spicata,Mycoheterotrophy (via ECM),572
+Orchidaceae,Himantoglossum hircinum,ORM,"260, 261"
+Orchidaceae,Ionopsis utricularioides,ORM,448
+Orchidaceae,Liparis loeselii,ORM,"260, 261"
+Orchidaceae,Listera cordata,ORM,"260, 261"
+Orchidaceae,Listera ovata,ORM,"260, 261"
+Orchidaceae,Malaxis latifolia,ORM,422
+Orchidaceae,Microtis parviflora,ORM,459
+Orchidaceae,Neotinea maculata,ORM,"260, 261"
+Orchidaceae,Neottia nidus-avis,ORM+ECM,78
+Orchidaceae,Newiedia veratrifolia,ORM,333
+Orchidaceae,Ophrys apifera,ORM,"260, 261"
+Orchidaceae,Ophrys fuciflora,ORM,"260, 261"
+Orchidaceae,Ophrys insectifera,ORM,"260, 261"
+Orchidaceae,Ophrys lutea,ORM,56
+Orchidaceae,Ophrys sphegodes,ORM,"260, 261"
+Orchidaceae,Orchis mascula,ORM,"260, 261"
+Orchidaceae,Orchis militaris,ORM,"260, 261"
+Orchidaceae,Orchis morio,ORM,"75, 173, 260, 261"
+Orchidaceae,Orchis palustris,ORM,195
+Orchidaceae,Orchis purpurea,ORM,"260, 261"
+Orchidaceae,Orchis simia,ORM,"260, 261"
+Orchidaceae,Orchis ustulata,ORM,"260, 261"
+Orchidaceae,Phaius mishmensis,AM,655
+Orchidaceae,Platanthera bifolia,ORM,"260, 261"
+Orchidaceae,Platanthera chlorantha,ORM,"78, 260, 261"
+Orchidaceae,Platanthera leucophaea,ORM,652
+Orchidaceae,Pseudorchis albida,ORM,"260, 261"
+Orchidaceae,Pterostylis acuminata,ORM,460
+Orchidaceae,Serapias vomeracea ssp. vomeracea,ORM,195
+Orchidaceae,Spathoglottis plicata,ORM,"326, 534, 565"
+Orchidaceae,Spiranthes aestivalis,ORM,"260, 261"
+Orchidaceae,Spiranthes sinensis var. amoena,ORM,376
+Orchidaceae,Spiranthes spiralis,ORM,"368, 260, 261"
+Orchidaceae,Stanhopea tigrina,ORM,196
+Orchidaceae,Tolumnia variegata,ORM,448
+Asteliaceae,Astelia menziesiana,AM,326
+Hypoxidaceae,Curculigo capitulata,AM,422
+Iridaceae,Crocus vernus,AM,"260, 261"
+Iridaceae,Gladiolus segetum,AM,"260, 261"
+Iridaceae,Iris foetidissima,AM,"260, 261"
+Iridaceae,Iris germanica,AM,"260, 261"
+Iridaceae,Iris pseudacorus,AM,368
+Iridaceae,Sisyrinchium atlanticum,AM,643
+Iridaceae,Sisyrinchium sp.,NM,207
+Iridaceae,Sparaxis tricolor,AM,514
+Hemerocallidaceae,Dianella sandwicensis,AM,326
+Asphodelaceae,Asphodelus fistulosus,AM,"114, 115"
+Asphodelaceae,Bulbine alata,AM,438
+Asphodelaceae,Haworthia tortuosa,AM,417
+Alliaceae,Allium ampeloprasum,AM,"260, 261"
+Alliaceae,Allium canadense,AM,140
+Alliaceae,Allium cepa,AM,"7, 349, 260, 261"
+Alliaceae,Allium oleraceum,AM+NM,"260, 261"
+Alliaceae,Allium porrum,AM,"272, 260, 261"
+Alliaceae,Allium sativum,AM,"260, 261"
+Alliaceae,Allium schoenoprasum,AM,"3, 260, 261"
+Alliaceae,Allium scorodoprasum,AM,"260, 261"
+Alliaceae,Allium sphaerocephalon,AM,"472, 260, 261"
+Alliaceae,Allium subhirsutum,AM,472
+Alliaceae,Allium triquetrum,AM,"260, 261"
+Alliaceae,Allium ursinum,AM,"260, 261"
+Amaryllidaceae,Galanthus nivalis,AM,"260, 261"
+Amaryllidaceae,Leucojum aestivum,AM,"260, 261"
+Amaryllidaceae,Leucojum vernum,AM+NM,"260, 261"
+Amaryllidaceae,Narcissus poeticus,AM,"260, 261"
+Amaryllidaceae,Narcissus pseudonarcissus,AM,"260, 261"
+Themidaceae,Brodiaea laxa,AM,513
+Hyacinthaceae,Hyacinthoides non-scripta,AM,"398, 399, 260, 261"
+Hyacinthaceae,Ornithogalum nutans,AM,"260, 261"
+Hyacinthaceae,Ornithogalum pyrenaicum,AM,"260, 261"
+Hyacinthaceae,Ornithogalum umbellatum,AM,"260, 261"
+Hyacinthaceae,Scilla autumnalis,AM,"260, 261"
+Agavaceae,Agave americana,AM,343
+Agavaceae,Agave datylio,Weak AM,112
+Agavaceae,Agave deserti,AM,151
+Agavaceae,Agave marmorata,AM,103
+Agavaceae,Agave salmiana,Weak AM,103
+Agavaceae,Agave univittata,AM,417
+Agavaceae,Yucca elata,AM,137
+Agavaceae,Yucca periculosa,Weak AM,103
+Agavaceae,Yucca valida,AM,417
+Asparagaceae,Asparagus acutifolius,AM,"368, 472"
+Asparagaceae,Asparagus officinalis,AM,"192, 383, 260, 261"
+Ruscaceae,Convallaria majalis,AM+NM,"260, 261"
+Ruscaceae,Maianthemum bifolium,AM+NM,"260, 261"
+Ruscaceae,Polygonatum multiflorum,AM+NM,"260, 261"
+Ruscaceae,Polygonatum odoratum,AM+NM,"260, 261"
+Ruscaceae,Polygonatum verticillatum,AM+NM,"260, 261"
+Ruscaceae,Ruscus aculeatus,AM,"368, 260, 261"
+Arecaceae,Astrocaryum mexicanum,AM,436
+Arecaceae,Bactris gasipaes,AM,135
+Arecaceae,Caryota monostachya,AM,655
+Arecaceae,Cocos nucifera,AM,"326, 580"
+Arecaceae,Euterpe edulis,AM,651
+Arecaceae,Euterpe oleracea,AM,130
+Arecaceae,Serenoa repens,AM,201
+Arecaceae,Syagrus romanzoffiana,Weak AM,651
+Arecaceae,Wallichia mooreana,NM,655
+Sparganiaceae,Sparganium angustifolium,NM,62
+Sparganiaceae,Sparganium chlorocarpum,AM,58
+Sparganiaceae,Sparganium emersum,NM,62
+Sparganiaceae,Sparganium erectum,NM,62
+Sparganiaceae,Sparganium eurycarpum,Weak AM,626
+Typhaceae,Typha angustifolia,NM,"62, 368"
+Typhaceae,Typha latifolia,NM,62
+Typhaceae,Typha,Weak AM,557
+Bromeliaceae,Aechmea stelligera,NM,510
+Bromeliaceae,Ananas comosus,AM,"44, 246"
+Bromeliaceae,Hechtia aff. podantha,Weak AM,103
+Bromeliaceae,Vriesea limae,AM,510
+Juncaceae,Juncus acutiflorus,AM+NM,"260, 261"
+Juncaceae,Juncus alpinus,AM+NM,"260, 261"
+Juncaceae,Juncus articulatus,AM,"260, 261"
+Juncaceae,Juncus biglumis,NM,"260, 261"
+Juncaceae,Juncus bufonius,AM+NM,"260, 261"
+Juncaceae,Juncus bulbosus,NM,"62, 260, 261"
+Juncaceae,Juncus dudleyi,AM,599
+Juncaceae,Juncus effuses,NM,62
+Juncaceae,Juncus filiformis,Weak AM,194
+Juncaceae,Juncus gerardi,AM+NM,"260, 261"
+Juncaceae,Juncus,AM,"260, 261"
+Juncaceae,Juncus maritimus,NM,"368, 260, 261"
+Juncaceae,Juncus nodosus,AM,599
+Juncaceae,Juncus planifolius,AM,326
+Juncaceae,Juncus roemerianus,AM,278
+Juncaceae,Juncus scheuchzerioides,AM,342
+Juncaceae,Juncus squarrosus,AM+NM,"260, 261"
+Juncaceae,Juncus torreyi,AM,599
+Juncaceae,Juncus trifidus,AM,"260, 261"
+Juncaceae,Luzula campestris,AM+NM,"260, 261"
+Juncaceae,Luzula crinita var. crinita,NM,342
+Juncaceae,Luzula hawaiiensis,AM,326
+Juncaceae,Luzula luzuloides,NM,"260, 261"
+Juncaceae,Luzula pallescens,NM,"260, 261"
+Juncaceae,Luzula pilosa,AM+NM,"260, 261"
+Juncaceae,Luzula spicata,AM,"260, 261"
+Juncaceae,Luzula sylvatica,NM,"260, 261"
+Cyperaceae,Bequerelia cymosa,AM,426
+Cyperaceae,Bulboschoneus maritimus,AM,426
+Cyperaceae,Bulbostylis barbata,Facultative AM,426
+Cyperaceae,Bulbostylis capillaris,NM,326
+Cyperaceae,Bulbostylis cf. conifera,AM,358
+Cyperaceae,Bulbostylis densa,AM,426
+Cyperaceae,Bulbostylis paradoxa,AM,358
+Cyperaceae,Bulbostylis puberula,NM,426
+Cyperaceae,Carex acnescens,NM,426
+Cyperaceae,Carex acuta,NM,"62, 260, 261"
+Cyperaceae,Carex acutiformis,NM,"260, 261"
+Cyperaceae,Carex albonigra,NM,426
+Cyperaceae,Carex amphibola,NM,402
+Cyperaceae,Carex annectens,AM,402
+Cyperaceae,Carex aphylla,NM,207
+Cyperaceae,Carex aquatilis,NM,426
+Cyperaceae,Carex arenaria,AM+NM,"260, 261"
+Cyperaceae,Carex atherodes,NM,402
+Cyperaceae,Carex baccans,AM,426
+Cyperaceae,Carex bicknellii,AM,402
+Cyperaceae,Carex bigelowii,NM,"501, 594, 426"
+Cyperaceae,Carex blanda,AM,402
+Cyperaceae,Carex boelckeiana,NM,207
+Cyperaceae,Carex brevior,AM,402
+Cyperaceae,Carex brizoides,NM,426
+Cyperaceae,Carex brunnescens,AM,194
+Cyperaceae,Carex buxbaumii,AM,402
+Cyperaceae,Carex caryophyllea,NM,"456, 260, 261"
+Cyperaceae,Carex cephalophora,AM,402
+Cyperaceae,Carex chordorrhiza,NM,"260, 261"
+Cyperaceae,Carex crawei,AM,402
+Cyperaceae,Carex cristatella,AM,"58, 402"
+Cyperaceae,Carex curta,NM,"260, 261"
+Cyperaceae,Carex davalliana,AM,"260, 261"
+Cyperaceae,Carex digitata,NM,"260, 261"
+Cyperaceae,Carex dioica,NM,"260, 261"
+Cyperaceae,Carex distans,NM,"260, 261"
+Cyperaceae,Carex disticha,AM+NM,"260, 261"
+Cyperaceae,Carex divulsa,AM,"260, 261"
+Cyperaceae,Carex ebenea,NM,426
+Cyperaceae,Carex echinata,NM,"260, 261"
+Cyperaceae,Carex elongata,NM,"260, 261"
+Cyperaceae,Carex ericetorum,NM,"456, 260, 261"
+Cyperaceae,Carex fillifolia,NM,426
+Cyperaceae,Carex flacca,NM,426
+Cyperaceae,Carex flava,AM,140
+Cyperaceae,Carex fuscula,AM,426
+Cyperaceae,Carex gayana,NM,426
+Cyperaceae,Carex grannularis,AM,"402, 599"
+Cyperaceae,Carex gravida,AM,402
+Cyperaceae,Carex hallerana,NM,472
+Cyperaceae,Carex hirta,AM,456
+Cyperaceae,Carex hostiana,NM,"260, 261"
+Cyperaceae,Carex humilis,NM,"260, 261"
+Cyperaceae,Carex hystericina,NM,426
+Cyperaceae,Carex interior,NM,402
+Cyperaceae,Carex lachenalii,NM,"426, 260, 261"
+Cyperaceae,Carex lanuginosa,NM,599
+Cyperaceae,Carex lasiocarpa,AM,58
+Cyperaceae,Carex lepidocarpa,NM,"260, 261"
+Cyperaceae,Carex limosa,NM,"260, 261"
+Cyperaceae,Carex lindleyana,AM,426
+Cyperaceae,Carex lurida,AM,"58, 140"
+Cyperaceae,Carex madoviana,NM,426
+Cyperaceae,Carex maritime,NM,426
+Cyperaceae,Carex membranacea,NM,426
+Cyperaceae,Carex mertensii,NM,584
+Cyperaceae,Carex meyenii,AM,326
+Cyperaceae,Carex microchaeta,NM,594
+Cyperaceae,Carex misandra,NM,426
+Cyperaceae,Carex montana,NM,"260, 261"
+Cyperaceae,Carex muricata,NM,426
+Cyperaceae,Carex myosurus,AM,426
+Cyperaceae,Carex nardina,NM,426
+Cyperaceae,Carex nigra,AM,"140, 194"
+Cyperaceae,Carex otrubae,NM,"260, 261"
+Cyperaceae,Carex oxyandra,NM,587
+Cyperaceae,Carex pallescens,AM,194
+Cyperaceae,Carex panacea,AM,194
+Cyperaceae,Carex panicea,AM+NM,"260, 261"
+Cyperaceae,Carex paniculata,NM,"260, 261"
+Cyperaceae,Carex pellita,NM,402
+Cyperaceae,Carex pendula,NM,"368, 260, 261"
+Cyperaceae,Carex pensylvanica,AM,402
+Cyperaceae,Carex pilulifera,NM,"260, 261"
+Cyperaceae,Carex podocarpa,NM,594
+Cyperaceae,Carex pulicaris,NM,"260, 261"
+Cyperaceae,Carex remota,AM+NM,"260, 261"
+Cyperaceae,Carex riparia,NM,"260, 261"
+Cyperaceae,Carex rosea,AM,402
+Cyperaceae,Carex rostrata,NM,"260, 261"
+Cyperaceae,Carex scoparia,AM,402
+Cyperaceae,Carex serotina,NM,"260, 261"
+Cyperaceae,Carex speciosa,AM,426
+Cyperaceae,Carex sprengelii,NM,402
+Cyperaceae,Carex stenophylla ssp. eleocharis,NM,426
+Cyperaceae,Carex sterilis,NM,426
+Cyperaceae,Carex stipata,AM,"140, 402"
+Cyperaceae,Carex stricta,NM,"140, 402"
+Cyperaceae,Carex aff. subantarticata,NM,426
+Cyperaceae,Carex subspathecea,NM,426
+Cyperaceae,Carex sylvatica,NM,"426, 260, 261"
+Cyperaceae,Carex tenera,NM,402
+Cyperaceae,Carex tetanica,AM,402
+Cyperaceae,Carex tribuloides,AM,"58, 140"
+Cyperaceae,Carex trichocarpa,AM,599
+Cyperaceae,Carex trifida,NM,342
+Cyperaceae,Carex ursine,NM,426
+Cyperaceae,Carex urticulata,NM,426
+Cyperaceae,Carex vaginata,NM,"503, 260, 261"
+Cyperaceae,Carex vesicaria,AM,626
+Cyperaceae,Carex vulpina,NM,"260, 261"
+Cyperaceae,Carex vulpinoidea,AM,"58, 140, 402"
+Cyperaceae,Carex wahuensis,AM,326
+Cyperaceae,Caustis dioica,NM,426
+Cyperaceae,Caustis flexuosa,AM,67
+Cyperaceae,Cladium amaicense,AM,426
+Cyperaceae,Cladium jamaicense,AM,297
+Cyperaceae,Cladium mariscus,NM,368
+Cyperaceae,Cyathochaeta avenccea,NM,426
+Cyperaceae,Cyperus arenarius,AM,426
+Cyperaceae,Cyperus articulatus,Weak AM,143
+Cyperaceae,Cyperus brevifolius,AM,426
+Cyperaceae,Cyperus bulbosus,NM,426
+Cyperaceae,Cyperus castaneous,NM,426
+Cyperaceae,Cyperus clarkei,AM,426
+Cyperaceae,Cyperus compressus,Facultative AM,426
+Cyperaceae,Cyperus cyperinus,AM,426
+Cyperaceae,Cyperus decompositus,NM,426
+Cyperaceae,Cyperus difformis,Facultative AM,426
+Cyperaceae,Cyperus distans,Facultative AM,426
+Cyperaceae,Cyperus dubius,AM,426
+Cyperaceae,Cyperus esculentus,NM,426
+Cyperaceae,Cyperus exaltatus,NM,426
+Cyperaceae,Cyperus flavescens,AM,599
+Cyperaceae,Cyperus halpan,Facultative AM,426
+Cyperaceae,Cyperus iria,AM,"424, 426"
+Cyperaceae,Cyperus javanicus,NM,426
+Cyperaceae,Cyperus kyllinga,Facultative AM,"355, 426"
+Cyperaceae,Cyperus laevigatus,AM,426
+Cyperaceae,Cyperus ligularis,AM,426
+Cyperaceae,Cyperus luzulae,NM,426
+Cyperaceae,Cyperus microiria,NM,643
+Cyperaceae,Cyperus niveus,AM,343
+Cyperaceae,Cyperus nutans,AM,426
+Cyperaceae,Cyperus odoratus,AM,426
+Cyperaceae,Cyperus paniceus,AM,426
+Cyperaceae,Cyperus pilosus,AM,426
+Cyperaceae,Cyperus platyphyllus,AM,426
+Cyperaceae,Cyperus pohlii,NM,426
+Cyperaceae,Cyperus pygmaeus,AM,426
+Cyperaceae,Cyperus rotundus,NM,326
+Cyperaceae,Cyperus squarrosus,AM,426
+Cyperaceae,Cyperus stoloniferous,AM,426
+Cyperaceae,Cyperus strigosus,AM,599
+Cyperaceae,Cyperus surinamensis,Facultative AM,426
+Cyperaceae,Cyperus tenuispica,NM,426
+Cyperaceae,Cyperus triceps,AM,426
+Cyperaceae,Eleocharis acutangula,AM,426
+Cyperaceae,Eleocharis dulcis,AM,426
+Cyperaceae,Eleocharis erythropoda,NM,599
+Cyperaceae,Eleocharis geniculata,AM,426
+Cyperaceae,Eleocharis multicaulis,NM,"260, 261"
+Cyperaceae,Eleocharis ovata,AM,140
+Cyperaceae,Eleocharis aff. pachycarpa,NM,426
+Cyperaceae,Eleocharis palustris,NM,62
+Cyperaceae,Eleocharis quinqueflora,NM,"260, 261"
+Cyperaceae,Eleocharis scheuchezeri,NM,426
+Cyperaceae,Eleocharis tenius,NM,426
+Cyperaceae,Eleocharis triste,NM,426
+Cyperaceae,Eleocharis uniglumis,NM,"260, 261"
+Cyperaceae,Eleocharis vaginatum,NM,426
+Cyperaceae,Eriophorum angustifolium,AM+NM,"260, 261"
+Cyperaceae,Eriophorum latifolium,NM,"260, 261"
+Cyperaceae,Eriophorum vaginatum,AM+NM,"260, 261"
+Cyperaceae,Fimbristylis consanguinea,AM,426
+Cyperaceae,Fimbristylis cymosa,NM,"326, 355"
+Cyperaceae,Fimbristylis eragrostis,AM,426
+Cyperaceae,Fimbristylis falcata,Facultative AM,426
+Cyperaceae,Fimbristylis miliacea,Facultative AM,426
+Cyperaceae,Fimbristylis ovata,Facultative AM,426
+Cyperaceae,Fimbristylis schoenoides,NM,426
+Cyperaceae,Fimbristylis trachycarya,NM,426
+Cyperaceae,Fimbristylis triflora,NM,426
+Cyperaceae,Frimbristyllis complanata,NM,149
+Cyperaceae,Fuirena ciliaris,NM,426
+Cyperaceae,Gahnia gahiniformis,NM,426
+Cyperaceae,Gahnia vitiensis,AM,326
+Cyperaceae,Gahnia vitiensis ssp. kauaiensis,AM,326
+Cyperaceae,Hypolytrum bullatum,AM,426
+Cyperaceae,Hypolytrum pulchrum,AM,"149, 358"
+Cyperaceae,Isolepis antartica,NM,426
+Cyperaceae,Isolepis aucklandica,NM,342
+Cyperaceae,Isolepis nodosa,AM,426
+Cyperaceae,Kobresia bellardii,AM,426
+Cyperaceae,Kobresia myosuroides,Facultative AM,426
+Cyperaceae,Kobresia simpliciuscula,NM,"426, 260, 261"
+Cyperaceae,Kyllinga brevifolia,NM,"422, 426"
+Cyperaceae,Kyllinga bulbosa,NM,426
+Cyperaceae,Kyllinga nemoralis,NM,426
+Cyperaceae,Lagenocarpus guianensis,AM,358
+Cyperaceae,Lagenocarpus sphacelata,NM,426
+Cyperaceae,Lepidosperma gracile,AM,397
+Cyperaceae,Machaerina augustifolia,NM,326
+Cyperaceae,Machaerina mariscoides,AM,326
+Cyperaceae,Mariscus dubius,NM,426
+Cyperaceae,Mariscus mariscoides ssp. meyenii,AM,426
+Cyperaceae,Mariscus meyenianus,AM,326
+Cyperaceae,Mariscus paniceus,NM,426
+Cyperaceae,Mariscus squarrosus,NM,426
+Cyperaceae,Mesomelaena pseudostygia,NM,426
+Cyperaceae,Oreobolus furcatus,AM,326
+Cyperaceae,Pleurostachys cephalotes,Facultative AM,426
+Cyperaceae,Pycreus flavidus,AM,426
+Cyperaceae,Pycreus polystachyos,Facultative AM,426
+Cyperaceae,Pycreus pumilus,AM,426
+Cyperaceae,Pycreus puncticulatus,NM,426
+Cyperaceae,Rhynchospora barbata,AM,"149, 358"
+Cyperaceae,Rhynchospora brasiliensis,AM,358
+Cyperaceae,Rhynchospora cephalotes,Facultative AM,426
+Cyperaceae,Rhynchospora ciliata,NM,426
+Cyperaceae,Rhynchospora cormbosa,AM,426
+Cyperaceae,Rhynchospora longisetis,NM,426
+Cyperaceae,Rhynchospora pubera,AM,426
+Cyperaceae,Rikliella squarrosa,AM,426
+Cyperaceae,Schoenoplectus grossus,NM,426
+Cyperaceae,Schoenoplectus juncoides,NM,426
+Cyperaceae,Schoenoplectus senegalensis,NM,426
+Cyperaceae,Schoenoplectus supinus,AM,426
+Cyperaceae,Schoenus ferrugineus,AM+NM,"260, 261"
+Cyperaceae,Schoenus nigricans,AM+NM,"260, 261"
+Cyperaceae,Scirpus acutus,AM,"58, 626"
+Cyperaceae,Scirpus atrovirens,AM,"58, 140, 599, 626"
+Cyperaceae,Scirpus cespitosus,NM,426
+Cyperaceae,Scirpus cyperinus,AM,"58, 140"
+Cyperaceae,Scirpus fluviatilis,AM,426
+Cyperaceae,Scirpus holoschoenus,NM,368
+Cyperaceae,Scirpus maritimus,AM,626
+Cyperaceae,Scirpus pendulus,AM,599
+Cyperaceae,Scirpus aff. perpusillus,NM,426
+Cyperaceae,Scirpus pungens,AM,599
+Cyperaceae,Scirpus robustus,AM,426
+Cyperaceae,Scirpus sylvaticus,NM,"260, 261"
+Cyperaceae,Scirpus tabernaemontani,AM,599
+Cyperaceae,Scirpus validus,AM,58
+Cyperaceae,Scleria latifolia,Facultative AM,426
+Cyperaceae,Scleria lithosperma,AM,426
+Cyperaceae,Scleria melaleuca,Facultative AM,426
+Cyperaceae,Tetraria capillaris,AM,397
+Cyperaceae,Trichophorum alpinum,NM,"260, 261"
+Cyperaceae,Trichophorum cespitosum,AM+NM,"260, 261"
+Cyperaceae,Uncinia richleriana,NM,207
+Cyperaceae,Uncinia uncinata,NM,326
+Restionaceae,Alexgeorgea nitens,AM,397
+Restionaceae,Lyginia barbata,AM,397
+Poaceae,Aeluropus littoralis var. sinensis,AM,620
+Poaceae,Agropyron desertorum,AM,183
+Poaceae,Agropyron repens,AM,307
+Poaceae,Agropyron smithii,AM,354
+Poaceae,Agropyron trachycaulum,AM,132
+Poaceae,Agropyron tsukushiense var. pransiens,AM,643
+Poaceae,Agropyron tsukushiense var. transiens,AM,294
+Poaceae,Agrostis alba,AM,140
+Poaceae,Agrostis canina,AM+NM,"260, 261"
+Poaceae,Agrostis capillaris,AM,242
+Poaceae,Agrostis gigantea,AM,"260, 261"
+Poaceae,Agrostis magellanica,AM,560
+Poaceae,Agrostis palustris,AM,126
+Poaceae,Agrostis scabra,AM,"95, 587"
+Poaceae,Agrostis stolonifera,AM,"456, 467"
+Poaceae,Agrostis stolonifera ssp.,NM,307
+Poaceae,Aira caryophyllea,NM,207
+Poaceae,Aira praecox,AM+NM,"260, 261"
+Poaceae,Alopecurus aequalis,NM,"260, 261"
+Poaceae,Alopecurus geniculatus,AM,"260, 261"
+Poaceae,Alopecurus myosuroides,AM,"260, 261"
+Poaceae,Alopecurus pratensis,AM,"260, 261"
+Poaceae,Ammocalamagrostis baltica,AM+NM,"260, 261"
+Poaceae,Ammophila arenaria,AM,"331, 368"
+Poaceae,Ammophila breviligulata,AM,"224, 225, 324, 352"
+Poaceae,Ampelodesmos,AM,472
+Poaceae,Andropogon capillipes,AM,415
+Poaceae,Andropogon gerardii,Facultative AM,29
+Poaceae,Andropogon gerardii var. paucipilus,AM,88
+Poaceae,Andropogon virginicus,AM,"326, 415"
+Poaceae,Anthoxanthum odoratum,AM,194
+Poaceae,Apera spica-venti,AM,"260, 261"
+Poaceae,Aristida adscensionis,AM,479
+Poaceae,Aristida contorta,Weak AM,438
+Poaceae,Aristida holathera,NM,438
+Poaceae,Aristida longiseta,AM,604
+Poaceae,Aristida mutabilis,AM,567
+Poaceae,Aristida aff. romeriana,AM,143
+Poaceae,Aristida stricta,NM,"30, 415"
+Poaceae,Arrhenatherum elatius,AM+NM,"260, 261"
+Poaceae,Avena barbata,AM,472
+Poaceae,Avena fatua,AM,"260, 261"
+Poaceae,Avena sativa,AM,15
+Poaceae,Avena strigosa,AM,"260, 261"
+Poaceae,Avenula pratensis,AM,"260, 261"
+Poaceae,Avenula pubescens,AM,"260, 261"
+Poaceae,Axonopus pruinosus,AM,358
+Poaceae,Beckmannia syzigachne,AM,294
+Poaceae,Bothriochloa pertusa,AM,343
+Poaceae,Bouteloua eripoda,AM,137
+Poaceae,Boutelous repens,AM,143
+Poaceae,Brachiaria decumbens,AM,"150, 358"
+Poaceae,Brachiaria humidicola,AM,"150, 358"
+Poaceae,Brachypodium pinnatum,AM+NM,"260, 261"
+Poaceae,Brachypodium ramosum,AM,472
+Poaceae,Brachypodium sylvaticum,AM,"260, 261"
+Poaceae,Briza maxima,AM,"472, 260, 261"
+Poaceae,Briza media,AM+NM,"260, 261"
+Poaceae,Briza minor,AM,"643, 260, 261"
+Poaceae,Bromus erectus,AM,"260, 261"
+Poaceae,Bromus hordeaceus,AM,493
+Poaceae,Bromus inermis,AM,"260, 261"
+Poaceae,Bromus madritensis ssp. rubens,AM,646
+Poaceae,Bromus sterilis,NM,"260, 261"
+Poaceae,Bromus tectorum,Facultative AM,237
+Poaceae,Calamagrostis canescens,AM,"260, 261"
+Poaceae,Calamagrostis epigejos,AM,307
+Poaceae,Calamagrostis stricta,AM,"260, 261"
+Poaceae,Calamagrostis villosa,AM,"54, 366, 615"
+Poaceae,Calamovilfa longifolia,AM,88
+Poaceae,Catapodium rigidum,AM,472
+Poaceae,Cenchrus ciliaris,AM,20
+Poaceae,Cenchrus setigerus,AM,567
+Poaceae,Chusquea culeou,AM,207
+Poaceae,Cinna arundinacea,AM,140
+Poaceae,Corynephorus canescens,AM,81
+Poaceae,Cymbopogon jwarancusa,AM,567
+Poaceae,Cymbopogon winterianus,AM,327
+Poaceae,Cynodon dactylon,AM,"294, 260, 261"
+Poaceae,Cynosurus cristatus,AM,"260, 261"
+Poaceae,Dactylis glomerata,AM,497
+Poaceae,Danthonia decumbens,AM,"194, 260, 261"
+Poaceae,Dendrocalamus asper,AM,608
+Poaceae,Dendrocalamus strictus,AM,482
+Poaceae,Deschampsia antarctica,Facultative AM,166
+Poaceae,Deschampsia caespitosa,NM,342
+Poaceae,Deschampsia cespitosa,AM,"194, 293, 260, 261"
+Poaceae,Deschampsia chapmanii,AM,342
+Poaceae,Deschampsia flexuosa,AM,"194, 270, 366, 615, 260, 261"
+Poaceae,Desmazeria rigida,AM,"260, 261"
+Poaceae,Dichanthelium cynodon,AM,326
+Poaceae,Dichanthelium lanuginosum,AM,95
+Poaceae,Digitaria adscendens,AM,294
+Poaceae,Digitaria chinensis,AM,422
+Poaceae,Digitaria ciliaris,Weak AM,129
+Poaceae,Digitaria eriantha,AM,23
+Poaceae,Digitaria sanguinalis,AM,"260, 261"
+Poaceae,Digitaria violascens,AM,422
+Poaceae,Distichlis spicata,AM,278
+Poaceae,Distichlis stricta,AM,302
+Poaceae,Echinochloa crus-galli,AM,140
+Poaceae,Echinolaena inflexa,AM,358
+Poaceae,Eleusine coracana,AM,576
+Poaceae,Eleusine indica,AM,422
+Poaceae,Elymus canadensis,AM,"263, 274"
+Poaceae,Elymus caninus,AM,"260, 261"
+Poaceae,Elymus farctus,AM+NM,"260, 261"
+Poaceae,Elymus pycnanthus,AM+NM,"260, 261"
+Poaceae,Elymus repens,AM,"260, 261"
+Poaceae,Enneapogon avenaceus,AM,438
+Poaceae,Eragrostis dielsii,Facultative AM,438
+Poaceae,Eragrostis ferruginea,AM,643
+Poaceae,Eriachne aristidea,Weak AM,438
+Poaceae,Festuca altissima,NM,"260, 261"
+Poaceae,Festuca argentina,AM,207
+Poaceae,Festuca arundinacea,AM,"275, 260, 261"
+Poaceae,Festuca baffinensis,AM,158
+Poaceae,Festuca brachyphylla,AM,158
+Poaceae,Festuca brigantina,AM,235
+Poaceae,Festuca contracta,NM,342
+Poaceae,Festuca erecta,AM,560
+Poaceae,Festuca gigantea,NM,"260, 261"
+Poaceae,Festuca hyperborea,NM,158
+Poaceae,Festuca idahoensis,AM,"109, 371"
+Poaceae,Festuca juncifolia,AM,"260, 261"
+Poaceae,Festuca lemanii,AM,"260, 261"
+Poaceae,Festuca ovina,AM,"194, 456"
+Poaceae,Festuca pallescens,AM,207
+Poaceae,Festuca pratensis,AM,194
+Poaceae,Festuca pumila,AM,80
+Poaceae,Festuca rubra,AM+ECM+NM,"260, 261"
+Poaceae,Festuca vivipara,AM,"260, 261"
+Poaceae,Glyceria fluitans,NM,"260, 261"
+Poaceae,Glyceria maxima,NM,"260, 261"
+Poaceae,Glyceria plicata,AM+NM,"260, 261"
+Poaceae,Heteropogon contortus,AM,"326, 343"
+Poaceae,Hierochloe odorata,AM,"599, 260, 261"
+Poaceae,Holcus lanatus,AM,"395, 586"
+Poaceae,Holcus mollis,AM,"194, 260, 261"
+Poaceae,Homolepsis aturensis,AM,142
+Poaceae,Hordeum brachyantherum,AM,293
+Poaceae,Hordeum comosum,AM,207
+Poaceae,Hordeum distichon,AM,"260, 261"
+Poaceae,Hordeum jubatum,AM,"302, 626"
+Poaceae,Hordeum murinum,AM,"260, 261"
+Poaceae,Hordeum vulgare,AM,119
+Poaceae,Imperata cylindrica,AM,422
+Poaceae,Ischaemum byronis,AM,326
+Poaceae,Koeleria glauca,NM,"260, 261"
+Poaceae,Koeleria macrantha,AM,"260, 261"
+Poaceae,Koeleria pyramidata,NM,274
+Poaceae,Koeleria vurilochensis,NM,207
+Poaceae,Lagurus ovatus,AM,"260, 261"
+Poaceae,Lasiurus sindicus,AM,567
+Poaceae,Leersia hexandra,AM,404
+Poaceae,Leersia oryzoides,AM,"58, 140 "
+Poaceae,Leymus arenarius,AM,"240, 241"
+Poaceae,Lolium perenne,AM,"23, 140, 171, 307"
+Poaceae,Lolium perenne ssp. multiflorum,AM,"260, 261"
+Poaceae,Lolium perenne ssp. perenne,AM,"260, 261"
+Poaceae,Lolium temulentum,AM+NM,"260, 261"
+Poaceae,Lygeum spartum,AM,170
+Poaceae,Melica nutans,AM+NM,"260, 261"
+Poaceae,Melica uniflora,NM,"260, 261"
+Poaceae,Microstegium ciliatum,AM,422
+Poaceae,Milium effusum,AM+NM,"260, 261"
+Poaceae,Molinia caerulea,AM,"586, 260, 261"
+Poaceae,Mulenbergia porteri,AM,137
+Poaceae,Nardus stricta,AM,"194, 269, 260, 261"
+Poaceae,Nassella leucotricha,AM,604
+Poaceae,Neyraudia reynaudiana,AM,343
+Poaceae,Oryza sativa,AM,536
+Poaceae,Oryzopsis hymenoides,AM,11
+Poaceae,Palicourea rigida,AM,358
+Poaceae,Panicum amarum,AM,43
+Poaceae,Panicum clandestinum,AM,58
+Poaceae,Panicum hemitomon,AM,404
+Poaceae,Panicum laxum,AM,149
+Poaceae,Panicum maximum,AM,20
+Poaceae,Panicum micranthum,AM,358
+Poaceae,Panicum nephelophilum,AM,326
+Poaceae,Panicum purpurascens,AM,143
+Poaceae,Panicum virgatum,AM,"83, 134"
+Poaceae,Panicum virginatum,AM,193
+Poaceae,Paractaenum novae-hollandiae,NM,438
+Poaceae,Parapholis incurva,AM,"260, 261"
+Poaceae,Paspalidium flavidum,AM,343
+Poaceae,Paspalum cf. carinatum,AM,358
+Poaceae,Paspalum conjugatum,AM,142
+Poaceae,Paspalum dilatatum,AM,243
+Poaceae,Paspalum notatum,AM,"193, 295, 562"
+Poaceae,Paspalum thunbergii,AM,643
+Poaceae,Pennisetum alopecuroides,AM,643
+Poaceae,Pennisetum glaucum,AM,"51, 567"
+Poaceae,Pennisetum padicillatum,AM,544
+Poaceae,Pennisetum parviflorum,AM,545
+Poaceae,Pennisetum setaceum,AM,326
+Poaceae,Phalaris arundinacea,AM,"58, 140"
+Poaceae,Phleum alpinum,AM,"194, 260, 261"
+Poaceae,Phleum arenarium,NM,"260, 261"
+Poaceae,Phleum phleoides,AM+NM,"260, 261"
+Poaceae,Phleum pratense,AM,"132, 194, 260, 261"
+Poaceae,Phragmites australis,NM,62
+Poaceae,Phragmites communis,AM,620
+Poaceae,Piptatherum miliaceum,AM,497
+Poaceae,Poa alpina,AM+NM,"260, 261"
+Poaceae,Poa angustifolia,AM,307
+Poaceae,Poa annua,AM,"560, 643"
+Poaceae,Poa arctica,NM,594
+Poaceae,Poa compressa,NM,307
+Poaceae,Poa cookie,NM,560
+Poaceae,Poa flexuosa,AM+NM,"260, 261"
+Poaceae,Poa foliosa,NM,342
+Poaceae,Poa kerguelensis,AM,560
+Poaceae,Poa lanuginosa,AM,207
+Poaceae,Poa literosa,NM,342
+Poaceae,Poa nemoralis,AM+NM,"260, 261"
+Poaceae,Poa palustris,AM+NM,"260, 261"
+Poaceae,Poa pratensis,AM,"194, 467, 626"
+Poaceae,Poa trivialis,AM+NM,"260, 261"
+Poaceae,Polypogon monspeliensis,AM,"260, 261"
+Poaceae,Puccinellia distans,AM+NM,"260, 261"
+Poaceae,Puccinellia macquariensis,AM,342
+Poaceae,Puccinellia maritima,AM+NM,"260, 261"
+Poaceae,Puccinellia nuttalliana,AM,301
+Poaceae,Raddiella esembeckii,AM,358
+Poaceae,Rhynchelytrum repens,AM,355
+Poaceae,Saccharum officinarum,AM,"326, 489"
+Poaceae,Saccharum spontaneum,Weak AM,439
+Poaceae,Schizachyrium scoparium,Facultative AM,29
+Poaceae,Schizachyrium stoloniferum,AM,415
+Poaceae,Secale cereale,AM,512
+Poaceae,Sesleria albicans,AM+NM,"260, 261"
+Poaceae,Setaria glauca,AM,643
+Poaceae,Setaria pumila,AM,"260, 261"
+Poaceae,Setaria verticillata,AM,"260, 261"
+Poaceae,Setaria viridis,AM,643
+Poaceae,Sorghastrum nutans,AM,264
+Poaceae,Sorghum bicolor,AM,171
+Poaceae,Sorghum halpense,AM,193
+Poaceae,Sorghum sudanense,AM,311
+Poaceae,Spartina alterniflora,NM,278
+Poaceae,Spartina anglica,NM,"260, 261"
+Poaceae,Spartina cynosuroides,AM,"278, 391"
+Poaceae,Spartina gracilis,AM,302
+Poaceae,Spartina patens,AM,"97, 278, 324"
+Poaceae,Spartina pectinata,AM,626
+Poaceae,Spartina,NM,"260, 261"
+Poaceae,Sphenopholis obtusa,AM,625
+Poaceae,Sporobolus heterolepis,AM,168
+Poaceae,Sporobolus virginicus,AM,"144, 326"
+Poaceae,Sporobolus wrightii,AM,491
+Poaceae,Stipa tenacissima,AM,497
+Poaceae,Themeda triandra,AM,23
+Poaceae,Thysanolaena maxima,AM,422
+Poaceae,Trachypogon gouinii,AM,144
+Poaceae,Trachypogon plumosus,AM,"149, 353, 358"
+Poaceae,Triodia basedowii,Weak AM,438
+Poaceae,Tripogon filiformis,AM,343
+Poaceae,Triraphis mollis,Weak AM,438
+Poaceae,Trisetum flavescens,AM,"207, 260, 261"
+Poaceae,Triticum aestivum,AM,15
+Poaceae,Triticum durum,AM,10
+Poaceae,Uniola paniculata,AM,563
+Poaceae,Vulpia ciliata ssp. ambigua,AM,110
+Poaceae,Zea mays,AM,123
+Poaceae,Zoysia japonica,AM,326
+Commelinaceae,Amischotolype hispida,AM,655
+Commelinaceae,Commelina communis,AM,294
+Commelinaceae,Commelina aff. erecta,AM,143
+Musaceae,Musa acuminata,AM,163
+Heliconiaceae,Heliconia psittacorum,AM,510
+Cannaceae,Canna coccinea,NM,510
+Zingiberaceae,Alpinia conchigera,AM,655
+Zingiberaceae,Amomum villosum,AM,422
+Zingiberaceae,Costus speciosus,AM,422
+Zingiberaceae,Paramomum petaloideum,AM,655
+Zingiberaceae,Renealmia guianensis,AM,510
+Costaceae,Costus scaber,AM,510
+Costaceae,Costus spiralis var. spiralis,AM,510
+Myristicaceae,Horsfieldia pandurifolia,AM,655
+Myristicaceae,Horsfieldia tetratepala,AM,422
+Myristicaceae,Myristica yunnanensis,AM,655
+Myristicaceae,Pycnanthus angolensis,AM,445
+Myristicaceae,Staudtia kamerunensis,AM,445
+Magnoliaceae,Liriodendron tulipifera,AM,"362, 470"
+Magnoliaceae,Magnolia henryi,AM,"422, 655"
+Magnoliaceae,Talauma ovata,NM,548
+Annonaceae,Annona cherimola,AM,42
+Annonaceae,Enantia chlorantha,AM,445
+Annonaceae,Goniothalamus griffithii,AM,"422, 655"
+Annonaceae,Hexalobus crispiflorus,AM,445
+Annonaceae,Mitrephora calcarea,AM,655
+Annonaceae,Pseuduvaria indochinensis,NM,655
+Lauraceae,Beilschmiedia pendula,AM,"356, 357"
+Lauraceae,Cryptocarya angulata,AM,222
+Lauraceae,Cryptocarya mackinnoniana,AM,222
+Lauraceae,Cryptocarya yunnanensis,AM,422
+Lauraceae,Laurus nobilis,AM,"368, 603"
+Lauraceae,Lindera benzoin,AM,140
+Lauraceae,Litsea dileniifolia,AM,655
+Lauraceae,Litsea liyuyingi,AM,655
+Lauraceae,Nectandra rigida,AM,31
+Lauraceae,Ocotea indecora,AM,651
+Lauraceae,Ocotea puberula,AM,651
+Lauraceae,Persea americana,AM,"41, 250, 326, 609"
+Lauraceae,Phoebe lanceolata,AM,422
+Aristolochiaceae,Asarum europaeum,AM+NM,"260, 261"
+Piperaceae,Peperomia hesperomannii,AM,326
+Piperaceae,Peperomia membranacea,AM,326
+Piperaceae,Piper longum,AM,"422, 655"
+Piperaceae,Piper nigrum,AM,578
+Piperaceae,Piper sarmentosum,AM,422
+Piperaceae,Piper sp.,NM,422
+Papaveraceae,Chelidonium majus,NM,"260, 261"
+Papaveraceae,Macleaya cordata,AM,343
+Papaveraceae,Papaver rhoeas,AM+NM,"260, 261"
+Papaveraceae,Papaver somniferum,NM,"260, 261"
+Menispermaceae,Cocculus trilobus,AM,326
+Berberidaceae,Berberis buxifolia,AM,207
+Berberidaceae,Berberis darwinii,NM,207
+Berberidaceae,Berberis vulgaris,AM,"260, 261"
+Berberidaceae,Mahonia aquifolium,AM,"260, 261"
+Berberidaceae,Podophyllum peltatum,AM,"410, 621"
+Ranunculaceae,Aconitum delphinifolium,AM,594
+Ranunculaceae,Aconitum napellus,AM+NM,"260, 261"
+Ranunculaceae,Actea spicata,AM+NM,"260, 261"
+Ranunculaceae,Anemone nemorosa,AM+NM,"260, 261"
+Ranunculaceae,Anemone ranunculoides,AM,"260, 261"
+Ranunculaceae,Anemone vulgaris,AM,"260, 261"
+Ranunculaceae,Batrachium circinatum,NM,62
+Ranunculaceae,Batrachium peltatum,NM,62
+Ranunculaceae,Caltha palustris,NM,62
+Ranunculaceae,Clematis stans,AM,636
+Ranunculaceae,Clematis vitalba,AM,368
+Ranunculaceae,Consolida ambigua,AM,"260, 261"
+Ranunculaceae,Corydalis lutea,NM,"260, 261"
+Ranunculaceae,Corydalis solida,NM,"260, 261"
+Ranunculaceae,Fumaria officinalis,AM+NM,"260, 261"
+Ranunculaceae,Helleborus foetidus,AM,"260, 261"
+Ranunculaceae,Myosurus minimus,AM,"260, 261"
+Ranunculaceae,Pulsatilla patens,AM,408
+Ranunculaceae,Pulsatilla pratensis,AM,408
+Ranunculaceae,Pulsatilla vulgaris,AM+NM,"260, 261"
+Ranunculaceae,Ranunculus acris,AM,"194, 456, 586, 260, 261"
+Ranunculaceae,Ranunculus acris ssp. pumilus,AM,503
+Ranunculaceae,Ranunculus adoneus,AM,"416, 519"
+Ranunculaceae,Ranunculus auricomus,AM,586
+Ranunculaceae,Ranunculus biternatus,AM,560
+Ranunculaceae,Ranunculus bulbosus,AM,"456, 260, 261"
+Ranunculaceae,Ranunculus crassipes,AM,342
+Ranunculaceae,Ranunculus ficaria,AM+NM,"260, 261"
+Ranunculaceae,Ranunculus flammula,AM,62
+Ranunculaceae,Ranunculus fluitans,NM,"260, 261"
+Ranunculaceae,Ranunculus lingua,AM+NM,"260, 261"
+Ranunculaceae,Ranunculus nemorosus,AM,586
+Ranunculaceae,Ranunculus paludosus,AM,"260, 261"
+Ranunculaceae,Ranunculus repens,AM+NM,"260, 261"
+Ranunculaceae,Ranunculus reptans,AM,"260, 261"
+Ranunculaceae,Ranunculus sardous,AM,"260, 261"
+Ranunculaceae,Ranunculus sceleratus,AM+NM,"260, 261"
+Ranunculaceae,Thalictrum minus,AM,"260, 261"
+Ranunculaceae,Trollius europaeus,AM,"194, 503, 260, 261"
+Proteaceae,Banksia aricifolia,Weak AM,454
+Proteaceae,Conospermum longifolium,AM,67
+Proteaceae,Conospermum taxifolium,AM,67
+Proteaceae,Lomatia hirsute,NM,207
+Proteaceae,Grevillea robusta,NM,326
+Proteaceae,Telopea speciosissima,AM,67
+Buxaceae,Buxus sempervirens,AM,"260, 261"
+Gunneraceae,Gunnera petaloidea,AM,326
+Dilleniaceae,Hibbertia serpyllifolia,AM,67
+Droseraceae,Drosera anglica,NM,"326, 260, 261"
+Droseraceae,Drosera intermedia,AM,212
+Droseraceae,Drosera rotundifolia,AM,140
+Frankeniaceae,Frankenia laevis,NM,"260, 261"
+Frankeniaceae,Frankenia plicata,Weak AM,438
+Tamaricaceae,Tamarix chinensis,AM,620
+Tamaricaceae,Tamarix gallica,AM,368
+Plumbaginaceae,Armeria maritime,AM,277
+Plumbaginaceae,Armeria maritima ssp. halleri,AM,456
+Plumbaginaceae,Limonium vulgare,AM+NM,"260, 261"
+Polygonaceae,Bistorta vivipara,AM,194
+Polygonaceae,Coccoloba uvifera,ECM,326
+Polygonaceae,Coccoloba warmingii,AM,31
+Polygonaceae,Fagopyrum esculentum,NM,"260, 261"
+Polygonaceae,Fallopia convolvulus,NM,"260, 261"
+Polygonaceae,Oxyria digyna,NM,"260, 261"
+Polygonaceae,Polygonum amphibium,Facultative AM,"62, 626"
+Polygonaceae,Polygonum aviculare,NM,307
+Polygonaceae,Polygonum bistorta,NM,594
+Polygonaceae,Polygonum capitatum,ECM+weak AM,326
+Polygonaceae,Polygonum cespitosum,AM,140
+Polygonaceae,Polygonum cuspidatum,AM,636
+Polygonaceae,Polygonum hydropiper,NM,"260, 261"
+Polygonaceae,Polygonum lapathifolium,NM,"260, 261"
+Polygonaceae,Polygonum lapathifolium,NM,307
+Polygonaceae,Polygonum longisetum,NM,643
+Polygonaceae,Polygonum maritimum,NM,"260, 261"
+Polygonaceae,Polygonum mite,NM,"260, 261"
+Polygonaceae,Polygonum pesicaria,Weak AM,626
+Polygonaceae,Polygonum statice,AM,343
+Polygonaceae,Polygonum viviparum,ECM,594
+Polygonaceae,Polygonum weyrichii,ECM,587
+Polygonaceae,Polygonum weyrichii var. alpinum,NM,636
+Polygonaceae,Rumex acetosa,AM,"194, 294, 456"
+Polygonaceae,Rumex acetosella,NM,"207, 456"
+Polygonaceae,Rumex acetosella agg.,NM,"260, 261"
+Polygonaceae,Rumex alpinus,AM+NM,"260, 261"
+Polygonaceae,Rumex altissimus,AM,140
+Polygonaceae,Rumex conglomeratus,NM,"260, 261"
+Polygonaceae,Rumex crispus,NM,307
+Polygonaceae,Rumex hastatus,AM,343
+Polygonaceae,Rumex hydrolapathum,NM,62
+Polygonaceae,Rumex japonicus,NM,643
+Polygonaceae,Rumex longifolius,Weak AM,194
+Polygonaceae,Rumex obtusifolius,AM+NM,"260, 261"
+Polygonaceae,Rumex palustris,NM,"260, 261"
+Polygonaceae,Rumex scutatus,NM,"260, 261"
+Polygonaceae,Ruprechtia laxiflora,NM,651
+Caryophyllaceae,Agrostemma githago,NM,"260, 261"
+Caryophyllaceae,Arenaria serpyllifolia,NM,"260, 261"
+Caryophyllaceae,Cerastium alpinum,NM,"260, 261"
+Caryophyllaceae,Cerastium arcticum,NM,"260, 261"
+Caryophyllaceae,Cerastium arvense,AM,456
+Caryophyllaceae,Cerastium cerastoides,NM,"260, 261"
+Caryophyllaceae,Cerastium fontanum,AM,194
+Caryophyllaceae,Cerastium fontanum ssp.,AM,342
+Caryophyllaceae,Cerastium fontanum ssp. glabrescens,AM+NM,"260, 261"
+Caryophyllaceae,Cerastium glomeratum,NM,560
+Caryophyllaceae,Cerastium holosteoides var. hallaisanense,NM,643
+Caryophyllaceae,Cerastium semidecandrum,NM,"260, 261"
+Caryophyllaceae,Colobanthus apetalus var.,AM,342
+Caryophyllaceae,Colobanthus kerguelensis,NM,560
+Caryophyllaceae,Colobanthus muscoides,NM,342
+Caryophyllaceae,Dianthus carthusianorum,AM,456
+Caryophyllaceae,Dianthus caryophyllus,NM,554
+Caryophyllaceae,Dianthus deltoides,NM,"260, 261"
+Caryophyllaceae,Dianthus gratianopolitanus,NM,"260, 261"
+Caryophyllaceae,Gypsophila fastigiata,NM,456
+Caryophyllaceae,Honkenya peploides,NM,"260, 261"
+Caryophyllaceae,Lychnis flos-cuculi,AM+NM,"260, 261"
+Caryophyllaceae,Lychnis viscaria,NM,"260, 261"
+Caryophyllaceae,Minuartia hybrida,AM,"260, 261"
+Caryophyllaceae,Minuartia verna,NM,"260, 261"
+Caryophyllaceae,Moehringia trinervia,NM,"260, 261"
+Caryophyllaceae,Myosoton aquaticum,NM,"260, 261"
+Caryophyllaceae,Polycarpaea corymbosa,AM,336
+Caryophyllaceae,Sagina apetala,NM,"260, 261"
+Caryophyllaceae,Sagina procumbens,NM,"260, 261"
+Caryophyllaceae,Sagina subulata,NM,"260, 261"
+Caryophyllaceae,Saponaria officinalis,NM,"260, 261"
+Caryophyllaceae,Scleranthus annuus,NM,"260, 261"
+Caryophyllaceae,Silene acaulis,AM,594
+Caryophyllaceae,Silene alba,NM,"260, 261"
+Caryophyllaceae,Silene colorata ssp. canescens,AM,368
+Caryophyllaceae,Silene dioica,Weak AM,194
+Caryophyllaceae,Silene maritima,NM,"260, 261"
+Caryophyllaceae,Silene nutans,NM,"260, 261"
+Caryophyllaceae,Silene otites,AM,"260, 261"
+Caryophyllaceae,Silene vulgaris,NM,"456, 260, 261"
+Caryophyllaceae,Schiedea spergulina,AM,326
+Caryophyllaceae,Spergula arvensis,AM+NM,"260, 261"
+Caryophyllaceae,Spergularia marina,AM or NM,"260, 261"
+Caryophyllaceae,Spergularia media,AM+NM,"260, 261"
+Caryophyllaceae,Stellaria alsine,NM,"260, 261"
+Caryophyllaceae,Stellaria graminea,NM,"260, 261"
+Caryophyllaceae,Stellaria holostea,AM+NM,"260, 261"
+Caryophyllaceae,Stellaria media,AM,294
+Caryophyllaceae,Stellaria media ssp.,AM,342
+Caryophyllaceae,Stellaria nemorum,AM+NM,"260, 261"
+Caryophyllaceae,Stellaria pallida,AM+NM,"260, 261"
+Caryophyllaceae,Stellaria palustris,NM,"260, 261"
+Caryophyllaceae,Stellaria parviflora,NM,342
+Amaranthaceae,Achyranthes aspera,NM,422
+Amaranthaceae,Achyranthes fauriei,NM,643
+Amaranthaceae,Achyranthes splendens,NM,326
+Amaranthaceae,Amaranthus caudatus,AM,33
+Amaranthaceae,Amaranthus lividus,AM,294
+Amaranthaceae,Amaranthus retroflexus,NM,"260, 261"
+Amaranthaceae,Amaranthus spinosus,NM,422
+Amaranthaceae,Amaranthus tricolor,AM,33
+Amaranthaceae,Amaranthus viridis,AM,343
+Amaranthaceae,Atriplex barclayana,Weak AM,112
+Amaranthaceae,Atriplex canescens,AM,57
+Amaranthaceae,Atriplex glabriuscula,NM,"260, 261"
+Amaranthaceae,Atriplex halimus,NM,368
+Amaranthaceae,Atriplex hortensis,NM,"260, 261"
+Amaranthaceae,Atriplex julacea,AM,543
+Amaranthaceae,Atriplex limbata,NM,438
+Amaranthaceae,Atriplex littoralis,AM,"260, 261"
+Amaranthaceae,Atriplex patula,AM,"260, 261"
+Amaranthaceae,Atriplex prostrata,NM,"260, 261"
+Amaranthaceae,Atriplex semibaccata,NM,326
+Amaranthaceae,Beta vulgaris,AM,"260, 261"
+Amaranthaceae,Celosia cristata,AM,33
+Amaranthaceae,Chenopodium album,NM,307
+Amaranthaceae,Chenopodium ambrosioides,AM,343
+Amaranthaceae,Chenopodium bonus-henricus,NM,"260, 261"
+Amaranthaceae,Chenopodium glaucum,NM,"260, 261"
+Amaranthaceae,Chenopodium murale,NM,326
+Amaranthaceae,Chenopodium rubrum,NM,"260, 261"
+Amaranthaceae,Enchylaena tomentosa,NM,438
+Amaranthaceae,Gomphrena globosa,AM,33
+Amaranthaceae,Halimione portulacoides,AM+NM,"260, 261"
+Amaranthaceae,Nototrichium sandwicense,NM,326
+Amaranthaceae,Ptilotus latifolius,NM,438
+Amaranthaceae,Ptilotus obovatus var. obovatus,NM,438
+Amaranthaceae,Ptilotus sessilifolius,NM,438
+Amaranthaceae,Salicornia europaea,AM,277
+Amaranthaceae,Salsola kali,NM,"19, 300, 260, 261"
+Amaranthaceae,Sclerolaena diacantha,AM,438
+Amaranthaceae,Sclerolaena holtiana,NM,438
+Amaranthaceae,Suaeda glauca,AM,620
+Amaranthaceae,Suaeda maritima,AM,533
+Amaranthaceae,Suaeda vera,AM+NM,"260, 261"
+Aizoaceae,Cheredospsis purpurea,NM,417
+Aizoaceae,Delosperma herbium,Falcutative AM,417
+Aizoaceae,Sesuvium portulacastrum,NM,326
+Aizoaceae,Tetragonia tetragonioides,AM,326
+Phytolaccaceae,Stegnosperma halimifolia,AM,112
+Nyctaginaceae,Abronia maritima,Falcutative AM,543
+Nyctaginaceae,Abronia umbellata,AM,543
+Nyctaginaceae,Boerhavia repens,NM,326
+Nyctaginaceae,Bougainvillea spectabilis,NM,"326, 651"
+Nyctaginaceae,Mirabilis jalapa,NM,326
+Nyctaginaceae,Neea sp.,ECM,656
+Nyctaginaceae,Pisonia sp.,ECM,656
+Nyctaginaceae,Pisonia umbellifera,NM,326
+Cactaceae,Chamacereus sylvestris,NM,417
+Cactaceae,Cochemia poselgeri,AM,112
+Cactaceae,Coryphanta radians,Weak AM,103
+Cactaceae,Escontria chiotilla,Weak AM,103
+Cactaceae,Ferocactus acanthodes,AM,151
+Cactaceae,Ferocactus flavovirens,Weak AM,103
+Cactaceae,Ferocactus latispinus,Weak AM,103
+Cactaceae,Ferocactus peninsulae,AM,112
+Cactaceae,Lemaireocereus thurberi,Weak AM,112
+Cactaceae,Lophocereus schottii,AM,112
+Cactaceae,Machaerocereus gummosus,Weak AM,112
+Cactaceae,Mammilaria carnea,Weak AM,103
+Cactaceae,Mammilaria dioica,Weak AM,112
+Cactaceae,Mamillaria elongata,NM,417
+Cactaceae,Myrtillocactus geometrizans,Weak AM,103
+Cactaceae,Neobuxbaumia tetetzo,Weak AM,103
+Cactaceae,Nopalea karwinskiana,AM,20
+Cactaceae,Opuntia cholla,AM,112
+Cactaceae,Opuntia excelsa,AM,20
+Cactaceae,Opuntia ficus-indica,AM,151
+Cactaceae,Opuntia lindsayi,AM,112
+Cactaceae,Opuntia pilifera,AM,103
+Cactaceae,Opuntia puberula,AM,20
+Cactaceae,Opuntia streptacantha,AM,103
+Cactaceae,Opuntia stricta var. dillenii,AM,143
+Cactaceae,Opuntia tuna,NM,417
+Cactaceae,Pachycereus pectin-aboriginum,AM,494
+Cactaceae,Pachycereus pringlei,Weak AM,112
+Cactaceae,Selenicereus macdonaldiae,AM,417
+Cactaceae,Stenocereus queretaroensis,AM,"463, 464"
+Cactaceae,Stenocereus stellatus,Weak AM,103
+Portulacaceae,Lyallia kerguelensis,NM,560
+Portulacaceae,Montia fontana,NM,342
+Portulacaceae,Montia perfoliata,NM,207
+Portulacaceae,Montia sibirica,AM,"260, 261"
+Portulacaceae,Portulaca intraterranea,NM,438
+Portulacaceae,Portulaca lutea,NM,326
+Portulacaceae,Portulaca oleracea,AM+NM,"260, 261"
+Portulacaceae,Portulaca sclerocarpa,NM,326
+Olacaceae,Coula edulis,AM,445
+Olacaceae,Ongokea gore,AM,445
+Olacaceae,Strombosis grandifolia,AM,445
+Loranthaceae,Viscum album,NM,"260, 261"
+Santalaceae,Santalum ellipticum,NM,326
+Santalaceae,Santalum paniculatum,AM,326
+Santalaceae,Thesium alpinum,NM,456
+Santalaceae,Thesium humifusum,NM,"260, 261"
+Loasaceae,Caiophora sylvestris,NM,207
+Loasaceae,Loasa berghii,NM,207
+Cornaceae,Cornus sanguinea,AM+NM,"260, 261"
+Balsaminaceae,Impatiens capensis,AM,140
+Balsaminaceae,Impatiens glandulifera,AM+NM,"260, 261"
+Balsaminaceae,Impatiens noli-tangere,AM+NM,"260, 261"
+Balsaminaceae,Impatiens parviflora,AM+NM,"260, 261"
+Balsaminaceae,Impatiens walleriana,AM,322
+Tetrameristaceae,Tetramerista glabra,AM,568
+Polemoniaceae,Polemonium caeruleum,AM,"260, 261"
+Fouquieriaceae,Fouquieria digueti,AM,112
+Theaceae,Pyrenaria cheliensis,AM,422
+Ebenaceae,Diospyros nigrocartex,AM,"422, 655"
+Theophrastaceae,Jacquinia pungens,AM,20
+Primulaceae,Anagallis arvensis,AM,"472, 260, 261"
+Primulaceae,Anagallis tenella,AM,"260, 261"
+Primulaceae,Asterolinum stellatum,AM,472
+Primulaceae,Cyclamen hederifolium,AM,"260, 261"
+Primulaceae,Glaux maritima,AM,"260, 261"
+Primulaceae,Hottonia palustris,AM+NM,"260, 261"
+Primulaceae,Lysimachia japonica,AM,643
+Primulaceae,Lysimachia nemorum,AM+NM,"260, 261"
+Primulaceae,Lysimachia nummularia,AM+NM,"260, 261"
+Primulaceae,Lysimachia terrestris,AM,140
+Primulaceae,Lysimachia thyrsiflora,NM,62
+Primulaceae,Lysimachia vulgaris,AM,368
+Primulaceae,Primula elatior,AM,"260, 261"
+Primulaceae,Primula farinosa,AM,"260, 261"
+Primulaceae,Primula veris,AM+NM,"260, 261"
+Primulaceae,Primula vulgaris,AM,"260, 261"
+Primulaceae,Samolus valerandi,AM,"368, 260, 261"
+Primulaceae,Trientalis europaea,AM,501
+Myrsinaceae,Ardisia crenata,AM,87
+Myrsinaceae,Ardisia tenera,AM,"422, 655"
+Myrsinaceae,Measa indica,AM,422
+Myrsinaceae,Myrsine alyxifolia,AM,326
+Myrsinaceae,Rapanea ferruginea,AM,31
+Styracaceae,Strichinus brasiliensis,AM,651
+Diapensiaceae,Diapensia lapponica,ERM,"260, 261"
+Lecythidaceae,Barringtonia macrostachya,AM,655
+Lecythidaceae,Barringtonia racemosa,AM,655
+Lecythidaceae,Cariniana estrellensis,AM,651
+Sapotaceae,Aningeria adolfi-friedericii,AM,"637, 638"
+Sapotaceae,Aningeria robusta,AM,445
+Sapotaceae,Argania spinosa,AM,434
+Sapotaceae,Autranella congolensis,AM,445
+Sapotaceae,Baillonella toxisperma,AM,445
+Sapotaceae,Gambeya africana,AM,445
+Sapotaceae,Omphalocarpum procerum,AM,445
+Sapotaceae,Palaquium gutta,AM,568
+Actinidiaceae,Actinidia deliciosa,AM,523
+Clethraceae,Clethra barbinervis,AM,335
+Ericaceae,Andromeda polifolia,ERM,"260, 261"
+Ericaceae,Arbutus menziesii,ABM,374
+Ericaceae,Arbutus unedo,ABM,"200, 238, 421, 368, 472, 260, 261"
+Ericaceae,Arctostaphylos alpinus,ABM,594
+Ericaceae,Arctostaphylos uva-ursi,ABM,"259, 507"
+Ericaceae,Calluna vulgaris,ERM,"72, 238, 299, 260, 261"
+Ericaceae,Cassiope tetragona,ERM,594
+Ericaceae,Cavendishia capitulata,ERM,474
+Ericaceae,Cavendishia melastomoides,ERM,474
+Ericaceae,Daboecia cantabrica,ERM,"260, 261"
+Ericaceae,Disterigma humboldtii,ERM,474
+Ericaceae,Empetrum nigrum,ERM,"594, 260, 261"
+Ericaceae,Erica arborea,ERM,368
+Ericaceae,Erica cinerea,ERM,"99, 260, 261"
+Ericaceae,Erica erigena,ERM,"260, 261"
+Ericaceae,Erica mackaiana,ERM,"260, 261"
+Ericaceae,Erica,ERM,472
+Ericaceae,Erica tetralix,ERM,"260, 261"
+Ericaceae,Erica vagans,ERM,"260, 261"
+Ericaceae,Gaultheria erecta,ERM,474
+Ericaceae,Gaultheria procumbens,ERM,238
+Ericaceae,Gaultheria shallon,ERM,"22, 639"
+Ericaceae,Gonocalyx costaricense,ERM,474
+Ericaceae,Kalmia latifolia,ERM,238
+Ericaceae,Ledum palustre,ERM,"260, 261"
+Ericaceae,Ledum palustre ssp. decumbens,ERM,594
+Ericaceae,Ledum palustre ssp. groenlandicum,ERM,594
+Ericaceae,Leucopogon parviflorus,ERM,401
+Ericaceae,Leucothoe fontanesiana,ERM,238
+Ericaceae,Loiseleuria procumbens,ERM,"594, 260, 261"
+Ericaceae,Oxydendrum arboreum,ERM,238
+Ericaceae,Pernettya mucronata,ERM,207
+Ericaceae,Phyllodoce caerulea,ERM,"260, 261"
+Ericaceae,Pieris floribunda,ERM,"238, 555"
+Ericaceae,Rhododendron brachycarpum,ERM,154
+Ericaceae,Rhododendron calendulaceum,ERM,238
+Ericaceae,Rhododendron carolinianum,ERM,238
+Ericaceae,Rhododendron catawbiense,ERM,238
+Ericaceae,Rhododendron maximum,ERM,238
+Ericaceae,Rhododendron mucronulatum,ERM,238
+Ericaceae,Rhododendron obtusum,ERM,601
+Ericaceae,Rhododendron ponticum,ERM,"260, 261"
+Ericaceae,Sphyospermum buxifolium,ERM,474
+Ericaceae,Sphyospermum cordifolium,ERM,474
+Ericaceae,Vaccinium angustifolium,ERM,157
+Ericaceae,Vaccinium calycinum,ERM+AM,"325, 326"
+Ericaceae,Vaccinium corymbosum,ERM,"238, 645"
+Ericaceae,Vaccinium dentatum,ERM+AM,"325, 326"
+Ericaceae,Vaccinium macrocarpon,ERM,"99, 238, 260, 261"
+Ericaceae,Vaccinium myrtillus,ERM,"72, 260, 261"
+Ericaceae,Vaccinium oxycoccos,ERM,"260, 261"
+Ericaceae,Vaccinium reticulatum,ERM+weak AM,326
+Ericaceae,Vaccinium uliginosum,ERM,"594, 260, 261"
+Ericaceae,Vaccinium vitis-idaea,ERM,"594, 260, 261"
+Ericaceae,Woollsia pungens,ERM,401
+Ericaceae “Pyrolaceae”,Moneses uniflora,EEM+M(endo),"260, 261"
+Ericaceae “Pyrolaceae”,Orthilia secunda,EEM+M(endo),"260, 261"
+Ericaceae “Pyrolaceae”,Pyrola media,M(endo),"260, 261"
+Ericaceae “Pyrolaceae”,Pyrola minor,EEM+M(endo),"260, 261"
+Ericaceae “Pyrolaceae”,Pyrola rotundifolia,EEM+M(endo),"260, 261"
+Ericaceae (Monotropoideae),Monotropa hypopitys,MTM,"260, 261"
+Ericaceae (Monotropoideae),Monotropa uniflora,MTM,647
+Ericaceae (Monotropoideae),Monotropastrum humile,MTM,384
+Ericaceae (Monotropoideae),Sarcodes sanguinea,ERM + MTM,332
+Ericaceae (Epacridoideae),Astroloma conostephioides,ERM,393
+Ericaceae (Epacridoideae),Astroloma humifusum,ERM,393
+Ericaceae (Epacridoideae),Astroloma pinifolium,ERM,"393, 394"
+Ericaceae (Epacridoideae),Brachyloma daphnoides,AM,67
+Ericaceae (Epacridoideae),Epacris impressa,ERM,"393, 394"
+Ericaceae (Epacridoideae),Epacris impressa var. grandiflora,ERM,393
+Ericaceae (Epacridoideae),Epacris microphylla,AM,67
+Ericaceae (Epacridoideae),Leucopogon ericoides,ERM,393
+Ericaceae (Epacridoideae),Leucopogon juniperinus,AM,67
+Ericaceae (Epacridoideae),Leucopogon parviflorus,ERM,"393, 556"
+Ericaceae (Epacridoideae),Lysinema ciliatum,ERM,36
+Ericaceae (Epacridoideae),Styphelia adscendens,ERM,393
+Ericaceae (Epacridoideae),Styphelia tameiameiae,ERM+AM,"325, 326"
+Ericaceae (Epacridoideae),Woollsia pungens,ERM,"127, 312"
+Icacinaceae,Pittosporopsis kerrii,AM,422
+Boraginaceae,Arnebia hispidisima,AM,567
+Boraginaceae,Borago officinalis,NM,"260, 261"
+Boraginaceae,Bourreria sonorae,AM,112
+Boraginaceae,Cerastium arvense,NM,207
+Boraginaceae,Cordia alliodora,AM,20
+Boraginaceae,Cordia curassavica,Weak AM,103
+Boraginaceae,Cordia ecalyculata,AM,651
+Boraginaceae,Cordia trichotoma,AM,651
+Boraginaceae,Cynoglossum creticum,AM,207
+Boraginaceae,Cynoglossum lanceolatum,AM,343
+Boraginaceae,Echium vulgare,AM,"260, 261"
+Boraginaceae,Heliotropium anomalum,AM,326
+Boraginaceae,Heliotropium curassavicum,AM,326
+Boraginaceae,Heliotropium sp.,AM,567
+Boraginaceae,Lithospermum arvense,NM,"260, 261"
+Boraginaceae,Lithospermum officinale,NM,"260, 261"
+Boraginaceae,Lithospermum purpurocaeruleum,AM,"260, 261"
+Boraginaceae,Myosotis alpestris,AM+NM,"260, 261"
+Boraginaceae,Myosotis arvensis,NM,"260, 261"
+Boraginaceae,Myosotis decumbens,Facultative AM,194
+Boraginaceae,Myosotis discolor,AM,"260, 261"
+Boraginaceae,Myosotis laxa ssp. caespitosa,AM,"260, 261"
+Boraginaceae,Myosotis palustris,Facultative AM,62
+Boraginaceae,Myosotis ramosissima,AM+NM,"260, 261"
+Boraginaceae,Myosotis scorpioides,AM+NM,"260, 261"
+Boraginaceae,Myosotis sylvatica,AM+NM,"260, 261"
+Boraginaceae,Omphalalappula concava,NM,438
+Boraginaceae,Plagiobothrys figuratus,AM,293
+Boraginaceae,Pulmonaria officinalis,AM+NM,"260, 261"
+Boraginaceae,Silene andicola,NM,207
+Boraginaceae,Stellaria graminea,AM,194
+Boraginaceae,Stellaria media,AM,207
+Boraginaceae,Symphytum officinale,AM,"260, 261"
+Boraginaceae,Symphytum tuberosum,AM+NM,"260, 261"
+Boraginaceae,Tournefortia argentea,AM,326
+Boraginaceae,Trichodesma zeylanicum,AM,438
+Rubiaceae,Asperula cynanchica,AM,"260, 261"
+Rubiaceae,Borreria articularis,AM,336
+Rubiaceae,Borreria pusilla,AM,336
+Rubiaceae,Canthium parvifoliam,AM,422
+Rubiaceae,Cephalanthus occidentalis,AM,140
+Rubiaceae,Chesalia curviflora,AM,"422, 655"
+Rubiaceae,Coffea arabica cv. guatemala,AM,602
+Rubiaceae,Coprosma ernodeoides,AM,326
+Rubiaceae,Coprosma kauensis,AM,326
+Rubiaceae,Coprosma perpusilla ssp.,NM,342
+Rubiaceae,Declieuxia fruticosa,AM,149
+Rubiaceae,Duperrea pavettaefolia,AM,655
+Rubiaceae,Galium album,AM,"194, 260, 261"
+Rubiaceae,Galium antarcticum,AM,560
+Rubiaceae,Galium aparine,NM,207
+Rubiaceae,Galium boreale,AM,"260, 261"
+Rubiaceae,Galium cruciata,AM,"260, 261"
+Rubiaceae,Galium mollugo,AM,456
+Rubiaceae,Galium odoratum,AM+NM,"260, 261"
+Rubiaceae,Galium palustre,AM+NM,"260, 261"
+Rubiaceae,Galium saxatile,AM+NM,"260, 261"
+Rubiaceae,Galium sp.,AM,140
+Rubiaceae,Galium uliginosum,NM,"260, 261"
+Rubiaceae,Galium verum,AM,"260, 261"
+Rubiaceae,Geophila herbacea,AM,"422, 655"
+Rubiaceae,Hedyotis costata,AM,422
+Rubiaceae,Hedyotis elatior,AM,326
+Rubiaceae,Hedyotis foggiana,AM,326
+Rubiaceae,Hedyotis terminalis,AM,326
+Rubiaceae,Lasianthus hookeri,AM,422
+Rubiaceae,Lasianthus sikkimensis,AM,655
+Rubiaceae,Lasianthus verticillatus,AM,655
+Rubiaceae,Metadina trichotoma,AM,655
+Rubiaceae,Mitragina ciliata,AM,445
+Rubiaceae,Morinda lucida,AM,422
+Rubiaceae,Mycetia hirta,AM,655
+Rubiaceae,Nauclea diederrichii,AM,445
+Rubiaceae,Neonauclea tsaiana,AM,655
+Rubiaceae,Nertera granadensis,AM,326
+Rubiaceae,Oldenlandia aspera,AM,336
+Rubiaceae,Ophiorrhiza austro-yunnanensis,AM,422
+Rubiaceae,Paederia scandens,AM,643
+Rubiaceae,Pausynistalia johimbe,AM,445
+Rubiaceae,Prismatomeria tetrandra,AM,422
+Rubiaceae,Psychotria calocarpa,AM,655
+Rubiaceae,Psychotria henryi,AM,422
+Rubiaceae,Psychotria siamica,NM,655
+Rubiaceae,Psychotria sp.,AM,326
+Rubiaceae,Randia ruglosa,AM,315
+Rubiaceae,Relbuneum hypocarpium,AM,207
+Rubiaceae,Relbuneum richardianum,AM,207
+Rubiaceae,Rubia peregrina,AM,368
+Rubiaceae,Sherardia arvensis,AM,472
+Rubiaceae,Vangueria infausta,AM,"84, 85"
+Rubiaceae,Vangueria infausta ssp. infausta,AM,221
+Gentianaceae,Blackstonia perfoliata,AM,"368, 472 "
+Gentianaceae,Centaurium erythraea,AM,"472, 260, 261"
+Gentianaceae,Gentiana algida,NM,594
+Gentianaceae,Gentiana nivalis,AM+NM,"260, 261"
+Gentianaceae,Gentiana pneumonanthe,AM+NM,"260, 261"
+Gentianaceae,Gentiana verna,AM,"561, 260, 261"
+Gentianaceae,Gentianella amarella,AM,"260, 261"
+Gentianaceae,Gentianella campestris,AM,"194, 260, 261"
+Gentianaceae,Gentianella germanica,AM,"456, 260, 261"
+Gentianaceae,Voyria aurantiaca,Mycoheterotrophy (via AM),79
+Gentianaceae,Voyria caerulea,Mycoheterotrophy (via AM),79
+Gentianaceae,Voyria corymbosa,Mycoheterotrophy (via AM),79
+Gentianaceae,Voyria obconica,Mycoheterotrophy (via AM),292
+Gentianaceae,Voyria rosea,Mycoheterotrophy (via AM),79
+Gentianaceae,Voyria tenuiflora,Mycoheterotrophy (via AM),79
+Gentianaceae,Voyriella parviflora,Mycoheterotrophy (via AM),79
+Loganiaceae,Anthocleista schweinfurthii,AM,445
+Loganiaceae,Buddleia asiatica,AM,326
+Apocynaceae,Adenium obesum,AM,623
+Apocynaceae,Adenium somalense,AM,623
+Apocynaceae,Allamanda cathartica var.,AM,623
+Apocynaceae,Allamanda violacea,AM,623
+Apocynaceae,Alstonia boonei,AM,445
+Apocynaceae,Alyxia oliviaeformis,AM,326
+Apocynaceae,Amsonia tabernaemontana,AM,623
+Apocynaceae,Apocynum cannabinum,AM,623
+Apocynaceae,Apocynum medium,AM,623
+Apocynaceae,Aspidosperma parvifolium,NM,548
+Apocynaceae,Aspidosperma polyneuron,NM,651
+Apocynaceae,Catharanthus roseus,AM,623
+Apocynaceae,Dyera costulata,NM,568
+Apocynaceae,Landolphia heudelottii,NM,47
+Apocynaceae,Mandevilla sanderei,AM,623
+Apocynaceae,Nerium oleander,AM,623
+Apocynaceae,Pachypodium lamerei,AM,623
+Apocynaceae,Picralima nitida,AM,445
+Apocynaceae,Plumeria obtuse,AM,623
+Apocynaceae,Plumeria rubra,AM,623
+Apocynaceae,Rauwolfia serpentina,AM,623
+Apocynaceae,Rauwolfia verticillata,AM,623
+Apocynaceae,Saba senegalensis,NM,47
+Apocynaceae,Stemmadenia donnell-smithii,AM,244
+Apocynaceae,Strophanthus capensis,AM,623
+Apocynaceae,Tabernaemontana australis,AM,651
+Apocynaceae,Thevetia peruviana,AM,623
+Apocynaceae,Trachelospermum,AM,623
+Apocynaceae,Vinca major,AM,"260, 261"
+Apocynaceae,Vinca minor,AM,"623, 260, 261"
+Apocynaceae (Asclepiadoideae),Asclepias incarnata,AM,"58, 140 "
+Apocynaceae (Asclepiadoideae),Calotropis gigantea,AM,343
+Apocynaceae (Asclepiadoideae),Cynanchum nummularifolium,AM,207
+Apocynaceae (Asclepiadoideae),Periploca graeca,NM,368
+Apocynaceae (Asclepiadoideae),Stapelia glabricaulis,AM,417
+Oleaceae,Fraxinus excelsior,AM,"465, 622"
+Oleaceae,Fraxinus ornus,AM,368
+Oleaceae,Fraxinus oxycarpa,AM,368
+Oleaceae,Fraxinus pennsylvanica,AM,28
+Oleaceae,Jasminum laurifolium,AM,655
+Oleaceae,Jasminum wangii,AM,422
+Oleaceae,Ligustrum vulgare,AM,"368, 260, 261"
+Oleaceae,Olea europaea,AM,"17, 101"
+Oleaceae,Olea europaea ssp. cuspidate,AM,"637, 638"
+Oleaceae,Olea europaea ssp. sylvestris,AM,"108, 368"
+Oleaceae,Olea europaea var. oleaster,AM,472
+Oleaceae,Phillyrea angustifolia,AM,"368, 472"
+Oleaceae,Phillyrea latifolia,AM,368
+Gesneriaceae,Corallodiscus flabellatus,AM,343
+Gesneriaceae,Cytrandra longifolia,AM,326
+Pedaliaceae,Sesamum indicum,AM,612
+Plantaginaceae,Callitriche hamulata,AM,"260, 261"
+Plantaginaceae,Littorella uniflora,AM,"62, 432, 260, 261"
+Plantaginaceae,Plantago coronopus,AM,"260, 261"
+Plantaginaceae,Plantago drummondii,AM,438
+Plantaginaceae,Plantago lanceolata,AM,"194, 307, 446, 456, 260, 261"
+Plantaginaceae,Plantago major,AM,"49, 368, 260, 261"
+Plantaginaceae,Plantago major ssp. intermedia,AM,"260, 261"
+Plantaginaceae,Plantago maritima,AM,"260, 261"
+Plantaginaceae,Plantago media,AM,"48, 194, 260, 261"
+Plantaginaceae,Plantago princeps,AM,326
+Bignoniaceae,Incarvillea arguta,AM,343
+Bignoniaceae,Jacaranda mimosaefolia,AM,"548, 651"
+Bignoniaceae,Jacaranda puberula,AM,651
+Bignoniaceae,Oroxylum indicum,AM,655
+Bignoniaceae,Stenolobium stans,AM,548
+Bignoniaceae,Tabebuia chrysotricha,AM,651
+Bignoniaceae,Tabebuia roseo-alba,AM,651
+Bignoniaceae,Tecoma stans,Weak AM,103
+Bignoniaceae,Zeyheria tuberculosa,NM,651
+Verbenaceae,Aegiphila sellowiana,AM,651
+Verbenaceae,Citharexylum myrianthum,AM,651
+Verbenaceae,Clerodendron japonicum,AM,422
+Verbenaceae,Lantana camara,AM,326
+Verbenaceae,Lippia graveolens,Weak AM,103
+Verbenaceae,Lippia nodiflora,AM,143
+Verbenaceae,Tectona grandis,AM,476
+Verbenaceae,Teucrium flavum,AM,368
+Verbenaceae,Verbena hastata,AM,140
+Verbenaceae,Verbena officinalis,AM,"260, 261"
+Verbenaceae,Vitex agnus-castus,AM,368
+Verbenaceae,Vitex montevidensis,AM,651
+Verbenaceae,Vitex negundo,AM,343
+Verbenaceae,Vitex rotundifolia,AM,326
+Verbenaceae,Vitex vestita,AM,655
+Lamiaceae,Ajuga genevensis,AM,"260, 261"
+Lamiaceae,Ajuga pyramidalis,AM,194
+Lamiaceae,Ajuga reptans,AM,"260, 261"
+Lamiaceae,Ballota nigra,NM,"260, 261"
+Lamiaceae,Betonica officinalis,AM,212
+Lamiaceae,Clinopodium gracile,AM,643
+Lamiaceae,Clinopodium vulgare,AM+NM,"260, 261"
+Lamiaceae,Colebrookea oppositifolia,AM,655
+Lamiaceae,Coleus parviflorus,AM,469
+Lamiaceae,Coleus,AM,322
+Lamiaceae,Collinsonia canadensis,AM,140
+Lamiaceae,Elsholtzia blanda,AM,422
+Lamiaceae,Elsholtzia cypriani,AM,343
+Lamiaceae,Galeopsis segetum,NM,"260, 261"
+Lamiaceae,Galeopsis tetrahit,NM,"260, 261"
+Lamiaceae,Glechoma hederacea,AM+NM,"260, 261"
+Lamiaceae,Gomphostemma microdon,AM,655
+Lamiaceae,Hyptis lantiflora,AM,112
+Lamiaceae,Lamiastrum galeobdolon,AM+NM,"260, 261"
+Lamiaceae,Lamium album,AM,"260, 261"
+Lamiaceae,Lamium amplexicaule,AM,"294, 260, 261"
+Lamiaceae,Lamium purpureum,AM,"260, 261"
+Lamiaceae,Lavandula augustifolia,AM,348
+Lamiaceae,Lavandula officinalis,AM,104
+Lamiaceae,Lavandula pedunculata,AM,339
+Lamiaceae,Lavandula spica,AM,39
+Lamiaceae,Leucas aspera,AM,336
+Lamiaceae,Lycopus europaeus,AM+NM,"260, 261"
+Lamiaceae,Melittis melissophyllum,AM+NM,"260, 261"
+Lamiaceae,Mentha aquatica,AM,368
+Lamiaceae,Mentha arvensis,AM,248
+Lamiaceae,Mentha arvensis ssp. haplocalyx,AM,1
+Lamiaceae,Mentha cardiaca,AM,1
+Lamiaceae,Mentha citrata,AM,1
+Lamiaceae,Mentha piperita,AM,1
+Lamiaceae,Mentha pulegium,AM,"260, 261"
+Lamiaceae,Mentha spicata,AM,1
+Lamiaceae,Mentha viridis,AM,1
+Lamiaceae,Nepeta cataria,AM,"260, 261"
+Lamiaceae,Ocimum basilicum,AM,"105, 171, 343"
+Lamiaceae,Origanum vulgare,AM,"260, 261"
+Lamiaceae,Paraphlomis javanica,AM,655
+Lamiaceae,Prunella vulgaris,AM,"194, 586"
+Lamiaceae,Pycnanthemum tenuifolium,AM,"140, 599"
+Lamiaceae,Pycnanthemum virginianum,AM,140
+Lamiaceae,Rosmarinus officinalis,AM,472
+Lamiaceae,Salvia azurea,AM,633
+Lamiaceae,Salvia officinalis,AM,105
+Lamiaceae,Salvia pratensis,AM,"260, 261"
+Lamiaceae,Salvia splendens,AM,322
+Lamiaceae,Salvia verbenaca,AM,"260, 261"
+Lamiaceae,Scutellaria galericulata,AM+NM,"260, 261"
+Lamiaceae,Stachys,AM,"260, 261"
+Lamiaceae,Stachys maritima,AM,368
+Lamiaceae,Stachys officinalis,AM,"260, 261"
+Lamiaceae,Stachys palustris,AM,"260, 261"
+Lamiaceae,Stachys recta var. psammophila,NM,368
+Lamiaceae,Stachys sylvatica,AM+NM,"260, 261"
+Lamiaceae,Stenogyne purpurea,AM,326
+Lamiaceae,Teucrium chamaedrys,AM,"260, 261"
+Lamiaceae,Teucrium fruticans,AM,"348, 472"
+Lamiaceae,Teucrium scordium,AM,"260, 261"
+Lamiaceae,Teucrium scordonia,AM,"260, 261"
+Lamiaceae,Thymus mastichina,AM,339
+Lamiaceae,Thymus polytrichus ssp. britannicus,AM,630
+Lamiaceae,Thymus pulegioides,AM,456
+Lamiaceae,Thymus serpyllum,AM,"456, 260, 261"
+Lamiaceae,Thymus vulgaris,AM,"105, 583"
+Lamiaceae,Thymus zygis,AM,339
+Acanthaceae,Barleria cristata,AM,343
+Acanthaceae,Carlowrightia californica,AM,112
+Acanthaceae,Justicia procumbens var. leucantha,AM,643
+Acanthaceae,Phlogacanthus curviflorus,AM,655
+Acanthaceae,Pseudoranthemum palatiferum,AM,"422, 655"
+Acanthaceae,Ruellia peninsularis,AM,112
+Scrophulariaceae,Antirrhinum majus,AM,74
+Scrophulariaceae,Bartsia alpina,AM+NM,"260, 261"
+Scrophulariaceae,Buddleja davidii,NM,"260, 261"
+Scrophulariaceae,Calceolaria crenatiflora,AM,207
+Scrophulariaceae,Calceolaria polyrrhiza,AM,207
+Scrophulariaceae,Castilleja arvensis,NM,326
+Scrophulariaceae,Chaenorhinum minus,NM,"260, 261"
+Scrophulariaceae,Cymbalaria muralis,AM,"260, 261"
+Scrophulariaceae,Digitalis purpurea,AM+NM,"260, 261"
+Scrophulariaceae,Eremophila longifolia,Weak AM,438
+Scrophulariaceae,Eremophila macdonnellii,Weak AM,438
+Scrophulariaceae,Euphrasia minima,NM,"260, 261"
+Scrophulariaceae,Euphrasia officinalis s. l.,NM,"260, 261"
+Scrophulariaceae,Euphrasia stricta,NM,456
+Scrophulariaceae,Kickxia spuria,AM,"260, 261"
+Scrophulariaceae,Lamourouxia rhinanthifolia,NM,103
+Scrophulariaceae,Linaria repens,AM+NM,"260, 261"
+Scrophulariaceae,Linaria supina,AM+NM,"260, 261"
+Scrophulariaceae,Linaria vulgaris,AM+NM,"260, 261"
+Scrophulariaceae,Melampyrum arvense,NM,"260, 261"
+Scrophulariaceae,Melampyrum cristatum,NM,"260, 261"
+Scrophulariaceae,Melampyrum pretense,NM,194
+Scrophulariaceae,Melampyrum sylvaticum,NM,"194, 260, 261"
+Scrophulariaceae,Mimulus guttatus,NM,62
+Scrophulariaceae,Mimulus ringens,AM,140
+Scrophulariaceae,Odontites lutea,AM,368
+Scrophulariaceae,Odontites verna,NM,"260, 261"
+Scrophulariaceae,Pedicularis capitata,NM,594
+Scrophulariaceae,Pedicularis kanei,NM,594
+Scrophulariaceae,Pedicularis langsdorffii,NM,594
+Scrophulariaceae,Pedicularis palustris,NM,"260, 261"
+Scrophulariaceae,Pedicularis sylvatica,NM,"260, 261"
+Scrophulariaceae,Pedicularis verticillata,NM,594
+Scrophulariaceae,Penstemon cardwellii,Facultative AM,585
+Scrophulariaceae,Penstemon frutescens,Facultative AM,587
+Scrophulariaceae,Plantago asiatica,AM,643
+Scrophulariaceae,Rhinanthus angustifolius,AM,456
+Scrophulariaceae,Rhinanthus minor,Weak AM,194
+Scrophulariaceae,Scrophularia auriculata,AM,"260, 261"
+Scrophulariaceae,Scrophularia nodosa,AM+NM,"260, 261"
+Scrophulariaceae,Scrophularia umbrosa,NM,"260, 261"
+Scrophulariaceae,Scrophularia vernalis,NM,"260, 261"
+Scrophulariaceae,Verbascum lychnitis,AM,"260, 261"
+Scrophulariaceae,Verbascum nigrum,AM,"260, 261"
+Scrophulariaceae,Verbascum thapsus,AM,"207, 260, 261"
+Scrophulariaceae,Veronica agrestis,AM+NM,"260, 261"
+Scrophulariaceae,Veronica alpina,AM,"260, 261"
+Scrophulariaceae,Veronica anagallis-aquatica,Facultative AM,62
+Scrophulariaceae,Veronica arvensis,AM,"643, 260, 261"
+Scrophulariaceae,Veronica beccabunga,NM,"62, 260, 261"
+Scrophulariaceae,Veronica chamaedrys,AM,"194, 456"
+Scrophulariaceae,Veronica filiformis,AM,"260, 261"
+Scrophulariaceae,Veronica fruticans,AM,"260, 261"
+Scrophulariaceae,Veronica officinalis,AM,194
+Scrophulariaceae,Veronica peregrina,AM,"260, 261"
+Scrophulariaceae,Veronica persica,AM,"643, 260, 261"
+Scrophulariaceae,Veronica serpyllifolia,AM,"194, 260, 261"
+Scrophulariaceae,Veronica spicata,AM,"260, 261"
+Lentibulariaceae,Pinguicula alpine,NM,"260, 261"
+Lentibulariaceae,Pinguicula vulgaris,NM,"260, 261"
+Convolvulaceae,Calystegia sepium,AM,"260, 261"
+Convolvulaceae,Calystegia soldanella,NM,368
+Convolvulaceae,Convolvulus arvensis,AM,"260, 261"
+Convolvulaceae,Convolvulus,AM,472
+Convolvulaceae,Convolvulus eyreanus,AM,438
+Convolvulaceae,Ipomoea arborescens,Weak AM,103
+Convolvulaceae,Ipomoea batatas,AM,455
+Convolvulaceae,Ipomoea imperati,AM,326
+Convolvulaceae,Ipomoea pes-caprae,AM,"64, 65, 144, 326, 336"
+Convolvulaceae,Ipomoea stolonifera,Weak AM,143
+Convolvulaceae,Jacquemontia ovalifolia,AM,326
+Convolvulaceae,Jacquemontia reclinata,AM,202
+Solanaceae,Atropa belladonna,AM,"260, 261"
+Solanaceae,Capsicum annuum,AM,50
+Solanaceae,Cestrum intermedium,AM,651
+Solanaceae,Datura metal,AM,216
+Solanaceae,Datura stramonium,AM,343
+Solanaceae,Lycium barbarum,AM,"260, 261"
+Solanaceae,Lycium fremontii,AM,112
+Solanaceae,Lycium sandwicense,AM,326
+Solanaceae,Lycopersicon esculentum,AM,407
+Solanaceae,Nicotiana velutina,AM,438
+Solanaceae,Petunia,AM,322
+Solanaceae,Solanum argenteum,AM,651
+Solanaceae,Solanum dulcamara,NM,62
+Solanaceae,Solanum elipticum,AM,438
+Solanaceae,Solanum khasianum,AM,343
+Solanaceae,Solanum hindsianum,AM,112
+Solanaceae,Solanum nigrum,AM+NM,"260, 261"
+Solanaceae,Solanum surattense,AM,567
+Solanaceae,Solanum torvum,NM,422
+Solanaceae,Solanum tuberosum,AM,386
+Aquifoliaceae,Ilex aquifolium,AM+ECM,"260, 261"
+Aquifoliaceae,Ilex paraguariensis,AM,31
+Aquifoliaceae,Ilex verticallata,AM,140
+Araliaceae,Didymopanax angustissimum,AM,31
+Araliaceae,Hedera helix,AM,"368, 472, 260, 261"
+Araliaceae,Macropanax dispermus,AM,655
+Araliaceae,Panax ginseng,AM,178
+Araliaceae,Panax quinquefolius,AM,390
+Araliaceae,Pseudopanax laetevirens,AM,207
+Araliaceae,Stilbocarpa polaris,NM,342
+Araliaceae,Trevesia palmata,NM,422
+Araliaceae,Trevesia palmata var. costata,NM,655
+Pittosporaceae,Pittosporum gayanum,AM,326
+Apiaceae,Actinotis helianthi,AM,67
+Apiaceae,Aegopodium podograria,AM+NM,"260, 261"
+Apiaceae,Aethusa cynapium,AM,"260, 261"
+Apiaceae,Angelica archangelica,AM,"260, 261"
+Apiaceae,Angelica sylvestris,AM,"260, 261"
+Apiaceae,Anthriscus sylvestris,NM,"260, 261"
+Apiaceae,Apium graveolens,AM,"490, 260, 261"
+Apiaceae,Apium nodiflorum,NM,"260, 261"
+Apiaceae,Astrantia major,AM+NM,"260, 261"
+Apiaceae,Azorella macquariensis,AM,342
+Apiaceae,Berula erecta,Facultative AM,62
+Apiaceae,Bupleurum baldense,AM,472
+Apiaceae,Bupleurum falcatum,AM,"260, 261"
+Apiaceae,Carum carvi,AM,"194, 260, 261"
+Apiaceae,Chaerophyllum temulentum,AM+NM,"260, 261"
+Apiaceae,Conium maculatum,AM,"260, 261"
+Apiaceae,Conopodium majus,AM,"260, 261"
+Apiaceae,Coriandrum sativum,AM,220
+Apiaceae,Daucus carota,AM,171
+Apiaceae,Echinophora spinosa,AM,368
+Apiaceae,Eryngium campestre,AM,"260, 261"
+Apiaceae,Eryngium maritimum,AM,368
+Apiaceae,Eryngium paniculatum,AM,207
+Apiaceae,Foeniculum vulgare,AM,305
+Apiaceae,Heracleum sphondylium,AM+NM,"260, 261"
+Apiaceae,Hydrocotyle bonariensis,AM,143
+Apiaceae,Hydrocotyle novae-zeelandiae,AM,342
+Apiaceae,Hydrocotyle vulgaris,AM,368
+Apiaceae,Myrrhis odorata,AM,"260, 261"
+Apiaceae,Oenanthe aquatica,NM,"260, 261"
+Apiaceae,Oenanthe crocata,NM,"260, 261"
+Apiaceae,Osmorhiza chilensis,AM,207
+Apiaceae,Pastinaca sativa,AM,"307, 260, 261"
+Apiaceae,Petroselium crispum,AM,171
+Apiaceae,Peucedanum ostruthium,AM,"260, 261"
+Apiaceae,Peucedanum palustre,AM,"260, 261"
+Apiaceae,Pimpinella major,AM+NM,"260, 261"
+Apiaceae,Pimpinella saxifraga,AM,"194, 456"
+Apiaceae,Platysace linearifolia,ECM,67
+Apiaceae,Sanicula europaea,AM,"260, 261"
+Apiaceae,Scandix pecten-veneris,AM,"260, 261"
+Apiaceae,Seseli libanotis,AM,"260, 261"
+Apiaceae,Seseli tortuosum,AM,368
+Apiaceae,Silaum silaus,AM,"260, 261"
+Apiaceae,Sium latifolium,NM,"260, 261"
+Apiaceae,Trachymene glaucifolia,AM,438
+Campanulaceae,Brighamia insignis,AM,326
+Campanulaceae,Campanula glomerata,AM,"260, 261"
+Campanulaceae,Campanula lasiocarpa,AM,587
+Campanulaceae,Campanula patula,AM,"260, 261"
+Campanulaceae,Campanula persicifolia,AM,194
+Campanulaceae,Campanula punctata ssp. hondoensis,AM,636
+Campanulaceae,Campanula rapunculoides,AM,"260, 261"
+Campanulaceae,Campanula rotundifolia,AM,"194, 437, 456, 260, 261"
+Campanulaceae,Campanula trachelium,NM,"260, 261"
+Campanulaceae,Clermontia fauriei,AM,326
+Campanulaceae,Cyanea leptostegia,AM,326
+Campanulaceae,Downingia elegans,AM,293
+Campanulaceae,Jasione montana,AM+NM,"260, 261"
+Campanulaceae,Lobelia cardinalis,AM,140
+Campanulaceae,Lobelia dortmanna,AM,"62, 432, 260, 261"
+Campanulaceae,Lobelia sp.,AM+ECM,656
+Campanulaceae,Lobelia yuccoides,AM,326
+Campanulaceae,Phyteuma orbiculare,AM,"260, 261"
+Campanulaceae,Phyteuma spicatum,AM+NM,"260, 261"
+Campanulaceae,Pratia nummularia,AM,422
+Campanulaceae,Trematolobelia kauaiensis,AM,326
+Menyanthaceae,Menyanthes trifoliata,NM,"260, 261"
+Menyanthaceae,Nymphoides peltata,NM,"260, 261"
+Goodeniaceae,Calogyne sp.,AM+ECM,656
+Goodeniaceae,Dampiera stricta,AM+ECM,67
+Goodeniaceae,Goodenia cycloptera,AM,438
+Goodeniaceae,Goodenia lunata,AM,438
+Goodeniaceae,Goodenia sp.,AM+ECM,656
+Goodeniaceae,Scaevola chamissoniana,AM,326
+Goodeniaceae,Scaevola gaudichaudii,AM,326
+Goodeniaceae,Scaevola parvibarbata,AM,438
+Goodeniaceae,Scaevola procera,AM,326
+Goodeniaceae,Scaevola sericea,AM,326
+Asteraceae,Achillea millefolium,AM,194
+Asteraceae,Achillea ptarmica,AM,194
+Asteraceae,Ageratina espinosarum,Weak AM,103
+Asteraceae,Ageratum conyzoides,AM,"336, 422"
+Asteraceae,Ambrosia artemisifolia,AM,143
+Asteraceae,Anaphalis margaritacea,Facultative AM,585
+Asteraceae,Angianthus sp.,AM+ECM,656
+Asteraceae,Antennaria dioica,AM,"194, 260, 261"
+Asteraceae,Anthemis arvensis,AM,"260, 261"
+Asteraceae,Anthemis tinctoria,AM,"260, 261"
+Asteraceae,Arctium lappa,AM+NM,"260, 261"
+Asteraceae,Arctium minus s. l.,AM,"260, 261"
+Asteraceae,Arnica angustifolia,AM,443
+Asteraceae,Arnica montana,AM,"194, 269"
+Asteraceae,Artemisia absinthium,NM,"260, 261"
+Asteraceae,Artemisia californica,AM,646
+Asteraceae,Artemisia campestris,AM,"260, 261"
+Asteraceae,Artemisia codonocephala,AM,343
+Asteraceae,Artemisia dracunculus,AM,105
+Asteraceae,Artemisia ludoviciana,AM,633
+Asteraceae,Artemisia maritima,AM+NM,"260, 261"
+Asteraceae,Artemisia princeps,AM,643
+Asteraceae,Artemisia tridentata,AM,183
+Asteraceae,Artemisia tridentata ssp. wyomingensis,AM,552
+Asteraceae,Artemisia vulgaris,AM,"307, 260, 261"
+Asteraceae,Aster novi belgii,AM,"260, 261"
+Asteraceae,Aster sericeus,AM,633
+Asteraceae,Aster subulatus,AM,326
+Asteraceae,Aster tripolium,AM,"113, 518, 260, 261"
+Asteraceae,Baccharis racemosa,AM,207
+Asteraceae,Balduina angustifolia,AM,30
+Asteraceae,Bebbia juncea,AM,112
+Asteraceae,Bellis perennis,AM+NM,"260, 261"
+Asteraceae,Berkheya coddii,AM,597
+Asteraceae,Bidens asymmetrica,AM,227
+Asteraceae,Bidens bipinnata,AM,422
+Asteraceae,Bidens cosmoides,AM,326
+Asteraceae,Bidens frondosa,AM,"140, 368"
+Asteraceae,Bidens pilosa,AM,"143, 343, 422"
+Asteraceae,Bidens sandwicensis,AM,"227, 326"
+Asteraceae,Bidens tripartita,AM,140
+Asteraceae,Blainvillea acmella,AM,343
+Asteraceae,Calendula officinalis,AM,"260, 261"
+Asteraceae,Callistephus chinensis,AM,428
+Asteraceae,Carduus acanthoides,AM,"307, 260, 261"
+Asteraceae,Carlina vulgaris,AM,"456, 260, 261"
+Asteraceae,Carthamus tinctorius,AM,94
+Asteraceae,Centaurea cyanus,AM,"260, 261"
+Asteraceae,Centaurea jacea,AM,"194, 260, 261"
+Asteraceae,Centaurea maculosa,AM,"109, 371"
+Asteraceae,Centaurea nigra,AM,"260, 261"
+Asteraceae,Centaurea pratensis,AM,"260, 261"
+Asteraceae,Centaurea scabiosa,AM,"260, 261"
+Asteraceae,Centaurea subciliata,AM,368
+Asteraceae,Chrysanthemum morifolium,AM,551
+Asteraceae,Chrysanthemum segetum,AM,"260, 261"
+Asteraceae,Cicerbita alpina,AM+NM,"260, 261"
+Asteraceae,Cichorium intybus,AM,"260, 261"
+Asteraceae,Cirsium acaule,AM,"260, 261"
+Asteraceae,Cirsium arvense,AM,"307, 260, 261"
+Asteraceae,Cirsium helenioides,AM,"260, 261"
+Asteraceae,Cirsium oleraceum,AM,"260, 261"
+Asteraceae,Cirsium palustre,AM+NM,"260, 261"
+Asteraceae,Cirsium purpuratum,AM,636
+Asteraceae,Cirsium setosum,AM,620
+Asteraceae,Cirsium vulgare,AM,626
+Asteraceae,Conyza blinii,AM,343
+Asteraceae,Conyza canadensis,AM,"326, 343"
+Asteraceae,Cotula plumose,NM,"342, 560"
+Asteraceae,Crassocephalum crepidioides,AM,422
+Asteraceae,Crepis biennis,AM,"260, 261"
+Asteraceae,Crepis capillaris,AM,"260, 261"
+Asteraceae,Crepis paludosa,AM+NM,"260, 261"
+Asteraceae,Crepis praemorsa,AM,194
+Asteraceae,Crepis setosa,AM,207
+Asteraceae,Cynara cardunculus,AM,369
+Asteraceae,Dittrichia viscosa,AM,497
+Asteraceae,Dubautia ciliolata,AM,326
+Asteraceae,Dubautia knudseni,AM,326
+Asteraceae,Dubautia plantaginea,AM,326
+Asteraceae,Dubautia scabra,AM,326
+Asteraceae,Eclipta alba,AM,577
+Asteraceae,Emilia sonchifolia,AM,"326, 336"
+Asteraceae,Erechtites hieracifolia,AM,326
+Asteraceae,Ericameria diffusa,AM,112
+Asteraceae,Erigeron acer,NM,"260, 261"
+Asteraceae,Erigeron annuus,AM,643
+Asteraceae,Erigeron bonariensis,AM,643
+Asteraceae,Erigeron borealis,AM,"260, 261"
+Asteraceae,Erigeron canadensis,AM,294
+Asteraceae,Eriophyllum lanatum,AM,293
+Asteraceae,Eupatorium cannabinum,AM,"260, 261"
+Asteraceae,Eupatorium coelesticum,AM,422
+Asteraceae,Eupatorium maculatum,AM,140
+Asteraceae,Eupatorium odoratum,AM,422
+Asteraceae,Eupatorium perfoliatum,AM,140
+Asteraceae,Eupatorium serotinum,AM,599
+Asteraceae,Filaginella uliginosa,AM,194
+Asteraceae,Florestina tripteris,AM,143
+Asteraceae,Flourensia cernua,AM,137
+Asteraceae,Galinsoga ciliata,AM,"260, 261"
+Asteraceae,Galinsoga parviflora,AM,"260, 261"
+Asteraceae,Galinsoga supinum,AM,"260, 261"
+Asteraceae,Galinsoga sylvaticum,AM,"260, 261"
+Asteraceae,Galinsoga uliginosum,AM,"260, 261"
+Asteraceae,Gnaphalium norvegicum,AM,"502, 503, 260, 261"
+Asteraceae,Gnephosis eriocarpa,Weak AM,438
+Asteraceae,Gutierrezia sarothrae,AM,"492, 493"
+Asteraceae,Gymnosperma glutinosum,Weak AM,103
+Asteraceae,Haplopappus venetus,AM,543
+Asteraceae,Helianthus annuus,AM,"121, 260, 261"
+Asteraceae,Helianthus niveus,AM,543
+Asteraceae,Helichrysum italicum,AM,368
+Asteraceae,Helichrysum sp.,AM+ECM,656
+Asteraceae,Helichrysum stoechas,AM,368
+Asteraceae,Helipterum sp.,AM+ECM,656
+Asteraceae,Hieracium albiflorum,Facultative AM,585
+Asteraceae,Hieracium alpinum,AM,"260, 261"
+Asteraceae,Hieracium bifidum,AM,"260, 261"
+Asteraceae,Hieracium lachenalii,AM,"260, 261"
+Asteraceae,Hieracium lactucella,AM,194
+Asteraceae,Hieracium laevegatum,AM+NM,"260, 261"
+Asteraceae,Hieracium murorum,AM+NM,"260, 261"
+Asteraceae,Hieracium pilosella,AM,"270, 456, 260, 261"
+Asteraceae,Hieracium sagittatum,AM,"260, 261"
+Asteraceae,Hieracium subaundum,AM,"260, 261"
+Asteraceae,Hieracium umbellatum,AM,"194, 260, 261"
+Asteraceae,Hieracium vulgatum,AM+NM,"260, 261"
+Asteraceae,Homogyne alpina,AM+ECM,"260, 261"
+Asteraceae,Hypochaeris radicata,Facultative AM,"584, 585, 260, 261"
+Asteraceae,Hypochoeris achyrophorus,AM,472
+Asteraceae,Inula conyza,AM,"260, 261"
+Asteraceae,Inula salicina,AM,"260, 261"
+Asteraceae,Ixeris denticulate,AM,129
+Asteraceae,Jaumea carnosa,AM,90
+Asteraceae,Lactuca hirsuta,AM,140
+Asteraceae,Lactuca sativa,AM,"40, 171, 500"
+Asteraceae,Laggera pterodonta,AM,343
+Asteraceae,Lapsana communis,AM,"260, 261"
+Asteraceae,Launaea sarmentosa,AM,336
+Asteraceae,Leontodon autumnalis,AM,"194, 260, 261"
+Asteraceae,Leontodon hispidus,AM,"260, 261"
+Asteraceae,Leontodon hispidus ssp. danubialis,AM,456
+Asteraceae,Leontodon hispidus ssp. hispidus,AM,456
+Asteraceae,Leucanthemum vulgare,AM,"194, 260, 261"
+Asteraceae,Leuceria achillaeifolia,NM,207
+Asteraceae,Liatris tenuifolia var. laevigata,Weak AM,30
+Asteraceae,Lipochaeta connata,AM,326
+Asteraceae,Matricaria maritime,AM,307
+Asteraceae,Matricaria matricarioides,AM,"260, 261"
+Asteraceae,Matricaria recutita,AM+NM,"260, 261"
+Asteraceae,Microseris laciniata,AM,293
+Asteraceae,Mutisia decurrens,AM,207
+Asteraceae,Mutisia spinosa,AM,207
+Asteraceae,Mycelis muralis,AM+ECM+NM,"260, 261"
+Asteraceae,Omalotheca norvegica,AM,194
+Asteraceae,Onopordum acanthium,AM+NM,"260, 261"
+Asteraceae,Otanthus maritimus,AM,368
+Asteraceae,Othonna gregorii,AM+NM,438
+Asteraceae,Palafoxia lindenii,AM,144
+Asteraceae,Parthenium argentatum,AM,461
+Asteraceae,Parthenium hysterophorus,AM,343
+Asteraceae,Pectis saturejoides,AM,143
+Asteraceae,Petasites albus,AM+NM,"260, 261"
+Asteraceae,Petasites frigidus,NM,594
+Asteraceae,Petasites hybridus,AM+NM,"260, 261"
+Asteraceae,Phagnalon rupestre,AM,472
+Asteraceae,Picris echioides,AM,"260, 261"
+Asteraceae,Picris hieracioides,AM,"260, 261"
+Asteraceae,Piptocarpha axillaris,AM,651
+Asteraceae,Pityopsis graminifolia,Weak AM,30
+Asteraceae,Pleurophyllum hookeri,AM,342
+Asteraceae,Podolepis sp.,AM+ECM,656
+Asteraceae,Polycalymma stuartii,AM,438
+Asteraceae,Porophyllum numularium,AM,143
+Asteraceae,Pulicaria angustifolia,AM,567
+Asteraceae,Pulicaria dysenterica,AM,"260, 261"
+Asteraceae,Remya kauaiensis,AM,326
+Asteraceae,Rhodanthe floribunda,AM,438
+Asteraceae,Rhodanthe moschata,AM,438
+Asteraceae,Sagittaria latifolia,AM,"58, 626"
+Asteraceae,Sanvitalia procumbens,AM,"260, 261"
+Asteraceae,Saussurea alpina,AM,"260, 261"
+Asteraceae,Scorzonera humilis,AM,194
+Asteraceae,Senecio articulatus,AM,417
+Asteraceae,Senecio bicolor,AM,"368, 260, 261"
+Asteraceae,Senecio bracteolatus,AM,207
+Asteraceae,Senecio erucifolius,AM,"260, 261"
+Asteraceae,Senecio jacobaea,AM+NM,"260, 261"
+Asteraceae,Senecio pendulus,AM,417
+Asteraceae,Senecio praecox,AM,208
+Asteraceae,Senecio squalidus,AM,"260, 261"
+Asteraceae,Senecio sylvaticus,AM+NM,"260, 261"
+Asteraceae,Senecio viscosus,AM,"307, 260, 261"
+Asteraceae,Senecio vulgaris,AM,625
+Asteraceae,Serratula tinctoria,AM,"212, 260, 261"
+Asteraceae,Siegesbeckia orientalis,AM,343
+Asteraceae,Solidago altissima,AM,643
+Asteraceae,Solidago canadensis,AM,"298, 626"
+Asteraceae,Solidago chilenesis,AM,207
+Asteraceae,Solidago gigantea,AM,140
+Asteraceae,Solidago graminifolia,AM,140
+Asteraceae,Solidago litoralis,AM,368
+Asteraceae,Solidago sp.,AM,58
+Asteraceae,Solidago virgaurea,AM,"194, 260, 261"
+Asteraceae,Sonchus arvensis,AM,302
+Asteraceae,Sonchus asper,AM+NM,"260, 261"
+Asteraceae,Sonchus oleraceus,AM,"343, 643, 260, 261"
+Asteraceae,Spilanthes callimorpha,AM,422
+Asteraceae,Synedrella nudiflora,AM,422
+Asteraceae,Tagetes erecta,AM,"2, 102, 350"
+Asteraceae,Tagetes patula,AM,"322, 350, 554"
+Asteraceae,Tagetes tenuifolia,AM,350
+Asteraceae,Tanacetum parthenium,NM,"260, 261"
+Asteraceae,Tanacetum vulgare,AM+NM,"260, 261"
+Asteraceae,Taraxacum japonicum,AM,643
+Asteraceae,Taraxacum officinale,AM,307
+Asteraceae,Tithonia diversifolia,AM,"422, 539"
+Asteraceae,Tragopogon pratensis,AM,"260, 261"
+Asteraceae,Tridax procumbens,AM,336
+Asteraceae,Tripleurospermum inodorum,AM,"260, 261"
+Asteraceae,Tripleurospermum maritimum,AM,"260, 261"
+Asteraceae,Tussilago farfara,AM,307
+Asteraceae,Verbesina encelioides,AM,326
+Asteraceae,Vernonia noveboracensis,AM,140
+Asteraceae,Viguiera eriophora,AM,103
+Asteraceae,Waitzia sp.,AM+ECM,656
+Asteraceae,Wedelia trilobata,AM,326
+Asteraceae,Wilkesia gymnoxiphium,AM,326
+Asteraceae,Xanthium sibiricum,AM,343
+Asteraceae,Xanthocephalum microcephala,AM,137
+Asteraceae,Zinnia acerosa,AM,137
+Asteraceae,Zinnia elegans,AM,"2, 343"
+Adoxaceae,Adoxa moschatellina,NM,"260, 261"
+Caprifoliaceae,Carlemannia tetragona,AM,655
+Caprifoliaceae,Linnaea borealis,AM,"260, 261"
+Caprifoliaceae,Lonicera caprifolium,AM,"260, 261"
+Caprifoliaceae,Lonicera implexa,AM,368
+Caprifoliaceae,Lonicera pericylmenum,AM,"260, 261"
+Caprifoliaceae,Lonicera xylosteum,AM+NM,"260, 261"
+Caprifoliaceae,Sambucus nigra,AM+NM,"260, 261"
+Caprifoliaceae,Sambucus racemosa,AM+ECM+NM,"260, 261"
+Caprifoliaceae,Symphoricarpos rivularis,AM+NM,"260, 261"
+Caprifoliaceae,Viburnum lantana,AM,"260, 261"
+Caprifoliaceae,Viburnum lentago,AM,140
+Caprifoliaceae,Viburnum opulus,AM,"260, 261"
+Caprifoliaceae,Viburnum tinus,AM,368
+Dipsacaceae,Dipsacus fullonum,AM+NM,"260, 261"
+Dipsacaceae,Knautia arvensis,AM,"194, 260, 261"
+Dipsacaceae,Pycnocomon rutifolium,AM,368
+Dipsacaceae,Scabiosa columbaria,AM,"260, 261"
+Dipsacaceae,Scabiosa ochroleuca,AM,456
+Dipsacaceae,Succisa pratensis,AM,"194, 260, 261"
+Valerianaceae,Centranthus ruber,NM,"260, 261"
+Valerianaceae,Valeriana dioica,NM,"260, 261"
+Valerianaceae,Valeriana laxiflorac,AM,207
+Valerianaceae,Valeriana officinalis,AM+NM,"260, 261"
+Hamamelidaceae,Liquidambar styraciflua,AM,139
+Crassulaceae,Aeonium decorum,AM,417
+Crassulaceae,Crassula aquatica,NM,"260, 261"
+Crassulaceae,Crassula moschata,NM,"342, 560"
+Crassulaceae,Crassula phyturus,AM,417
+Crassulaceae,Crassula rupestris,AM,417
+Crassulaceae,Echeveria sedoides,NM,417
+Crassulaceae,Kalanchoe daigremontana,AM,417
+Crassulaceae,Sedum acre,AM+NM,"260, 261"
+Crassulaceae,Sedum adolfii,AM,417
+Crassulaceae,Sedum album,NM,"260, 261"
+Crassulaceae,Sedum dasyphyllum,NM,"260, 261"
+Crassulaceae,Sedum forsteranum,NM,"260, 261"
+Crassulaceae,Sedum reflexum,NM,"260, 261"
+Crassulaceae,Sedum rosea,AM+NM,"260, 261"
+Crassulaceae,Sedum telephium,NM,"260, 261"
+Crassulaceae,Sempervivum tectorum,M(endo)+NM,"260, 261"
+Haloragaceae,Myriophyllum alterniflorum,NM,"260, 261"
+Haloragaceae,Proserpinaca palustris,AM,140
+Grossulariaceae,Ribes alpinum,AM+ECM+NM,"260, 261"
+Grossulariaceae,Ribes magellanicum,AM,207
+Grossulariaceae,Ribes nigrum,AM,"260, 261"
+Grossulariaceae,Ribes rubrum,AM,"260, 261"
+Grossulariaceae,Ribes uva-crispa,AM,"260, 261"
+Saxifragaceae,Chrysosplenium alternifolium,AM+NM,"260, 261"
+Saxifragaceae,Chrysosplenium oppositifolium,NM,"260, 261"
+Saxifragaceae,Saxifraga aizoides,AM+NM,"260, 261"
+Saxifragaceae,Saxifraga granulate,AM,194
+Saxifragaceae,Saxifraga hieracifolia,NM,594
+Saxifragaceae,Saxifraga hirculus,NM,594
+Saxifragaceae,Saxifraga oppositifolia,AM+NM,"260, 261"
+Saxifragaceae,Saxifraga stellaris,NM,"260, 261"
+Vitaceae,Cayratia japonica,AM,643
+Vitaceae,Leea compactiflora,AM,655
+Vitaceae,Leea indica,AM,655
+Vitaceae,Leea marcophylla,AM,655
+Vitaceae,Vitis vinifera,AM,"306, 517"
+Geraniaceae,Erodium cicutarium,AM+NM,"260, 261"
+Geraniaceae,Erodium crinitum,AM,438
+Geraniaceae,Geranium carolinianum,AM,643
+Geraniaceae,Geranium dissectum,AM,"260, 261"
+Geraniaceae,Geranium lucidum,AM+NM,"260, 261"
+Geraniaceae,Geranium molle,AM+NM,"260, 261"
+Geraniaceae,Geranium nodosum,AM,"260, 261"
+Geraniaceae,Geranium pratense,AM,"260, 261"
+Geraniaceae,Geranium robertianum,AM,"262, 472"
+Geraniaceae,Geranium sanguineum,NM,"260, 261"
+Geraniaceae,Geranium sessiliflorum,AM,207
+Geraniaceae,Geranium sylvaticum,AM,"194, 260, 261"
+Geraniaceae,Pelargonium hortorum,AM,435
+Combretaceae,Terminalia catappa,AM,326
+Combretaceae,Terminalia superba,AM,445
+Onagraceae,Camissonia californica,AM,543
+Onagraceae,Chamerion angustifolium,AM+NM,"260, 261"
+Onagraceae,Circaea alpina,AM,"260, 261"
+Onagraceae,Circaea lutetiana,AM,"260, 261"
+Onagraceae,Epilobium alsinifolium,AM+NM,"260, 261"
+Onagraceae,Epilobium anagallidifolium,AM,"260, 261"
+Onagraceae,Epilobium angustifolium,Facultative AM,585
+Onagraceae,Epilobium brunnescens,NM,342
+Onagraceae,Epilobium ciliatum,AM,"260, 261"
+Onagraceae,Epilobium coloratum,AM,140
+Onagraceae,Epilobium hirsutum,Facultative AM,62
+Onagraceae,Epilobium lanceolatum,AM,"260, 261"
+Onagraceae,Epilobium montanum,AM+NM,"260, 261"
+Onagraceae,Epilobium obscurum,AM,"260, 261"
+Onagraceae,Epilobium palustre,AM,"260, 261"
+Onagraceae,Epilobium parviflorum,AM,"260, 261"
+Onagraceae,Epilobium pendunculare,AM,342
+Onagraceae,Epilobium roseum,AM,"260, 261"
+Onagraceae,Epilobium tetragonum,AM,"260, 261"
+Onagraceae,Ludwigia palustris,AM,140
+Onagraceae,Ludwigia prostrata,AM,422
+Onagraceae,Oenothera biennis,AM,"260, 261"
+Onagraceae,Oenothera erythrosepala,AM,"260, 261"
+Lythraceae,Cuphea carthagenensis,AM,326
+Lythraceae,Lafoensia pacari,AM,651
+Lythraceae,Lythrum alatum,AM,599
+Lythraceae,Lythrum hyssopifolia,NM,"260, 261"
+Lythraceae,Lythrum maritimum,AM,326
+Lythraceae,Lythrum salicaria,AM,"140, 462, 558, 629"
+Myrtaceae,Acca sellowiana,AM,31
+Myrtaceae,Acmena resa,AM,222
+Myrtaceae,Angophora hispida,ECM,67
+Myrtaceae,Baeckea ramosissima,ECM,67
+Myrtaceae,Campomanesia xanthocarpa,AM,651
+Myrtaceae,Eucalyptus bosistoana,AM,5
+Myrtaceae,Eucalyptus camaldulensis,AM+ECM,179
+Myrtaceae,Eucalyptus citriodora,AM,343
+Myrtaceae,Eucalyptus cloeziana,AM+ECM,179
+Myrtaceae,Eucalyptus delegatensis,AM,5
+Myrtaceae,Eucalyptus dives,AM,5
+Myrtaceae,Eucalyptus dumosa,Weak AM,5
+Myrtaceae,Eucalyptus dunnii,AM+ECM,442
+Myrtaceae,Eucalyptus globoidea,ECM,133
+Myrtaceae,Eucalyptus globulus,AM,5
+Myrtaceae,Eucalyptus globulus ssp. bicostata,ECM,12
+Myrtaceae,Eucalyptus gomphocephala,AM,5
+Myrtaceae,Eucalyptus grandis,AM+ECM,179
+Myrtaceae,Eucalyptus haemostoma,ECM,67
+Myrtaceae,Eucalyptus largiflorens,AM,5
+Myrtaceae,Eucalyptus macarthurii,AM,5
+Myrtaceae,Eucalyptus marginata,ECM,365
+Myrtaceae,Eucalyptus microcorys,ECM,120
+Myrtaceae,Eucalyptus racemosa,ECM,67
+Myrtaceae,Eucalyptus regnans,ECM,341
+Myrtaceae,Eucalyptus sieberi,ECM,133
+Myrtaceae,Eucalyptus stricta,ECM,67
+Myrtaceae,Eucalyptus torelliana,ECM,120
+Myrtaceae,Eucalyptus urophylla,AM,5
+Myrtaceae,Eucalyptus viminalis,AM,5
+Myrtaceae,Eucalyptus viridis,AM,5
+Myrtaceae,Eugenia uniflora,AM,651
+Myrtaceae,Gomidesia spectabilis,AM,31
+Myrtaceae,Kunzea capitata,ECM,67
+Myrtaceae,Leptospermum flavescens,ECM,67
+Myrtaceae,Leptospermum lanigerum,ECM,67
+Myrtaceae,Luma apiculata,AM,207
+Myrtaceae,Melaleuca quinquenervia,AM+ECM,316
+Myrtaceae,Metrosideros polymorpha,AM,326
+Myrtaceae,Myrtus communis,AM,"368, 382, 472"
+Myrtaceae,Plinia rivularis,Weak AM,651
+Myrtaceae,Psidium cattleianum,AM,326
+Myrtaceae,Psidium,AM,"31, 198, 337"
+Myrtaceae,Rhodomyrtus tomentosa,AM,326
+Myrtaceae,Syzygium firmum,AM,215
+Myrtaceae,Syzygium guineense,AM,"637, 638"
+Myrtaceae,Syzygium jambolanum,AM,548
+Myrtaceae,Syzygium latilimbum,AM,422
+Myrtaceae,Syzygium makul,AM,215
+Myrtaceae,Syzygium operculatum,AM,215
+Myrtaceae,Syzygium rubicundum,AM,215
+Myrtaceae,Tristaniopsis whiteana,NM,568
+Melastomataceae,Clidemia hirta,AM,326
+Melastomataceae,Graffenrieda emarginata,AM+ECM,266
+Melastomataceae,Leandra dasytricha,AM,31
+Melastomataceae,Melastoma affine,NM,422
+Melastomataceae,Melastoma melabathricum,AM,568
+Krameriaceae,Krameria paucifolia,AM,112
+Zygophyllaceae,Balanites aegyptiaca,AM,47
+Zygophyllaceae,Fagonia cretica,AM,567
+Zygophyllaceae,Larrea tridentata,AM,"112, 137"
+Zygophyllaceae,Morkillia mexicana,Weak AM,103
+Zygophyllaceae,Tribulus cistoides,NM,326
+Zygophyllaceae,Tribulus terrester,AM,343
+Zygophyllaceae,Viscainoa geniculata,AM,112
+Zygophyllaceae,Zygophyllum dumosum,AM,268
+Zygophyllaceae,Zygophyllum howittii,NM,438
+Parnassiaceae,Parnassia palustris,AM+NM,"260, 261"
+Celastraceae,Euonymus europaeus,AM,"260, 261"
+Celastraceae,Maytenus boaria,AM,207
+Celastraceae,Maytenus chubutensis,AM,207
+Celastraceae,Maytenus magellanica,AM,207
+Celastraceae,Maytenus phyllantoides,AM,112
+Humiriaceae,Sacoglottis gabonensis,AM,445
+Pandaceae,Panda oleosa,AM,445
+Rhizophoraceae,Combretocapus rotundatus,NM,568
+Rhizophoraceae,Poga oleosa,AM,445
+Linaceae,Linum bienne,AM,472
+Linaceae,Linum catharticum,AM,456
+Linaceae,Linum perenne ssp. anglicum,NM,"260, 261"
+Linaceae,Linum strictum,AM,472
+Linaceae,Linum trigynum,AM,472
+Linaceae,Linum usitatissimum,AM,"171, 180"
+Erythroxylaceae,Erythroxylon compactum,NM,103
+Euphorbiaceae,Acalypha acmophylla,AM,343
+Euphorbiaceae,Actinostemon concolor,AM,651
+Euphorbiaceae,Adelia virgata,AM,112
+Euphorbiaceae,Alchornea cordifolia,AM,445
+Euphorbiaceae,Alchornea tiliaefolia,AM,"422, 655"
+Euphorbiaceae,Aleurites moluccana,AM,326
+Euphorbiaceae,Amperea xiphoclada,ECM,67
+Euphorbiaceae,Baccaurea ramiflora,AM,"422, 655"
+Euphorbiaceae,Breynia fruticosa,AM,422
+Euphorbiaceae,Celaenodendron mexicanum,AM,20
+Euphorbiaceae,Chamaesyce atrococca,AM,326
+Euphorbiaceae,Chamaesyce celastroides,AM,326
+Euphorbiaceae,Chamaesyce degeneri,AM,326
+Euphorbiaceae,Chamaesyce hypericifolia,AM,326
+Euphorbiaceae,Cleidion bracteosum,AM,422
+Euphorbiaceae,Cleidion brevipetiolatum,AM,655
+Euphorbiaceae,Cleistanthus sumatranus,AM,422
+Euphorbiaceae,Croton ciliato-glanduliferus,Weak AM,103
+Euphorbiaceae,Croton floribundus,AM,651
+Euphorbiaceae,Croton kongensis,AM,422
+Euphorbiaceae,Croton machrostachyus,AM,"637, 638"
+Euphorbiaceae,Croton punctatus,AM,143
+Euphorbiaceae,Croton urucurana,AM,651
+Euphorbiaceae,Ditaxis lanceolata,AM,112
+Euphorbiaceae,Drypetes gossweileri,AM,445
+Euphorbiaceae,Drypetes hoaensis,NM,655
+Euphorbiaceae,Epiprinus silhetianus,NM,655
+Euphorbiaceae,Euphorbia amygdaloides,AM,"260, 261"
+Euphorbiaceae,Euphorbia cyparissias,AM,"260, 261"
+Euphorbiaceae,Euphorbia dulcis,AM,"260, 261"
+Euphorbiaceae,Euphorbia esula,AM,"260, 261"
+Euphorbiaceae,Euphorbia gatbergensis,AM,417
+Euphorbiaceae,Euphorbia helioscopia,AM+NM,"260, 261"
+Euphorbiaceae,Euphorbia heterophylla,AM,343
+Euphorbiaceae,Euphorbia hirta,AM,"216, 343"
+Euphorbiaceae,Euphorbia lathyrus,AM,"260, 261"
+Euphorbiaceae,Euphorbia paralias,AM,"260, 261"
+Euphorbiaceae,Euphorbia parliramulosa,AM,417
+Euphorbiaceae,Euphorbia peplis,AM,368
+Euphorbiaceae,Euphorbia peplus,AM,472
+Euphorbiaceae,Euphorbia royleana,AM,343
+Euphorbiaceae,Euphorbia tannensis,AM,438
+Euphorbiaceae,Euphorbia thymifolia,AM,343
+Euphorbiaceae,Glochidion assamicum,NM,655
+Euphorbiaceae,Hevea brasiliensis,AM,"288, 526, 527"
+Euphorbiaceae,Hieronyma alchorneoides,AM,31
+Euphorbiaceae,Jatropha cinerea,AM,112
+Euphorbiaceae,Jatropha cuneata,AM,112
+Euphorbiaceae,Macaranga denticulata,AM,"422, 648"
+Euphorbiaceae,Macaranga indica,AM,655
+Euphorbiaceae,Macaranga peltata,AM,315
+Euphorbiaceae,Manihot esculanta,AM,252
+Euphorbiaceae,Mercurialis annua,AM,"260, 261"
+Euphorbiaceae,Mercurialis perennis,AM+NM,"260, 261"
+Euphorbiaceae,Pedilanthus cymbiferus,NM,103
+Euphorbiaceae,Pedilanthus macrocarpus,AM,112
+Euphorbiaceae,Phyllanthus asteranthus,AM,422
+Euphorbiaceae,Phyllanthus lacunarius,AM,438
+Euphorbiaceae,Phyllanthus niruri,AM,577
+Euphorbiaceae,Phyllanthus urinaria,AM,343
+Euphorbiaceae,Ricinodendron heudelotii,AM,445
+Euphorbiaceae,Ricinus communis,AM,318
+Euphorbiaceae,Sauropus androgynus,AM,253
+Euphorbiaceae,Sebastiania commersoniana,AM,651
+Euphorbiaceae,Uapaca acuminata,AM+ECM,445
+Euphorbiaceae,Uapaca guineense,ECM,"52, 445"
+Euphorbiaceae,Uapaca heudelotti,AM,52
+Euphorbiaceae,Uapaca staudtii,ECM+AM,413
+Euphorbiaceae,Uapaca vanhouttei,ECM,445
+Violaceae,Viola arvensis,AM+NM,"260, 261"
+Violaceae,Viola calaminaria,AM,588
+Violaceae,Viola canina,AM,269
+Violaceae,Viola hirta,AM,"260, 261"
+Violaceae,Viola kitaibeliana,AM+NM,"260, 261"
+Violaceae,Viola lutea,AM,"260, 261"
+Violaceae,Viola maculata,AM,207
+Violaceae,Viola odorata,AM,"260, 261"
+Violaceae,Viola palustris,AM+NM,"260, 261"
+Violaceae,Viola reichenbachiana,AM+NM,"260, 261"
+Violaceae,Viola riviniana,AM,"260, 261"
+Violaceae,Viola rupestris,AM,"260, 261"
+Violaceae,Viola tricolor,AM,"194, 456"
+Violaceae,Viola wailenalenae,AM,326
+Violaceae,Viola,AM,322
+Salicaceae,Casearia sylvestris,AM,"31, 651"
+Salicaceae,Populus alba,ECM+AM,368
+Salicaceae,Populus balsamifera,ECM,470
+Salicaceae,Populus balsamifera ssp. trichocarpa,ECM,271
+Salicaceae,Populus,AM+ECM,"260, 261"
+Salicaceae,Populus canescens,ECM,"260, 261"
+Salicaceae,Populus deltoides,AM,140
+Salicaceae,Populus euroamericana,AM+ECM,317
+Salicaceae,Populus nigra,AM+ECM,"260, 261"
+Salicaceae,Populus nigra ‘Italica’,AM+ECM,"260, 261"
+Salicaceae,Populus serotina,AM+ECM,"260, 261"
+Salicaceae,Populus tremula,AM+ECM,"260, 261"
+Salicaceae,Populus tremula,ECM,59
+Salicaceae,Populus tremuloides,ECM,"145, 338"
+Salicaceae,Populus trichocarpa,ECM,"59, 260, 261"
+Salicaceae,Salix alba,ECM,"260, 261"
+Salicaceae,Salix alba vitellina,ECM,"260, 261"
+Salicaceae,Salix arbuscula,ECM,"260, 261"
+Salicaceae,Salix arctica,ECM,594
+Salicaceae,Salix aurita,ECM+NM,"260, 261"
+Salicaceae,Salix babylonica,AM+ECM,"316, 260, 261"
+Salicaceae,Salix caprea,AM+ECM,"260, 261"
+Salicaceae,Salix cinerea,AM+ECM,"260, 261"
+Salicaceae,Salix daphnoides,ECM,"260, 261"
+Salicaceae,Salix fragilis,ECM,"260, 261"
+Salicaceae,Salix gracilistyla,AM,511
+Salicaceae,Salix herbacea,ECM+EEM,"260, 261"
+Salicaceae,Salix lapponum,ECM,"260, 261"
+Salicaceae,Salix myrsinites,ECM,"260, 261"
+Salicaceae,Salix nigra,AM,140
+Salicaceae,Salix nigricans,ECM+NM,"260, 261"
+Salicaceae,Salix phylicifolia,ECM,"260, 261"
+Salicaceae,Salix polaris,ECM,594
+Salicaceae,Salix purpurea,AM+ECM,"260, 261"
+Salicaceae,Salix reinii,ECM,587
+Salicaceae,Salix repens,AM,605
+Salicaceae,Salix reticulata,ECM,"594, 260, 261"
+Salicaceae,Salix triandra,ECM,"260, 261"
+Salicaceae,Salix viminalis,AM,60
+Salicaceae,Xylosma ciliatifolium,AM,651
+Salicaceae,Xylosma pseudosalzmannii,AM,651
+Turneraceae,Turnera ulmifolia,AM,143
+Clusiaceae,Calophyllum sclerophyllum,AM,568
+Clusiaceae,Calophyllum soulattri,AM,568
+Clusiaceae,Clusia minor,AM,474
+Clusiaceae,Clusia rotundata,AM,474
+Clusiaceae,Cratoxylum arborescens,AM,568
+Clusiaceae,Garcinia cowa,NM,655
+Clusiaceae,Garcinia kola,AM,445
+Clusiaceae,Garcinia lucida,AM,445
+Clusiaceae,Garcinia xanthochymus,Facultative AM,422
+Hypericaceae,Hypericum calycinum,NM,"260, 261"
+Hypericaceae,Hypericum hirsutum,NM,"260, 261"
+Hypericaceae,Hypericum humifusum,NM,"260, 261"
+Hypericaceae,Hypericum maculatum,AM,"194, 260, 261"
+Hypericaceae,Hypericum montanum,NM,"260, 261"
+Hypericaceae,Hypericum perforatum,AM,"409, 260, 261"
+Hypericaceae,Hypericum pulchrum,AM,"260, 261"
+Hypericaceae,Hypericum tetrapterum,AM+NM,"260, 261"
+Elatinaceae,Elatine hexandra,AM,62
+Ochnaceae,Lophira alata,AM,445
+Chrysobalanaceae,Licania platypus,AM,321
+Oxalidaceae,Oxalis acetosella,AM,598
+Oxalidaceae,Oxalis corniculata,AM,"294, 643, 260, 261"
+Oxalidaceae,Oxalis corymbosa,AM,643
+Oxalidaceae,Oxalis exilis,AM,"260, 261"
+Oxalidaceae,Oxalis europaea,AM,"260, 261"
+Oxalidaceae,Oxalis stricta,AM,"260, 261"
+Oxalidaceae,Oxalis valdiviensis,AM,207
+Cunoniaceae,Ceratopetalum apetalum,AM,387
+Elaeocarpaceae,Aristotelia chilensis,AM,207
+Elaeocarpaceae,Elaeocarpus austro-yunnanensis,AM,422
+Elaeocarpaceae,Sloanea guianensis,AM,31
+Polygalaceae,Polygala nicaeensis,AM,368
+Polygalaceae,Polygala amarella,AM+NM,"260, 261"
+Polygalaceae,Polygala calcarea,AM,"260, 261"
+Polygalaceae,Polygala serpyllifolia,AM,"260, 261"
+Polygalaceae,Polygala vulgaris,AM,194
+Polygalaceae,Salomonia sp.,Mycoheterotrophy via AM,658
+Fabaceae,Acacia albida,AM,174
+Fabaceae,Acacia ampliceps,AM,477
+Fabaceae,Acacia arabica,AM,317
+Fabaceae,Acacia auriculiformis,AM,"52, 229"
+Fabaceae,Acacia bonariensis,AM+ECM,211
+Fabaceae,Acacia caven,AM,211
+Fabaceae,Acacia cochliacantha,Weak AM,103
+Fabaceae,Acacia constricta,Weak AM,103
+Fabaceae,Acacia eriopoda,AM,477
+Fabaceae,Acacia farnesiana,AM,"343, 600"
+Fabaceae,Acacia holosericea,ECM,186
+Fabaceae,Acacia koa,AM,"326, 406"
+Fabaceae,Acacia leptocarpa,AM,52
+Fabaceae,Acacia linifolia,AM,68
+Fabaceae,Acacia mangium,ECM,"186, 187"
+Fabaceae,Acacia nilotica,AM,"473, 538"
+Fabaceae,Acacia obtusifolia,ECM+AM,67
+Fabaceae,Acacia pennatula,AM,18
+Fabaceae,Acacia polyphylla,AM,651
+Fabaceae,Acacia suaveolens,ECM+AM,67
+Fabaceae,Acacia tortilis,AM,567
+Fabaceae,Acacia ulicifolia,ECM+AM,67
+Fabaceae,Adenanthera pavonina,AM,52
+Fabaceae,Aeschynomene indica,AM,546
+Fabaceae,Afzelia africana,NM,47
+Fabaceae,Afzelia bipidensis,ECM+AM,"413, 445"
+Fabaceae,Afzelia pachyloba,AM+ECM,445
+Fabaceae,Afzelia quanzensis,ECM,418
+Fabaceae,Albizia corniculata,AM,655
+Fabaceae,Albizia falcataria,AM,14
+Fabaceae,Albizia ferruginea,AM,"52, 256"
+Fabaceae,Albizia gummifera,AM,"637, 638"
+Fabaceae,Albizia hassleri,AM,651
+Fabaceae,Albizia kalkora,AM,343
+Fabaceae,Albizia lebbeck,AM,"52, 216, 477, 538, 548"
+Fabaceae,Albizia schimperiana,AM,"637, 638"
+Fabaceae,Alysicarpus regosus,AM,336
+Fabaceae,Alysicarpus vaginalis,AM,343
+Fabaceae,Amorpha crenulata,AM,202
+Fabaceae,Amphimas ferrugineus,AM,445
+Fabaceae,Amphimas pterocarpoides,AM,"52, 445"
+Fabaceae,Anadenanthera colubrina,AM,"452, 651"
+Fabaceae,Anadenanthera falcata,AM,548
+Fabaceae,Anadenanthera macrocarpa,AM,651
+Fabaceae,Anadenanthera peregrina,AM,"528, 593"
+Fabaceae,Anthonotha fragrans,ECM,52
+Fabaceae,Anthonotha macrophylla,ECM,"52, 413, 445"
+Fabaceae,Anthyllis cytisoides,AM,"170, 234, 583"
+Fabaceae,Anthyllis tetraphylla,AM,472
+Fabaceae,Anthyllis vulneraria,AM,456
+Fabaceae,Aphanocalyx cynometroides,ECM,413
+Fabaceae,Arachis hypogaea,AM,111
+Fabaceae,Astragalus alpinus,NM,594
+Fabaceae,Astragalus applegatei,AM,55
+Fabaceae,Astragalus glycyphyllos,NM,"260, 261"
+Fabaceae,Atylosia scarabaeoides,AM,343
+Fabaceae,Baphia nitida,AM,52
+Fabaceae,Bauhinia forficata,AM,"211, 651"
+Fabaceae,Berlinia bracteosa,ECM,445
+Fabaceae,Berlinia confusa,ECM,"52, 445"
+Fabaceae,Bossiaea obcordata,AM,67
+Fabaceae,Brachystegia cynometroides,ECM,445
+Fabaceae,Brachystegia eurycoma,ECM,445
+Fabaceae,Brachystegia leonensis,ECM,52
+Fabaceae,Brachystegia zenkeri,ECM,445
+Fabaceae,Bussea occidentalis,AM,52
+Fabaceae,Caesalpinia eriostachys,AM,20
+Fabaceae,Caesalpinia ferrea,AM,548
+Fabaceae,Caesalpinia gilliesii,AM,211
+Fabaceae,Caesalpinia pannosa,AM,112
+Fabaceae,Caesalpinia peltophoroides,AM,548
+Fabaceae,Cajanus cajan,AM,"172, 624"
+Fabaceae,Calliandra eriophylla,Weak AM,103
+Fabaceae,Calliandra parvifolia,Weak AM+ ECM,211
+Fabaceae,Calliandra selloi,AM,211
+Fabaceae,Calliandra tweedii,AM+ ECM,211
+Fabaceae,Calopogonium caeruleum,AM,289
+Fabaceae,Calopogonium mucunoides,AM,439
+Fabaceae,Canavalia rosea,AM,"144, 336"
+Fabaceae,Cassia grandis,AM,548
+Fabaceae,Cassia siamea,AM,"52, 230, 251"
+Fabaceae,Cassia spectabilis,AM,258
+Fabaceae,Castanospermum australe,AM,4
+Fabaceae,Cathormion polyanthum,AM,211
+Fabaceae,Centrolobium tomentosum,AM,"372, 651"
+Fabaceae,Ceratonia siliqua,AM,147
+Fabaceae,Cercidium praecox,AM,112
+Fabaceae,Chamaecrista chamaecristoides,AM,143
+Fabaceae,Cicer arietinum,AM,"124, 125"
+Fabaceae,Colophospermum mopane,AM,477
+Fabaceae,Copaifera langsdorffii,AM,"548, 651"
+Fabaceae,Cordyla pinnata,AM,47
+Fabaceae,Coronilla emerus ssp. emeroides,AM,368
+Fabaceae,Coronilla scorpioides,AM,472
+Fabaceae,Coronilla varia,AM,159
+Fabaceae,Crotalaria burhia,AM,567
+Fabaceae,Crotalaria incana,AM,143
+Fabaceae,Crotalaria medicaginea,AM,"343, 567"
+Fabaceae,Cullen discolor,AM,438
+Fabaceae,Cullen pallida,AM,438
+Fabaceae,Cylicodiscus gabunensis,AM,445
+Fabaceae,Cynometra alexandri,AM,591
+Fabaceae,Cynometra leonensis,AM,52
+Fabaceae,Cynometra sanagaensis,AM,445
+Fabaceae,Cytisus scoparius,AM,"260, 261"
+Fabaceae,Dalbergia obtusifolia,AM,655
+Fabaceae,Dalbergia sissoo,AM,"317, 473"
+Fabaceae,Daniella ogea,AM,445
+Fabaceae,Daviesia corymbosa,AM,67
+Fabaceae,Desmanthus illinoensis,AM,541
+Fabaceae,Desmodium heterophyllum,AM,355
+Fabaceae,Desmodium microphyllum,AM,343
+Fabaceae,Desmodium oxyphyllum,AM,643
+Fabaceae,Desmodium paniculatum,AM,541
+Fabaceae,Detarium macrocarpum,AM,445
+Fabaceae,Dialium guineense,AM,"47, 52"
+Fabaceae,Dicorynia guianensis,AM,"71, 161"
+Fabaceae,Didelotia africana,ECM+Weak AM,413
+Fabaceae,Didelotia letouzeyi,ECM,"413, 445"
+Fabaceae,Dillwyinia parvifolia var.,ECM+AM,67
+Fabaceae,Dillwynia retorta,ECM,67
+Fabaceae,Diphysa robinoides,AM,143
+Fabaceae,Dipteryx panamensis,AM,321
+Fabaceae,Distemonanthus benthamianus,AM,445
+Fabaceae,Dorycnium hirsutum,NM,368
+Fabaceae,Enterolobium contortisiliquum,AM,"211, 651"
+Fabaceae,Enterolobium cyclocarpum,AM,"143, 256"
+Fabaceae,Eperua falcata,AM,161
+Fabaceae,Erythrina berteroana,AM,142
+Fabaceae,Erythrina crista-galli,AM,211
+Fabaceae,Erythrina poeppigiana,AM,148
+Fabaceae,Erythrophleum ivorense,AM,"52, 445"
+Fabaceae,Eysenhardtia polystachya,Weak AM,103
+Fabaceae,Faidherbia albida,AM,46
+Fabaceae,Genista hirsute,AM,339
+Fabaceae,Genista tinctoria,AM,"260, 261"
+Fabaceae,Geoffroea decorticians,AM,211
+Fabaceae,Gilbertiodendron brachystegioides,ECM,445
+Fabaceae,Gilbertiodendron dewevrei,ECM+AM,591
+Fabaceae,Gilbertiodendron preussi,ECM,52
+Fabaceae,Gleditsia amorphoides,Weak AM+ ECM,211
+Fabaceae,Gliricidia sepium,AM,"52, 199, 258"
+Fabaceae,Glyceria maxima,NM,62
+Fabaceae,Glycine max,AM,37
+Fabaceae,Gompholobium,AM,67
+Fabaceae,Gossweilerodendron balsamiferum,AM,445
+Fabaceae,Guibourtia tessmannii,AM,445
+Fabaceae,Havardia albicans,AM,18
+Fabaceae,Hedysarum confertum,AM,496
+Fabaceae,Hedysarum coronarium,AM,351
+Fabaceae,Hedysarum spinosissimum,AM,496
+Fabaceae,Hippocrepis comosa,AM,"260, 261"
+Fabaceae,Hippocrepis unisiliquosa,AM,472
+Fabaceae,Holocalyx balansae,Weak AM,651
+Fabaceae,Hymenaea courbaril,NM,548
+Fabaceae,Indigofera brevidens,Weak AM,438
+Fabaceae,Indigofera cordifolia,AM,567
+Fabaceae,Indigofera linifolia,AM,567
+Fabaceae,Inga leiocalycina,AM,627
+Fabaceae,Inga marginata,AM,31
+Fabaceae,Inga sessilis,AM,651
+Fabaceae,Inga striata,AM,651
+Fabaceae,Inga urguuensis,AM,211
+Fabaceae,Intsia palembanica,AM+ECM,14
+Fabaceae,Julbernardia seretii,ECM+AM,591
+Fabaceae,Koompassia malacensis,NM,568
+Fabaceae,Kummerowia striata,AM,213
+Fabaceae,Lablab purpureusus,AM,640
+Fabaceae,Laburnum anagyroides,AM,"260, 261"
+Fabaceae,Lathyrus montanus,AM,"260, 261"
+Fabaceae,Lathyrus japonicus,AM,"260, 261"
+Fabaceae,Lathyrus niger,AM+NM,"260, 261"
+Fabaceae,Lathyus odoratus,AM,"260, 261"
+Fabaceae,Lathyrus pratensis,AM,194
+Fabaceae,Lens culinaris,AM,319
+Fabaceae,Leucaena leucocephala,AM,"18, 52, 254, 326"
+Fabaceae,Lonchocarpus campestris,AM,651
+Fabaceae,Lonchocarpus muehlbergianus,Weak AM,651
+Fabaceae,Lonchocarpus nitidus,AM+ ECM,211
+Fabaceae,Lotus corniculatus,AM,"140, 159, 194, 307, 456"
+Fabaceae,Lotus glaber,AM,508
+Fabaceae,Lotus tenuis,AM,396
+Fabaceae,Lotus uliginosus,AM,"260, 261"
+Fabaceae,Lupinus arcticus,NM,594
+Fabaceae,Lysiloma candida,AM,112
+Fabaceae,Machaerium minutiflorum,AM,651
+Fabaceae,Machaerium stipitatum,Weak AM,651
+Fabaceae,Macrotyloma uniflorum,AM,453
+Fabaceae,Medicago littoralis,AM,368
+Fabaceae,Medicago lupulina,AM,"260, 261"
+Fabaceae,Medicago marina,AM,368
+Fabaceae,Medicago polymorpha,AM,"294, 260, 261"
+Fabaceae,Medicago sativa,AM,"38, 159, 351, 260, 261"
+Fabaceae,Melilotus alba,AM,"260, 261"
+Fabaceae,Melilotus officinalis,AM,"159, 260, 261"
+Fabaceae,Microberlinia bisulcata,ECM,413
+Fabaceae,Mimosa adenantheroides,Weak AM,103
+Fabaceae,Mimosa bimucronata,AM,452
+Fabaceae,Mimosa biuncifera,Weak AM,103
+Fabaceae,Mimosa calcicola,Weak AM,103
+Fabaceae,Mimosa lacerata,Weak AM,103
+Fabaceae,Mimosa luisana,AM,103
+Fabaceae,Mimosa polyantha,Weak AM,103
+Fabaceae,Mimosa pudic,AM,326
+Fabaceae,Mimosa purpusii,Weak AM,103
+Fabaceae,Mimosa scabrella,AM,"31, 651"
+Fabaceae,Mimosa texana,Weak AM,103
+Fabaceae,Monopetalanthus le-testui,ECM,445
+Fabaceae,Monopetalanthus microphyllus,ECM,445
+Fabaceae,Mora excelsa,AM,592
+Fabaceae,Olneya tesota,AM,112
+Fabaceae,Onobrychis viciifolia,AM,"260, 261"
+Fabaceae,Onobrychis sativa,AM,"260, 261"
+Fabaceae,Ononis repens,AM,"260, 261"
+Fabaceae,Ononis spinosa,AM,"260, 261"
+Fabaceae,Ormosia arborea,NM,548
+Fabaceae,Oxystigma buchholzii,AM,445
+Fabaceae,Oxystigma mannii,AM,445
+Fabaceae,Oxytropis scammaniana,AM,594
+Fabaceae,Pachyelasma tessmannii,AM,445
+Fabaceae,Paraberlinia bifoliolata,ECM,445
+Fabaceae,Parapiptadenia rigida,AM,"211, 452, 651"
+Fabaceae,Parkia bicolor,AM,52
+Fabaceae,Parkia biglobosa,AM,"47, 247"
+Fabaceae,Parkia speciosa,AM,14
+Fabaceae,Parkinsonia aculeata,AM,211
+Fabaceae,Peltophorum dubium,AM,211
+Fabaceae,Pentaclethra macrophyll,AM,"52, 445"
+Fabaceae,Phaseolus lunatus,AM,20
+Fabaceae,Phaseolus mungo,AM,478
+Fabaceae,Phaseolus radiatus,AM,478
+Fabaceae,Phaseolus vulgaris,AM,37
+Fabaceae,Piptadeniastrum africanum,AM,"52, 445"
+Fabaceae,Plagiosiphon longitubus,AM,445
+Fabaceae,Plagiosiphon multijugus,AM,445
+Fabaceae,Platycyamus regnellii,AM,548
+Fabaceae,Poecilanthe parviflora,AM,"211, 651"
+Fabaceae,Prioria copaifera,AM,592
+Fabaceae,Prosopis articulata,AM,112
+Fabaceae,Prosopis cineraria,AM,379
+Fabaceae,Prosopis glandulose,AM,137
+Fabaceae,Prosopis juliflora,AM,"76, 175, 567"
+Fabaceae,Prosopis laevigata,AM,495
+Fabaceae,Psoralea bituminosa,AM,472
+Fabaceae,Pterocarpus angolensis,AM,419
+Fabaceae,Pterocarpus mildbraedii,AM,445
+Fabaceae,Pterocarpus soyauxii,AM,445
+Fabaceae,Pterogyne nitens,Weak AM,651
+Fabaceae,Pueraria phaseoloides,AM,150
+Fabaceae,Pultenaea elliptica,ECM+AM,67
+Fabaceae,Retama sphaerocarpa,AM,"16, 17, 497"
+Fabaceae,Robinia pseudoacacia,ECM,330
+Fabaceae,Samanea saman,AM,52
+Fabaceae,Schizolobium parahyba,AM,548
+Fabaceae,Schrankia quadrivalvis,AM,143
+Fabaceae,Scorodophloeus zenkeri,AM,445
+Fabaceae,Scorpiurus muricatus,AM,472
+Fabaceae,Senna corymbosa,AM,211
+Fabaceae,Senna macranthera,AM,"548, 651"
+Fabaceae,Senna multijuga,AM,548
+Fabaceae,Senna siamea,AM,441
+Fabaceae,Senna spectabilis,AM,548
+Fabaceae,Sesbania aegyptiaca,AM,231
+Fabaceae,Sesbania grandiflora,AM,231
+Fabaceae,Sesbania punicea,AM,211
+Fabaceae,Sesbania tomentosa,AM,"326, 227"
+Fabaceae,Sophora chrysophylla,AM,"326, 406"
+Fabaceae,Spartium junceum,AM,368
+Fabaceae,Strophostyles helvola,AM,596
+Fabaceae,Strophostyles umbellata,AM,532
+Fabaceae,Stryphnodendron microstachyum,AM,36
+Fabaceae,Stylosanthes guvanensis,AM,545
+Fabaceae,Stylosanthes scarbaeoidesand,AM,545
+Fabaceae,Swainsona phacoides,AM,438
+Fabaceae,Tamarindus indica,AM,"47, 247, 343"
+Fabaceae,Tephrosia purpurea,AM,"216, 343"
+Fabaceae,Tephrosia sphaerospora,AM,438
+Fabaceae,Tetraberlinia bifoliolata,ECM+Weak AM,413
+Fabaceae,Tetraberlinia moreliana,ECM,413
+Fabaceae,Tipuana tipu,AM,548
+Fabaceae,Toubaouate brevipaniculata,ECM,445
+Fabaceae,Trifolium arvense,AM,307
+Fabaceae,Trifolium aureum,AM,194
+Fabaceae,Trifolium dubium,AM,"643, 260, 261"
+Fabaceae,Trifolium fragiferum,NM,"260, 261"
+Fabaceae,Trifolium glomeratum,AM,"260, 261"
+Fabaceae,Trifolium hybridum,AM,307
+Fabaceae,Trifolium medium,AM,"260, 261"
+Fabaceae,Trifolium pratense,AM,"140, 159, 194, 204, 456"
+Fabaceae,Trifolium repens,AM,"140, 194, 283, 643, 260, 261"
+Fabaceae,Trifolium spadiceum,AM,194
+Fabaceae,Trifolium subterraneum,AM,171
+Fabaceae,Trigonella foenumgraecum,AM,220
+Fabaceae,Ulex europaeus,AM,"368, 260, 261"
+Fabaceae,Ulex gallii,NM,"260, 261"
+Fabaceae,Ulex parviflorus,AM,497
+Fabaceae,Vicia angustifolia var. segetalis,AM,643
+Fabaceae,Vicia cracca,AM,"194, 294, 260, 261"
+Fabaceae,Vicia faba,AM,191
+Fabaceae,Vicia nigricans,AM,207
+Fabaceae,Vicia hirsute,AM,"643, 260, 261"
+Fabaceae,Vicia sativa,AM,"260, 261"
+Fabaceae,Vicia sepium,AM,"194, 260, 261"
+Fabaceae,Vicia sylvatica,AM+ECM,"260, 261"
+Fabaceae,Vicia tetrasperma,AM,"307, 260, 261"
+Fabaceae,Vicia villosa,AM,140
+Fabaceae,Vigna aconitifolius,AM,343
+Fabaceae,Vigna luteola,AM,273
+Fabaceae,Vigna marina,AM,"326, 547"
+Fabaceae,Vigna mungo,AM,319
+Fabaceae,Vigna parkeri,AM,440
+Fabaceae,Vigna radiate,AM,377
+Fabaceae,Vigna unguiculata,AM,"37, 287"
+Fabaceae,Xylia xylocarpa,AM,315
+Fabaceae,Zornia sp.,Weak AM,103
+Rosaceae,Acaena magellanica,AM,342
+Rosaceae,Acaena minor,AM,342
+Rosaceae,Acaena novae-zelandiae,AM,"260, 261"
+Rosaceae,Acaena ovalifolia,AM,207
+Rosaceae,Acaena pinnatifida,AM,207
+Rosaceae,Adenostoma fasciculatum,AM+ECM,21
+Rosaceae,Agrimonia eupatoria,AM,"260, 261"
+Rosaceae,Alchemilla alpina,AM,"80, 194, 260, 261"
+Rosaceae,Alchemilla glabra,AM,"260, 261"
+Rosaceae,Alchemilla glaucescens,AM,194
+Rosaceae,Alchemilla glomerulans,AM,503
+Rosaceae,Alchemilla vulagris agg.,AM+NM,"260, 261"
+Rosaceae,Alchemilla xanthochlora,AM,"260, 261"
+Rosaceae,Aphanes arvensis,AM,"260, 261"
+Rosaceae,Cotoneaster integerrimus,AM,"260, 261"
+Rosaceae,Crataegus laevigata,AM+ECM,"260, 261"
+Rosaceae,Crataegus monogyna,ECM,368
+Rosaceae,Dryas octopetala,ECM,"80, 594"
+Rosaceae,Duchesnea chrysantha,AM,643
+Rosaceae,Filipendula ulmaria,AM+NM,"260, 261"
+Rosaceae,Fragaria chiloensis,AM,207
+Rosaceae,Fragaria vesca,AM+NM,"260, 261"
+Rosaceae,Fragaria xananassa,AM,537
+Rosaceae,Geum rivale,AM,194
+Rosaceae,Geum urbanum,AM,"260, 261"
+Rosaceae,Geum virginianum,AM,140
+Rosaceae,Hagenia abyssinica,AM,"637, 638"
+Rosaceae,Malus communis,AM,"260, 261"
+Rosaceae,Malus domestica,AM,368
+Rosaceae,Malus micromalus,AM,26
+Rosaceae,Malus pumila var. domestica,AM,233
+Rosaceae,Malus sylvestris,AM+ECM,"260, 261"
+Rosaceae,Osteomeles anthyllidifolia,AM,326
+Rosaceae,Ovidia andina,AM,207
+Rosaceae,Potentilla anglica,AM,"260, 261"
+Rosaceae,Potentilla anserine,AM,"307, 626, 260, 261"
+Rosaceae,Potentilla argentea,AM,"260, 261"
+Rosaceae,Potentilla cinerea,AM,456
+Rosaceae,Potentilla crantzii,AM,"194, 260, 261"
+Rosaceae,Potentilla erecta,AM,"194, 586"
+Rosaceae,Potentilla fruticosa,AM,"260, 261"
+Rosaceae,Potentilla hookeriana,AM,443
+Rosaceae,Potentilla palustris,AM+NM,"260, 261"
+Rosaceae,Potentilla pulchella,AM,443
+Rosaceae,Potentilla reptans,AM,"260, 261"
+Rosaceae,Potentilla sterilis,AM,"260, 261"
+Rosaceae,Potentilla tabernaemontani,AM,"260, 261"
+Rosaceae,Prunus africana,AM,"637, 638"
+Rosaceae,Prunus avium,AM,465
+Rosaceae,Prunus cerasifera,AM,73
+Rosaceae,Prunus cerasus,ECM,"260, 261"
+Rosaceae,Prunus domestica,AM+NM,"260, 261"
+Rosaceae,Prunus maritima,AM,324
+Rosaceae,Prunus padus,AM+ECM,"260, 261"
+Rosaceae,Prunus sellowii,Weak AM,651
+Rosaceae,Prunus spinosa,AM+NM,"260, 261"
+Rosaceae,Pyrus communis,AM,219
+Rosaceae,Pyrus pyraster,AM+ECM,"260, 261"
+Rosaceae,Rosa arvensis,AM,"260, 261"
+Rosaceae,Rosa canina,AM,"81, 260, 261"
+Rosaceae,Rosa hybrida,AM,160
+Rosaceae,Rosa rubiginosa,AM,207
+Rosaceae,Rosa rugosa,AM,324
+Rosaceae,Rosa sempervirens,AM,368
+Rosaceae,Rubus caesius,AM,"260, 261"
+Rosaceae,Rubus chamaemorus,NM,"260, 261"
+Rosaceae,Rubus fruticosus s. l.,AM,"260, 261"
+Rosaceae,Rubus idaeus,AM,"573, 574"
+Rosaceae,Rubus nessensis,AM+ECM,"260, 261"
+Rosaceae,Rubus rufus,AM,422
+Rosaceae,Rubus saxatilis,AM,"260, 261"
+Rosaceae,Rubus ulmifolius,AM,368
+Rosaceae,Sanguisorba minor,AM,"260, 261"
+Rosaceae,Sanguisorba officinalis,AM,"260, 261"
+Rosaceae,Sibbaldia procumbens,AM,594
+Rosaceae,Sorbus aria,AM+ECM,"260, 261"
+Rosaceae,Sorbus aucuparia,AM+ECM+NM,"260, 261"
+Rosaceae,Sorbus torminalis,ECM,"260, 261"
+Rosaceae,Spiraea latifolia,AM,140
+Rosaceae,Spiraea tomentosa,AM,140
+Rhamnaceae,Colletia hystrix,AM,207
+Rhamnaceae,Colubrina glabra,AM,112
+Rhamnaceae,Colubrina glandulosa,AM,651
+Rhamnaceae,Colubrina oppositifolia,AM,227
+Rhamnaceae,Condalia globosa,AM,112
+Rhamnaceae,Discaria articulata,AM,207
+Rhamnaceae,Discaria chacaye,AM,207
+Rhamnaceae,Frangula alnus,AM+ECM+NM,"260, 261"
+Rhamnaceae,Hovenia dulcis,AM,548
+Rhamnaceae,Phylica ericoides,AM,24
+Rhamnaceae,Rhamnus catharticus,AM+NM,"260, 261"
+Rhamnaceae,Rhamnus lycioides,AM,"17, 108"
+Rhamnaceae,Ventilago calyculata,AM,655
+Rhamnaceae,Zizyphus mauritiana,AM,"47, 343, 378, 381, 655"
+Rhamnaceae,Zizyphus nummularia,AM,567
+Rhamnaceae,Zizyphus obtusifolia,AM,112
+Rhamnaceae,Ziziphus xylopyrus,AM,380
+Elaeagnaceae,Elaeagnus commutata,AM,613
+Elaeagnaceae,Hippophae rhamnoides,AM,"405, 260, 261"
+Elaeagnaceae,Hippophae tibetana,AM,581
+Elaeagnaceae,Shepherdia canadensis,AM,581
+Ulmaceae,Celtis wightii,AM,422
+Ulmaceae,Gironniera subaequalis,NM,422
+Ulmaceae,Trema micrantha,AM,"548, 651"
+Ulmaceae,Trema orientalis,AM,445
+Ulmaceae,Ulmus glabra,AM,"260, 261"
+Ulmaceae,Ulmus procera,AM+ECM,"260, 261"
+Cannabaceae,Humulus lupulus,AM+NM,"260, 261"
+Moraceae,Artocarpus altilis,AM,136
+Moraceae,Brosimum alicastrum,AM,18
+Moraceae,Brosimum lactescens,AM,31
+Moraceae,Broussonetia papyrifera,AM,343
+Moraceae,Ficus cyrtophylla,NM,655
+Moraceae,Ficus guaranitica,AM,651
+Moraceae,Ficus hirta,AM,422
+Moraceae,Ficus hispida,AM,655
+Moraceae,Ficus langkokensis,AM,655
+Moraceae,Milicia excelsa,AM,445
+Moraceae,Milicia regia,AM,279
+Moraceae,Morus alba,AM,"475, 535"
+Moraceae,Musanga cecropioides,AM,445
+Moraceae,Sorocea bonplandii,Weak AM,651
+Urticaceae,Boehmeria zollingeriana,AM,422
+Urticaceae,Cecropia glaziovii,AM,651
+Urticaceae,Cecropia pachystachya,AM,651
+Urticaceae,Elatostema parvum,AM,422
+Urticaceae,Parietaria judaica,AM+NM,"260, 261"
+Urticaceae,Pipturus albidus,AM,326
+Urticaceae,Touchardia latifolia,NM,326
+Urticaceae,Urera glabra,AM,326
+Urticaceae,Urtica dioica,NM,611
+Urticaceae,Urtica urens,NM,"260, 261"
+Cucurbitaceae,Bryonia dioica,AM,"260, 261"
+Cucurbitaceae,Citrullus lanatus,AM,"310, 438"
+Cucurbitaceae,Ctenolepis cerasiformis,AM,567
+Cucurbitaceae,Cucumis callosus,AM,567
+Cucurbitaceae,Cucumis sativus,AM,499
+Cucurbitaceae,Cucurbita foetidissima,AM,396
+Cucurbitaceae,Cucurbita pepo,AM,340
+Cucurbitaceae,Mukia maderaspatana,AM,216
+Begoniaceae,Begonia angustinei,AM,422
+Begoniaceae,Begonia cathayana,AM,422
+Begoniaceae,Hillebrandia sandwicensis,AM,326
+Tetramelaceae,Tetrameles nudiflora,AM,422
+Fagaceae,Castanea sativa,ECM,"260, 261"
+Fagaceae,Castanopsis borneensis,ECM,267
+Fagaceae,Castanopsis indica,NM,422
+Fagaceae,Fagus sylvatica,ECM,"529, 260, 261"
+Fagaceae,Lithocarpus densiflora,ECM,375
+Fagaceae,Lithocarpus leucostachyus,NM,422
+Fagaceae,Nothofagus dombeyi,ECM,207
+Fagaceae,Quercus alba,ECM,"444, 470"
+Fagaceae,Quercus cerris,ECM,"260, 261"
+Fagaceae,Quercus ilex,ECM,"368, 472, 260, 261"
+Fagaceae,Quercus petraea,ECM,"53, 260, 261"
+Fagaceae,Quercus pubescens,ECM,138
+Fagaceae,Quercus robur,ECM,"53, 368, 260, 261"
+Fagaceae,Quercus rubra,ECM,214
+Myricaceae,Comptonia peregrina,Facultative AM,284
+Myricaceae,Myrica cerifera,AM,468
+Myricaceae,Myrica faya,AM,326
+Myricaceae,Myrica gale,Facultative AM,146
+Myricaceae,Myrica pensylvanica,NM,324
+Juglandaceae,Engelhardtia roxburghiana,ECM,267
+Juglandaceae,Juglans nigra,AM,465
+Juglandaceae,Juglans regia,AM,177
+Betulaceae,Alnus acuminata,ECM,61
+Betulaceae,Alnus cordata,AM,361
+Betulaceae,Alnus glutinosa,AM,210
+Betulaceae,Alnus incana,AM,34
+Betulaceae,Alnus sinuate,ECM,271
+Betulaceae,Alnus tenuifolia,ECM,641
+Betulaceae,Betula alleghaniensis,ECM,"162, 516"
+Betulaceae,Betula lenta,ECM,619
+Betulaceae,Betula nana,ECM,"594, 260, 261"
+Betulaceae,Betula papyrifera,ECM,303
+Betulaceae,Betula pendula,ECM,"92, 155"
+Betulaceae,Betula pubescens,ECM,370
+Betulaceae,Betula verrucosa,ECM,217
+Betulaceae,Carpinus betulus,ECM,"529, 260, 261"
+Betulaceae,Corylus avellana,ECM,"367, 529, 260, 261"
+Casuarinaceae,Allocasuarina littoralis,ECM,579
+Casuarinaceae,Casuarina cunninghamiana,Weak AM,485
+Casuarinaceae,Casuarina equisetifolia,AM,"447, 326, 542, 606"
+Casuarinaceae,Casuarina equisetifolia ssp. equisetifolia,ECM,579
+Tropaeolaceae,Tropaeolum majus,AM,"360, 610"
+Moringaceae,Moringa concanensis,AM,450
+Caricaceae,Carica papaya,AM,"360, 595"
+Bataceae,Batis maritime,NM,326
+Resedaceae,Reseda lutea,AM+NM,"260, 261"
+Resedaceae,Reseda luteola,AM+NM,"260, 261"
+Capparidaceae,Atamisquea emarginata,AM,112
+Capparidaceae,Capparis sandwichiana,NM,326
+Brassicaceae,Alliaria petiolata,NM,"260, 261"
+Brassicaceae,Alyssum montanum,NM,456
+Brassicaceae,Arabidopsis thaliana,Weak AM+NM,"260, 261"
+Brassicaceae,Arabis alpina,NM,"260, 261"
+Brassicaceae,Arabis hirsuta,NM,"472, 260, 261"
+Brassicaceae,Armoracia rusticana,AM+NM,"260, 261"
+Brassicaceae,Barbarea vulgaris,NM,"260, 261"
+Brassicaceae,Biscutella laevigata,NM,456
+Brassicaceae,Blennodia pterosperma,NM,438
+Brassicaceae,Brassica napus,AM+NM,"260, 261"
+Brassicaceae,Brassica nigra,NM,"83, 260, 261"
+Brassicaceae,Brassica oleracea,AM+NM,"260, 261"
+Brassicaceae,Brassica rapa,NM,"260, 261"
+Brassicaceae,Cakile maritima,NM,368
+Brassicaceae,Capsella bursa-pastoris,Facultative AM,167
+Brassicaceae,Cardamine amara,NM,"260, 261"
+Brassicaceae,Cardamine bulbifera,AM+NM,"260, 261"
+Brassicaceae,Cardamine concatenata,NM,165
+Brassicaceae,Cardamine corymbosa,NM,342
+Brassicaceae,Cardamine flexuosa,AM+NM,"260, 261"
+Brassicaceae,Cardamine hirsuta,AM+NM,"260, 261"
+Brassicaceae,Cardamine impatiens,NM,"260, 261"
+Brassicaceae,Cardamine pratensis,NM,"260, 261"
+Brassicaceae,Cardamine trifolia,NM,"260, 261"
+Brassicaceae,Cardaminopsis arenosa,AM,456
+Brassicaceae,Cochlearia anglica,AM+NM,"260, 261"
+Brassicaceae,Cochlearia danica,AM,"260, 261"
+Brassicaceae,Cochlearia officinalis,AM+NM,"260, 261"
+Brassicaceae,Diplotaxis erucoides,AM+NM,"260, 261"
+Brassicaceae,Diplotaxis muralis,AM+NM,"260, 261"
+Brassicaceae,Erophila verna,NM,"260, 261"
+Brassicaceae,Erysimum cheiranthoides,NM,"260, 261"
+Brassicaceae,Hesperis matronalis,Facultative AM,167
+Brassicaceae,Iberis amara,AM,"260, 261"
+Brassicaceae,Isatis tinctoria,NM,"260, 261"
+Brassicaceae,Lepidium bidentatum,AM,326
+Brassicaceae,Lepidium phlebopetalum,NM,438
+Brassicaceae,Lepidium ruderale,NM,"260, 261"
+Brassicaceae,Lepidium serra,NM,326
+Brassicaceae,Matthiola incana,Facultative AM,167
+Brassicaceae,Nasturtium officinale,NM,"260, 261"
+Brassicaceae,Pringlea antiscorbutica,NM,560
+Brassicaceae,Raphanus raphanistrum,NM,"260, 261"
+Brassicaceae,Raphanus sativus,AM+NM,"260, 261"
+Brassicaceae,Rorippa amphibia,NM,62
+Brassicaceae,Rorippa islandica,AM,140
+Brassicaceae,Rorippa palustris,NM,"260, 261"
+Brassicaceae,Sinapis alba,NM,"260, 261"
+Brassicaceae,Sisymbrium loeselii,NM,"260, 261"
+Brassicaceae,Sisymbrium officinale,AM+NM,"260, 261"
+Brassicaceae,Sisymbrium orientale,NM,"260, 261"
+Brassicaceae,Thlaspi arvense,NM,"260, 261"
+Brassicaceae,Thlaspi caerulescens,AM,488
+Brassicaceae,Thlaspi montanum,AM,488
+Brassicaceae,Thlaspi praecox,AM,"488, 614"
+Thymelaeaceae,Daphne laureola,AM,"260, 261"
+Thymelaeaceae,Daphne gnidium,AM,368
+Thymelaeaceae,Daphne mezereum,AM+NM,"260, 261"
+Thymelaeaceae,Gonystylus bancanus,AM,568
+Thymelaeaceae,Pimelea linifolia,AM,67
+Thymelaeaceae,Wikstroemia furcata,AM,326
+Bixaceae,Cochlospermum vitifolium,AM,20
+Cistaceae,Cistus creticus,ECM,368
+Cistaceae,Cistus ladanifer,ECM,339
+Cistaceae,Cistus incanus,ECM,368
+Cistaceae,Cistus monspeliensis,ECM,368
+Cistaceae,Fumana thymifolia,AM,472
+Cistaceae,Helianthemum almeriense,EEM+ECM,249
+Cistaceae,Helianthemum apenninum,AM+ECM+EEM,"260, 261"
+Cistaceae,Helianthemum canum,AM+ECM+EEM,"260, 261"
+Cistaceae,Helianthemum guttatum,ECM+EEM,209
+Cistaceae,Helianthemum nummularium,ECM,80
+Cistaceae,Helianthemum ovatum,ECM,330
+Cistaceae,Tuberaria guttata,ECM,"260, 261"
+Dipterocarpaceae,Hopea mengarawan,NM,568
+Dipterocarpaceae,Shorea balangeran,AM,568
+Dipterocarpaceae,Shorea leprosula,ECM,14
+Dipterocarpaceae,Shorea teysmanniana,AM,568
+Dipterocarpaceae,Shorea uliginosa,AM,568
+Malvaceae,Abelmoschus esculentus,AM,69
+Malvaceae,Abutilon californicum,AM,112
+Malvaceae,Abutilon indicum,AM,343
+Malvaceae,Abutilon otocarpum,AM,438
+Malvaceae,Abutilon theophrasti,AM,553
+Malvaceae,Althaea officinalis,AM,"260, 261"
+Malvaceae,Bastardiopsis densiflora,AM,651
+Malvaceae,Gossypium hirsutum,AM,"7, 649"
+Malvaceae,Gossypium tomentosum,AM,326
+Malvaceae,Kokia kauaiensis,AM,326
+Malvaceae,Malva sylvestris,AM,"260, 261"
+Malvaceae,Thespesia populnea,AM,326
+Malvaceae,Sida ammophila,NM+ Weak AM,438
+Malvaceae,Sida cordifolia,AM,567
+Malvaceae,Sida fallax,AM,326
+Malvaceae,Sida szechuensis,AM,343
+Malvaceae (Bombacoideae),Adansonia digitata,AM,47
+Malvaceae (Bombacoideae),Bombax malabaricum,AM,343
+Malvaceae (Bombacoideae),Ceiba pentandra,AM,18
+Malvaceae (Bombacoideae),Ceiba speciosa,AM,548
+Malvaceae (Bombacoideae),Chorisia speciosa,AM,651
+Malvaceae (Bombacoideae),Ochroma pyramidale,AM,321
+Malvaceae (Bombacoideae),Pseudobombax grandiflorum,AM,651
+Malvaceae (Tilioideae),Corchorus tridens,AM,567
+Malvaceae (Tilioideae),Grewia biloba,AM,343
+Malvaceae (Tilioideae),Heliocarpus americanus,AM,651
+Malvaceae (Tilioideae),Heliocarpus appendiculatus,AM,"244, 245"
+Malvaceae (Tilioideae),Heliocarpus pallidus,AM,20
+Malvaceae (Tilioideae),Luehea candicans,AM,651
+Malvaceae (Tilioideae),Luehea divaricata,AM,651
+Malvaceae (Tilioideae),Luehea grandiflora,AM,548
+Malvaceae (Tilioideae),Luehea seemannii,AM,321
+Malvaceae (Tilioideae),Tilia cordata,ECM,529
+Malvaceae (Tilioideae),Tilia platyphyllos,ECM,"549, 260, 261"
+Malvaceae (Tilioideae),Tilia,ECM,"260, 261"
+Malvaceae (Sterculioideae),Eribroma oblonga,AM,445
+Malvaceae (Sterculioideae),Guazuma ulmifolia,AM,"18, 32, 651"
+Malvaceae (Sterculioideae),Pterigota macrocarpa,AM,445
+Malvaceae (Sterculioideae),Pterospermum menglunense,AM,422
+Malvaceae (Sterculioideae),Pterospermum yunnanensis,AM,655
+Malvaceae (Sterculioideae),Theobroma cacao,AM,"131, 321"
+Malvaceae (Sterculioideae),Waltheria indica,AM,"143, 326"
+Rutaceae,Acronychia pedunculata,AM,655
+Rutaceae,Agathosma ovata,AM,24
+Rutaceae,Boronia thujona,AM,67
+Rutaceae,Citrus aurantifolia,AM,400
+Rutaceae,Citrus aurantium,AM,429
+Rutaceae,Citrus jambhiri,AM,176
+Rutaceae,Eriostemon australasius,AM,67
+Rutaceae,Fagara heitzii,AM,445
+Rutaceae,Flindersia brayleana,AM,222
+Rutaceae,Melicope barbigera,AM,326
+Rutaceae,Paramignya retispina,AM,655
+Rutaceae,Zanthoxylum rhetsa,AM,315
+Meliaceae,Azadirachta excelsa,AM,282
+Meliaceae,Azadirachta indica,AM,"255, 427, 477"
+Meliaceae,Cabralea canjerana,AM,31
+Meliaceae,Cedrella fissilis,AM,"548, 593, 651"
+Meliaceae,Chisocheton siamensis,Facultative AM,422
+Meliaceae,Ekebergia capensis,AM,"637, 638"
+Meliaceae,Entandrophragma angolense,AM,445
+Meliaceae,Entandrophragma candollei,AM,445
+Meliaceae,Entandrophragma cylindricum,AM,445
+Meliaceae,Entandrophragma utile,AM,445
+Meliaceae,Guarea cedrata,AM,445
+Meliaceae,Guarea kunthiana,Weak AM,651
+Meliaceae,Khaya ivorensis,AM,445
+Meliaceae,Lansium domesticum,AM,422
+Meliaceae,Lovoa trichilioides,AM,445
+Meliaceae,Melia azedarach,AM,422
+Meliaceae,Melia toosanden,NM,422
+Meliaceae,Swietenia macrophylla,AM,433
+Meliaceae,Trichilia casaretti,Weak AM,651
+Meliaceae,Trichilia claussenii,Weak AM,651
+Meliaceae,Trichilia elegans,Weak AM,651
+Simaroubaceae,Castella peninsularis,AM,112
+Simaroubaceae,Irvingia gabonensis,AM,445
+Anacardiaceae,Anacardium excelsum,AM,321
+Anacardiaceae,Anacardium occidentale,AM,"27, 47"
+Anacardiaceae,Antrocaryon klaineanum,AM,445
+Anacardiaceae,Astronium graveolens,AM,651
+Anacardiaceae,Campnosperma auriculatum,AM,568
+Anacardiaceae,Cyrtocarpa edulis,AM,112
+Anacardiaceae,Mangifera sp.,AM,486
+Anacardiaceae,Pistacia atlantica,AM,197
+Anacardiaceae,Pistacia lentiscus,AM,"368, 472"
+Anacardiaceae,Pistacia palestina,AM,197
+Anacardiaceae,Pistacia terebinthus,AM,104
+Anacardiaceae,Pistacia vera,AM,197
+Anacardiaceae,Schinus patagonicus,AM,207
+Anacardiaceae,Schinus terebinthifolius,AM,"548, 651"
+Anacardiaceae,Sclerocarya birrea,AM,47
+Anacardiaceae,Trychoscypha acuminata,AM,445
+Burseraceae,Bursera fagaroides,NM,103
+Burseraceae,Bursera hindsiana,Weak AM,112
+Burseraceae,Bursera microphylla,Weak AM,112
+Burseraceae,Canarium schweinfurthii,AM,445
+Sapindaceae,Acer campestre,AM+ECM+NM,"260, 261"
+Sapindaceae,Acer platanoides,AM,607
+Sapindaceae,Acer pseudoplatanus,AM,"465, 622"
+Sapindaceae,Acer rubrum,AM,140
+Sapindaceae,Acer saccharum,AM,"141, 162, 470"
+Sapindaceae,Aesculus hippocastanum,AM,"260, 261"
+Sapindaceae,Allophylus schweinfurthii,AM,445
+Sapindaceae,Aphania senegalensis,AM,47
+Sapindaceae,Blighia welwitschii,AM,445
+Sapindaceae,Cardiospermum corindum,AM,112
+Sapindaceae,Deinbollia pycnophylla,AM,445
+Sapindaceae,Dodonaea viscosa,AM,"326, 343, 479"
+Sapindaceae,Eriocoelum macrocarpum,AM,445
+Sapindaceae,Harpullia cupanioides,AM,655
+Sapindaceae,Lepisanthes senegalensis,Facultative AM,422
+Sapindaceae,Litchi chinensis,AM,326
+Sapindaceae,Matayba guianensis,AM,31
+Sapindaceae,Pometia tomentosa,AM,422
+Sapindaceae,Sapindus saponaria,AM,548
+Bruniaceae,Staavia radiata,AM,24
+Escalloniaceae,Escallonia rubra,AM,207
