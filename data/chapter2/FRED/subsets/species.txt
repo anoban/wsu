@@ -31,3 +31,8 @@ iteration 02
 - updated all state missing species in Cunoniaceae to AM (Brundrett & Tedersoo 2018).
 - updated all state missing species in Lauraceae to AM (Brundrett & Tedersoo 2018) - No Cassythia sp. found.
 - updated all state missing Lupinus species in Fabaceae to NM (Brundrett & Tedersoo 2018).
+- updated the remaining state missing species (non NM and non EcM) in Fabaceae to AM (Brundrett & Tedersoo 2018).
+
+- updated all state missing species in Fagaceae to EcM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Melastomataceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Meliaceae to AM (Brundrett & Tedersoo 2018).
