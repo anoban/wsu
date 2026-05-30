@@ -36,3 +36,6 @@ iteration 02
 - updated all state missing species in Fagaceae to EcM (Brundrett & Tedersoo 2018).
 - updated all state missing species in Melastomataceae to AM (Brundrett & Tedersoo 2018).
 - updated all state missing species in Meliaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Moraceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species (non EcMAM) in Myrtaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Proteaceae to NM (Brundrett & Tedersoo 2018).
