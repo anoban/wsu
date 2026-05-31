@@ -15,10 +15,13 @@ iteration 01
 iteration 02
 --------------
 
-- the whole Acer genus was made AM (Luke's advice).
-- all species of Quercus were made EcM (Luke's advice).
 - if a state mising species wasn't available in (Wang and Qiu, 2006); even when it had other species of the same genera,
   the family level state from (Brundrett & Tedersoo 2018) was used.
+- Wang & Qiu 2006 has no species overlap with what we needed state data for. No longer entertaining it.
+- when (Brundrett & Tedersoo 2018) did not have the needed family, FungalRoot species level dataset was used to find the state info.
+
+- the whole Acer genus was made AM (Luke's advice).
+- all species of Quercus were made EcM (Luke's advice).
 - updated all state missing species in Lamiaceae to AM (Brundrett & Tedersoo 2018).
 - updated all state missing species in Asteraceae to AM (Brundrett & Tedersoo 2018) - there are some genera in Asteraceae that were used to be considered EcM 
   (Superficial Root Hyphae - SRH????) and but now all are consirederd AM.
@@ -47,3 +50,13 @@ iteration 02
 - updated all state missing species in Araliaceae to AM (Brundrett & Tedersoo 2018).
 - updated all state missing species in Burseraceae to AM (Brundrett & Tedersoo 2018).
 - updated all state missing species in Cannabaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Chloranthaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Chrysobalanaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Caprifoliaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Celasteraceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Clusiaceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Cyperaceae to NMAM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Aspleniaceae to NMAM (Soudzilovskaia et al., 2020).
+- updated all state missing species in Clethraceae to AM (Brundrett & Tedersoo 2018).
+- updated all state missing species in Solanaceae to AM (Brundrett & Tedersoo 2018).
+
