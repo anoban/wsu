@@ -20,3 +20,6 @@ iteration 02
 - when (Brundrett & Tedersoo 2018) did not have the needed family, FungalRoot species level dataset (Soudzilovskaia et al., 2020) was used to find the state info (genus level recommendations).
 - the new column named state_revision_1 contains all the original state data and the new states from the said sources.
 - the rows of state_revision_1 where revision_1_source column isn't empty are the newly updated states.
+- once this was done, families with more than one mycorrhizal states were cross checked with (Brundrett & Tedersoo 2018) and (Soudzilovskaia et al., 2020).
+  corrections were done where necessary and these were included in the column state_revision_2 and their corresponding sources are in the column revision_2_source
+
