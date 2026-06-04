@@ -52,7 +52,7 @@ namespace paths {
     static constexpr wchar_t RINTERPRETER[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
     static constexpr wchar_t PHYLOGENY[] { LR"()" };
     static constexpr wchar_t TRAIT_DATA[] { LR"()" };
-    static constexpr wchar_t SAVE_RDS[] { LR"()" }; // must end with a foward slash
+    static constexpr wchar_t SAVE_RDS[] { LR"(../../data/chapter2/rdata/parallel/rd_1301_100sims/)" }; // must end with a foward slash
 }
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
