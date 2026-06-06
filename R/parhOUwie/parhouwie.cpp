@@ -361,7 +361,7 @@ int wmain() {
                         rscript, // the launch directory of this programme will have all the needed files
                         paths::PHYLOGENY,
                         paths::TRAIT_DATA,
-                        fred::SPECIFIC_ROOT_LENGTH,
+                        fred::ROOT_DIAMETER,
                         static_cast<houwie::DISCRETE_MODEL>(dmod),
                         static_cast<houwie::CONTINUOUS_MODEL>(cmod),
                         paths::SAVE_RDS,
