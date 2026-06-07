@@ -7,7 +7,7 @@ tree
 
 # may be we should get rid of the ErM and OrM species before name matching
 
-traits <- read.csv("./../data/chapter2/FRED/subsets/final.csv")
+traits <- read.csv("./../data/chapter2/FRED/subsets/final_name_matched.csv")
 traits$binominal <- gsub(traits$binominal, pattern = ' ', replacement = '_')
 
 setdiff(tree$tip.label, traits$binominal) # some species failed to bind during the phylogeny creating and we used their synonyms
