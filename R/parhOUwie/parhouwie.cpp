@@ -50,8 +50,8 @@ namespace fred {
 
 namespace paths {
     static constexpr wchar_t RINTERPRETER[] { LR"(C:/Program Files/R/R-4.6.0/bin/R.exe)" }; // the install directory of the R.exe binary
-    static constexpr wchar_t PHYLOGENY[] { LR"()" };
-    static constexpr wchar_t TRAIT_DATA[] { LR"()" };
+    static constexpr wchar_t PHYLOGENY[] { LR"( ../../data/chapter2/uphylomaker/FRED4_1301_species.tre)" };
+    static constexpr wchar_t TRAIT_DATA[] { LR"(../../data/chapter2/FRED/subsets/final.csv)" };
     static constexpr wchar_t SAVE_RDS[] { LR"(../../data/chapter2/rdata/parallel/rd_1301_100sims/)" }; // must end with a foward slash
 }
 
@@ -296,7 +296,7 @@ namespace houwie {
             L"library('OUwie');"
             L"set.seed(1, kind = 'Mersenne-Twister');" // make sure reruns don't give us inconsistent results, don't know how useful this is
             L"phylogeny <- ape::read.tree('%s');"
-            L"data <- read.csv('%s')[, c('binominal', 'state', '%s')];"
+            L"data <- read.csv('%s')[, c('binominal', 'state', '%s')];" // only consider the columns we need - binominal name, mycorrhizal state and the continuous trait of choice
             L"stopifnot(all(phylogeny$tip.label == data$binominal));"
             L"model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = %1u, discrete_model = '%s', continuous_model = '%s', nSim = %llu, null.model = %s);"
             L"saveRDS(object = model, file = '%s');",
