@@ -7,3 +7,6 @@
 [submodule "R/thirdparty/phylolm"]
 	path = R/thirdparty/phylolm
 	url = https://github.com/lamho86/phylolm.git
+[submodule "R/thirdparty/MCMCglmm"]
+	path = R/thirdparty/MCMCglmm
+	url = https://github.com/jarrodhadfield/MCMCglmm.git
