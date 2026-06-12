@@ -51,9 +51,9 @@ namespace fred {
 namespace paths {
     static constexpr wchar_t RINTERPRETER[] { L"C:/Program Files/R/R-4.6.0/bin/R.exe" }; // the install directory of the R.exe binary
     // al the below are relative paths, used assuming the executable will be launched from this directory
-    static constexpr wchar_t PHYLOGENY[] { L"./../../data/chapter2/uphylomaker/FRED4_1301_species.tre" };
-    static constexpr wchar_t TRAIT_DATA[] { L"./../../data/chapter2/FRED/subsets/final.csv" };
-    static constexpr wchar_t SAVE_RDS[] { L"./../../data/chapter2/rdata/parallel/srl_1301_100sims/" }; // must end with a foward slash
+    static constexpr wchar_t PHYLOGENY[] { L"./../../data/chapter2/uphylomaker/FRED4_1292.tre" };
+    static constexpr wchar_t TRAIT_DATA[] { L"./../../data/chapter2/FRED/subsets/name_matched_FRED4_1292.csv" };
+    static constexpr wchar_t SAVE_RDS[] { L"./../../data/chapter2/rdata/parallel/rd_1292_100sims/" }; // must end with a foward slash
 }
 
 // pick a decent number with enough CPU space for other essential processes - uni laptop has 14 cores and 18 logical processors
@@ -364,7 +364,7 @@ int wmain() {
                         rscript, // the launch directory of this programme will have all the needed files
                         paths::PHYLOGENY,
                         paths::TRAIT_DATA,
-                        fred::SPECIFIC_ROOT_LENGTH,
+                        fred::ROOT_DIAMETER,
                         static_cast<houwie::DISCRETE_MODEL>(dmod),
                         static_cast<houwie::CONTINUOUS_MODEL>(cmod),
                         paths::SAVE_RDS,
