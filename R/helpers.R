@@ -1,31 +1,6 @@
 library("ape")
 library("corHMM")
 
-readallRds <- function(dirpath, cd, regstrip, rm_underscores = TRUE) {
-    # dirpath = path to the directory containing the .Rds files
-    # cd = character dependent or independent models, these are expected to contain "CD" or "CID" in their names
-    # regstrip = the regex pattern to strip out of the file names when naming objects, can be a plain string as well
-    # rm_underscores - strip all the underscores in the object name
-
-    fnames <- list.files(dirpath) # all the files in the specified dir
-    if(cd) fnames <- fnames[grep(pattern = "CD", fnames)]
-    else fnames <- fnames[grep(pattern = "CID", fnames)] # cherry pick CD or CID models, assuming their names contain "CD" or "CID"
-    # print(fnames)
-
-    paths <- paste0(dirpath, fnames) # relative paths for all the Rds files
-    stopifnot(length(fnames)==length(paths))
-
-    mnames <- gsub(x = gsub(pattern = regstrip, replacement = '', x = fnames), pattern = ifelse(rm_underscores, '_', ''), replacement = '') # remove the unnecessary parts of the file names to create the model names
-    # also remove all the underscores
-    stopifnot(length(fnames)==length(mnames))
-
-    models <- lapply(X = paths, FUN = readRDS) # read the needed Rds files into a list of objects
-    stopifnot(length(models)==length(mnames))
-
-    names(models) <- mnames # set their names
-    models
-}
-
 # changes in discrete and continuous characters along every edge in the phylogeny
 paired_dc_changes <- function(phylogeny, rdextant, srlextant, discextant, rdinternodes, srlinternodes, discprobinternodes, discstates) {
     # the phylogeny object that the continuous and discrete trait models were fitted with
@@ -82,13 +57,3 @@ paired_dc_changes <- function(phylogeny, rdextant, srlextant, discextant, rdinte
 
 }
 
-
-failed_convergence <- function(model_table, stripoff='', threshold_diff_aicc=1e5){
-  # expected to directly redirect the output of the OUwie::hOUwie() function to this function
-  model_names <- row.names(model_table)
-  model_names <- gsub(pattern = stripoff, replacement = '', x = model_names) # strip off the specified pattern from the names
-  aiccs <- model_table[, "AICc"] # this becomes a hard requirement of the function, that the input dataframe needs to have a column named "AICc"
-  # so the criteria is that the absoulte difference AICc of a given model and the model with the highest AICc (worst fit) shouldn't exceed 1e5,
-  # else it's considered a convergence failure
-  model_names[abs(aiccs - max(aiccs)) >= threshold_diff_aicc]  # with an option provided to pass in a custom difference threshold
-}
