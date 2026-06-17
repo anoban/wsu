@@ -58,7 +58,7 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         pass
 
     def __init__(
-        self, dir_images: str, dir_annotations: str, transformations: Optional[transforms_v2.Compose] = None, pretransform: bool = True
+        self, dir_images: str, dir_annotations: str, transformations: Optional[transforms_v2.Compose] = None, pretransform_all: bool = True
     ) -> None:
         """
         :param dir_images: path to the directory that contains the PNG images
@@ -67,8 +67,8 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         :type dir_annotations: str
         :param transformations: transformations to be applied to the images and annotations
         :type transformations: Optional[transforms_v2.Compose]
-        :param pretransform: whether to apply the transformations to all the images and annotations during class instantiation instead of within each call to __getitem__
-        :type pretransform: bool
+        :param pretransform_all: whether to apply the transformations to all the images and annotations during class instantiation instead of within each call to __getitem__
+        :type pretransform_all: bool
         """
 
         super().__init__()
@@ -82,7 +82,7 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         if not len(self._items):  # if there's no matching images and annotations,
             raise RuntimeError(r"No matching image files and annotation files found in the provided directories!")
 
-        self._pretransform = pretransform
+        self._pretransform = pretransform_all
         self._transforms = transformations
 
     def __len__(self) -> int:
