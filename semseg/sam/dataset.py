@@ -10,9 +10,7 @@ from torch.utils.data import Dataset
 
 
 class RootImagesDataset(Dataset[torch.Tensor]):
-    """
-    Docstring for RootImagesDataset
-    """
+    """ """
 
     @staticmethod
     def _apply_batch_transforms(_transforms: transforms_v2.Compose, _batch: torch.Tensor) -> torch.Tensor:
@@ -36,15 +34,15 @@ class RootImagesDataset(Dataset[torch.Tensor]):
         """
 
         imgs: list[NDArray[np.uint8]] = []
-        for fn in fnames:
+        for fname in fnames:
             try:
-                with open(file=fn, mode="rb") as fp:
+                with open(file=fname, mode="rb") as fp:
                     obj = Image.open(fp)  # opens in RGB colour chanel mode by default, unlike opencv, which is what we want
                     if obj.mode != "RGB":
                         obj = obj.convert(r"RGB")  # if the colour channel is not RGB, convert it to RGB
                     imgs.append(np.array(obj, dtype=np.uint8))
             except (PermissionError, FileNotFoundError) as excpt:
-                raise RuntimeError(f"Filed to read file {fn}") from excpt
+                raise RuntimeError(f"Filed to read file {fname}") from excpt
         return torch.Tensor(
             np.array([img for img in imgs])
         )  # PyTorch recommends converting the list of numpy arrays into an array of arrays before contructing a tensor for performance reasons
