@@ -10,6 +10,7 @@ import numpy as np
 import torch
 import torchvision.transforms.v2 as transforms_v2  # pyright: ignore[reportMissingTypeStubs]
 from PIL import Image
+from skimage.draw import polygon2mask
 from torch.utils.data import Dataset
 
 
@@ -98,3 +99,15 @@ class RootImageDataset(Dataset[torch.Tensor]):
         # all the annotations will be from Labelme, which doesn't use any kind of compressions
         with open(file=path_ann, mode="rt") as fp:
             ann = json.load(fp=fp)
+
+        # labelme annotations need to be transposed to match the raw images
+        bmasks = torch.tensor(
+            np.array(
+                [
+                    polygon2mask(image_shape=(ann["imageWidth"], ann["imageHeight"]), polygon=polygon["points"]).astype(np.uint8).T
+                    for polygon in ann["shapes"]
+                ]
+            )
+        )
+
+        return torch.tensor(img, dtype=torch.float32), bmasks
