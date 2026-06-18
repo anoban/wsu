@@ -15,7 +15,6 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional
 
 import numpy as np
-
 import torch
 import torch.distributed as dist
 import torch.nn as nn
@@ -23,7 +22,6 @@ from hydra.utils import instantiate
 from iopath.common.file_io import g_pathmgr
 
 from training.optimizer import construct_optimizer
-
 from training.utils.checkpoint_utils import (
     assert_skipped_parameters_are_frozen,
     exclude_params_matching_unix_pattern,
@@ -32,13 +30,14 @@ from training.utils.checkpoint_utils import (
 )
 from training.utils.data_utils import BatchedVideoDatapoint
 from training.utils.distributed import all_reduce_max, barrier, get_rank
-
 from training.utils.logger import Logger, setup_logging
-
 from training.utils.train_utils import (
     AverageMeter,
-    collect_dict_keys,
     DurationMeter,
+    MemMeter,
+    Phase,
+    ProgressMeter,
+    collect_dict_keys,
     get_amp_type,
     get_machine_local_and_dist_rank,
     get_resume_checkpoint,
@@ -46,13 +45,9 @@ from training.utils.train_utils import (
     is_dist_avail_and_initialized,
     log_env_variables,
     makedir,
-    MemMeter,
-    Phase,
-    ProgressMeter,
     set_seeds,
     setup_distributed_backend,
 )
-
 
 CORE_LOSS_KEY = "core_loss"
 
@@ -201,9 +196,7 @@ class Trainer:
         set_seeds(seed_value, self.max_epochs, self.distributed_rank)
         log_env_variables()
 
-        assert (
-            is_dist_avail_and_initialized()
-        ), "Torch distributed needs to be initialized before calling the trainer."
+        assert is_dist_avail_and_initialized(), "Torch distributed needs to be initialized before calling the trainer."
 
         self._setup_components()  # Except Optimizer everything is setup here.
         self._move_to_device()
@@ -213,9 +206,9 @@ class Trainer:
         self.time_elapsed_meter = DurationMeter("Time Elapsed", self.device, ":.2f")
 
         if self.checkpoint_conf.resume_from is not None:
-            assert os.path.exists(
-                self.checkpoint_conf.resume_from
-            ), f"The 'resume_from' checkpoint {self.checkpoint_conf.resume_from} does not exist!"
+            assert os.path.exists(self.checkpoint_conf.resume_from), (
+                f"The 'resume_from' checkpoint {self.checkpoint_conf.resume_from} does not exist!"
+            )
             dst = os.path.join(self.checkpoint_conf.save_dir, "checkpoint.pt")
             if self.distributed_rank == 0 and not os.path.exists(dst):
                 # Copy the "resume_from" checkpoint to the checkpoint folder
@@ -264,19 +257,11 @@ class Trainer:
             torch.backends.cudnn.deterministic = cuda_conf.cudnn_deterministic
             torch.backends.cudnn.benchmark = cuda_conf.cudnn_benchmark
             torch.backends.cuda.matmul.allow_tf32 = (
-                cuda_conf.matmul_allow_tf32
-                if cuda_conf.matmul_allow_tf32 is not None
-                else cuda_conf.allow_tf32
+                cuda_conf.matmul_allow_tf32 if cuda_conf.matmul_allow_tf32 is not None else cuda_conf.allow_tf32
             )
-            torch.backends.cudnn.allow_tf32 = (
-                cuda_conf.cudnn_allow_tf32
-                if cuda_conf.cudnn_allow_tf32 is not None
-                else cuda_conf.allow_tf32
-            )
+            torch.backends.cudnn.allow_tf32 = cuda_conf.cudnn_allow_tf32 if cuda_conf.cudnn_allow_tf32 is not None else cuda_conf.allow_tf32
 
-        self.rank = setup_distributed_backend(
-            distributed_conf.backend, distributed_conf.timeout_mins
-        )
+        self.rank = setup_distributed_backend(distributed_conf.backend, distributed_conf.timeout_mins)
 
     def _setup_device(self, accelerator):
         self.local_rank, self.distributed_rank = get_machine_local_and_dist_rank()
@@ -311,25 +296,20 @@ class Trainer:
             self.model.register_comm_hook(process_group, hook)
 
     def _move_to_device(self):
-        logging.info(
-            f"Moving components to device {self.device} and local rank {self.local_rank}."
-        )
+        logging.info(f"Moving components to device {self.device} and local rank {self.local_rank}.")
 
         self.model.to(self.device)
 
-        logging.info(
-            f"Done moving components to device {self.device} and local rank {self.local_rank}."
-        )
+        logging.info(f"Done moving components to device {self.device} and local rank {self.local_rank}.")
 
     def save_checkpoint(self, epoch, checkpoint_names=None):
         checkpoint_folder = self.checkpoint_conf.save_dir
         makedir(checkpoint_folder)
         if checkpoint_names is None:
             checkpoint_names = ["checkpoint"]
-            if (
-                self.checkpoint_conf.save_freq > 0
-                and (int(epoch) % self.checkpoint_conf.save_freq == 0)
-            ) or int(epoch) in self.checkpoint_conf.save_list:
+            if (self.checkpoint_conf.save_freq > 0 and (int(epoch) % self.checkpoint_conf.save_freq == 0)) or int(
+                epoch
+            ) in self.checkpoint_conf.save_list:
                 checkpoint_names.append(f"checkpoint_{int(epoch)}")
 
         checkpoint_paths = []
@@ -337,9 +317,7 @@ class Trainer:
             checkpoint_paths.append(os.path.join(checkpoint_folder, f"{ckpt_name}.pt"))
 
         state_dict = unwrap_ddp_if_wrapped(self.model).state_dict()
-        state_dict = exclude_params_matching_unix_pattern(
-            patterns=self.checkpoint_conf.skip_saving_parameters, state_dict=state_dict
-        )
+        state_dict = exclude_params_matching_unix_pattern(patterns=self.checkpoint_conf.skip_saving_parameters, state_dict=state_dict)
 
         checkpoint = {
             "model": state_dict,
@@ -392,10 +370,7 @@ class Trainer:
         # Checking that parameters that won't be saved are indeed frozen
         # We do this check here before even saving the model to catch errors
         # are early as possible and not at the end of the first epoch
-        assert_skipped_parameters_are_frozen(
-            patterns=self.checkpoint_conf.skip_saving_parameters,
-            model=self.model,
-        )
+        assert_skipped_parameters_are_frozen(patterns=self.checkpoint_conf.skip_saving_parameters, model=self.model)
 
         # Checking that parameters that won't be saved are initialized from
         # within the model definition, unless `initialize_after_preemption`
@@ -403,20 +378,14 @@ class Trainer:
         # preemption, the `skip_saving_parameters` will have random values
         allow_init_skip_parameters = self.checkpoint_conf.initialize_after_preemption
         with with_check_parameter_frozen(
-            patterns=self.checkpoint_conf.skip_saving_parameters,
-            model=self.model,
-            disabled=allow_init_skip_parameters,
+            patterns=self.checkpoint_conf.skip_saving_parameters, model=self.model, disabled=allow_init_skip_parameters
         ):
             self._call_model_initializer()
 
     def _call_model_initializer(self):
-        model_weight_initializer = instantiate(
-            self.checkpoint_conf.model_weight_initializer
-        )
+        model_weight_initializer = instantiate(self.checkpoint_conf.model_weight_initializer)
         if model_weight_initializer is not None:
-            logging.info(
-                f"Loading pretrained checkpoint from {self.checkpoint_conf.model_weight_initializer}"
-            )
+            logging.info(f"Loading pretrained checkpoint from {self.checkpoint_conf.model_weight_initializer}")
             self.model = model_weight_initializer(model=self.model)
 
     def _load_resuming_checkpoint(self, ckpt_path: str):
@@ -425,9 +394,7 @@ class Trainer:
         with g_pathmgr.open(ckpt_path, "rb") as f:
             checkpoint = torch.load(f, map_location="cpu")
         load_state_dict_into_model(
-            model=self.model,
-            state_dict=checkpoint["model"],
-            ignore_missing_keys=self.checkpoint_conf.skip_saving_parameters,
+            model=self.model, state_dict=checkpoint["model"], ignore_missing_keys=self.checkpoint_conf.skip_saving_parameters
         )
 
         self.optim.optimizer.load_state_dict(checkpoint["optimizer"])
@@ -447,12 +414,7 @@ class Trainer:
     def is_intermediate_val_epoch(self, epoch):
         return epoch % self.val_epoch_freq == 0 and epoch < self.max_epochs - 1
 
-    def _step(
-        self,
-        batch: BatchedVideoDatapoint,
-        model: nn.Module,
-        phase: str,
-    ):
+    def _step(self, batch: BatchedVideoDatapoint, model: nn.Module, phase: str):
 
         outputs = model(batch)
         targets = batch.masks
@@ -467,19 +429,11 @@ class Trainer:
         # loss contains multiple sub-components we wish to log
         step_losses = {}
         if isinstance(loss, dict):
-            step_losses.update(
-                {f"Losses/{phase}_{key}_{k}": v for k, v in loss.items()}
-            )
-            loss = self._log_loss_detailed_and_return_core_loss(
-                loss, loss_log_str, self.steps[phase]
-            )
+            step_losses.update({f"Losses/{phase}_{key}_{k}": v for k, v in loss.items()})
+            loss = self._log_loss_detailed_and_return_core_loss(loss, loss_log_str, self.steps[phase])
 
         if self.steps[phase] % self.logging_conf.log_scalar_frequency == 0:
-            self.logger.log(
-                loss_log_str,
-                loss,
-                self.steps[phase],
-            )
+            self.logger.log(loss_log_str, loss, self.steps[phase])
 
         self.steps[phase] += 1
 
@@ -489,10 +443,7 @@ class Trainer:
             meters_dict = self.meters[phase][key]
             if meters_dict is not None:
                 for _, meter in meters_dict.items():
-                    meter.update(
-                        find_stages=outputs,
-                        find_metadatas=batch.metadata,
-                    )
+                    meter.update(find_stages=outputs, find_metadatas=batch.metadata)
 
         return ret_tuple
 
@@ -534,10 +485,7 @@ class Trainer:
 
             # log train to text file.
             if self.distributed_rank == 0:
-                with g_pathmgr.open(
-                    os.path.join(self.logging_conf.log_dir, "train_stats.json"),
-                    "a",
-                ) as f:
+                with g_pathmgr.open(os.path.join(self.logging_conf.log_dir, "train_stats.json"), "a") as f:
                     f.write(json.dumps(outs) + "\n")
 
             # Save checkpoint before validating
@@ -553,10 +501,7 @@ class Trainer:
 
             if self.distributed_rank == 0:
                 self.best_meter_values.update(self._get_trainer_state("train"))
-                with g_pathmgr.open(
-                    os.path.join(self.logging_conf.log_dir, "best_stats.json"),
-                    "a",
-                ) as f:
+                with g_pathmgr.open(os.path.join(self.logging_conf.log_dir, "best_stats.json"), "a") as f:
                     f.write(json.dumps(self.best_meter_values) + "\n")
 
             self.epoch += 1
@@ -574,10 +519,7 @@ class Trainer:
         self.logger.log_dict(outs, self.epoch)  # Logged only on rank 0
 
         if self.distributed_rank == 0:
-            with g_pathmgr.open(
-                os.path.join(self.logging_conf.log_dir, "val_stats.json"),
-                "a",
-            ) as f:
+            with g_pathmgr.open(os.path.join(self.logging_conf.log_dir, "val_stats.json"), "a") as f:
                 f.write(json.dumps(outs) + "\n")
 
     def val_epoch(self, val_loader, phase):
@@ -595,9 +537,7 @@ class Trainer:
             for key in self.loss.keys():
                 loss_names.append(f"Losses/{p}_{key}_loss")
 
-        loss_mts = OrderedDict(
-            [(name, AverageMeter(name, self.device, ":.2e")) for name in loss_names]
-        )
+        loss_mts = OrderedDict([(name, AverageMeter(name, self.device, ":.2e")) for name in loss_names])
         extra_loss_mts = {}
 
         for model in curr_models:
@@ -615,7 +555,6 @@ class Trainer:
         end = time.time()
 
         for data_iter, batch in enumerate(val_loader):
-
             # measure data loading time
             data_time.update(time.time() - end)
 
@@ -625,18 +564,10 @@ class Trainer:
             with torch.no_grad():
                 with torch.cuda.amp.autocast(
                     enabled=(self.optim_conf.amp.enabled if self.optim_conf else False),
-                    dtype=(
-                        get_amp_type(self.optim_conf.amp.amp_dtype)
-                        if self.optim_conf
-                        else None
-                    ),
+                    dtype=(get_amp_type(self.optim_conf.amp.amp_dtype) if self.optim_conf else None),
                 ):
                     for phase, model in zip(curr_phases, curr_models):
-                        loss_dict, batch_size, extra_losses = self._step(
-                            batch,
-                            model,
-                            phase,
-                        )
+                        loss_dict, batch_size, extra_losses = self._step(batch, model, phase)
 
                         assert len(loss_dict) == 1
                         loss_key, loss = loss_dict.popitem()
@@ -652,9 +583,7 @@ class Trainer:
             batch_time.update(time.time() - end)
             end = time.time()
 
-            self.time_elapsed_meter.update(
-                time.time() - self.start_time + self.ckpt_time_elapsed
-            )
+            self.time_elapsed_meter.update(time.time() - self.start_time + self.ckpt_time_elapsed)
 
             if torch.cuda.is_available():
                 mem.update(reset_peak_usage=True)
@@ -665,11 +594,7 @@ class Trainer:
             if data_iter % self.logging_conf.log_scalar_frequency == 0:
                 # Log progress meters.
                 for progress_meter in progress.meters:
-                    self.logger.log(
-                        os.path.join("Step_Stats", phase, progress_meter.name),
-                        progress_meter.val,
-                        self.steps[Phase.VAL],
-                    )
+                    self.logger.log(os.path.join("Step_Stats", phase, progress_meter.name), progress_meter.val, self.steps[Phase.VAL])
 
             if data_iter % 10 == 0:
                 dist.barrier()
@@ -694,11 +619,7 @@ class Trainer:
         return out_dict
 
     def _get_trainer_state(self, phase):
-        return {
-            "Trainer/where": self.where,
-            "Trainer/epoch": self.epoch,
-            f"Trainer/steps_{phase}": self.steps[phase],
-        }
+        return {"Trainer/where": self.where, "Trainer/epoch": self.epoch, f"Trainer/steps_{phase}": self.steps[phase]}
 
     def train_epoch(self, train_loader):
 
@@ -715,20 +636,12 @@ class Trainer:
         for batch_key in self.loss.keys():
             loss_names.append(f"Losses/{phase}_{batch_key}_loss")
 
-        loss_mts = OrderedDict(
-            [(name, AverageMeter(name, self.device, ":.2e")) for name in loss_names]
-        )
+        loss_mts = OrderedDict([(name, AverageMeter(name, self.device, ":.2e")) for name in loss_names])
         extra_loss_mts = {}
 
         progress = ProgressMeter(
             iters_per_epoch,
-            [
-                batch_time_meter,
-                data_time_meter,
-                mem_meter,
-                self.time_elapsed_meter,
-                *loss_mts.values(),
-            ],
+            [batch_time_meter, data_time_meter, mem_meter, self.time_elapsed_meter, *loss_mts.values()],
             self._get_meters([phase]),
             prefix="Train Epoch: [{}]".format(self.epoch),
         )
@@ -741,9 +654,7 @@ class Trainer:
             # measure data loading time
             data_time_meter.update(time.time() - end)
             data_times.append(data_time_meter.val)
-            batch = batch.to(
-                self.device, non_blocking=True
-            )  # move tensors in a tensorclass
+            batch = batch.to(self.device, non_blocking=True)  # move tensors in a tensorclass
 
             try:
                 self._run_step(batch, phase, loss_mts, extra_loss_mts)
@@ -753,28 +664,16 @@ class Trainer:
                 self.where = float(exact_epoch) / self.max_epochs
                 assert self.where <= 1 + self.EPSILON
                 if self.where < 1.0:
-                    self.optim.step_schedulers(
-                        self.where, step=int(exact_epoch * iters_per_epoch)
-                    )
+                    self.optim.step_schedulers(self.where, step=int(exact_epoch * iters_per_epoch))
                 else:
-                    logging.warning(
-                        f"Skipping scheduler update since the training is at the end, i.e, {self.where} of [0,1]."
-                    )
+                    logging.warning(f"Skipping scheduler update since the training is at the end, i.e, {self.where} of [0,1].")
 
                 # Log schedulers
                 if data_iter % self.logging_conf.log_scalar_frequency == 0:
                     for j, param_group in enumerate(self.optim.optimizer.param_groups):
                         for option in self.optim.schedulers[j]:
-                            optim_prefix = (
-                                "" + f"{j}_"
-                                if len(self.optim.optimizer.param_groups) > 1
-                                else ""
-                            )
-                            self.logger.log(
-                                os.path.join("Optim", f"{optim_prefix}", option),
-                                param_group[option],
-                                self.steps[phase],
-                            )
+                            optim_prefix = "" + f"{j}_" if len(self.optim.optimizer.param_groups) > 1 else ""
+                            self.logger.log(os.path.join("Optim", f"{optim_prefix}", option), param_group[option], self.steps[phase])
 
                 # Clipping gradients and detecting diverging gradients
                 if self.gradient_clipper is not None:
@@ -782,9 +681,7 @@ class Trainer:
                     self.gradient_clipper(model=self.model)
 
                 if self.gradient_logger is not None:
-                    self.gradient_logger(
-                        self.model, rank=self.distributed_rank, where=self.where
-                    )
+                    self.gradient_logger(self.model, rank=self.distributed_rank, where=self.where)
 
                 # Optimizer step: the scaler will make sure gradients are not
                 # applied if the gradients are infinite
@@ -795,9 +692,7 @@ class Trainer:
                 batch_time_meter.update(time.time() - end)
                 end = time.time()
 
-                self.time_elapsed_meter.update(
-                    time.time() - self.start_time + self.ckpt_time_elapsed
-                )
+                self.time_elapsed_meter.update(time.time() - self.start_time + self.ckpt_time_elapsed)
 
                 mem_meter.update(reset_peak_usage=True)
                 if data_iter % self.logging_conf.log_freq == 0:
@@ -806,11 +701,7 @@ class Trainer:
                 if data_iter % self.logging_conf.log_scalar_frequency == 0:
                     # Log progress meters.
                     for progress_meter in progress.meters:
-                        self.logger.log(
-                            os.path.join("Step_Stats", phase, progress_meter.name),
-                            progress_meter.val,
-                            self.steps[phase],
-                        )
+                        self.logger.log(os.path.join("Step_Stats", phase, progress_meter.name), progress_meter.val, self.steps[phase])
 
             # Catching NaN/Inf errors in the loss
             except FloatingPointError as e:
@@ -836,11 +727,7 @@ class Trainer:
         steps = range(self.steps[phase] - len(data_times), self.steps[phase])
         for step, data_time in zip(steps, data_times):
             if step % self.logging_conf.log_scalar_frequency == 0:
-                self.logger.log(
-                    os.path.join("Step_Stats", phase, "Data Time Synced"),
-                    data_time,
-                    step,
-                )
+                self.logger.log(os.path.join("Step_Stats", phase, "Data Time Synced"), data_time, step)
 
     def _run_step(
         self,
@@ -858,15 +745,8 @@ class Trainer:
         # grads will also update a model even if the step doesn't produce
         # gradients
         self.optim.zero_grad(set_to_none=True)
-        with torch.cuda.amp.autocast(
-            enabled=self.optim_conf.amp.enabled,
-            dtype=get_amp_type(self.optim_conf.amp.amp_dtype),
-        ):
-            loss_dict, batch_size, extra_losses = self._step(
-                batch,
-                self.model,
-                phase,
-            )
+        with torch.cuda.amp.autocast(enabled=self.optim_conf.amp.enabled, dtype=get_amp_type(self.optim_conf.amp.amp_dtype)):
+            loss_dict, batch_size, extra_losses = self._step(batch, self.model, phase)
 
         assert len(loss_dict) == 1
         loss_key, loss = loss_dict.popitem()
@@ -883,9 +763,7 @@ class Trainer:
         loss_mts[loss_key].update(loss.item(), batch_size)
         for extra_loss_key, extra_loss in extra_losses.items():
             if extra_loss_key not in extra_loss_mts:
-                extra_loss_mts[extra_loss_key] = AverageMeter(
-                    extra_loss_key, self.device, ":.2e"
-                )
+                extra_loss_mts[extra_loss_key] = AverageMeter(extra_loss_key, self.device, ":.2e")
             extra_loss_mts[extra_loss_key].update(extra_loss.item(), batch_size)
 
     def _log_meters_and_save_best_ckpts(self, phases: List[str]):
@@ -904,15 +782,11 @@ class Trainer:
 
                 tracked_meter_key = os.path.join(key, meter_subkey)
                 if tracked_meter_key not in self.best_meter_values or is_better_check(
-                    meter_value,
-                    self.best_meter_values[tracked_meter_key],
+                    meter_value, self.best_meter_values[tracked_meter_key]
                 ):
                     self.best_meter_values[tracked_meter_key] = meter_value
 
-                    if (
-                        self.checkpoint_conf.save_best_meters is not None
-                        and key in self.checkpoint_conf.save_best_meters
-                    ):
+                    if self.checkpoint_conf.save_best_meters is not None and key in self.checkpoint_conf.save_best_meters:
                         checkpoint_save_keys.append(tracked_meter_key.replace("/", "_"))
 
         if len(checkpoint_save_keys) > 0:
@@ -923,9 +797,7 @@ class Trainer:
     def _log_timers(self, phase):
         time_remaining = 0
         epochs_remaining = self.max_epochs - self.epoch - 1
-        val_epochs_remaining = sum(
-            n % self.val_epoch_freq == 0 for n in range(self.epoch, self.max_epochs)
-        )
+        val_epochs_remaining = sum(n % self.val_epoch_freq == 0 for n in range(self.epoch, self.max_epochs))
 
         # Adding the guaranteed val run at the end if val_epoch_freq doesn't coincide with
         # the end epoch.
@@ -936,16 +808,9 @@ class Trainer:
         if phase == Phase.VAL:
             val_epochs_remaining -= 1
 
-        time_remaining += (
-            epochs_remaining * self.est_epoch_time[Phase.TRAIN]
-            + val_epochs_remaining * self.est_epoch_time[Phase.VAL]
-        )
+        time_remaining += epochs_remaining * self.est_epoch_time[Phase.TRAIN] + val_epochs_remaining * self.est_epoch_time[Phase.VAL]
 
-        self.logger.log(
-            os.path.join("Step_Stats", phase, self.time_elapsed_meter.name),
-            self.time_elapsed_meter.val,
-            self.steps[phase],
-        )
+        self.logger.log(os.path.join("Step_Stats", phase, self.time_elapsed_meter.name), self.time_elapsed_meter.val, self.steps[phase])
 
         logging.info(f"Estimated time remaining: {human_readable_time(time_remaining)}")
 
@@ -956,9 +821,7 @@ class Trainer:
     def _check_val_key_match(self, val_keys, phase):
         if val_keys is not None:
             # Check if there are any duplicates
-            assert len(val_keys) == len(
-                set(val_keys)
-            ), f"Duplicate keys in val datasets, keys: {val_keys}"
+            assert len(val_keys) == len(set(val_keys)), f"Duplicate keys in val datasets, keys: {val_keys}"
 
             # Check that the keys match the meter keys
             if self.meters_conf is not None and phase in self.meters_conf:
@@ -1008,26 +871,16 @@ class Trainer:
         if self.meters_conf:
             self.meters = instantiate(self.meters_conf, _convert_="all")
 
-        self.scaler = torch.amp.GradScaler(
-            self.device,
-            enabled=self.optim_conf.amp.enabled if self.optim_conf else False,
-        )
+        self.scaler = torch.amp.GradScaler(self.device, enabled=self.optim_conf.amp.enabled if self.optim_conf else False)
 
-        self.gradient_clipper = (
-            instantiate(self.optim_conf.gradient_clip) if self.optim_conf else None
-        )
-        self.gradient_logger = (
-            instantiate(self.optim_conf.gradient_logger) if self.optim_conf else None
-        )
+        self.gradient_clipper = instantiate(self.optim_conf.gradient_clip) if self.optim_conf else None
+        self.gradient_logger = instantiate(self.optim_conf.gradient_logger) if self.optim_conf else None
 
         logging.info("Finished setting up components: Model, loss, optim, meters etc.")
 
     def _construct_optimizers(self):
         self.optim = construct_optimizer(
-            self.model,
-            self.optim_conf.optimizer,
-            self.optim_conf.options,
-            self.optim_conf.param_group_modifiers,
+            self.model, self.optim_conf.optimizer, self.optim_conf.options, self.optim_conf.param_group_modifiers
         )
 
     def _log_loss_detailed_and_return_core_loss(self, loss, loss_str, step):
@@ -1051,21 +904,15 @@ def print_model_summary(model: torch.nn.Module, log_dir: str = ""):
     if get_rank() != 0:
         return
     param_kwargs = {}
-    trainable_parameters = sum(
-        p.numel() for p in model.parameters(**param_kwargs) if p.requires_grad
-    )
+    trainable_parameters = sum(p.numel() for p in model.parameters(**param_kwargs) if p.requires_grad)
     total_parameters = sum(p.numel() for p in model.parameters(**param_kwargs))
     non_trainable_parameters = total_parameters - trainable_parameters
     logging.info("==" * 10)
     logging.info(f"Summary for model {type(model)}")
     logging.info(f"Model is {model}")
     logging.info(f"\tTotal parameters {get_human_readable_count(total_parameters)}")
-    logging.info(
-        f"\tTrainable parameters {get_human_readable_count(trainable_parameters)}"
-    )
-    logging.info(
-        f"\tNon-Trainable parameters {get_human_readable_count(non_trainable_parameters)}"
-    )
+    logging.info(f"\tTrainable parameters {get_human_readable_count(trainable_parameters)}")
+    logging.info(f"\tNon-Trainable parameters {get_human_readable_count(non_trainable_parameters)}")
     logging.info("==" * 10)
 
     if log_dir:
@@ -1086,9 +933,9 @@ def get_human_readable_count(number: int) -> str:
         '123  '
         >>> get_human_readable_count(1234)  # (one thousand)
         '1.2 K'
-        >>> get_human_readable_count(2e6)   # (two million)
+        >>> get_human_readable_count(2e6)  # (two million)
         '2.0 M'
-        >>> get_human_readable_count(3e9)   # (three billion)
+        >>> get_human_readable_count(3e9)  # (three billion)
         '3.0 B'
         >>> get_human_readable_count(4e14)  # (four hundred trillion)
         '400 T'
