@@ -10,29 +10,24 @@ import numpy as np
 import torch
 import torchvision.transforms.v2 as transforms_v2  # pyright: ignore[reportMissingTypeStubs]
 from PIL import Image
-from skimage.draw import polygon2mask
+from skimage.draw import polygon2mask  # pyright: ignore[reportUnknownVariableType]
 from torch.utils.data import Dataset
 
 
 class RootImageDataset(Dataset[torch.Tensor]):
     """
-    SAM is a model that was trained only with images by META
-    so, the retraining (finetuning) is pretty straight forward compared to SAM 2 and SAM 2.1
     subclasses of Dataset don't need to handle batching and other stuff as these are usually handled by the DataLoader class
-
     reading in all the images and annotations and transforming them all at once, during class instance initialization could save us some time
     could collate all the images into one big tensor and all the annotations into another - will also make memry access more effcient
     but will definetely increase the memory use, opting to reading and transforming within __getitem__.
 
     references:
-
     SAM - https://www.labellerr.com/blog/fine-tune-sam-on-custom-dataset/
     SAM 2 - https://www.datacamp.com/tutorial/sam2-fine-tuning
     SAM 2 - https://learnopencv.com/finetuning-sam2/
     MaskRCNN - https://github.com/cylcharles/Pytorch_exercise/blob/master/Mask%20R-CNN%20finetuning_instance_segmentation.ipynb
 
     look into https://github.com/wkentaro/labelme/issues/777 for saving labelme annotations without embedding the binary image data
-
     in our photos of roots - segmentation classes will be roots, mycorrhizal hyphae and background (3 classes)
     """
 
@@ -94,17 +89,18 @@ class RootImageDataset(Dataset[torch.Tensor]):
             # all the images will be from the camera of a Samsung A22 5G (JFIF images)
             img = Image.open(fp)  # opens in RGB colour chanel mode by default, unlike opencv, which is what we want
             if img.mode != "RGB":
-                img = img.convert(r"RGB")  # if the colour channel is not RGB, convert it to RGB
+                img = img.convert("RGB")  # if the colour channel is not RGB, convert it to RGB
 
         # all the annotations will be from Labelme, which doesn't use any kind of compressions
         with open(file=path_ann, mode="rt") as fp:
             ann = json.load(fp=fp)
 
-        # labelme annotations need to be transposed to match the raw images
         bmasks = torch.tensor(
-            np.array(
+            np.array(  # and a single .json file will typically contain multiple segmentation masks
                 [
-                    polygon2mask(image_shape=(ann["imageWidth"], ann["imageHeight"]), polygon=polygon["points"]).astype(np.uint8).T
+                    polygon2mask(image_shape=(ann["imageWidth"], ann["imageHeight"]), polygon=polygon["points"])
+                    .astype(np.uint8)
+                    .T  # labelme annotations need to be transposed to match the raw images
                     for polygon in ann["shapes"]
                 ]
             )
