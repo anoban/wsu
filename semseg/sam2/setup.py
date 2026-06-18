@@ -32,12 +32,7 @@ REQUIRED_PACKAGES = [
 ]
 
 EXTRA_PACKAGES = {
-    "notebooks": [
-        "matplotlib>=3.9.1",
-        "jupyter>=1.0.0",
-        "opencv-python>=4.7.0",
-        "eva-decord>=0.6.1",
-    ],
+    "notebooks": ["matplotlib>=3.9.1", "jupyter>=1.0.0", "opencv-python>=4.7.0", "eva-decord>=0.6.1"],
     "interactive-demo": [
         "Flask>=3.0.3",
         "Flask-Cors>=5.0.0",
@@ -115,7 +110,6 @@ try:
     from torch.utils.cpp_extension import BuildExtension
 
     class BuildExtensionIgnoreErrors(BuildExtension):
-
         def finalize_options(self):
             try:
                 super().finalize_options()
