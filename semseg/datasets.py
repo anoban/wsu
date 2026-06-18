@@ -33,6 +33,8 @@ class RootImageDataset(Dataset[torch.Tensor]):
 
     def __init__(self, dir_images: str, dir_annotations: str, transf: Optional[transforms_v2.Compose] = None) -> None:
         """
+        https://docs.pytorch.org/vision/0.22/generated/torchvision.transforms.Compose.html
+
         :param dir_images: path to the directory that contains the PNG images
         :type dir_images: str
         :param dir_annotations: path to the directory that contains the annotation JSON files
@@ -44,11 +46,11 @@ class RootImageDataset(Dataset[torch.Tensor]):
         super().__init__()
 
         # strip off the file extensions and save the base names
-        images = np.array(os.listdir(dir_images))
-        assert all([img.endswith((".jpg", ".jpeg")) for img in images]), (
-            "Contents of the image directory are expected to be in JFIF format!"
-        )
-        self._jfif_extension: str = images[0].split(".")[1]  # capture the extensions used in the JPEG images
+        images = np.array(os.listdir(dir_images))  # photos from the WiFi microscope are .png s, not relaxing the extension restriction
+        # assert all([img.endswith((".jpg", ".jpeg")) for img in images]), (
+        #     "Contents of the image directory are expected to be in JFIF format!"
+        # )
+        self._img_extension: str = images[0].split(".")[1]  # capture the extensions used in the images
 
         annotations = np.array(os.listdir(dir_annotations))
         assert all([ann.endswith(".json") for ann in annotations]), "Contents of the annotation directory are expected to be JSON files!"
@@ -79,10 +81,10 @@ class RootImageDataset(Dataset[torch.Tensor]):
         return self._matched_basenames.size
 
     @override
-    def __getitem__(self, _idx: int) -> tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, _idx: int) -> tuple[torch.Tensor, torch.Tensor]:  # pyright: ignore[reportIncompatibleMethodOverride]
         """ """
 
-        path_img = os.path.join(self._image_dir, f"{self._matched_basenames[_idx]}.{self._jfif_extension}")
+        path_img = os.path.join(self._image_dir, f"{self._matched_basenames[_idx]}.{self._img_extension}")
         path_ann = os.path.join(self._annot_dir, f"{self._matched_basenames[_idx]}.json")
 
         with open(file=path_img, mode="rb") as fp:  # let open() handle the errors
@@ -90,6 +92,10 @@ class RootImageDataset(Dataset[torch.Tensor]):
             img = Image.open(fp)  # opens in RGB colour chanel mode by default, unlike opencv, which is what we want
             if img.mode != "RGB":
                 img = img.convert("RGB")  # if the colour channel is not RGB, convert it to RGB
+
+        img = torch.tensor(np.array(img, dtype=np.float32))
+        if self._transforms:
+            img = self._transforms(img)  # if transforms have been specified, apply them
 
         # all the annotations will be from Labelme, which doesn't use any kind of compressions
         with open(file=path_ann, mode="rt") as fp:
@@ -103,7 +109,8 @@ class RootImageDataset(Dataset[torch.Tensor]):
                     .T  # labelme annotations need to be transposed to match the raw images
                     for polygon in ann["shapes"]
                 ]
-            )
+            ),
+            dtype=torch.float32,
         )
 
-        return torch.tensor(img, dtype=torch.float32), bmasks
+        return img, bmasks

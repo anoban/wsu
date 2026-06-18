@@ -193,7 +193,7 @@ data/chapter2/wcvp/*
 *.tiff
 *.svg
 *.pdf
-semseg/images/MaxSee/*.*
+semseg/images/MaxSee/
 
 
 # videos
