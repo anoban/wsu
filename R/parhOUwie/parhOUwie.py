@@ -4,7 +4,12 @@ from os import path
 def model_savepath(
     model_savedir: str, continuous_trait: str, discrete_model: str, continuous_model: str, nsims: int, null_model: bool
 ) -> str:
-    """ """
+    """
+    put together a path to serialize the hOUwie models, given the arguments
+    the model name will be in the format: discrete_modelcontinuous_model_continuous_trait_CD/CID_nsims.Rds
+    e.g. SYMOUMA_F00679_CD_100.Rds
+    """
+
     return path.join(model_savedir, f"{discrete_model}{continuous_model}_{continuous_trait}_{'CID' if null_model else 'CD'}_{nsims}.Rds")
 
 
@@ -37,13 +42,16 @@ def create_rscript(
         raise ValueError(f"Argument continuous_model must be one of {CONTINUOUS_MODELS}, but got {continuous_model}")
 
     if not path.isfile(phylogeny):
-        raise ValueError()
+        raise ValueError(f"{phylogeny} doesn't exist or is not a file")
 
     if not path.isfile(data):
-        raise ValueError()
+        raise ValueError(f"{data} doesn't exist or is not a file")
 
     if not path.isdir(model_savedir):
-        raise ValueError
+        raise ValueError(f"{model_savedir} doesn't exist or is not a directory")
+
+    if not model_savedir.endswith(("/")):
+        raise ValueError(f"Argument model_savedir is expected to and with a '/', but {model_savedir} doesn't")
 
     _savepath = model_savepath(
         model_savedir=model_savedir,
