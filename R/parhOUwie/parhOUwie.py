@@ -1,4 +1,9 @@
+import subprocess
 from os import path
+from typing import NamedTuple
+
+DISCRETE_MODELS = ("ER", "SYM", "ARD")
+CONTINUOUS_MODELS = ("OUM", "OUMA", "OUMV", "OUMVA")
 
 
 def model_savepath(
@@ -28,8 +33,6 @@ def create_rscript(
     """
 
     CONTINUOUS_TRAITS = ("F00679", "F00727", "F00709")
-    DISCRETE_MODELS = ("ER", "SYM", "ARD")
-    CONTINUOUS_MODELS = ("OUM", "OUMA", "OUMV", "OUMVA")
 
     # do a few sanity checks first
     if continuous_trait not in CONTINUOUS_TRAITS:
@@ -65,8 +68,61 @@ def create_rscript(
     return f"library('ape');library('OUwie');phylogeny <- ape::read.tree('{phylogeny}');data <- read.csv('{data}')[, c('binominal', 'state', '{continuous_trait}')];stopifnot(all(phylogeny$tip.label == data$binominal));model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = {2 if null_model else 1}, discrete_model = '{discrete_model}', continuous_model = '{continuous_model}', nSim = {nsims}, null.model = {'TRUE' if null_model else 'FALSE'});saveRDS(object = model, file = '{_savepath}');"
 
 
-def main() -> None:
-    pass
+class houwie_params(NamedTuple):
+    """
+    a named tuple class to define hOUwie model parameters
+    """
+
+    discrete: str
+    continuous: str
+    null: bool
+
+
+def logger(directory: str, procs: list[subprocess.CompletedProcess[str]], params: list[houwie_params]) -> None:
+    """
+    log the stdout and stderr of the list of processes to stdout.log and stderr.log files in the
+    specified directory
+    """
+
+    with (
+        open(file=path.join(directory, "stdout.log"), mode="wt") as fp_out,
+        open(file=path.join(directory, "stderr.log"), mode="wt") as fp_err,
+    ):
+        for proc, param in zip(procs, params):
+            fp_out.write(f"{param.discrete}{param.continuous}_{'CID' if param.null else 'CD'}\n{proc.stdout}\n\n\n")
+            fp_err.write(f"{param.discrete}{param.continuous}_{'CID' if param.null else 'CD'}\n{proc.stderr}\n\n\n")
+
+
+def main(rinterpreter: str, phylo: str, dataset: str, ctrait: str, savedir: str, nsims: int) -> None:
+    """ """
+
+    HOUWIE_PARAMS = [
+        houwie_params(discrete=d, continuous=c, null=n) for d in DISCRETE_MODELS for c in CONTINUOUS_MODELS for n in (True, False)
+    ]
+
+    procs = [
+        subprocess.run(
+            [
+                rinterpreter,
+                "-e",
+                create_rscript(
+                    phylogeny=phylo,
+                    data=dataset,
+                    model_savedir=savedir,
+                    continuous_trait=ctrait,
+                    discrete_model=params.discrete,
+                    continuous_model=params.continuous,
+                    nsims=nsims,
+                    null_model=params.null,
+                ),
+            ],
+            capture_output=True,
+            encoding="utf8",
+        )
+        for params in HOUWIE_PARAMS
+    ]
+
+    logger(directory=savedir, procs=procs, params=HOUWIE_PARAMS)
 
 
 if __name__ == "__main__":
