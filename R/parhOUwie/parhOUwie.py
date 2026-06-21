@@ -1,4 +1,5 @@
 import subprocess
+from datetime import datetime
 from os import path
 from typing import NamedTuple
 
@@ -78,15 +79,15 @@ class houwie_params(NamedTuple):
     null: bool
 
 
-def logger(directory: str, procs: list[subprocess.CompletedProcess[str]], params: list[houwie_params]) -> None:
+def logger(directory: str, procs: list[subprocess.CompletedProcess[str]], model: str) -> None:
     """
     log the stdout and stderr of the list of processes to stdout.log and stderr.log files in the
     specified directory
     """
 
     with (
-        open(file=path.join(directory, "stdout.log"), mode="wt") as fp_out,
-        open(file=path.join(directory, "stderr.log"), mode="wt") as fp_err,
+        open(file=path.join(directory, "stdout.log"), mode="a+") as fp_out,
+        open(file=path.join(directory, "stderr.log"), mode="a+") as fp_err,
     ):
         for proc, param in zip(procs, params):
             fp_out.write(f"{param.discrete}{param.continuous}_{'CID' if param.null else 'CD'}\n{proc.stdout}\n\n\n")
@@ -100,8 +101,9 @@ def main(rinterpreter: str, phylo: str, dataset: str, ctrait: str, savedir: str,
         houwie_params(discrete=d, continuous=c, null=n) for d in DISCRETE_MODELS for c in CONTINUOUS_MODELS for n in (True, False)
     ]
 
+    _tick = datetime.now()  # time at process launch
     procs = [
-        subprocess.run(
+        subprocess.Popen(  # subprocess.Popen is non-blocking whereas subprocess.call is blocking
             [
                 rinterpreter,
                 "-e",
@@ -116,11 +118,16 @@ def main(rinterpreter: str, phylo: str, dataset: str, ctrait: str, savedir: str,
                     null_model=params.null,
                 ),
             ],
-            capture_output=True,
+            shell=False,  # do not show the shell
+            stdout=subprocess.PIPE,  # establish a pipe to child process's stdout
+            stderr=subprocess.PIPE,  # establish a pipe to child process's stderr
+            text=True,  # data sent through the pipes are assumed to be utf8 encoded text
             encoding="utf8",
         )
         for params in HOUWIE_PARAMS
     ]
+
+    # poll the processess once every minute
 
     logger(directory=savedir, procs=procs, params=HOUWIE_PARAMS)
 
