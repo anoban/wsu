@@ -1,6 +1,7 @@
 import subprocess
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import path
+from time import sleep
 from typing import NamedTuple
 
 DISCRETE_MODELS = ("ER", "SYM", "ARD")
@@ -79,7 +80,7 @@ class houwie_params(NamedTuple):
     null: bool
 
 
-def logger(directory: str, procs: list[subprocess.CompletedProcess[str]], model: str) -> None:
+def logger(directory: str, finished_proc: subprocess.Popen[str], fit: str, duration: timedelta) -> None:
     """
     log the stdout and stderr of the list of processes to stdout.log and stderr.log files in the
     specified directory
@@ -89,9 +90,29 @@ def logger(directory: str, procs: list[subprocess.CompletedProcess[str]], model:
         open(file=path.join(directory, "stdout.log"), mode="a+") as fp_out,
         open(file=path.join(directory, "stderr.log"), mode="a+") as fp_err,
     ):
-        for proc, param in zip(procs, params):
-            fp_out.write(f"{param.discrete}{param.continuous}_{'CID' if param.null else 'CD'}\n{proc.stdout}\n\n\n")
-            fp_err.write(f"{param.discrete}{param.continuous}_{'CID' if param.null else 'CD'}\n{proc.stderr}\n\n\n")
+        fp_out.write(f"{fit}, runtime - {duration}\n{finished_proc.stdout.read()}\n\n\n")  # pyright: ignore[reportOptionalMemberAccess]
+        fp_err.write(f"\n{finished_proc.stderr.read()}\n\n\n")  # pyright: ignore[reportOptionalMemberAccess]
+
+
+def handle_parallel_waits(logdir: str, launched_fits: dict[str, subprocess.Popen[str]], start: datetime) -> None:
+    """ """
+
+    # this while block is the once a minute poll loop
+    while any([proc.poll() is None for proc in launched_fits.values()]) or len(
+        launched_fits
+    ):  # while there are subprocesses that have not signalled completion or while the dict is not empty
+        _finished_fits: list[str] = []
+        for fit, proccess in launched_fits.items():
+            if proccess.poll() is not None:  # if the process has signalled finish
+                stop = datetime.now()
+                proccess.terminate()  # terminate the process
+                logger(directory=logdir, finished_proc=proccess, fit=fit, duration=stop - start)  # log the details of the finished process
+                _finished_fits.append(fit)  # will use this to remove the finished procs from the dict
+
+        for fit in _finished_fits:
+            del launched_fits[fit]  # remove the finished processes from the dict
+
+        sleep(60)  # wait for a minute before the next iteration
 
 
 def main(rinterpreter: str, phylo: str, dataset: str, ctrait: str, savedir: str, nsims: int) -> None:
@@ -101,9 +122,9 @@ def main(rinterpreter: str, phylo: str, dataset: str, ctrait: str, savedir: str,
         houwie_params(discrete=d, continuous=c, null=n) for d in DISCRETE_MODELS for c in CONTINUOUS_MODELS for n in (True, False)
     ]
 
-    _tick = datetime.now()  # time at process launch
-    procs = [
-        subprocess.Popen(  # subprocess.Popen is non-blocking whereas subprocess.call is blocking
+    tick = datetime.now()  # time at process launch
+    procs = {  # launch all the 24 procs in parallel
+        f"{params.discrete}{params.continuous}_{'CID' if params.null else 'CD'}_{nsims}sims": subprocess.Popen(  # subprocess.Popen is non-blocking whereas subprocess.call is blocking
             [
                 rinterpreter,
                 "-e",
@@ -125,11 +146,9 @@ def main(rinterpreter: str, phylo: str, dataset: str, ctrait: str, savedir: str,
             encoding="utf8",
         )
         for params in HOUWIE_PARAMS
-    ]
+    }
 
-    # poll the processess once every minute
-
-    logger(directory=savedir, procs=procs, params=HOUWIE_PARAMS)
+    handle_parallel_waits(logdir=savedir, launched_fits=procs, start=tick)
 
 
 if __name__ == "__main__":
