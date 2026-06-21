@@ -91,7 +91,7 @@ def logger(directory: str, finished_proc: subprocess.Popen[str], fit: str, durat
         open(file=path.join(directory, "stderr.log"), mode="a+") as fp_err,
     ):
         fp_out.write(f"{fit}, runtime - {duration}\n{finished_proc.stdout.read()}\n\n\n")  # pyright: ignore[reportOptionalMemberAccess]
-        fp_err.write(f"\n{finished_proc.stderr.read()}\n\n\n")  # pyright: ignore[reportOptionalMemberAccess]
+        fp_err.write(f"{fit}, runtime - {duration}\n{finished_proc.stderr.read()}\n\n\n")  # pyright: ignore[reportOptionalMemberAccess]
 
 
 def handle_parallel_waits(logdir: str, launched_fits: dict[str, subprocess.Popen[str]], start: datetime) -> None:
