@@ -57,7 +57,6 @@ def create_rscript(
 
     model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = {2 if null_model else 1}, discrete_model = '{discrete_model}', continuous_model = '{continuous_model}', nSim = {nsims}, null.model = {'TRUE' if null_model else 'FALSE'});
     saveRDS(object = model, file = '{savepath}');
-
     """
 
     # do a few sanity checks first

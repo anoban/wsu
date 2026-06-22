@@ -10,3 +10,6 @@
 [submodule "R/thirdparty/MCMCglmm"]
 	path = R/thirdparty/MCMCglmm
 	url = https://github.com/jarrodhadfield/MCMCglmm.git
+[submodule "R/thirdparty/corHMM"]
+	path = R/thirdparty/corHMM
+	url = https://github.com/thej022214/corHMM.git
