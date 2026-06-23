@@ -1,0 +1,10 @@
+- things that need to be installed on the server in order to run the hOUwie models and brms models
+	- libmpfr-dev
+	- libgmp-dev
+	- g++
+	- python3
+
+- R packages that need to be installed
+	- corHMM (from GitHub)
+	- OUwie (from GitHub)
+	- ape

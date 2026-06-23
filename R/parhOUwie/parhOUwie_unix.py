@@ -151,6 +151,7 @@ def handle_parallel_waits(logdir: str, launched_fits: dict[str, subprocess.Popen
             if proccess.poll() is not None:  # if the process has signalled finish
                 tock = datetime.now()
                 proccess.terminate()  # terminate the process
+                # the log files will be saved to the same dir as the models themselves
                 logger(directory=logdir, finished_proc=proccess, fit=fit, start=tick, stop=tock)  # log the details of the finished process
                 _finished_fits.append(fit)  # will use this to remove the finished procs from the dict
 
@@ -208,13 +209,4 @@ def main(
 
 
 if __name__ == "__main__":
-    main(
-        rinterpreter=r"R",
-        phylo=r"../primateEyes.phy",
-        dataset=r"../primateEyes.csv",
-        savedir="./",
-        nsims=30,
-        continuous_trait="Skull_length",
-        discrete_trait="Activity_pattern_code",
-        binominal="Genus_species",
-    )
+    main(rinterpreter=r"R", phylo=r"", dataset=r"", savedir="./", nsims=500, continuous_trait="", discrete_trait="", binominal="")
