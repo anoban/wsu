@@ -13,3 +13,6 @@
 [submodule "R/thirdparty/corHMM"]
 	path = R/thirdparty/corHMM
 	url = https://github.com/thej022214/corHMM.git
+[submodule "R/thirdparty/Rcpp"]
+	path = R/thirdparty/Rcpp
+	url = https://github.com/RcppCore/Rcpp.git
