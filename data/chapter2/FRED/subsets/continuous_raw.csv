@@ -118,10 +118,10 @@ Asplenium_bulbiferum,Asplenium,bulbiferum,Aspleniaceae,0.43,31.8,0.2
 Astelia_fragrans,Astelia,fragrans,Asteliaceae,0.94,12.9,0.09
 Astelia_nervosa,Astelia,nervosa,Asteliaceae,0.95,14.5,0.09
 Blechnum_lanceolatum,Blechnum,lanceolatum,Aspleniaceae,0.41,32.4,0.21
-Lomaria_discolor,Lomaria,discolor,Blechnaceae,0.36,26.3,0.3
+Blechnum_discolor,Blechnum,discolor,Blechnaceae,0.36,26.3,0.3
 Blechnum_fluviatilis,Blechnum,fluviatilis,Aspleniaceae,0.31,42.9,0.29
-Parablechnum_novae-zelandiae,Parablechnum,novae-zelandiae,Blechnaceae,0.33,28.0,0.38
-Parablechnum_procerum,Parablechnum,procerum,Blechnaceae,0.27,31.1,0.53
+Blechnum_novae-zelandiae,Blechnum,novae-zelandiae,Blechnaceae,0.33,28.0,0.38
+Blechnum_procerum,Blechnum,procerum,Blechnaceae,0.27,31.1,0.53
 Carpodetus_serratus,Carpodetus,serratus,Rousseaceae,0.44,35.1,0.17
 Coprosma_ciliata,Coprosma,ciliata,Rubiaceae,0.2,91.5,0.34
 Coprosma_foetidissima,Coprosma,foetidissima,Rubiaceae,0.37,44.5,0.21
@@ -137,7 +137,7 @@ Hedycarya_arborea,Hedycarya,arborea,Monimiaceae,1.0,9.9,0.12
 Lepidothamnus_intermedius,Lepidothamnus,intermedius,Podocarpaceae,0.29,21.5,0.37
 Leptecophylla_juniperina,Leptecophylla,juniperina,Ericaceae,0.1,128.2,0.71
 Leptospermum_scoparium,Leptospermum,scoparium,Myrtaceae,0.21,91.3,0.3
-Pseudodiphasium_volubile,Pseudodiphasium,volubile,Lycopodiaceae,0.44,55.5,0.1
+Lycopodium_volubile,Lycopodium,volubile,Lycopodiaceae,0.44,55.5,0.1
 Manoao_colensoi,Manoao,colensoi,Podocarpaceae,0.47,18.9,0.19
 Melicytus_ramiflorus,Melicytus,ramiflorus,Violaceae,0.34,29.0,0.36
 Metrosideros_diffusa,Metrosideros,diffusa,Myrtaceae,0.17,84.7,0.5
@@ -3277,9 +3277,9 @@ Blumeodendron_tokbrai,Blumeodendron,tokbrai,Euphorbiaceae,0.4535,24.8057927,0.24
 Galearia_maingayi,Galearia,maingayi,Pandaceae,0.5482,5.635617834,0.754807692
 Hypobathrum_racemosum,Hypobathrum,racemosum,Rubiaceae,0.462325,11.41490368,0.537348259
 Pentaspadon_motleyi,Pentaspadon,motleyi,Anacardiaceae,0.2985,39.10778931,0.357294955
-Rubroshorea_acuminata,Rubroshorea,acuminata,Dipterocarpaceae,0.418045,27.48305451,0.270904963
-Rubroshorea_leprosula,Rubroshorea,leprosula,Dipterocarpaceae,0.341835294,24.9992726,0.480185138
-Richetia_multiflora,Richetia,multiflora,Dipterocarpaceae,0.8817,1.940391478,0.8543415
+Shorea_acuminata,Shorea,acuminata,Dipterocarpaceae,0.418045,27.48305451,0.270904963
+Shorea_leprosula,Shorea,leprosula,Dipterocarpaceae,0.341835294,24.9992726,0.480185138
+Shorea_multiflora,Shorea,multiflora,Dipterocarpaceae,0.8817,1.940391478,0.8543415
 Elymus_repens,Elymus,repens,Poaceae,0.440337826,49.13389922,0.1898565
 Koeleria_pyramidata,Koeleria,pyramidata,Poaceae,0.406237808,56.06263558,0.172949945
 Schizachyrium_scoparium,Schizachyrium,scoparium,Poaceae,0.44811,49.75738839,0.227383115
@@ -3530,7 +3530,7 @@ Dicranopteris_pedata,Dicranopteris,pedata,Gleicheniaceae,0.20445,80.98027027,0.3
 Schima_superba,Schima,superba,Theaceae,0.2159,112.5094367,0.26125
 Machilus_nanmu,Machilus,nanmu,Lauraceae,0.439625,32.14708768,0.205218003
 Syzygium_jambos,Syzygium,jambos,Myrtaceae,0.22475,144.2353309,0.18015873
-Blechnopsis_orientalis,Blechnopsis,orientalis,Blechnaceae,0.2088,185.3453333,0.15
+Blechnum_orientale,Blechnum,orientale,Blechnaceae,0.2088,185.3453333,0.15
 Elaeocarpus_dubius,Elaeocarpus,dubius,Elaeocarpaceae,0.3381,40.48241379,0.276190476
 Syzygium_acuminatissimum,Syzygium,acuminatissimum,Myrtaceae,0.34,47.12491803,0.234615385
 Heptapleurum_heptaphyllum,Heptapleurum,heptaphyllum,Araliaceae,0.27055,157.4859091,0.11
