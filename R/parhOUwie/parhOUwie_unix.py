@@ -31,6 +31,19 @@ def model_savepath(
     )
 
 
+class ou_params(NamedTuple):
+    """
+    a data class to store the three OU parameters
+    alpha - strength of selection or pull towards the optima
+    sigma squared - rate of evolution
+    theta - trait optima
+    """
+
+    alpha: float
+    sigma_sq: float
+    theta: float
+
+
 def create_rscript(
     phylogeny: str,
     data: str,
@@ -42,6 +55,10 @@ def create_rscript(
     discrete_trait: str,
     continuous_trait: str,
     binominal: str,
+    lb_discrete_model: float,
+    ub_discrete_model: float,
+    lb_continuous_model: Optional[ou_params],
+    ub_continuous_model: Optional[ou_params],
     include_disc_trait_in_model_names: bool = False,
 ) -> str:
     """
@@ -98,7 +115,14 @@ def create_rscript(
         discrete_trait=discrete_trait if include_disc_trait_in_model_names else None,
     )
 
-    return f"library('ape');library('OUwie');phylogeny <- ape::read.tree('{phylogeny}');data <- read.csv('{data}')[, c('{binominal}', '{discrete_trait}', '{continuous_trait}')];stopifnot(all(phylogeny$tip.label == data$binominal));model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = {2 if null_model else 1}, discrete_model = '{discrete_model}', continuous_model = '{continuous_model}', nSim = {nsims}, null.model = {'TRUE' if null_model else 'FALSE'});saveRDS(object = model, file = '{_savepath}');"
+    # tuning certain params hoping to improve convergence - lb_discrete_model, ub_discrete_model, lb_continuous_model and ub_continuous_model
+
+    if (lb_continuous_model is None) and (ub_continuous_model is None):
+        return f"library('ape');library('OUwie');phylogeny <- ape::read.tree('{phylogeny}');data <- read.csv('{data}')[, c('{binominal}', '{discrete_trait}', '{continuous_trait}')];stopifnot(all(phylogeny$tip.label == data$binominal));model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = {2 if null_model else 1}, discrete_model = '{discrete_model}', continuous_model = '{continuous_model}', nSim = {nsims}, null.model = {'TRUE' if null_model else 'FALSE'}, lb_discrete_model = {lb_discrete_model}, ub_discrete_model = {ub_discrete_model});saveRDS(object = model, file = '{_savepath}');"
+    elif (lb_continuous_model is not None) and (ub_continuous_model is not None):
+        return f"library('ape');library('OUwie');phylogeny <- ape::read.tree('{phylogeny}');data <- read.csv('{data}')[, c('{binominal}', '{discrete_trait}', '{continuous_trait}')];stopifnot(all(phylogeny$tip.label == data$binominal));model <- OUwie::hOUwie(phy = phylogeny, data = data, rate.cat = {2 if null_model else 1}, discrete_model = '{discrete_model}', continuous_model = '{continuous_model}', nSim = {nsims}, null.model = {'TRUE' if null_model else 'FALSE'}, lb_discrete_model = {lb_discrete_model}, ub_discrete_model = {ub_discrete_model}, lb_continuous_model = c({lb_continuous_model.alpha}, {lb_continuous_model.sigma_sq}, {lb_continuous_model.theta}), ub_continuous_model = c({ub_continuous_model.alpha}, {ub_continuous_model.sigma_sq}, {ub_continuous_model.theta}));saveRDS(object = model, file = '{_savepath}');"
+    else:
+        raise RuntimeError("Provided combination of lb_continuous_model and ub_continuous_model is invalid!")
 
 
 class houwie_params(NamedTuple):
@@ -194,6 +218,10 @@ def main(
                     discrete_trait=discrete_trait,
                     continuous_trait=continuous_trait,
                     binominal=binominal,
+                    lb_discrete_model=1e-15,  # the lowest from the old fits was 2.495087e-07
+                    ub_discrete_model=1.000,
+                    lb_continuous_model=None,
+                    ub_continuous_model=None,
                 ),
             ],
             shell=False,  # do not show the shell
@@ -209,4 +237,13 @@ def main(
 
 
 if __name__ == "__main__":
-    main(rinterpreter=r"R", phylo=r"", dataset=r"", savedir="./", nsims=500, continuous_trait="", discrete_trait="", binominal="")
+    main(
+        rinterpreter=r"R",
+        phylo=r"./ScratchData/FRED4_1301/FRED4_1301.tre",
+        dataset=r"./ScratchData/FRED4_1301/name_matched_FRED4_1301.csv",
+        savedir=r"./ScratchData/FRED4_1301/F00678/",
+        nsims=250,
+        continuous_trait="F00679",
+        discrete_trait="state",
+        binominal="binominal",
+    )
