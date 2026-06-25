@@ -34,6 +34,7 @@ def model_savepath(
 class ou_params(NamedTuple):
     """
     a data class to store the three OU parameters
+
     alpha - strength of selection or pull towards the optima
     sigma squared - rate of evolution
     theta - trait optima
