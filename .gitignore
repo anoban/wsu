@@ -123,7 +123,7 @@ semseg/images/MaxSee/
 
 # R crap
 .Rhistory
-data/chapter2/rdata/*.RData
+data/chapter2/rdata/
 
 # zip files
 *.tar.gz
