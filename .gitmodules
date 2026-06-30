@@ -7,9 +7,3 @@
 [submodule "R/thirdparty/phylolm"]
 	path = R/thirdparty/phylolm
 	url = https://github.com/lamho86/phylolm.git
-[submodule "R/thirdparty/ggtree"]
-	path = R/thirdparty/ggtree
-	url = https://github.com/YuLab-SMU/ggtree.git
-[submodule "R/thirdparty/treeio"]
-	path = R/thirdparty/treeio
-	url = https://github.com/YuLab-SMU/treeio.git
