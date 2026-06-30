@@ -16,10 +16,12 @@ stopifnot(all(data$binominal == phylogeny$tip.label))
 #--------------------------
 
 png("../plots/phylogeny.png", width = 22000, height = 22000, units = "px", res = 400)#, bg = "transparent")
-plot(x = phylogeny, ftype = "i", fsize = 0.80, lwd = 1, offset = 2, part = 1, type = "fan", show.tip.label = FALSE, show.node.label = FALSE)
-
-# lets plot each mycorrhizal state in a separate line
-ape::tiplabels(tip = data[data$state == "AM", "binominal"]$binominal, # paint only the given tips in the specified colour
-               col = "red", pch=21, cex = 3)
-
+ape::plot.phylo(x = phylogeny, ftype = "i", fsize = 0.80, lwd = 1, offset = 1, part = 1, type = "fan", show.tip.label = FALSE, show.node.label = FALSE)
+ape::tiplabels(tip = seq_along(phylogeny$tip.label)[data$state == "AM"], col = "red", pch=19, cex = 1.5, offset = 2)
+ape::tiplabels(tip = seq_along(phylogeny$tip.label)[data$state == "EcM"], col = "darkgreen", pch=19, cex = 1.5, offset = 4)
+ape::tiplabels(tip = seq_along(phylogeny$tip.label)[data$state == "NM"], col = "blue", pch=19, cex = 1.5, offset = 4)
+ape::tiplabels(tip = seq_along(phylogeny$tip.label)[data$state == "ErM"], col = "brown", pch=19, cex = 1.5, offset = 4)
+ape::tiplabels(tip = seq_along(phylogeny$tip.label)[data$state == "EcMAM"], col = "orange", pch=19, cex = 1.5, offset = 4)
+ape::tiplabels(tip = seq_along(phylogeny$tip.label)[data$state == "NMAM"], col = "purple", pch=19, cex = 1.5, offset = 4)
 dev.off()
+
