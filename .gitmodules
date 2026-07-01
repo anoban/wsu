@@ -7,3 +7,6 @@
 [submodule "R/thirdparty/phylolm"]
 	path = R/thirdparty/phylolm
 	url = https://github.com/lamho86/phylolm.git
+[submodule "R/thirdparty/geiger-v2"]
+	path = R/thirdparty/geiger-v2
+	url = https://github.com/mwpennell/geiger-v2.git
