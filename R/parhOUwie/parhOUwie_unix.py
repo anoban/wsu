@@ -78,8 +78,8 @@ def create_rscript(
     """
 
     # do a few sanity checks first
-    # if continuous_trait not in ("F00679", "F00727", "F00709"):
-    #     raise ValueError(f"Argument continuous_trait must be one of F00679, F00727 or F00709, but got {continuous_trait}")
+    if continuous_trait not in ("F00679", "F00727", "F00709"):
+        raise ValueError(f"Argument continuous_trait must be one of F00679, F00727 or F00709, but got {continuous_trait}")
 
     if discrete_model not in DISCRETE_MODELS:
         raise ValueError(f"Argument discrete_model must be one of {DISCRETE_MODELS}, but got {discrete_model}")
@@ -219,8 +219,8 @@ def main(
                     discrete_trait=discrete_trait,
                     continuous_trait=continuous_trait,
                     binominal=binominal,
-                    lb_discrete_model=1e-15,  # the lowest from the old fits was 2.495087e-07
-                    ub_discrete_model=1.000,
+                    lb_discrete_model=1e-15,  # the lowest from the old 100 simmap fits was 2.495087e-07
+                    ub_discrete_model=10.000,  # in the last fit with 250 simmaps, three models has max rates closer to 1.00
                     lb_continuous_model=None,
                     ub_continuous_model=None,
                 ),
@@ -242,7 +242,7 @@ if __name__ == "__main__":
         rinterpreter=r"R",
         phylo=r"./ScratchData/FRED4_1301/FRED4_1301.tre",
         dataset=r"./ScratchData/FRED4_1301/name_matched_FRED4_1301.csv",
-        savedir=r"./ScratchData/FRED4_1301/F00678/",
+        savedir=r"./ScratchData/FRED4_1301/F00679/",
         nsims=250,
         continuous_trait="F00679",
         discrete_trait="state",
