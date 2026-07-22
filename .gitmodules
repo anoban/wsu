@@ -10,9 +10,3 @@
 [submodule "R/thirdparty/geiger-v2"]
 	path = R/thirdparty/geiger-v2
 	url = https://github.com/mwpennell/geiger-v2.git
-[submodule "R/thirdparty/corHMM"]
-	path = R/thirdparty/corHMM
-	url = https://github.com/thej022214/corHMM.git
-[submodule "R/thirdparty/Rcpp"]
-	path = R/thirdparty/Rcpp
-	url = https://github.com/RcppCore/Rcpp.git
