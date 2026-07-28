@@ -31,11 +31,12 @@ getModelTable <- function(model.list, type="BIC"){
     ContLik <- simplify2array(lapply(model.list, "[[", "ContLik"))
     model_table <- data.frame(np = ParCount, lnLik = LogLik, DiscLik=DiscLik, ContLik=ContLik, AIC = AIC, dAIC = dAIC, AICwt = AICwt)
     colnames(model_table) <- gsub("AIC", type, colnames(model_table))
+
     return(model_table)
 }
 
 # patched alternative to OUwie::getModelAvgParams
-getModelAvgParams <- function(model.list, BM_alpha_treatment="zero", type="BIC", force=TRUE){
+getModelAvgParams <- function(model.list, BM_alpha_treatment="zero", type="AICc", force=TRUE){
     is_houwie <- unlist(lapply(model.list, function(x) inherits(x, what="houwie")))
     if(!all(is_houwie)){
         warning("Some of the input models are not of class houwie, these have been removed.")
@@ -57,12 +58,12 @@ getModelAvgParams <- function(model.list, BM_alpha_treatment="zero", type="BIC",
         mod_names <- names(model.list)
     }
 
-    # pull the aic weights
+    # pull the weights based on the specified criterion - default is AICc
     mods_table <- getModelTable(model.list, type=type)
-    if(diff(range(mods_table[,5])) > 1e5){
+    if(diff(range(mods_table[, 5])) > 1e5){
         if(!force){
-            max_aic <- max(mods_table[,5])
-            model.list <- model.list[abs(mods_table[,5] - max_aic)  < 1e5]
+            max_aic <- max(mods_table[, 5])
+            model.list <- model.list[abs(mods_table[, 5] - max_aic)  < 1e5]
             mods_table <- getModelTable(model.list, type=type)
             mod_names <- names(model.list)
         }else{
@@ -70,7 +71,7 @@ getModelAvgParams <- function(model.list, BM_alpha_treatment="zero", type="BIC",
         }
     }
     AICwts <- mods_table[,7]
-    tip_values_by_model <- lapply(model.list, get_tip_values)
+    tip_values_by_model <- lapply(model.list, OUwie:::get_tip_values)
     for(i in 1:length(tip_values_by_model)){
         tip_values_by_model[[i]] <- tip_values_by_model[[i]] * AICwts[i]
     }
@@ -79,5 +80,6 @@ getModelAvgParams <- function(model.list, BM_alpha_treatment="zero", type="BIC",
     names(observed_tip_states) <- model.list[[1]]$hOUwie.dat$data.cor[,1]
     weighted_tip_values <- weighted_tip_values[match(names(observed_tip_states), rownames(weighted_tip_values)),]
     weighted_tip_values$tip_state <- observed_tip_states
+
     return(weighted_tip_values)
 }
