@@ -27,6 +27,6 @@ tree <- geiger:::rescale.phylo(tree, model = "lambda", lambda = 0.83109112707248
 
 corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE) # turn the phylogeny into a variance-covariance matrix based on branch lengths
 
-model <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE),
+model_0 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE),
                      data = fred4, data2 = list(corrmat = corrmat), chains = 4, cores = 4, threads = 4, iter = 10000, warmup = 5000, backend = "cmdstanr")
-saveRDS(object = model, file = "./ScratchData/brms_model_lambda.Rds")
+saveRDS(object = model_0, file = "./ScratchData/brms_model_lambda.Rds")
