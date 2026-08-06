@@ -1,5 +1,4 @@
-# patched (customized functions from the OUwie library) - because the the library had some implementation issues
-# and bugs
+# patched (customized functions from the OUwie library) - because the the library had some implementation issues and bugs
 
 library("OUwie")
 
