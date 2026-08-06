@@ -1,7 +1,32 @@
-# patched (customized functions from the OUwie library) - because the the library had some implementation issues and bugs
-
 library("OUwie")
 
+read_all_rds <- function(dirpath, cd, strip, rm_underscores = TRUE) {
+    # dirpath = path to the directory containing the .Rds files
+    # cd = character dependent or independent models, these are expected to contain "CD" or "CID" in their names
+    # strip = the regex pattern to strip out of the file names when naming objects, can be a plain string as well
+    # rm_underscores - strip all the underscores in the object name
+
+    fnames <- list.files(dirpath) # all the files in the specified dir
+    if(cd) fnames <- fnames[grep(pattern = "CD", fnames)]
+    else fnames <- fnames[grep(pattern = "CID", fnames)] # cherry pick CD or CID models, given their names contain "CD" or "CID" to distinguish them
+    # print(fnames)
+
+    paths <- paste0(dirpath, fnames) # relative paths for all the Rds files
+    stopifnot(length(fnames)==length(paths))
+
+    # remove the unnecessary parts of the file names to create the model names and also remove all the underscores
+    mnames <- fnames |> gsub(pattern = ".Rds", replacement = '') |> gsub(pattern = strip, replacement = '') |> gsub(pattern = ifelse(rm_underscores, '_', ''), replacement = '')
+    stopifnot(length(fnames)==length(mnames))
+    stopifnot(length(paths)==length(mnames))
+
+    models <- list()
+    for (i in seq_along(mnames)) models[[mnames[i]]] <- readRDS(file = paths[i])
+    stopifnot(length(models)==length(mnames))
+
+    models
+}
+
+# patched (customized functions from the OUwie library) - because the the library had some implementation issues and bugs
 # patched alternative to OUwie::getModelTable
 getModelTable_patched <- function(model.list, type="AICc"){
     # checks

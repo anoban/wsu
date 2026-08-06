@@ -4,7 +4,7 @@ import subprocess
 from datetime import datetime
 from os import path
 from time import sleep
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 DISCRETE_MODELS = ("ER", "SYM", "ARD")
 CONTINUOUS_MODELS = ("OUM", "OUMA", "OUMV", "OUMVA")
@@ -17,7 +17,7 @@ def model_savepath(
     nsims: int,
     null_model: bool,
     continuous_trait: str,
-    discrete_trait: Optional[str],
+    discrete_trait: str | None,
 ) -> str:
     """
     put together a path to serialize the hOUwie models, given the arguments
@@ -58,8 +58,8 @@ def create_rscript(
     binominal: str,
     lb_discrete_model: float,
     ub_discrete_model: float,
-    lb_continuous_model: Optional[ou_params],
-    ub_continuous_model: Optional[ou_params],
+    lb_continuous_model: ou_params | None,
+    ub_continuous_model: ou_params | None,
     include_disc_trait_in_model_names: bool = False,
 ) -> str:
     """
@@ -100,7 +100,7 @@ def create_rscript(
                 f"File {data} is expected to contain all of the following three columns: {binominal, discrete_trait, continuous_trait} but {columns} were found instead"
             )
 
-    if not model_savedir.endswith(("/")):
+    if not model_savedir.endswith("/"):
         raise ValueError(f"Argument model_savedir is expected to and with a '/', but {model_savedir} doesn't")
 
     if not path.isdir(model_savedir):
@@ -168,7 +168,7 @@ def handle_parallel_waits(logdir: str, launched_fits: dict[str, subprocess.Popen
     """
 
     # this while block is the once a minute poll loop
-    while any([proc.poll() is None for proc in launched_fits.values()]) or len(
+    while any(proc.poll() is None for proc in launched_fits.values()) or len(
         launched_fits
     ):  # while there are subprocesses that have not signalled completion or while the dict is not empty
         _finished_fits: list[str] = []
@@ -240,10 +240,10 @@ def main(
 if __name__ == "__main__":
     main(
         rinterpreter=r"R",
-        phylo=r"./ScratchData/FRED4_1301/FRED4_1301.tre",
-        dataset=r"./ScratchData/FRED4_1301/name_matched_FRED4_1301.csv",
-        savedir=r"./ScratchData/FRED4_1301/F00679/",
-        nsims=250,
+        phylo=r"./ScratchData/FRED4_1301.tre",
+        dataset=r"./ScratchData/name_matched_FRED4_1301.csv",
+        savedir=r"./ScratchData/RD/",
+        nsims=100,
         continuous_trait="F00679",
         discrete_trait="state",
         binominal="binominal",
