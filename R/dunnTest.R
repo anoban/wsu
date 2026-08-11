@@ -21,3 +21,5 @@ length(dunnRD$res$Comparison)
 subset(dunnRD$res, P.adj < 0.05)
 
 subset(dunnRD$res, P.adj < 0.05) |> dim() # 485 species pairs
+subset(dunnSRL$res, P.adj < 0.05) |> dim() # 326 species pairs
+subset(dunnRTD$res, P.adj < 0.05) |> dim() # 650 species pairs
