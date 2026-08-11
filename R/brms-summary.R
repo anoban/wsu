@@ -53,7 +53,7 @@ brms::bayes_R2(mrpmm_3)
 # based on the Bayesian R2 values
 
 # to compare model 1 and model 3
-mrpmm_1 <- brms::add_criterion(mrpmm_1, criterion = "loo")
-mrpmm_3 <- brms::add_criterion(mrpmm_3, criterion = "loo")
+mrpmm_1 <- brms::add_criterion(mrpmm_1, criterion = "loo", moment_match = TRUE)
+mrpmm_3 <- brms::add_criterion(mrpmm_3, criterion = "loo", moment_match = TRUE)
 
 loo::loo(mrpmm_1, mrpmm_3)
