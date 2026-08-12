@@ -6,10 +6,18 @@ library("loo")
 library("bayesplot")
 library("ggplot2")
 library("gridExtra")
+library("ggpubr")
 
 options(mc.cores = 10)
 
-# let's analyze the brms model fits
+# model as defined in the manuscript
+# M1 - (RD,SRL,RTD) ~ states + (1│gr(species, cov=vcv_phy)) + (1|species)
+# M2 - (RD,SRL,RTD) ~ states + (1|species)
+
+# M3 - (RD,SRL,RTD) ~ states + (1│p|gr(species, cov=vcv_phy)) + (1|q|species)
+# M4 - (RD,SRL,RTD) ~ states + (1|q|species)
+
+# all of these models have been fitted with 8 chains parallelized across 8 CPU cores on an Ubuntu cloud VM
 
 # (F00679, F00727, F00709) ~ state + (1|q|taxa)
 mrpmm_1 <- readRDS("../data/chapter2/rdata/hie-general/brms_model_1.Rds")
@@ -26,16 +34,21 @@ mrpmm_2 <- readRDS("../data/chapter2/rdata/hie-general/brms_model_2.Rds")
 # these are non-phylogenetic models
 # posterior prediction tests to evaluate model fits
 # looks good :)
-gridExtra::grid.arrange(brms::pp_check(mrpmm_1, resp = "F00679"),
-                        brms::pp_check(mrpmm_1, resp = "F00727"),
-                        brms::pp_check(mrpmm_1, resp = "F00709"),
-                        nrow = 1)
+
+p1 <- brms::pp_check(mrpmm_1, resp = "F00679")
+p2 <- brms::pp_check(mrpmm_1, resp = "F00727")
+p3 <- brms::pp_check(mrpmm_1, resp = "F00709")
+
+combined <- ggpubr::ggarrange(p1, p2, p3, ncol = 3, labels = c("RD", "SRL", "RTD"))
+ggplot2::ggsave("../plots/pp_check_mod1.png", device = "png", width = 30, height = 10, units = "in", dpi = 500, bg = "white")
 
 # this looks good too :)
-gridExtra::grid.arrange(brms::pp_check(mrpmm_3, resp = "F00679"),
-                        brms::pp_check(mrpmm_3, resp = "F00727"),
-                        brms::pp_check(mrpmm_3, resp = "F00709"),
-                        nrow = 1)
+p1 <- brms::pp_check(mrpmm_3, resp = "F00679")
+p2 <- brms::pp_check(mrpmm_3, resp = "F00727")
+p3 <- brms::pp_check(mrpmm_3, resp = "F00709")
+
+combined <- ggpubr::ggarrange(p1, p2, p3, ncol = 3, labels = c("RD", "SRL", "RTD"))
+ggplot2::ggsave("../plots/pp_check_mod3.png", device = "png", width = 30, height = 10, units = "in", dpi = 500, bg = "white")
 
 brms::bayes_R2(mrpmm_1)
 #          Estimate   Est.Error      Q2.5     Q97.5
