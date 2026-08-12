@@ -19,6 +19,7 @@ M2 <- readRDS("../data/chapter2/rdata/hie-general/brms/brms_taxa.Rds")
 # M3 - (RD,SRL,RTD) ~ states + (1│p|gr(species, cov=vcv_phy)) + (1|q|species)
 
 # M4 - (RD,SRL,RTD) ~ states + (1|q|species)
+M4 <- readRDS("../data/chapter2/rdata/hie-general/brms/brms_taxa_corr.Rds")
 
 
 # all of these models have been fitted with 8 chains parallelized across 8 CPU cores on an Ubuntu cloud VM
@@ -39,12 +40,13 @@ ggplot2::ggsave("../plots/pp_check_M2.png", device = "png", width = 30, height =
 
 
 # this looks good too :)
-p1 <- brms::pp_check(mrpmm_3, resp = "F00679")
-p2 <- brms::pp_check(mrpmm_3, resp = "F00727")
-p3 <- brms::pp_check(mrpmm_3, resp = "F00709")
+p1 <- brms::pp_check(M4, resp = "F00679")
+p2 <- brms::pp_check(M4, resp = "F00727")
+p3 <- brms::pp_check(M4, resp = "F00709")
 
 combined <- ggpubr::ggarrange(p1, p2, p3, ncol = 3, labels = c("RD", "SRL", "RTD"))
-ggplot2::ggsave("../plots/pp_check_mod3.png", device = "png", width = 30, height = 10, units = "in", dpi = 500, bg = "white")
+ggplot2::ggsave("../plots/pp_check_M4.png", device = "png", width = 30, height = 10, units = "in", dpi = 500, bg = "white")
+
 
 brms::bayes_R2(mrpmm_1)
 #          Estimate   Est.Error      Q2.5     Q97.5
