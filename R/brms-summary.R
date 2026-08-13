@@ -135,7 +135,7 @@ brms::bayes_R2(M1)
 # M1
 
 # Computed from 20000 by 5218 log-likelihood matrix.
-# Estimate    SE
+#           Estimate    SE
 # elpd_waic -13344.3 281.8
 # p_waic      1616.2  72.0
 # waic       26688.5 563.6
@@ -145,11 +145,21 @@ brms::bayes_R2(M1)
 # M2
 
 # Computed from 20000 by 5218 log-likelihood matrix.
-# Estimate    SE
+#           Estimate    SE
 # elpd_waic -13887.7 272.3
 # p_waic      2179.0  76.4
 # waic       27775.4 544.7
 # 1448 (27.8%) p_waic estimates greater than 0.4. We recommend trying loo instead.
+
+
+# M4
+
+# Computed from 20000 by 5218 log-likelihood matrix.
+#           Estimate    SE
+# elpd_waic -13028.8 302.9
+# p_waic      1979.7  67.7
+# waic       26057.6 605.8
+# 1418 (27.2%) p_waic estimates greater than 0.4. We recommend trying loo instead.
 
 
 
