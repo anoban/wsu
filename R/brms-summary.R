@@ -163,12 +163,3 @@ brms::bayes_R2(M1)
 
 
 
-#-------
-# LOO
-#-------
-
-# to compare M2 and M4
-mrpmm_1 <- brms::add_criterion(M2, criterion = "loo", moment_match = TRUE)
-mrpmm_3 <- brms::add_criterion(M4, criterion = "loo", moment_match = TRUE)
-
-loo::loo(mrpmm_1, mrpmm_3)
