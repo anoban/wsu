@@ -21,10 +21,6 @@ stopifnot(all(tree$tip.label %in% fred4$binominal))
 corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE) # turn the phylogeny into a variance-covariance matrix based on branch lengths
 
 # null models - without mycorrhizal states as the fixed effect
-M1 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|gr(binominal, cov = corrmat)) + (1|taxa)) + set_rescor(TRUE),
-                data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 2, iter = 5000, warmup = 2500, backend = "cmdstanr")
-saveRDS(object = M1, file = "./ScratchData/nullmods/M1_null.Rds")
-
 M2 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat),
           chains = 8, cores = 8, threads = 2, iter = 5000, warmup = 2500, backend = "cmdstanr")
 saveRDS(object = M2, file = "./ScratchData/nullmods/M2_null.Rds")
@@ -32,6 +28,10 @@ saveRDS(object = M2, file = "./ScratchData/nullmods/M2_null.Rds")
 M4 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|q|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat),
           chains = 8, cores = 8, threads = 2, iter = 5000, warmup = 2500, backend = "cmdstanr")
 saveRDS(object = M4, file = "./ScratchData/nullmods/M4_null.Rds")
+
+M1 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|gr(binominal, cov = corrmat)) + (1|taxa)) + set_rescor(TRUE),
+                data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 2, iter = 5000, warmup = 2500, backend = "cmdstanr")
+saveRDS(object = M1, file = "./ScratchData/nullmods/M1_null.Rds")
 
 # will probably be the slowest - moving to the last
 M3 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE),
