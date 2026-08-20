@@ -15,6 +15,11 @@ stopifnot(all(tree$tip.label %in% fred4$binominal))
 
 corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE)
 
+# first change the TMPDIR env variable to somewhere with enough space, don't just use export
+# do this using a .Renviron file
+# /data/mounts/scratch1/u90963425/
+# /run/user/6190
+
 # let's see if the try catch blocks help with unexpected chain terminations
 tryCatch(
     expr = {
