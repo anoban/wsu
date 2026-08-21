@@ -1,5 +1,5 @@
 # https://mc-stan.org/loo/articles/loo2-example.html
-#https://paulbuerkner.com/brms/reference/loo.brmsfit.html
+# https://paulbuerkner.com/brms/reference/loo.brmsfit.html
 
 library("brms")
 library("rstan")
@@ -39,7 +39,8 @@ N1 <- brms::add_criterion(N1, criterion = "loo", moment_match = TRUE, save_psis 
 N2 <- brms::add_criterion(N2, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8)
 N4 <- brms::add_criterion(N4, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8)
 
-loo::loo_compare(M1, M2, M4, N1, N2, N4)
+compres <- loo::loo_compare(M1, M2, M4, N1, N2, N4) # loo::loo_compare can handle more than two models
+print(compres)
 
 # https://paulbuerkner.com/brms/reference/loo.brmsfit.html
 # https://paulbuerkner.com/brms/reference/loo_moment_match.brmsfit.html
