@@ -23,7 +23,7 @@ corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE)
 # let's see if the try catch blocks help with unexpected chain terminations
 tryCatch(
     expr = {
-        M2 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|taxa)) + set_rescor(TRUE), data = fred4, chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr")
+        M2 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|taxa)) + set_rescor(TRUE), data = fred4, chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
         saveRDS(object = M2, file = "./ScratchData/nullmods/brms_taxa_null.Rds")
     },
     error = function(err){ print(err) }
@@ -31,7 +31,7 @@ tryCatch(
 
 tryCatch(
     expr = {
-        M4 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|q|taxa)) + set_rescor(TRUE), data = fred4, chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr")
+        M4 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|q|taxa)) + set_rescor(TRUE), data = fred4, chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
         saveRDS(object = M4, file = "./ScratchData/nullmods/brms_taxa_corr_null.Rds")
     },
     error = function(err){ print(err) }
@@ -39,7 +39,7 @@ tryCatch(
 
 tryCatch(
     expr = {
-        M1 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|gr(binominal, cov = corrmat)) + (1|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr")
+        M1 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|gr(binominal, cov = corrmat)) + (1|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
         saveRDS(object = M1, file = "./ScratchData/nullmods/brms_phylo_null.Rds")
     },
     error = function(err){ print(err) }
@@ -47,7 +47,7 @@ tryCatch(
 
 tryCatch(
     expr = {
-        M3 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr")
+        M3 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ 1 + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
         saveRDS(object = M3, file = "./ScratchData/nullmods/brms_phylo_corr_null.Rds")
     },
     error = function(err){ print(err) }

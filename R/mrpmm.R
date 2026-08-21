@@ -1,9 +1,8 @@
-#!/usr/bin/env Rscript
-
 library("ape")
 library("brms")
 library("readxl")
-library("geiger")
+library("cmdstanr")
+library("rstan")
 
 fred4 <- read.csv("./ScratchData/continuous_raw.csv") # continuous trait data with all the raw records
 fred4$taxa <- fred4$binominal # duplicated column to be fitted as the random effect
@@ -17,16 +16,44 @@ fred4$F00679 <- scale(log(fred4$F00679))[, 1] # RD
 fred4$F00727 <- scale(log(fred4$F00727))[, 1] # SRL
 fred4$F00709 <- scale(log(fred4$F00709))[, 1] # RTD
 
-
 tree <- ape::read.tree("./ScratchData/FRED4_1301.tre") # the phylogeny
 if(!ape::is.binary(tree)) tree <- ape::multi2di(tree) # if not binary, make it binary
 stopifnot(all(tree$tip.label %in% fred4$binominal))
+corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE)
 
-# since lambda was the best fitting model in our model comparison - branch transform the phylogeny first before fitting the model
-tree <- geiger:::rescale.phylo(tree, model = "lambda", lambda = 0.831091127072489) # this lambda was the average of the lambda estimates of RD, SRL and RTD
+# models with mycorrhizal states as the fixed effect
+# https://paulbuerkner.com/brms/reference/loo_moment_match.brmsfit.html
+# we need to set save_pars = save_pars(all = TRUE) to be able to moment matched LOO model comparisons
 
-corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE) # turn the phylogeny into a variance-covariance matrix based on branch lengths
+tryCatch(
+    expr = {
+        M2 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|taxa)) + set_rescor(TRUE), data = fred4, chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
+        saveRDS(object = M2, file = "./ScratchData/brms_taxa.Rds")
+    },
+    error = function(err){ print(err) }
+)
 
-model <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE),
-                     data = fred4, data2 = list(corrmat = corrmat), chains = 4, cores = 4, threads = 4, iter = 10000, warmup = 5000, backend = "cmdstanr")
-saveRDS(object = model, file = "./ScratchData/brms_model_lambda.Rds")
+tryCatch(
+    expr = {
+        M4 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|q|taxa)) + set_rescor(TRUE), data = fred4, chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
+        saveRDS(object = M4, file = "./ScratchData/brms_taxa_corr.Rds")
+    },
+    error = function(err){ print(err) }
+)
+
+tryCatch(
+    expr = {
+        M1 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|gr(binominal, cov = corrmat)) + (1|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
+        saveRDS(object = M1, file = "./ScratchData/brms_phylo.Rds")
+    },
+    error = function(err){ print(err) }
+)
+
+# this will be the slowest fit :/
+tryCatch(
+    expr = {
+        M3 <- brms::brm(brms::brmsformula(mvbind(F00727, F00679, F00709) ~ state + (1|p|gr(binominal, cov = corrmat)) + (1|q|taxa)) + set_rescor(TRUE), data = fred4, data2 = list(corrmat = corrmat), chains = 8, cores = 8, threads = 4, iter = 5000, warmup = 2500, backend = "cmdstanr", save_pars = save_pars(all = TRUE))
+        saveRDS(object = M3, file = "./ScratchData/brms_phylo_corr.Rds")
+    },
+    error = function(err){ print(err) }
+)
