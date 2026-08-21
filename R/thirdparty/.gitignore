@@ -1,5 +1,0 @@
-# run find . -size +500k | cat >> ./.gitignore to add all files above 500KiBs to the .gitignore
-
-*.Rdata
-*.Rsave
-*.Rds
