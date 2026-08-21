@@ -7,7 +7,7 @@ library("rstan")
 fred4 <- read.csv("./ScratchData/continuous_raw.csv") # continuous trait data with all the raw records
 fred4$taxa <- fred4$binominal # duplicated column to be fitted as the random effect
 states <- readxl::read_xlsx(path = "./ScratchData/final.xlsx", sheet = "final")[, c("binominal", "state")]
-states$binominal <- gsub(states$binominal, pattern = ' ', replacement = '_')
+states$binominal <- gsub(states$binominal, pattern = ' ', replacement = '_') # replace the space in the binominal names with underscores
 
 fred4 <- merge(x = fred4, y = states, by = "binominal", all.x = TRUE) # merge the trait data with mycorrhizal state data
 
@@ -18,7 +18,7 @@ fred4$F00709 <- scale(log(fred4$F00709))[, 1] # RTD
 
 tree <- ape::read.tree("./ScratchData/FRED4_1301.tre") # the phylogeny
 if(!ape::is.binary(tree)) tree <- ape::multi2di(tree) # if not binary, make it binary
-stopifnot(all(tree$tip.label %in% fred4$binominal))
+stopifnot(all(tree$tip.label %in% fred4$binominal)) # make sure all the species in the phylogeny exist in the dataset
 corrmat <- ape::vcv.phylo(phy = tree, corr = TRUE)
 
 # models with mycorrhizal states as the fixed effect
