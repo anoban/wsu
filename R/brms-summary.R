@@ -65,16 +65,16 @@ ggplot2::ggsave("../plots/pp_check_M1.png", plot = combined, device = "png", wid
 # plot()
 #--------------------
 
-plots_4 <- plot(M1, ask = FALSE) # without ask = FALSE, it will prompt you tu hit enter to view each one of the 4 plots
-p4 <- ggpubr::ggarrange(plotlist = plots_4)
+allpanels <- plot(M1, ask = FALSE) # without ask = FALSE, it will prompt you tu hit enter to view each one of the 4 plots
+p4 <- ggpubr::ggarrange(plotlist = allpanels)
 ggplot2::ggsave("../plots/M1.png", plot = p4, device = "png", width = 32, height = 18, units = "in", dpi = 600, bg = "white")
 
-plots_4 <- plot(M2, ask = FALSE)
-p4 <- ggpubr::ggarrange(plotlist = plots_4)
+allpanels <- plot(M2, ask = FALSE)
+p4 <- ggpubr::ggarrange(plotlist = allpanels)
 ggplot2::ggsave("../plots/M2.png", plot = p4, device = "png", width = 32, height = 18, units = "in", dpi = 600, bg = "white")
 
-plots_4 <- plot(M4, ask = FALSE)
-p4 <- ggpubr::ggarrange(plotlist = plots_4)
+allpanels <- plot(M4, ask = FALSE)
+p4 <- ggpubr::ggarrange(plotlist = allpanels)
 ggplot2::ggsave("../plots/M4.png", plot = p4, device = "png", width = 32, height = 18, units = "in", dpi = 600, bg = "white")
 
 
@@ -86,19 +86,19 @@ ggplot2::ggsave("../plots/M4.png", plot = p4, device = "png", width = 32, height
 # in our case the conditional_effects will always return three plots because we have three different response variables
 # for all our fits brms says the only valid effect is the fixed effect -> state
 
-coneffs <- plot(brms::conditional_effects(M4), ask = FALSE, points = TRUE, plot = FALSE)
-ceffgrid <- ggpubr::ggarrange(coneffs[[1]], coneffs[[2]], coneffs[[3]], nrow = 1, ncol = 3, labels = c("SRL", "RD", "RTD"))
-ggplot2::ggsave("../plots/condeffs_M4.png", plot = ceffgrid, device = "png", width = 15, height = 6, units = "in", dpi = 600, bg = "white")
+condeffs <- plot(brms::conditional_effects(M4), ask = FALSE, points = TRUE, plot = FALSE)
+plotgrid <- ggpubr::ggarrange(condeffs[[1]], condeffs[[2]], condeffs[[3]], nrow = 1, ncol = 3, labels = c("SRL", "RD", "RTD"))
+ggplot2::ggsave("../plots/condeffs_M4.png", plot = plotgrid, device = "png", width = 15, height = 6, units = "in", dpi = 600, bg = "white")
 
 
-coneffs <- plot(brms::conditional_effects(M2), ask = FALSE, points = TRUE, plot = FALSE)
-ceffgrid <- ggpubr::ggarrange(coneffs[[1]], coneffs[[2]], coneffs[[3]], nrow = 1, ncol = 3, labels = c("SRL", "RD", "RTD"))
-ggplot2::ggsave("../plots/condeffs_M2.png", plot = ceffgrid, device = "png", width = 15, height = 6, units = "in", dpi = 600, bg = "white")
+condeffs <- plot(brms::conditional_effects(M2), ask = FALSE, points = TRUE, plot = FALSE)
+plotgrid <- ggpubr::ggarrange(condeffs[[1]], condeffs[[2]], condeffs[[3]], nrow = 1, ncol = 3, labels = c("SRL", "RD", "RTD"))
+ggplot2::ggsave("../plots/condeffs_M2.png", plot = plotgrid, device = "png", width = 15, height = 6, units = "in", dpi = 600, bg = "white")
 
 
-coneffs <- plot(brms::conditional_effects(M1), ask = FALSE, points = TRUE, plot = FALSE)
-ceffgrid <- ggpubr::ggarrange(coneffs[[1]], coneffs[[2]], coneffs[[3]], nrow = 1, ncol = 3, labels = c("SRL", "RD", "RTD"))
-ggplot2::ggsave("../plots/condeffs_M1.png", plot = ceffgrid, device = "png", width = 15, height = 6, units = "in", dpi = 600, bg = "white")
+condeffs <- plot(brms::conditional_effects(M1), ask = FALSE, points = TRUE, plot = FALSE)
+plotgrid <- ggpubr::ggarrange(condeffs[[1]], condeffs[[2]], condeffs[[3]], nrow = 1, ncol = 3, labels = c("SRL", "RD", "RTD"))
+ggplot2::ggsave("../plots/condeffs_M1.png", plot = plotgrid, device = "png", width = 15, height = 6, units = "in", dpi = 600, bg = "white")
 
 
 
