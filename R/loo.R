@@ -30,7 +30,7 @@ N4 <- readRDS("./ScratchData/nullmods/brms_taxa_corr_null.Rds")
 # in order to use moment_match = TRUE, the models must've been fit with save_pars = save_pars(all = TRUE)
 
 # M models
-M1 <- brms::add_criterion(M1, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = FALSE)
+M1 <- brms::add_criterion(M1, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
 # R session crashes after this, try again with setting pointwise=TRUE as this will use less memory
 # https://discourse.mc-stan.org/t/loo-add-criterion-aborts-r-session-for-cmdstanr-model/23224/6
 # setting pointwise to TRUE actually uses a LOT MORE CPU (WITH MULTITHREADING) but the memory seems to be shared across the cores (processess)
@@ -40,13 +40,13 @@ M1 <- brms::add_criterion(M1, criterion = "loo", moment_match = TRUE, save_psis 
 # to do something - with pointwise set to FALSE (the default), this will result in a hefty RAM use - probably why the R session gets killed
 # take this into account when setting the mc.cores (especially when pointwise is set to FALSE)
 
-M2 <- brms::add_criterion(M2, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = FALSE)
-M4 <- brms::add_criterion(M4, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = FALSE)
+M2 <- brms::add_criterion(M2, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
+M4 <- brms::add_criterion(M4, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
 
 # N models
-N1 <- brms::add_criterion(N1, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = FALSE)
-N2 <- brms::add_criterion(N2, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = FALSE)
-N4 <- brms::add_criterion(N4, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = FALSE)
+N1 <- brms::add_criterion(N1, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
+N2 <- brms::add_criterion(N2, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
+N4 <- brms::add_criterion(N4, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
 
 compres <- loo::loo_compare(M1, M2, M4, N1, N2, N4) # loo::loo_compare can handle more than two models
 print(compres)
