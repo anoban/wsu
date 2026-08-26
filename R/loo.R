@@ -31,7 +31,7 @@ N4 <- readRDS("./ScratchData/nullmods/brms_taxa_corr_null.Rds")
 
 # M models
 M1 <- brms::add_criterion(M1, criterion = "loo", moment_match = FALSE, save_psis = TRUE, cores = 8, pointwise = FALSE)
-# R session crashes after this, try again with setting pointwise=TRUE as this will use less memory
+# R session crashes after this when moment_match is set to TRUE, try again with setting pointwise=TRUE as this will use less memory
 # https://discourse.mc-stan.org/t/loo-add-criterion-aborts-r-session-for-cmdstanr-model/23224/6
 # setting pointwise to TRUE actually uses a LOT MORE CPU (WITH MULTITHREADING) but the memory seems to be shared across the cores (processess)
 # resulting in an overall less RAM use
