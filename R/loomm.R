@@ -8,8 +8,9 @@ library("cmdstanr")
 library("loo")
 
 # we can go up to 16 here (on a 32 core vCPU) which we speed up LOO immensely but we don't have enough memory to accomodate that many processes (even with a 126 GiB RAM)
-options(mc.cores = 4) # keep these at a reasonable minimum (the more processes we spin up the more RAM will be needed)
-options(loo.cores = 4)
+# keep these at a reasonable minimum (the more processes we spin up the more RAM will be needed)
+options(mc.cores = 1) # currently only 1 works
+options(loo.cores = 1)
 
 # https://github.com/stan-dev/loo/issues/222
 
@@ -52,7 +53,7 @@ options(loo.cores = 4)
 # i.e.
 # M1 <- readRDS("./ScratchData/brms_phylo.Rds")
 # M1 <- brms::add_criterion(M1, criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = TRUE)
-# this could double (???) the memory use - first for creating M1 by reading in the Rds and then when it's copied and passed to brms::add_criterion() 
+# this could double (???) the memory use - first for creating M1 by reading in the Rds and then when it's copied and passed to brms::add_criterion()
 
 M1 <- brms::add_criterion(readRDS("./ScratchData/brms_phylo.Rds"), criterion = "loo", moment_match = TRUE, save_psis = TRUE, cores = 8, pointwise = TRUE)
 gc(full = TRUE)
