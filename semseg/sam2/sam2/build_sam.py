@@ -5,7 +5,6 @@
 # LICENSE file in the root directory of this source tree.
 
 import logging
-from typing import Optional
 
 import torch
 from modeling.backbones.hieradet import Hiera
@@ -18,7 +17,7 @@ from modeling.sam2_base import SAM2Base
 from torch import nn
 
 
-def build_sam21_hiera_l(checkpoint_path: Optional[str], device: str, apply_post_processing: bool, mode: str = "eval") -> SAM2Base:
+def build_sam21_hiera_l(checkpoint_path: str | None, device: str, apply_post_processing: bool, mode: str = "eval") -> SAM2Base:
     """
     hardcoded the configs for the Hiera Large flavour to avoid depending on Hydra and Omegaconf.
     This is now a free standing function with 0 external dependencies.
@@ -116,7 +115,7 @@ def build_sam21_hiera_l(checkpoint_path: Optional[str], device: str, apply_post_
     return sam21_hiera_l
 
 
-def _load_checkpoint(model: nn.Module, checkpoint_path: Optional[str]) -> None:
+def _load_checkpoint(model: nn.Module, checkpoint_path: str | None) -> None:
     """
     load the pretrained model from the specified path and update the model parameters accordingly
     """

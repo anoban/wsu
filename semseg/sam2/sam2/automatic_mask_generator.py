@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 # Adapted from https://github.com/facebookresearch/segment-anything/blob/main/segment_anything/automatic_mask_generator.py
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
 import torch
@@ -15,7 +15,7 @@ from torchvision.ops.boxes import batched_nms, box_area  # type: ignore
 from utils.amg import (
     MaskData,
     area_from_rle,
-    batch_iterator,
+    batch_iterator,  # pyright: ignore[reportUnknownVariableType]
     batched_mask_to_box,
     box_xyxy_to_xywh,
     build_all_layer_point_grids,
@@ -36,7 +36,7 @@ class SAM2AutomaticMaskGenerator:
     def __init__(
         self,
         model: SAM2Base,
-        points_per_side: Optional[int] = 32,
+        points_per_side: int | None = 32,
         points_per_batch: int = 64,
         pred_iou_thresh: float = 0.8,
         stability_score_thresh: float = 0.95,
@@ -47,12 +47,11 @@ class SAM2AutomaticMaskGenerator:
         crop_nms_thresh: float = 0.7,
         crop_overlap_ratio: float = 512 / 1500,
         crop_n_points_downscale_factor: int = 1,
-        point_grids: Optional[List[np.ndarray]] = None,
+        point_grids: list[np.ndarray] | None = None,
         min_mask_region_area: int = 0,
         output_mode: str = "binary_mask",
         use_m2m: bool = False,
         multimask_output: bool = True,
-        **kwargs,
     ) -> None:
         """
         Using a SAM 2 model, generates masks for the entire image.
@@ -134,25 +133,8 @@ class SAM2AutomaticMaskGenerator:
         self.use_m2m = use_m2m
         self.multimask_output = multimask_output
 
-    @classmethod
-    def from_pretrained(cls, model_id: str, **kwargs) -> "SAM2AutomaticMaskGenerator":
-        """
-        Load a pretrained model from the Hugging Face hub.
-
-        Arguments:
-          model_id (str): The Hugging Face repository ID.
-          **kwargs: Additional arguments to pass to the model constructor.
-
-        Returns:
-          (SAM2AutomaticMaskGenerator): The loaded model.
-        """
-        from sam2.build_sam import build_sam2_hf
-
-        sam_model = build_sam2_hf(model_id, **kwargs)
-        return cls(sam_model, **kwargs)
-
     @torch.no_grad()
-    def generate(self, image: np.ndarray) -> List[Dict[str, Any]]:
+    def generate(self, image: np.ndarray) -> list[dict[str, Any]]:
         """
         Generates masks for the given image.
 
@@ -229,7 +211,7 @@ class SAM2AutomaticMaskGenerator:
         data.to_numpy()
         return data
 
-    def _process_crop(self, image: np.ndarray, crop_box: List[int], crop_layer_idx: int, orig_size: Tuple[int, ...]) -> MaskData:
+    def _process_crop(self, image: np.ndarray, crop_box: list[int], crop_layer_idx: int, orig_size: tuple[int, ...]) -> MaskData:
         # Crop the image and calculate embeddings
         x0, y0, x1, y1 = crop_box
         cropped_im = image[y0:y1, x0:x1, :]
@@ -265,7 +247,7 @@ class SAM2AutomaticMaskGenerator:
         return data
 
     def _process_batch(
-        self, points: np.ndarray, im_size: Tuple[int, ...], crop_box: List[int], orig_size: Tuple[int, ...], normalize=False
+        self, points: np.ndarray, im_size: tuple[int, ...], crop_box: list[int], orig_size: tuple[int, ...], normalize=False
     ) -> MaskData:
         orig_h, orig_w = orig_size
 

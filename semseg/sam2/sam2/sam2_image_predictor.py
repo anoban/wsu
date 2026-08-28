@@ -5,7 +5,6 @@
 # LICENSE file in the root directory of this source tree.
 
 import logging
-from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import torch
@@ -16,7 +15,7 @@ from utils.transforms import SAM2Transforms
 
 class SAM2ImagePredictor:
     def __init__(
-        self, sam_model: SAM2Base, mask_threshold: float = 0.0, max_hole_area: float = 0.0, max_sprinkle_area: float = 0.0, **kwargs
+        self, sam_model: SAM2Base, mask_threshold: float = 0.0, max_hole_area: float = 0.0, max_sprinkle_area: float = 0.0
     ) -> None:
         """
         Uses SAM-2 to calculate the image embedding for an image, and then
@@ -54,7 +53,7 @@ class SAM2ImagePredictor:
         self._bb_feat_sizes = [(256, 256), (128, 128), (64, 64)]
 
     @torch.no_grad()
-    def set_image(self, image: Union[np.ndarray, Image]) -> None:
+    def set_image(self, image: np.ndarray | Image) -> None:
         """
         Calculates the image embeddings for the provided image, allowing
         masks to be predicted with the 'predict' method.
@@ -69,7 +68,7 @@ class SAM2ImagePredictor:
         if isinstance(image, np.ndarray):
             logging.info("For numpy array image, we assume (HxWxC) format")
             self._orig_hw = [image.shape[:2]]
-        elif isinstance(image, Image):
+        elif isinstance(image, Image):  # type: ignore
             w, h = image.size
             self._orig_hw = [(h, w)]
         else:
@@ -94,7 +93,7 @@ class SAM2ImagePredictor:
         logging.info("Image embeddings computed.")
 
     @torch.no_grad()
-    def set_image_batch(self, image_list: List[Union[np.ndarray]]) -> None:
+    def set_image_batch(self, image_list: list[np.ndarray]) -> None:
         """
         Calculates the image embeddings for the provided image batch, allowing
         masks to be predicted with the 'predict_batch' method.
@@ -131,14 +130,14 @@ class SAM2ImagePredictor:
 
     def predict_batch(
         self,
-        point_coords_batch: List[np.ndarray],
-        point_labels_batch: List[np.ndarray],
-        box_batch: List[np.ndarray],
-        mask_input_batch: List[np.ndarray],
+        point_coords_batch: list[np.ndarray],
+        point_labels_batch: list[np.ndarray],
+        box_batch: list[np.ndarray],
+        mask_input_batch: list[np.ndarray],
         multimask_output: bool = True,
         return_logits: bool = False,
         normalize_coords: bool = True,
-    ) -> Tuple[List[np.ndarray], List[np.ndarray], List[np.ndarray]]:
+    ) -> tuple[list[np.ndarray], list[np.ndarray], list[np.ndarray]]:
         """This function is very similar to predict(...), however it is used for batched mode, when the model is expected to generate predictions on multiple images.
         It returns a tuple of lists of masks, ious, and low_res_masks_logits.
         """
@@ -172,14 +171,14 @@ class SAM2ImagePredictor:
 
     def predict(
         self,
-        point_coords: Optional[np.ndarray] = None,
-        point_labels: Optional[np.ndarray] = None,
-        box: Optional[np.ndarray] = None,
-        mask_input: Optional[np.ndarray] = None,
+        point_coords: np.ndarray | None = None,
+        point_labels: np.ndarray | None = None,
+        box: np.ndarray | None = None,
+        mask_input: np.ndarray | None = None,
         multimask_output: bool = True,
         return_logits: bool = False,
         normalize_coords: bool = True,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Predict masks for the given input prompts, using the currently set image.
 
@@ -250,14 +249,14 @@ class SAM2ImagePredictor:
     @torch.no_grad()
     def _predict(
         self,
-        point_coords: Optional[torch.Tensor],
-        point_labels: Optional[torch.Tensor],
-        boxes: Optional[torch.Tensor] = None,
-        mask_input: Optional[torch.Tensor] = None,
+        point_coords: torch.Tensor | None,
+        point_labels: torch.Tensor | None,
+        boxes: torch.Tensor | None = None,
+        mask_input: torch.Tensor | None = None,
         multimask_output: bool = True,
         return_logits: bool = False,
         img_idx: int = -1,
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Predict masks for the given input prompts, using the currently set image.
         Input prompts are batched torch tensors and are expected to already be

@@ -5,9 +5,10 @@
 # LICENSE file in the root directory of this source tree.
 
 import math
+from collections.abc import Generator, ItemsView
 from copy import deepcopy
 from itertools import product
-from typing import Any, Dict, Generator, ItemsView, List, Tuple
+from typing import Any
 
 import numpy as np
 import torch
@@ -54,7 +55,7 @@ class MaskData:
             else:
                 raise TypeError(f"MaskData key {k} has an unsupported type {type(v)}.")
 
-    def cat(self, new_stats: "MaskData") -> None:
+    def cat(self, new_stats: MaskData) -> None:
         for k, v in new_stats.items():
             if k not in self._stats or self._stats[k] is None:
                 self._stats[k] = deepcopy(v)
@@ -73,7 +74,7 @@ class MaskData:
                 self._stats[k] = v.float().detach().cpu().numpy()
 
 
-def is_box_near_crop_edge(boxes: torch.Tensor, crop_box: List[int], orig_box: List[int], atol: float = 20.0) -> torch.Tensor:
+def is_box_near_crop_edge(boxes: torch.Tensor, crop_box: list[int], orig_box: list[int], atol: float = 20.0) -> torch.Tensor:
     """Filter masks at the edge of a crop, but not at the edge of the original image."""
     crop_box_torch = torch.as_tensor(crop_box, dtype=torch.float, device=boxes.device)
     orig_box_torch = torch.as_tensor(orig_box, dtype=torch.float, device=boxes.device)
@@ -91,14 +92,14 @@ def box_xyxy_to_xywh(box_xyxy: torch.Tensor) -> torch.Tensor:
     return box_xywh
 
 
-def batch_iterator(batch_size: int, *args) -> Generator[List[Any], None, None]:
+def batch_iterator(batch_size: int, *args) -> Generator[list[Any]]:
     assert len(args) > 0 and all(len(a) == len(args[0]) for a in args), "Batched iteration must have inputs of all the same size."
     n_batches = len(args[0]) // batch_size + int(len(args[0]) % batch_size != 0)
     for b in range(n_batches):
         yield [arg[b * batch_size : (b + 1) * batch_size] for arg in args]
 
 
-def mask_to_rle_pytorch(tensor: torch.Tensor) -> List[Dict[str, Any]]:
+def mask_to_rle_pytorch(tensor: torch.Tensor) -> list[dict[str, Any]]:
     """
     Encodes masks to an uncompressed RLE, in the format expected by
     pycoco tools.
@@ -129,7 +130,7 @@ def mask_to_rle_pytorch(tensor: torch.Tensor) -> List[Dict[str, Any]]:
     return out
 
 
-def rle_to_mask(rle: Dict[str, Any]) -> np.ndarray:
+def rle_to_mask(rle: dict[str, Any]) -> np.ndarray:
     """Compute a binary mask from an uncompressed RLE."""
     h, w = rle["size"]
     mask = np.empty(h * w, dtype=bool)
@@ -143,7 +144,7 @@ def rle_to_mask(rle: Dict[str, Any]) -> np.ndarray:
     return mask.transpose()  # Put in C order
 
 
-def area_from_rle(rle: Dict[str, Any]) -> int:
+def area_from_rle(rle: dict[str, Any]) -> int:
     return sum(rle["counts"][1::2])
 
 
@@ -170,7 +171,7 @@ def build_point_grid(n_per_side: int) -> np.ndarray:
     return points
 
 
-def build_all_layer_point_grids(n_per_side: int, n_layers: int, scale_per_layer: int) -> List[np.ndarray]:
+def build_all_layer_point_grids(n_per_side: int, n_layers: int, scale_per_layer: int) -> list[np.ndarray]:
     """Generates point grids for all crop layers."""
     points_by_layer = []
     for i in range(n_layers + 1):
@@ -179,7 +180,7 @@ def build_all_layer_point_grids(n_per_side: int, n_layers: int, scale_per_layer:
     return points_by_layer
 
 
-def generate_crop_boxes(im_size: Tuple[int, ...], n_layers: int, overlap_ratio: float) -> Tuple[List[List[int]], List[int]]:
+def generate_crop_boxes(im_size: tuple[int, ...], n_layers: int, overlap_ratio: float) -> tuple[list[list[int]], list[int]]:
     """
     Generates a list of crop boxes of different sizes. Each layer
     has (2**i)**2 boxes for the ith layer.
@@ -214,7 +215,7 @@ def generate_crop_boxes(im_size: Tuple[int, ...], n_layers: int, overlap_ratio: 
     return crop_boxes, layer_idxs
 
 
-def uncrop_boxes_xyxy(boxes: torch.Tensor, crop_box: List[int]) -> torch.Tensor:
+def uncrop_boxes_xyxy(boxes: torch.Tensor, crop_box: list[int]) -> torch.Tensor:
     x0, y0, _, _ = crop_box
     offset = torch.tensor([[x0, y0, x0, y0]], device=boxes.device)
     # Check if boxes has a channel dimension
@@ -223,7 +224,7 @@ def uncrop_boxes_xyxy(boxes: torch.Tensor, crop_box: List[int]) -> torch.Tensor:
     return boxes + offset
 
 
-def uncrop_points(points: torch.Tensor, crop_box: List[int]) -> torch.Tensor:
+def uncrop_points(points: torch.Tensor, crop_box: list[int]) -> torch.Tensor:
     x0, y0, _, _ = crop_box
     offset = torch.tensor([[x0, y0]], device=points.device)
     # Check if points has a channel dimension
@@ -232,7 +233,7 @@ def uncrop_points(points: torch.Tensor, crop_box: List[int]) -> torch.Tensor:
     return points + offset
 
 
-def uncrop_masks(masks: torch.Tensor, crop_box: List[int], orig_h: int, orig_w: int) -> torch.Tensor:
+def uncrop_masks(masks: torch.Tensor, crop_box: list[int], orig_h: int, orig_w: int) -> torch.Tensor:
     x0, y0, x1, y1 = crop_box
     if x0 == 0 and y0 == 0 and x1 == orig_w and y1 == orig_h:
         return masks
@@ -242,7 +243,7 @@ def uncrop_masks(masks: torch.Tensor, crop_box: List[int], orig_h: int, orig_w: 
     return torch.nn.functional.pad(masks, pad, value=0)
 
 
-def remove_small_regions(mask: np.ndarray, area_thresh: float, mode: str) -> Tuple[np.ndarray, bool]:
+def remove_small_regions(mask: np.ndarray, area_thresh: float, mode: str) -> tuple[np.ndarray, bool]:
     """
     Removes small disconnected regions and holes in a mask. Returns the
     mask and an indicator of if the mask has been modified.
@@ -267,7 +268,7 @@ def remove_small_regions(mask: np.ndarray, area_thresh: float, mode: str) -> Tup
     return mask, True
 
 
-def coco_encode_rle(uncompressed_rle: Dict[str, Any]) -> Dict[str, Any]:
+def coco_encode_rle(uncompressed_rle: dict[str, Any]) -> dict[str, Any]:
     from pycocotools import mask as mask_utils  # type: ignore
 
     h, w = uncompressed_rle["size"]
