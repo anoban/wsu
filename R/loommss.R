@@ -8,8 +8,6 @@ library("cmdstanr")
 library("loo")
 
 set.seed(111)
-options(mc.cores = 8)
-options(loo.cores = 8)
 
 # https://discourse.mc-stan.org/t/memory-requirements-to-run-loo-brmsfit/27696/9
 # https://mc-stan.org/loo/articles/loo2-large-data.html
